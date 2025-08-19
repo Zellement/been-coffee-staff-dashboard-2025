@@ -1,0 +1,27 @@
+@layer utilities {
+    .btn {
+        position: relative;
+        background-color: var(--color-black);
+        color: var(--color-white);
+        padding: 0.25rem 0.75rem;
+        cursor: pointer;
+        transition-property:
+            color, background-color, border-color, outline-color,
+            text-decoration-color, fill, stroke, --tw-gradient-from,
+            --tw-gradient-via, --tw-gradient-to;
+        transition-timing-function: var(
+            --tw-ease,
+            var(--default-transition-timing-function)
+                /* cubic-bezier(0.4, 0, 0.2, 1) */
+        );
+        transition-duration: var(
+            --tw-duration,
+            var(--default-transition-duration) /* 150ms */
+        );
+
+        &:hover {
+            background-color: var(--color-white);
+            color: var(--color-black);
+        }
+    }
+}

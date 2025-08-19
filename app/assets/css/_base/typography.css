@@ -1,0 +1,145 @@
+/**
+ * ----------------------
+ * Base - Typography
+ * ----------------------
+ */
+
+.h1 {
+    font-size: var(--text-3xl);
+}
+
+.h2 {
+    font-size: var(--text-2xl);
+}
+
+.h3 {
+    font-size: var(--text-xl);
+}
+
+.h4 {
+    font-size: var(--text-lg);
+}
+
+.h5 {
+    font-size: var(--text-base);
+}
+
+em {
+    font-style: italic;
+}
+
+strong {
+    font-weight: var(--font-weight-bold);
+}
+
+/**
+ * Outline styles
+ */
+a,
+button,
+[tabindex='0'] {
+    &:focus {
+        --tw-outline-style: dashed;
+
+        outline: currentcolor var(--tw-outline-style) 2px;
+    }
+
+    &:not(:focus-visible) {
+        --tw-outline-style: none;
+
+        outline-style: none;
+
+        @media (forced-colors: active) {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+    }
+}
+
+/**
+ * Rich Text / Body Copy
+ */
+.content {
+    display: flex;
+    flex-direction: column;
+
+    :where(& > :not(:last-child)) {
+        --tw-space-y-reverse: 0;
+
+        margin-block: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse))
+            calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-weight: var(--font-weight-thin);
+        &:not(:last-child) {
+            margin-bottom: calc(var(--spacing) * 6);
+        }
+    }
+
+    h1 {
+        font-size: var(--text-3xl);
+        line-height: var(--text-3xl--line-height);
+    }
+
+    h2 {
+        font-size: var(--text-2xl);
+        line-height: var(--text-2xl--line-height);
+    }
+
+    h3 {
+        font-size: var(--text-xl);
+        line-height: var(--text-xl--line-height);
+    }
+
+    h4 {
+        font-size: var(--text-lg);
+        line-height: var(--text-lg--line-height);
+    }
+
+    h5 {
+        font-size: var(--text-base);
+        line-height: var(--text-base--line-height);
+    }
+
+    p strong {
+        font-weight: var(--font-weight-bold);
+    }
+
+    ul,
+    ol,
+    dl {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--spacing) * 2);
+        padding-left: calc(var(--spacing) * 4);
+
+        li,
+        dd {
+            --tw-leading: 1;
+
+            margin-left: calc(var(--spacing) * 4);
+            list-style-type: disc;
+
+            > ul,
+            > dl,
+            > ol {
+                margin-block: calc(var(--spacing) * 4);
+            }
+        }
+    }
+
+    ol {
+        li {
+            list-style-type: decimal;
+        }
+    }
+
+    a {
+        text-decoration-line: underline;
+    }
+}

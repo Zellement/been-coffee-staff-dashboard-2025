@@ -1,0 +1,27 @@
+{
+    "extends": ["stylelint-config-standard", "stylelint-config-tailwindcss"],
+    "plugins": ["stylelint-prettier"],
+    "rules": {
+        "selector-class-pattern": null,
+        "no-descending-specificity": null,
+        "prettier/prettier": true,
+        "selector-id-pattern": null,
+        "custom-property-pattern": "^[a-z][a-z0-9-/*]*$",
+        "at-rule-no-unknown": [
+            true,
+            {
+                "ignoreAtRules": [
+                    "tailwind",
+                    "layer",
+                    "apply",
+                    "variants",
+                    "responsive",
+                    "screen",
+                    "theme",
+                    "utility"
+                ]
+            }
+        ]
+    },
+    "ignoreFiles": ["vendor/**/*"]
+}

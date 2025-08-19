@@ -1,0 +1,119 @@
+@theme {
+    /* -------------------------
+  Colours
+  ------------------------- */
+    --color-black: #000;
+    --color-white: #fff;
+
+    /* -------------------------
+  Fonts
+  ------------------------- */
+    --font-sans: 'Open Sans', sans-serif;
+
+    /* -------------------------
+  Font sizes
+  ------------------------- */
+    /* @link https://utopia.fyi/type/calculator?c=320,14,1.2,1330,14,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+    /* Reset sizes */
+    --text-*: initial;
+
+    /* Step -3: 9.72px → 7.88px */
+    --text-2xs: clamp(0.4924rem, 0.6441rem + -0.1825vw, 0.6076rem);
+    --text-2xs--line-height: calc(100% + 10px);
+
+    /* Step -2: 11.67px → 10.50px  */
+    --text-xs: clamp(0.6564rem, 0.7522rem + -0.1153vw, 0.7292rem);
+    --text-xs--line-height: calc(100% + 10px);
+
+    /* Step -1: 14px */
+    --text-sm: clamp(0.875rem, 0.875rem + 0vw, 0.875rem);
+    --text-sm--line-height: calc(100% + 10px);
+
+    /* Step 0: 16.80px → 18.66px */
+    --text-base: clamp(1.05rem, 1.0131rem + 0.1844vw, 1.1664rem);
+    --text-base--line-height: calc(100% + 10px);
+
+    /* Step 1: 20.16px → 24.88px */
+    --text-lg: clamp(1.26rem, 1.1666rem + 0.467vw, 1.5548rem);
+    --text-lg--line-height: calc(100% + 10px);
+
+    /* Step 2: 24.19px → 33.16px */
+    --text-xl: clamp(1.512rem, 1.3344rem + 0.888vw, 2.0725rem);
+    --text-xl--line-height: calc(100% + 10px);
+
+    /* Step 3: 29.03px → 44.20px */
+    --text-2xl: clamp(1.8144rem, 1.514rem + 1.5022vw, 2.7627rem);
+    --text-2xl--line-height: calc(100% + 10px);
+
+    /* Step 4: 34.84px → 58.92px */
+    --text-3xl: clamp(2.1773rem, 1.7003rem + 2.3847vw, 3.6826rem);
+    --text-3xl--line-height: calc(2.25 / 1.875);
+
+    /* -------------------------
+  Aspect ratios
+  ------------------------- */
+
+    --aspect-landscape: 383 / 235;
+    --aspect-2/3: 2 / 3;
+
+    /* -------------------------
+  Breakpoints/screens
+  ------------------------- */
+    --breakpoint-3xs: 21rem; /* 336px */
+    --breakpoint-2xs: 25.625rem; /* 410px */
+    --breakpoint-xs: 30rem; /* 480px */
+    --breakpoint-sm: 35rem; /* 560px */
+    --breakpoint-md: 45.714rem; /* 658px */
+    --breakpoint-lg: 54.875rem; /* 878px */
+    --breakpoint-xl: 67.375rem; /* 1078px */
+    --breakpoint-2xl: 79.19rem; /* 1280px */
+    --breakpoint-3xl: 90rem; /* 1400px */
+
+    /* -------------------------
+  Containers
+  ------------------------- */
+    --container-3xs: 21rem; /* 336px */
+    --container-2xs: 25.625rem; /* 410px */
+    --container-xs: 30rem; /* 480px */
+    --container-sm: 35rem; /* 560px */
+    --container-md: 45.714rem; /* 658px */
+    --container-lg: 54.875rem; /* 878px */
+    --container-xl: 67.375rem; /* 1078px */
+    --container-2xl: 79.19rem; /* 1280px */
+    --container-3xl: 90rem; /* 1400px */
+
+    /* -------------------------
+  Spacing
+  ------------------------- */
+    --spacing-1/2: 50%;
+    --spacing-1/3: 33.3333%;
+    --spacing-1/4: 25%;
+    --spacing-2/4: 50%;
+    --spacing-3/4: 75%;
+    --spacing-1/5: 20%;
+    --spacing-2/5: 40%;
+    --spacing-3/5: 60%;
+    --spacing-4/5: 80%;
+    --spacing-1/6: 16.6667%;
+    --spacing-2/6: 33.3333%;
+    --spacing-3/6: 50%;
+    --spacing-4/6: 66.6667%;
+    --spacing-5/6: 83.3333%;
+    --spacing-1/12: 8.3333%;
+    --spacing-2/12: 16.6667%;
+    --spacing-3/12: 25%;
+    --spacing-4/12: 33.3333%;
+    --spacing-5/12: 41.6667%;
+    --spacing-6/12: 50%;
+    --spacing-7/12: 58.3333%;
+    --spacing-8/12: 66.6667%;
+    --spacing-9/12: 75%;
+    --spacing-10/12: 83.3333%;
+    --spacing-11/12: 91.6667%;
+    --spacing-full: 100%;
+    --spacing-25vh: 25vh;
+    --spacing-50vw: 50vw;
+    --spacing-50vh: 50vh;
+    --spacing-75vh: 75vh;
+}
