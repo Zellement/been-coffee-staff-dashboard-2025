@@ -1,0 +1,39 @@
+import { getQuery } from 'h3'
+import * as contentful from 'contentful'
+
+export default defineEventHandler(async (event) => {
+    const config = useRuntimeConfig()
+    const accessKey = config.CONTENTFUL_CDA_ACCESS_TOKEN as string
+    const spaceId = config.CONTENTFUL_SPACE_ID as string
+
+    const client = contentful.createClient({
+        space: spaceId,
+        accessToken: accessKey
+    })
+
+    // Get entryId from query params
+    const { id } = getQuery(event)
+
+    if (!id || typeof id !== 'string') {
+        return { error: 'Missing or invalid entry id' }
+    }
+
+    try {
+        const entry = await client.getEntry(id)
+        const { sys, fields } = entry
+
+        return {
+            id: sys.id,
+            createdAt: sys.createdAt,
+            updatedAt: sys.updatedAt,
+            contentType: sys.contentType,
+            fields
+        }
+    } catch (err) {
+        let message = 'Unknown error'
+        if (err instanceof Error) {
+            message = err.message
+        }
+        return { error: 'Failed to fetch entry', details: message }
+    }
+})

@@ -104,7 +104,10 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             WEBSITE_URL: import.meta.env.WEBSITE_URL
-        }
+        },
+        CONTENTFUL_CDA_ACCESS_TOKEN: import.meta.env
+            .CONTENTFUL_CDA_ACCESS_TOKEN,
+        CONTENTFUL_SPACE_ID: import.meta.env.CONTENTFUL_SPACE_ID
     },
 
     vite: {
