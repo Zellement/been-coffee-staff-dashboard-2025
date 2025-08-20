@@ -15,20 +15,8 @@ export default defineEventHandler(async (event) => {
 
     try {
         const entries = await client.getEntries(params)
-        return {
-            items: entries.items.map((entry) => {
-                const { sys, fields } = entry
-                return {
-                    sys: {
-                        id: sys.id,
-                        createdAt: sys.createdAt,
-                        updatedAt: sys.updatedAt,
-                        contentType: sys.contentType
-                    },
-                    fields
-                }
-            })
-        }
+        console.log('Fetched entries:', entries)
+        return entries
     } catch (err) {
         let message = 'Unknown error'
         if (err instanceof Error) {

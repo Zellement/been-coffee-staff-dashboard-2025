@@ -1,5 +1,6 @@
 export type { TypeArticle, TypeArticleFields, TypeArticleSkeleton } from "./TypeArticle";
 export type { TypeBeenAwesomeWinner, TypeBeenAwesomeWinnerFields, TypeBeenAwesomeWinnerSkeleton } from "./TypeBeenAwesomeWinner";
+export type { TypeDailyTask, TypeDailyTaskFields, TypeDailyTaskSkeleton } from "./TypeDailyTask";
 export type { TypeEmployee, TypeEmployeeFields, TypeEmployeeSkeleton } from "./TypeEmployee";
 export type { TypeImageWithFocalPoint, TypeImageWithFocalPointFields, TypeImageWithFocalPointSkeleton } from "./TypeImageWithFocalPoint";
 export type { TypeLocation, TypeLocationFields, TypeLocationSkeleton } from "./TypeLocation";

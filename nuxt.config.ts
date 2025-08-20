@@ -20,6 +20,10 @@ export default defineNuxtConfig({
         '@nuxt/ui'
     ],
 
+    ui: {
+        colorMode: false
+    },
+
     // Contentful image provider
     image: {
         provider: 'contentful',

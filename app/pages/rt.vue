@@ -8,7 +8,7 @@
                 :ui="{ item: 'basis-1/3' }"
             >
                 <div>
-                    <u-card :title="item.fields.title">
+                    <u-card variant="soft" :title="item.fields.title">
                         <p>{{ item.fields.title }}</p>
                         <p>
                             Last completed:

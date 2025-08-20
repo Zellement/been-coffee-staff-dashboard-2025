@@ -4,12 +4,12 @@ import type { TypeRoleSkeleton } from "./TypeRole";
 
 export interface TypeRoutineTaskFields {
     title: EntryFieldTypes.Symbol;
-    lastCompleted?: EntryFieldTypes.Date;
     description: EntryFieldTypes.RichText;
     minutesToComplete: EntryFieldTypes.Integer;
     frequencyInDays: EntryFieldTypes.Integer;
     staffLevel?: EntryFieldTypes.EntryLink<TypeRoleSkeleton>;
     article?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeArticleSkeleton>>;
+    lastCompleted?: EntryFieldTypes.Date;
 }
 
 export type TypeRoutineTaskSkeleton = EntrySkeletonType<TypeRoutineTaskFields, "routineTask">;
