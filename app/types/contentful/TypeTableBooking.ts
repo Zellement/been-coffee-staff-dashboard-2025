@@ -1,7 +1,7 @@
 import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
 import type { TypeLocationSkeleton } from "./TypeLocation";
 
-export interface TypeTableBookingsFields {
+export interface TypeTableBookingFields {
     for: EntryFieldTypes.Symbol;
     location: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
     dateTime: EntryFieldTypes.Date;
@@ -9,5 +9,5 @@ export interface TypeTableBookingsFields {
     details?: EntryFieldTypes.RichText;
 }
 
-export type TypeTableBookingsSkeleton = EntrySkeletonType<TypeTableBookingsFields, "tableBookings">;
-export type TypeTableBookings<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeTableBookingsSkeleton, Modifiers, Locales>;
+export type TypeTableBookingSkeleton = EntrySkeletonType<TypeTableBookingFields, "tableBooking">;
+export type TypeTableBooking<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeTableBookingSkeleton, Modifiers, Locales>;

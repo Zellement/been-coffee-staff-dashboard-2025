@@ -2,7 +2,7 @@ import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleC
 import type { TypeArticleSkeleton } from "./TypeArticle";
 import type { TypeRoleSkeleton } from "./TypeRole";
 
-export interface TypeRoutineTasksFields {
+export interface TypeRoutineTaskFields {
     title: EntryFieldTypes.Symbol;
     lastCompleted?: EntryFieldTypes.Date;
     description: EntryFieldTypes.RichText;
@@ -12,5 +12,5 @@ export interface TypeRoutineTasksFields {
     article?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeArticleSkeleton>>;
 }
 
-export type TypeRoutineTasksSkeleton = EntrySkeletonType<TypeRoutineTasksFields, "routineTasks">;
-export type TypeRoutineTasks<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeRoutineTasksSkeleton, Modifiers, Locales>;
+export type TypeRoutineTaskSkeleton = EntrySkeletonType<TypeRoutineTaskFields, "routineTask">;
+export type TypeRoutineTask<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeRoutineTaskSkeleton, Modifiers, Locales>;
