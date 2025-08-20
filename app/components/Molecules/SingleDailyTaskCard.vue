@@ -1,12 +1,24 @@
 <template>
     <u-card variant="solid" :title="item.fields.title">
         <template #header>
-            <u-badge>Due</u-badge>
+            <template v-if="taskHasBeenCompletedTodayOrBefore">
+                <u-badge color="success" icon="i-bx-check">Done</u-badge>
+            </template>
+            <template v-else>
+                <u-badge
+                    :variant="pastDueTime ? 'solid' : 'outline'"
+                    :color="pastDueTime ? 'error' : 'neutral'"
+                >
+                    Due
+                    {{ convertNumberTo24HrTime(item.fields.dueByHour) }}
+                </u-badge>
+            </template>
         </template>
         <u-slideover
             :title="item.fields.title"
             :description="`Last completed: ${fullDateConverter(item.fields.lastCompleted, true) || 'Never'}`"
         >
+            {{ taskHasBeenCompletedTodayOrBefore }}
             <p>{{ item.fields.title }}</p>
             <template #body>
                 <div class="flex flex-col items-start">
@@ -30,11 +42,25 @@ interface Props {
     item: TypeDailyTask
 }
 
-const { fullDateConverter } = useDateUtils()
+const props = defineProps<Props>()
+
+const { fullDateConverter, convertNumberTo24HrTime } = useDateUtils()
 const { updateEntry } = useContentfulUtils()
 const { fetchDailyTasks } = useDailyTasksUtils()
 
-defineProps<Props>()
+const today = new Date()
+const currentHour = Number(today.getHours())
+
+const taskHasBeenCompletedTodayOrBefore: ComputedRef<boolean> = computed(() => {
+    const lastCompleted = props.item.fields.lastCompleted
+    if (!lastCompleted) return false
+    const lastCompletedDate = new Date(lastCompleted)
+    return lastCompletedDate <= today
+})
+
+const pastDueTime: ComputedRef<boolean> = computed(() => {
+    return currentHour >= Number(props.item.fields.dueByHour)
+})
 
 const toast = useToast()
 

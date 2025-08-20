@@ -92,6 +92,12 @@ export const useDateUtils = () => {
         return `${d <= 9 ? '0' + d : d}/${m <= 8 ? '0' + (m + 1) : m + 1}/${y}`
     }
 
+    const convertNumberTo24HrTime = (number: number): string => {
+        // Take the number which will be between 0 and 23 and return a string that looks like a 24hour time, e.g. 22:00
+        const hours = number.toString().padStart(2, '0')
+        return `${hours}:00`
+    }
+
     /**
      * Return a backwards date (YYYY-MM-DD).
      * @param date - The date.
@@ -110,6 +116,7 @@ export const useDateUtils = () => {
         getTodaysDateInUrlEncodedFormat,
         fullDateConverter,
         shortDateConverter,
+        convertNumberTo24HrTime,
         backwardsDate
     }
 }

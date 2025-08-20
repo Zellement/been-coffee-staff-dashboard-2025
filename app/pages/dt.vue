@@ -3,8 +3,8 @@
         <h1 class="mb-20 text-2xl">Daily tasks</h1>
 
         <!-- Circular Progress -->
-        <div class="flex gap-2">
-            <div class="relative flex w-20 shrink-0 grow-0">
+        <div class="flex gap-4">
+            <div class="relative flex w-20">
                 <progress-bar-circular
                     v-if="totalDailyTasks"
                     class="my-auto"
@@ -16,12 +16,12 @@
                     "
                 />
             </div>
-            <div v-if="hasDailyTasks" class="grow">
+            <div v-if="hasDailyTasks" class="min-w-0 flex-1">
                 <u-carousel
                     v-if="allDailyTasks"
                     v-slot="{ item }"
                     :items="allDailyTasks"
-                    :ui="{ item: 'basis-56' }"
+                    :ui="{ item: 'basis-48' }"
                 >
                     <single-daily-task-card :item="item" />
                 </u-carousel>
