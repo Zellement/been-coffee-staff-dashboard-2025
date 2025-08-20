@@ -2,7 +2,9 @@
     <div class="page">
         <rich-text :content="allNoticeBoard.items?.[0]?.fields.content" />
         <pre>{{ data }}</pre>
+        <h2>Employees</h2>
         <pre>{{ allEmployees }}</pre>
+        <h2>Locations</h2>
         <pre>{{ allLocations }}</pre>
         <pre>{{ allNoticeBoard }}</pre>
         <kitchen-sink />
@@ -11,23 +13,24 @@
 
 <script setup lang="ts">
 const data: Ref<any> = ref(null)
-const allEmployees: Ref<any> = ref([])
+const allEmployees: Ref<TypeEmployee[] | null> = ref(null)
 const allLocations: Ref<any> = ref([])
 const allNoticeBoard: Ref<any> = ref([])
 
 const { fetchEntry, fetchEntries } = useContentfulUtils()
 
-onMounted(async () => {
-    data.value = await fetchEntry('5uVK9IyrVhgWmxlUWeg9sC')
-    allEmployees.value = await fetchEntries({ content_type: 'employee' })
-    allLocations.value = await fetchEntries({
-        content_type: 'location',
-        include: 1,
-        select: 'sys.id,fields.postcode'
-    })
-    allNoticeBoard.value = await fetchEntries({
-        content_type: 'noticeBoard',
-        include: 1
-    })
+data.value = await fetchEntry('5uVK9IyrVhgWmxlUWeg9sC')
+
+const employeesFetch = await fetchEntries({ content_type: 'employee' })
+allEmployees.value = employeesFetch?.items
+
+allLocations.value = await fetchEntries({
+    content_type: 'location',
+    include: 1,
+    select: 'sys.id,fields.postcode'
+})
+allNoticeBoard.value = await fetchEntries({
+    content_type: 'noticeBoard',
+    include: 1
 })
 </script>

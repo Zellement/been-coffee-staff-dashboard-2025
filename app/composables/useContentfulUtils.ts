@@ -13,7 +13,9 @@ export const useContentfulUtils = () => {
         }
     }
 
-    const fetchEntries = async (queryParams: Record<string, any>) => {
+    const fetchEntries = async (
+        queryParams: Record<string, any>
+    ): Promise<any> => {
         try {
             return await $fetch(`/api/contentful/fetch-entries`, {
                 method: 'GET',
