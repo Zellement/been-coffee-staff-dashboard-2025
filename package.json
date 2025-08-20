@@ -14,15 +14,14 @@
         "format": "npm-run-all --serial format:check format:write",
         "format:check": "npx prettier --check \"**/(*.vue|*.js|*.ts|*.md|*.scss)\"",
         "format:write": "npx prettier --write \"**/(*.vue|*.js|*.ts|*.md|*.scss)\"",
-        "generate-sb-types": "storyblok generate-typescript-typedefs --sourceFilePaths storyblok/components.308756.json --destinationFilePath types/storyblok-component-types.d.ts",
-        "pull-sb-components": "storyblok pull-components --path storyblok/ --space 308756",
-        "update-storyblok": "npm run pull-sb-components && npm run generate-sb-types"
+        "cf-export": "dotenv -e .env -- sh -c 'contentful space export --config contentful/export-config.json --space-id \"$CONTENTFUL_SPACE_ID\" --environment-id \"$CONTENTFUL_ENVIRONMENT_ID\" --management-token \"$CONTENTFUL_CMA_ACCESS_TOKEN\"'",
+        "env:echo": "dotenv -e .env -- sh -c 'echo SPACE:$CONTENTFUL_SPACE_ID ENV:$CONTENTFUL_ENVIRONMENT_ID'"
     },
     "devDependencies": {
         "@nuxt/fonts": "^0.11.4",
         "@typescript-eslint/eslint-plugin": "8.40.0",
         "@typescript-eslint/parser": "8.40.0",
-        "contentful-cli": "^3.8.10",
+        "dotenv-cli": "^10.0.0",
         "eslint": "^8.57.1",
         "eslint-config-prettier": "10.1.8",
         "eslint-config-standard": "17.1.0",

@@ -15,3 +15,5 @@ dist
 assets/icons/cache
 
 assets/svg-transformer-list.ts
+
+contentful/exports/*
