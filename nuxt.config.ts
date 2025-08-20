@@ -12,7 +12,13 @@ export default defineNuxtConfig({
         minify: true
     },
 
-    modules: ['@nuxt/image', '@pinia/nuxt', 'nuxt-viewport', '@nuxt/icon'],
+    modules: [
+        '@nuxt/image',
+        '@pinia/nuxt',
+        'nuxt-viewport',
+        '@nuxt/icon',
+        '@nuxt/ui'
+    ],
 
     // Contentful image provider
     image: {

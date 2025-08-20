@@ -41,7 +41,6 @@ export default defineEventHandler(async (event) => {
     }
     const updates = body?.fields || {}
     const locale = body?.locale || 'en-GB'
-    const shouldPublish = body?.publish === true
 
     try {
         // 1) CMA client

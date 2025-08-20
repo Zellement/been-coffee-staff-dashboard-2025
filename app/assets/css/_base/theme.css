@@ -1,9 +1,59 @@
-@theme {
+@theme static {
     /* -------------------------
   Colours
   ------------------------- */
     --color-black: #000;
     --color-white: #fff;
+
+    --color-green-50: #effdf5;
+    --color-green-100: #d9fbe8;
+    --color-green-200: #b3f5d1;
+    --color-green-300: #75edae;
+    --color-green-400: #00dc82;
+    --color-green-500: #00c16a;
+    --color-green-600: #00a155;
+    --color-green-700: #007f45;
+    --color-green-800: #016538;
+    --color-green-900: #0a5331;
+    --color-green-950: #052e16;
+
+    --color-butterscotch-50: #fffcf7;
+    --color-butterscotch-100: #fef4e3;
+    --color-butterscotch-200: #fde6bb;
+    --color-butterscotch-300: #fcd793;
+    --color-butterscotch-400: #fbc86c;
+    --color-butterscotch-500: #fab944;
+    --color-butterscotch-600: #f9a50d;
+    --color-butterscotch-700: #c88305;
+    --color-butterscotch-800: #925f04;
+    --color-butterscotch-900: #5b3b02;
+    --color-butterscotch-950: #2d1d01;
+
+    --color-tuscany-50: #f2d3c7;
+    --color-tuscany-100: #eec6b7;
+    --color-tuscany-200: #e7ab96;
+    --color-tuscany-300: #df9174;
+    --color-tuscany-400: #d87653;
+    --color-tuscany-500: #d05c32;
+    --color-tuscany-600: #a44726;
+    --color-tuscany-700: #77331b;
+    --color-tuscany-800: #492011;
+    --color-tuscany-900: #1b0c06;
+    --color-tuscany-950: #000000;
+
+    --color-navy-50: #5a5fb5;
+    --color-navy-100: #4e53ad;
+    --color-navy-200: #414690;
+    --color-navy-300: #343874;
+    --color-navy-400: #282b58;
+    --color-navy-500: #1b1d3c;
+    --color-navy-600: #0a0a15;
+    --color-navy-700: #000000;
+    --color-navy-800: #000000;
+    --color-navy-900: #000000;
+    --color-navy-950: #000000;
+
+    --color-seashell: #fff4e8;
 
     /* -------------------------
   Fonts
