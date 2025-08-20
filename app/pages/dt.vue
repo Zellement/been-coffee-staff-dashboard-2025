@@ -16,11 +16,11 @@
                     "
                 />
             </div>
-            <div v-if="hasDailyTasks" class="min-w-0 flex-1">
+            <div v-if="hasSortedDailyTasks" class="min-w-0 flex-1">
                 <u-carousel
-                    v-if="allDailyTasks"
+                    v-if="sortedDailyTasks"
                     v-slot="{ item }"
-                    :items="allDailyTasks"
+                    :items="sortedDailyTasks"
                     :ui="{ item: 'basis-48' }"
                 >
                     <single-daily-task-card :item="item" />
@@ -41,12 +41,23 @@ const totalDailyTasks: ComputedRef<number | null> = computed(() => {
     return dailyTasksStore.totalDailyTasks
 })
 
+const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
+    if (!allDailyTasks.value) return null
+    const incomplete = allDailyTasks.value.filter(
+        (task) => !task.fields.lastCompleted
+    )
+    const complete = allDailyTasks.value.filter(
+        (task) => task.fields.lastCompleted
+    )
+    return [...incomplete, ...complete]
+})
+
 // const { fullDateConverter } = useDateUtils()
 
 const { fetchDailyTasks } = useDailyTasksUtils()
 
-const hasDailyTasks: ComputedRef<boolean> = computed(() => {
-    return !!allDailyTasks.value && allDailyTasks.value.length > 0
+const hasSortedDailyTasks: ComputedRef<boolean> = computed(() => {
+    return !!sortedDailyTasks.value && sortedDailyTasks.value.length > 0
 })
 
 fetchDailyTasks()

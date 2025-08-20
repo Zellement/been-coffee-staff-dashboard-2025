@@ -5,7 +5,8 @@ export const useDailyTasksUtils = () => {
 
     const fetchDailyTasks = async () => {
         const dailyTasksFetch = await fetchEntries({
-            content_type: 'dailyTask'
+            content_type: 'dailyTask',
+            order: '-fields.lastCompleted'
         })
         dailyTasksStore.allDailyTasks = dailyTasksFetch?.items
         dailyTasksStore.totalDailyTasks = dailyTasksFetch?.total
