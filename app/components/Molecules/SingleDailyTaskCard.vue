@@ -1,5 +1,11 @@
 <template>
-    <u-card variant="solid" :title="item.fields.title">
+    <u-card variant="solid" class="relative" :title="item.fields.title">
+        <u-icon
+            v-if="loading"
+            class="absolute top-0 right-0 m-2"
+            size="16"
+            name="i-svg-spinners-blocks-shuffle-3"
+        />
         <template #header>
             <template v-if="taskHasBeenCompletedTodayOrBefore">
                 <u-badge size="sm" color="success" icon="i-bx-check">
@@ -18,6 +24,7 @@
             </template>
         </template>
         <u-slideover
+            v-model:open="open"
             :title="item.fields.title"
             :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
         >
@@ -31,8 +38,17 @@
                 </div>
             </template>
             <template #footer>
-                <u-button class="ml-auto" @click="completeTask(item)">
-                    Mark as complete
+                <u-button
+                    :disabled="loading"
+                    class="ml-auto"
+                    :icon="
+                        loading
+                            ? 'i-svg-spinners-blocks-shuffle-3'
+                            : 'i-bx-check'
+                    "
+                    @click="completeTask(item)"
+                >
+                    {{ loading ? 'Loading...' : 'Mark as complete' }}
                 </u-button>
             </template>
         </u-slideover>
@@ -43,6 +59,9 @@
 interface Props {
     item: TypeDailyTask
 }
+
+const open: Ref<boolean> = ref(false)
+const loading: Ref<boolean> = ref(false)
 
 const props = defineProps<Props>()
 
@@ -72,23 +91,33 @@ var localISOTime = new Date(Date.now() - timezoneOffset)
     .slice(0, -1)
 
 const completeTask = async (task: TypeDailyTask) => {
+    loading.value = true
     try {
-        const result = await updateEntry(task.sys.id, {
+        await updateEntry(task.sys.id, {
             fields: {
                 lastCompleted: localISOTime
             }
         })
         toast.add({
             title: 'Task completed',
-            description: `Task "${task.fields.title}" completed successfully!`
+            description: `Task "${task.fields.title}" completed successfully!`,
+            color: 'success'
         })
+        open.value = false
         // Wait before refetching to allow Contentful to update
         setTimeout(() => {
             fetchDailyTasks()
+            loading.value = false
         }, 2000)
-        console.log('Task completed successfully', result)
     } catch (error) {
+        toast.add({
+            title: 'Error completing task',
+            description: `Task "${task.fields.title}" could not be completed.`,
+            color: 'error'
+        })
+        loading.value = false
         console.error('Error completing task', error)
+    } finally {
     }
 }
 </script>
