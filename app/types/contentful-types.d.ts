@@ -9,8 +9,8 @@ declare global {
     type TypeNoticeBoard = ContentfulTypes.TypeNoticeBoard
     type TypeOrder = ContentfulTypes.TypeOrder
     type TypeRole = ContentfulTypes.TypeRole
-    type TypeRoutineTasks = ContentfulTypes.TypeRoutineTasks
+    type TypeRoutineTask = ContentfulTypes.TypeRoutineTask
     type TypeStandingOrder = ContentfulTypes.TypeStandingOrder
     type TypeSupplier = ContentfulTypes.TypeSupplier
-    type TypeTableBookings = ContentfulTypes.TypeTableBookings
+    type TypeTableBooking = ContentfulTypes.TypeTableBooking
 }

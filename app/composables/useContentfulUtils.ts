@@ -27,5 +27,23 @@ export const useContentfulUtils = () => {
         }
     }
 
-    return { fetchEntry, fetchEntries }
+    const updateEntry = async (
+        id: { id: string },
+        body: Record<string, any>
+    ) => {
+        try {
+            return await $fetch(`/api/contentful/update-entry`, {
+                method: 'POST',
+                body: {
+                    id,
+                    ...body
+                }
+            })
+        } catch (error) {
+            console.error('Error updating entry', error)
+            return null
+        }
+    }
+
+    return { fetchEntry, fetchEntries, updateEntry }
 }

@@ -19,10 +19,12 @@ export default defineEventHandler(async (event) => {
             items: entries.items.map((entry) => {
                 const { sys, fields } = entry
                 return {
-                    id: sys.id,
-                    createdAt: sys.createdAt,
-                    updatedAt: sys.updatedAt,
-                    contentType: sys.contentType,
+                    sys: {
+                        id: sys.id,
+                        createdAt: sys.createdAt,
+                        updatedAt: sys.updatedAt,
+                        contentType: sys.contentType
+                    },
                     fields
                 }
             })

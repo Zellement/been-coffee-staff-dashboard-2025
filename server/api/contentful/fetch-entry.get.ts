@@ -23,10 +23,12 @@ export default defineEventHandler(async (event) => {
         const { sys, fields } = entry
 
         return {
-            id: sys.id,
-            createdAt: sys.createdAt,
-            updatedAt: sys.updatedAt,
-            contentType: sys.contentType,
+            sys: {
+                id: sys.id,
+                createdAt: sys.createdAt,
+                updatedAt: sys.updatedAt,
+                contentType: sys.contentType
+            },
             fields
         }
     } catch (err) {

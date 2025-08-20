@@ -107,7 +107,10 @@ export default defineNuxtConfig({
         },
         CONTENTFUL_CDA_ACCESS_TOKEN: import.meta.env
             .CONTENTFUL_CDA_ACCESS_TOKEN,
-        CONTENTFUL_SPACE_ID: import.meta.env.CONTENTFUL_SPACE_ID
+        CONTENTFUL_SPACE_ID: import.meta.env.CONTENTFUL_SPACE_ID,
+        CONTENTFUL_CMA_ACCESS_TOKEN: import.meta.env
+            .CONTENTFUL_CMA_ACCESS_TOKEN,
+        CONTENTFUL_ENVIRONMENT_ID: import.meta.env.CONTENTFUL_ENVIRONMENT_ID
     },
 
     vite: {
