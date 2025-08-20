@@ -1,9 +1,10 @@
-import type { Asset, Entry, EntryFields } from "contentful";
+import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
 
 export interface TypeImageWithFocalPointFields {
-    title: EntryFields.Symbol;
-    image: Asset;
-    focalPoint: EntryFields.Object;
+    title: EntryFieldTypes.Symbol;
+    image: EntryFieldTypes.AssetLink;
+    focalPoint: EntryFieldTypes.Object;
 }
 
-export type TypeImageWithFocalPoint = Entry<TypeImageWithFocalPointFields>;
+export type TypeImageWithFocalPointSkeleton = EntrySkeletonType<TypeImageWithFocalPointFields, "imageWithFocalPoint">;
+export type TypeImageWithFocalPoint<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeImageWithFocalPointSkeleton, Modifiers, Locales>;

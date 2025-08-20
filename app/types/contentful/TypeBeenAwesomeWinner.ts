@@ -1,12 +1,13 @@
-import type { Entry, EntryFields } from "contentful";
-import type { TypeEmployeeFields } from "./TypeEmployee";
-import type { TypeLocationFields } from "./TypeLocation";
+import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
+import type { TypeEmployeeSkeleton } from "./TypeEmployee";
+import type { TypeLocationSkeleton } from "./TypeLocation";
 
 export interface TypeBeenAwesomeWinnerFields {
-    employee: Entry<TypeEmployeeFields>;
-    from: EntryFields.Date;
-    details: EntryFields.Text;
-    location: Entry<TypeLocationFields>;
+    employee: EntryFieldTypes.EntryLink<TypeEmployeeSkeleton>;
+    from: EntryFieldTypes.Date;
+    details: EntryFieldTypes.Text;
+    location: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
 }
 
-export type TypeBeenAwesomeWinner = Entry<TypeBeenAwesomeWinnerFields>;
+export type TypeBeenAwesomeWinnerSkeleton = EntrySkeletonType<TypeBeenAwesomeWinnerFields, "beenAwesomeWinner">;
+export type TypeBeenAwesomeWinner<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeBeenAwesomeWinnerSkeleton, Modifiers, Locales>;

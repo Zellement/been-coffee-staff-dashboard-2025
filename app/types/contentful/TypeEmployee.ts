@@ -1,14 +1,15 @@
-import type { Entry, EntryFields } from "contentful";
-import type { TypeImageWithFocalPointFields } from "./TypeImageWithFocalPoint";
-import type { TypeRoleFields } from "./TypeRole";
+import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
+import type { TypeImageWithFocalPointSkeleton } from "./TypeImageWithFocalPoint";
+import type { TypeRoleSkeleton } from "./TypeRole";
 
 export interface TypeEmployeeFields {
-    name: EntryFields.Symbol;
-    dateOfBirth?: EntryFields.Date;
-    slug?: EntryFields.Symbol;
-    history?: EntryFields.Object;
-    role: Entry<TypeRoleFields>;
-    image?: Entry<TypeImageWithFocalPointFields>[];
+    name: EntryFieldTypes.Symbol;
+    dateOfBirth?: EntryFieldTypes.Date;
+    slug?: EntryFieldTypes.Symbol;
+    history?: EntryFieldTypes.Object;
+    role: EntryFieldTypes.EntryLink<TypeRoleSkeleton>;
+    image?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeImageWithFocalPointSkeleton>>;
 }
 
-export type TypeEmployee = Entry<TypeEmployeeFields>;
+export type TypeEmployeeSkeleton = EntrySkeletonType<TypeEmployeeFields, "employee">;
+export type TypeEmployee<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeEmployeeSkeleton, Modifiers, Locales>;

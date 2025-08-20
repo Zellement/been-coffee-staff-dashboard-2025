@@ -1,7 +1,8 @@
-import type { Entry, EntryFields } from "contentful";
+import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
 
 export interface TypeSupplierFields {
-    name: EntryFields.Symbol;
+    name: EntryFieldTypes.Symbol;
 }
 
-export type TypeSupplier = Entry<TypeSupplierFields>;
+export type TypeSupplierSkeleton = EntrySkeletonType<TypeSupplierFields, "supplier">;
+export type TypeSupplier<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeSupplierSkeleton, Modifiers, Locales>;

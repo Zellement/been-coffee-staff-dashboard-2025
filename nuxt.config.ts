@@ -133,7 +133,8 @@ export default defineNuxtConfig({
                 '@nuxt/image',
                 '@nuxt/types',
                 '**/*.d.ts'
-            ]
+            ],
+            exclude: ['app/types/contentful/*']
         }
     },
 

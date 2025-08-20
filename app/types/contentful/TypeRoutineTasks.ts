@@ -1,15 +1,16 @@
-import type { Entry, EntryFields } from "contentful";
-import type { TypeArticleFields } from "./TypeArticle";
-import type { TypeRoleFields } from "./TypeRole";
+import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
+import type { TypeArticleSkeleton } from "./TypeArticle";
+import type { TypeRoleSkeleton } from "./TypeRole";
 
 export interface TypeRoutineTasksFields {
-    title: EntryFields.Symbol;
-    lastCompleted?: EntryFields.Date;
-    description: EntryFields.RichText;
-    minutesToComplete: EntryFields.Integer;
-    frequencyInDays: EntryFields.Integer;
-    staffLevel?: Entry<TypeRoleFields>;
-    article?: Entry<TypeArticleFields>[];
+    title: EntryFieldTypes.Symbol;
+    lastCompleted?: EntryFieldTypes.Date;
+    description: EntryFieldTypes.RichText;
+    minutesToComplete: EntryFieldTypes.Integer;
+    frequencyInDays: EntryFieldTypes.Integer;
+    staffLevel?: EntryFieldTypes.EntryLink<TypeRoleSkeleton>;
+    article?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeArticleSkeleton>>;
 }
 
-export type TypeRoutineTasks = Entry<TypeRoutineTasksFields>;
+export type TypeRoutineTasksSkeleton = EntrySkeletonType<TypeRoutineTasksFields, "routineTasks">;
+export type TypeRoutineTasks<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeRoutineTasksSkeleton, Modifiers, Locales>;

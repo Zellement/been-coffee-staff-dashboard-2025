@@ -1,10 +1,11 @@
-import type { Entry, EntryFields } from "contentful";
-import type { TypeSupplierFields } from "./TypeSupplier";
+import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
+import type { TypeSupplierSkeleton } from "./TypeSupplier";
 
 export interface TypeStandingOrderFields {
-    supplier: Entry<TypeSupplierFields>;
-    frequency: EntryFields.Symbol;
-    details?: EntryFields.RichText;
+    supplier: EntryFieldTypes.EntryLink<TypeSupplierSkeleton>;
+    frequency: EntryFieldTypes.Symbol;
+    details?: EntryFieldTypes.RichText;
 }
 
-export type TypeStandingOrder = Entry<TypeStandingOrderFields>;
+export type TypeStandingOrderSkeleton = EntrySkeletonType<TypeStandingOrderFields, "standingOrder">;
+export type TypeStandingOrder<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeStandingOrderSkeleton, Modifiers, Locales>;

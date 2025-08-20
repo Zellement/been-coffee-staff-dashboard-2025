@@ -1,9 +1,10 @@
-import type { Entry, EntryFields } from "contentful";
-import type { TypeEmployeeFields } from "./TypeEmployee";
+import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
+import type { TypeEmployeeSkeleton } from "./TypeEmployee";
 
 export interface TypeLocationFields {
-    postcode?: EntryFields.Symbol;
-    employees: Entry<TypeEmployeeFields>[];
+    postcode?: EntryFieldTypes.Symbol;
+    employees: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeEmployeeSkeleton>>;
 }
 
-export type TypeLocation = Entry<TypeLocationFields>;
+export type TypeLocationSkeleton = EntrySkeletonType<TypeLocationFields, "location">;
+export type TypeLocation<Modifiers extends ChainModifiers, Locales extends LocaleCode = LocaleCode> = Entry<TypeLocationSkeleton, Modifiers, Locales>;
