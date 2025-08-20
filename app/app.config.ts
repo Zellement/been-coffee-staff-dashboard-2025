@@ -5,19 +5,25 @@ export default defineAppConfig({
             neutral: 'zinc'
         },
 
-        variables: {
-            light: {
-                background: 'white'
-            },
-            dark: {
-                background: 'red'
-            }
+        badge: {
+            compoundVariants: [
+                {
+                    color: 'error',
+                    variant: 'solid',
+                    class: 'bg-gradient-to-br from-red-500 to-red-700 text-white '
+                },
+                {
+                    color: 'success',
+                    variant: 'solid',
+                    class: 'bg-gradient-to-br from-green-500 to-green-700 text-white '
+                }
+            ]
         },
 
         card: {
             slots: {
                 root: 'rounded-lg overflow-hidden',
-                header: 'p-4 sm:px-6',
+                header: 'p-4 sm:px-6 pb-0',
                 body: 'p-4 sm:p-6',
                 footer: 'p-4 sm:px-6'
             },

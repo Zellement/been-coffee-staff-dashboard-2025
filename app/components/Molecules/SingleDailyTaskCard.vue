@@ -2,10 +2,13 @@
     <u-card variant="solid" :title="item.fields.title">
         <template #header>
             <template v-if="taskHasBeenCompletedTodayOrBefore">
-                <u-badge color="success" icon="i-bx-check">Done</u-badge>
+                <u-badge size="sm" color="success" icon="i-bx-check">
+                    Done
+                </u-badge>
             </template>
             <template v-else>
                 <u-badge
+                    size="sm"
                     :variant="pastDueTime ? 'solid' : 'outline'"
                     :color="pastDueTime ? 'error' : 'neutral'"
                 >
@@ -16,9 +19,8 @@
         </template>
         <u-slideover
             :title="item.fields.title"
-            :description="`Last completed: ${fullDateConverter(item.fields.lastCompleted, true) || 'Never'}`"
+            :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
         >
-            {{ taskHasBeenCompletedTodayOrBefore }}
             <p>{{ item.fields.title }}</p>
             <template #body>
                 <div class="flex flex-col items-start">

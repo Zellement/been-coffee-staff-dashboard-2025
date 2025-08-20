@@ -1,3 +1,8 @@
+:root {
+    --ui-success: var(--color-green-600);
+    --ui-error: var(--color-red-700);
+}
+
 @theme static {
     /* -------------------------
   Colours
