@@ -12,5 +12,18 @@ export const useContentfulUtils = () => {
             return null
         }
     }
-    return { fetchEntry }
+
+    const fetchEntries = async (queryParams: Record<string, any>) => {
+        try {
+            return await $fetch(`/api/contentful/fetch-entries`, {
+                method: 'GET',
+                params: queryParams
+            })
+        } catch (error) {
+            console.error('Error fetching entries', error)
+            return null
+        }
+    }
+
+    return { fetchEntry, fetchEntries }
 }
