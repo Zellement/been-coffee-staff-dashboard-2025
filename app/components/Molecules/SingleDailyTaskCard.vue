@@ -1,5 +1,9 @@
 <template>
-    <u-card variant="solid" class="relative" :title="item.fields.title">
+    <u-card
+        variant="solid"
+        class="relative"
+        :title="item.fields.task.fields.title"
+    >
         <u-icon
             v-if="loading"
             class="absolute top-0 right-0 m-2"
@@ -19,21 +23,25 @@
                     :color="pastDueTime ? 'error' : 'neutral'"
                 >
                     Due
-                    {{ convertNumberTo24HrTime(item.fields.dueByHour) }}
+                    {{
+                        convertNumberTo24HrTime(
+                            item.fields.task.fields.dueByHour
+                        )
+                    }}
                 </u-badge>
             </template>
         </template>
         <u-slideover
             v-model:open="open"
-            :title="item.fields.title"
+            :title="item.fields.task.fields.title"
             :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
         >
-            <p>{{ item.fields.title }}</p>
+            <p>{{ item.fields.task.fields.title }}</p>
             <template #body>
                 <div class="flex flex-col items-start">
                     <rich-text
-                        v-if="item.fields.description"
-                        :content="item.fields.description"
+                        v-if="item.fields.task.fields.description"
+                        :content="item.fields.task.fields.description"
                     />
                 </div>
             </template>
@@ -57,7 +65,7 @@
 
 <script lang="ts" setup>
 interface Props {
-    item: TypeDailyTask
+    item: TypeTaskInstance
 }
 
 const open: Ref<boolean> = ref(false)
@@ -80,7 +88,7 @@ const taskHasBeenCompletedToday: ComputedRef<boolean> = computed(() => {
 })
 
 const pastDueTime: ComputedRef<boolean> = computed(() => {
-    return currentHour >= Number(props.item.fields.dueByHour)
+    return currentHour >= Number(props.item.fields.task.fields.dueByHour)
 })
 
 const toast = useToast()
@@ -100,7 +108,7 @@ const completeTask = async (task: TypeDailyTask) => {
         })
         toast.add({
             title: 'Task completed',
-            description: `Task "${task.fields.title}" completed successfully!`,
+            description: `Task "${task.fields.task.fields.title}" completed successfully!`,
             color: 'success'
         })
         open.value = false
@@ -112,7 +120,7 @@ const completeTask = async (task: TypeDailyTask) => {
     } catch (error) {
         toast.add({
             title: 'Error completing task',
-            description: `Task "${task.fields.title}" could not be completed.`,
+            description: `Task "${task.fields.task.fields.title}" could not be completed.`,
             color: 'error'
         })
         loading.value = false

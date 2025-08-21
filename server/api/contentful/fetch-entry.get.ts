@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
         accessToken: accessKey
     })
 
-    // Get entryId from query params
     const { id } = getQuery(event)
 
     if (!id || typeof id !== 'string') {

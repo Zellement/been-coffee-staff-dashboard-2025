@@ -4,17 +4,19 @@
         <div class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
                 <progress-bar-circular
-                    v-if="totalDailyTasks"
+                    v-if="totalDailyTaskInstances"
                     class="my-auto"
-                    :total-items="totalDailyTasks"
+                    :total-items="totalDailyTaskInstances"
                     :completed-items="taskCountCompletedToday"
                 />
             </div>
-            <div v-if="hasSortedDailyTasks" class="min-w-0 flex-1">
+            <div v-if="hasSortedDailyTasks" class="flex h-full min-w-0 flex-1">
                 <u-carousel
                     v-if="sortedDailyTasks"
                     v-slot="{ item }"
+                    class="flex"
                     :items="sortedDailyTasks"
+                    auto-height
                     :ui="{ item: 'basis-48' }"
                 >
                     <single-daily-task-card :item="item" />
@@ -33,21 +35,23 @@ const today = new Date()
 
 /* Computed */
 
-const allDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
-    return tasksStore.allDailyTasks
-})
+const allDailyTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
+    () => {
+        return tasksStore.allDailyTaskInstances
+    }
+)
 
 const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
-    if (!allDailyTasks.value) return null
-    const incompleteToday = allDailyTasks.value.filter(
+    if (!allDailyTaskInstances.value) return null
+    const incompleteToday = allDailyTaskInstances.value.filter(
         (task) =>
             new Date(task.fields.lastCompleted).toDateString() !==
             today.toDateString()
     )
     incompleteToday.sort((a, b) => {
-        return a.fields.dueByHour - b.fields.dueByHour
+        return a.fields.task.fields.dueByHour - b.fields.task.fields.dueByHour
     })
-    const completeToday = allDailyTasks.value.filter(
+    const completeToday = allDailyTaskInstances.value.filter(
         (task) =>
             new Date(task.fields.lastCompleted).toDateString() ===
             today.toDateString()
@@ -59,13 +63,13 @@ const hasSortedDailyTasks: ComputedRef<boolean> = computed(() => {
     return !!sortedDailyTasks.value && sortedDailyTasks.value.length > 0
 })
 
-const totalDailyTasks: ComputedRef<number | null> = computed(() => {
-    return tasksStore.totalDailyTasks
+const totalDailyTaskInstances: ComputedRef<number | null> = computed(() => {
+    return tasksStore.totalDailyTaskInstances
 })
 
 const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     return (
-        allDailyTasks.value?.filter((task) => {
+        allDailyTaskInstances.value?.filter((task) => {
             const lastCompleted = task.fields.lastCompleted
             if (!lastCompleted) return false
             const lastCompletedDate = new Date(lastCompleted)
