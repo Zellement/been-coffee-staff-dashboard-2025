@@ -33,7 +33,7 @@
         </template>
         <u-slideover
             v-model:open="open"
-            :title="item.fields.task.fields.title"
+            :title="item.fields.title"
             :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
         >
             <p>{{ item.fields.task.fields.title }}</p>

@@ -10,11 +10,10 @@
                     :completed-items="taskCountCompletedToday"
                 />
             </div>
-            <div v-if="hasSortedDailyTasks" class="flex h-full min-w-0 flex-1">
+            <div v-if="hasSortedDailyTasks" class="min-w-0 flex-1">
                 <u-carousel
                     v-if="sortedDailyTasks"
                     v-slot="{ item }"
-                    class="flex"
                     :items="sortedDailyTasks"
                     auto-height
                     :ui="{ item: 'basis-48' }"
