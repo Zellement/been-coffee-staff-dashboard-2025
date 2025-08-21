@@ -1,5 +1,6 @@
 <template>
     <div class="page">
+        <daily-tasks />
         <rich-text :content="allNoticeBoard.items?.[0]?.fields.content" />
         <pre>{{ data }}</pre>
         <h2>Employees</h2>

@@ -1,6 +1,5 @@
 <template>
-    <div class="page">
-        <!-- Circular Progress -->
+    <div class="">
         <h1 class="uppercase">Daily tasks</h1>
         <div class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
