@@ -9,7 +9,6 @@ export interface TypeRoutineTaskFields {
     frequencyInDays: EntryFieldTypes.Integer;
     staffLevel?: EntryFieldTypes.EntryLink<TypeRoleSkeleton>;
     article?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeArticleSkeleton>>;
-    lastCompleted?: EntryFieldTypes.Date;
 }
 
 export type TypeRoutineTaskSkeleton = EntrySkeletonType<TypeRoutineTaskFields, "routineTask">;

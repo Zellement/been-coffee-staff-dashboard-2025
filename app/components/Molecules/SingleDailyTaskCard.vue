@@ -26,7 +26,7 @@
         <u-slideover
             v-model:open="open"
             :title="item.fields.title"
-            :description="`Last completed: ${item.fields[returnLastUpdatedFieldName()] ? fullDateConverter(item.fields[returnLastUpdatedFieldName()], true) : 'Never'}`"
+            :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
         >
             <p>{{ item.fields.title }}</p>
             <template #body>
@@ -67,14 +67,13 @@ const props = defineProps<Props>()
 
 const { fullDateConverter, convertNumberTo24HrTime } = useDateUtils()
 const { updateEntry } = useContentfulUtils()
-const { fetchDailyTasks } = useDailyTasksUtils()
-const { returnLastUpdatedFieldName } = useLocationUtils()
+const { fetchDailyTaskInstances } = useTasksUtils()
 
 const today = new Date()
 const currentHour = Number(today.getHours())
 
 const taskHasBeenCompletedToday: ComputedRef<boolean> = computed(() => {
-    const lastCompleted = props.item.fields[returnLastUpdatedFieldName()]
+    const lastCompleted = props.item.fields.lastCompleted
     if (!lastCompleted) return false
     const lastCompletedDate = new Date(lastCompleted)
     return lastCompletedDate.toDateString() === today.toDateString()
@@ -96,7 +95,7 @@ const completeTask = async (task: TypeDailyTask) => {
     try {
         await updateEntry(task.sys.id, {
             fields: {
-                [returnLastUpdatedFieldName()]: localISOTime
+                lastCompleted: localISOTime
             }
         })
         toast.add({
@@ -107,7 +106,7 @@ const completeTask = async (task: TypeDailyTask) => {
         open.value = false
         // Wait before refetching to allow Contentful to update
         setTimeout(() => {
-            fetchDailyTasks()
+            fetchDailyTaskInstances()
             loading.value = false
         }, 2000)
     } catch (error) {

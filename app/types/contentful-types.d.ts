@@ -14,4 +14,5 @@ declare global {
     type TypeStandingOrder = ContentfulTypes.TypeStandingOrder
     type TypeSupplier = ContentfulTypes.TypeSupplier
     type TypeTableBooking = ContentfulTypes.TypeTableBooking
+    type TypeTaskInstance = ContentfulTypes.TypeTaskInstance
 }

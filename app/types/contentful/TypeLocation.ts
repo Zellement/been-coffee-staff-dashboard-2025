@@ -4,6 +4,7 @@ import type { TypeEmployeeSkeleton } from "./TypeEmployee";
 export interface TypeLocationFields {
     postcode?: EntryFieldTypes.Symbol;
     employees: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeEmployeeSkeleton>>;
+    slug: EntryFieldTypes.Symbol;
 }
 
 export type TypeLocationSkeleton = EntrySkeletonType<TypeLocationFields, "location">;

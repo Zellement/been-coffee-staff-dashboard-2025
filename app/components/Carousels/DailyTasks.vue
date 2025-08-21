@@ -25,35 +25,32 @@
 </template>
 
 <script setup lang="ts">
-const dailyTasksStore = useDailyTasksStore()
+const tasksStore = useTasksStore()
 
-const { fetchDailyTasks } = useDailyTasksUtils()
-const { returnLastUpdatedFieldName } = useLocationUtils()
+const { fetchDailyTaskInstances } = useTasksUtils()
 
 const today = new Date()
 
 /* Computed */
 
 const allDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
-    return dailyTasksStore.allDailyTasks
+    return tasksStore.allDailyTasks
 })
 
 const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
     if (!allDailyTasks.value) return null
     const incompleteToday = allDailyTasks.value.filter(
         (task) =>
-            new Date(
-                task.fields[returnLastUpdatedFieldName()]
-            ).toDateString() !== today.toDateString()
+            new Date(task.fields.lastCompleted).toDateString() !==
+            today.toDateString()
     )
     incompleteToday.sort((a, b) => {
         return a.fields.dueByHour - b.fields.dueByHour
     })
     const completeToday = allDailyTasks.value.filter(
         (task) =>
-            new Date(
-                task.fields[returnLastUpdatedFieldName()]
-            ).toDateString() === today.toDateString()
+            new Date(task.fields.lastCompleted).toDateString() ===
+            today.toDateString()
     )
     return [...incompleteToday, ...completeToday]
 })
@@ -63,13 +60,13 @@ const hasSortedDailyTasks: ComputedRef<boolean> = computed(() => {
 })
 
 const totalDailyTasks: ComputedRef<number | null> = computed(() => {
-    return dailyTasksStore.totalDailyTasks
+    return tasksStore.totalDailyTasks
 })
 
 const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     return (
         allDailyTasks.value?.filter((task) => {
-            const lastCompleted = task.fields[returnLastUpdatedFieldName()]
+            const lastCompleted = task.fields.lastCompleted
             if (!lastCompleted) return false
             const lastCompletedDate = new Date(lastCompleted)
             return lastCompletedDate.toDateString() === today.toDateString()
@@ -77,5 +74,5 @@ const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     )
 })
 
-fetchDailyTasks()
+fetchDailyTaskInstances()
 </script>

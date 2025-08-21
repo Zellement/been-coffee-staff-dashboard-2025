@@ -4,7 +4,6 @@ export interface TypeDailyTaskFields {
     title: EntryFieldTypes.Symbol;
     dueByHour: EntryFieldTypes.Integer;
     description: EntryFieldTypes.RichText;
-    lastCompleted?: EntryFieldTypes.Date;
     article?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<EntrySkeletonType>>;
 }
 
