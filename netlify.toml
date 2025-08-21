@@ -1,0 +1,12 @@
+[build]
+  command = "npx nuxi build"
+  publish = ".output/public"
+
+[functions]
+  directory = ".netlify/functions" # Nitro outputs server routes here
+
+# SPA fallback so deep links work
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
