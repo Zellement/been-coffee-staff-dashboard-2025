@@ -11,8 +11,8 @@
                 cy="18"
                 r="16"
                 fill="currentColor"
-                class="text-butterscotch-100"
-                :class="allCompleted?.green300"
+                class=""
+                :class="progressBarClasses?.unfilledBar"
             ></circle>
             <!-- Unfilled Circle -->
             <circle
@@ -20,8 +20,9 @@
                 cy="18"
                 r="16"
                 fill="none"
-                class="stroke-current text-gray-500"
-                stroke-width="2"
+                class="stroke-current"
+                :class="progressBarClasses?.circle"
+                stroke-width="1"
             ></circle>
             <!-- Progress Circle -->
             <circle
@@ -29,9 +30,9 @@
                 cy="18"
                 r="16"
                 fill="none"
-                class="text-butterscotch-500 stroke-current transition-all"
-                :class="allCompleted?.green500"
-                stroke-width="2"
+                class="stroke-current transition-all"
+                :class="progressBarClasses?.filledBar"
+                stroke-width="1"
                 stroke-dasharray="100"
                 :stroke-dashoffset="dashOffset"
                 stroke-linecap="round"
@@ -39,7 +40,7 @@
         </svg>
         <div
             class="absolute inset-0 flex items-center justify-center"
-            :class="allCompleted?.green500"
+            :class="progressBarClasses?.text"
         >
             <span class="text-base font-semibold">
                 {{ props.completedItems }} / {{ props.totalItems }}
@@ -61,12 +62,19 @@ const dashOffset: ComputedRef<number> = computed(() => {
     return 100 - percentage
 })
 
-const allCompleted: ComputedRef<any> = computed(() => {
+const progressBarClasses: ComputedRef<any> = computed(() => {
     return props.completedItems === props.totalItems
         ? {
-              green500: 'text-green-500',
-              green300: 'text-green-200'
+              circle: 'text-green-200',
+              filledBar: 'text-green-500',
+              text: 'text-green-500',
+              unfilledBar: 'text-green-100'
           }
-        : null
+        : {
+              circle: 'text-butterscotch-200',
+              filledBar: 'text-butterscotch-500',
+              text: 'text-butterscotch-500',
+              unfilledBar: 'text-butterscotch-100'
+          }
 })
 </script>

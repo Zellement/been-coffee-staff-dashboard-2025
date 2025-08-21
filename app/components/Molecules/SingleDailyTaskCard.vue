@@ -7,7 +7,7 @@
             name="i-svg-spinners-blocks-shuffle-3"
         />
         <template #header>
-            <template v-if="taskHasBeenCompletedTodayOrBefore">
+            <template v-if="taskHasBeenCompletedToday">
                 <u-badge size="sm" color="success" icon="i-bx-check">
                     Done
                 </u-badge>
@@ -72,11 +72,11 @@ const { fetchDailyTasks } = useDailyTasksUtils()
 const today = new Date()
 const currentHour = Number(today.getHours())
 
-const taskHasBeenCompletedTodayOrBefore: ComputedRef<boolean> = computed(() => {
+const taskHasBeenCompletedToday: ComputedRef<boolean> = computed(() => {
     const lastCompleted = props.item.fields.lastCompleted
     if (!lastCompleted) return false
     const lastCompletedDate = new Date(lastCompleted)
-    return lastCompletedDate <= today
+    return lastCompletedDate.toDateString() === today.toDateString()
 })
 
 const pastDueTime: ComputedRef<boolean> = computed(() => {
