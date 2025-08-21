@@ -28,6 +28,7 @@
 const dailyTasksStore = useDailyTasksStore()
 
 const { fetchDailyTasks } = useDailyTasksUtils()
+const { returnLastUpdatedFieldName } = useLocationUtils()
 
 const today = new Date()
 
@@ -41,16 +42,18 @@ const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
     if (!allDailyTasks.value) return null
     const incompleteToday = allDailyTasks.value.filter(
         (task) =>
-            new Date(task.fields.lastCompleted).toDateString() !==
-            today.toDateString()
+            new Date(
+                task.fields[returnLastUpdatedFieldName()]
+            ).toDateString() !== today.toDateString()
     )
     incompleteToday.sort((a, b) => {
         return a.fields.dueByHour - b.fields.dueByHour
     })
     const completeToday = allDailyTasks.value.filter(
         (task) =>
-            new Date(task.fields.lastCompleted).toDateString() ===
-            today.toDateString()
+            new Date(
+                task.fields[returnLastUpdatedFieldName()]
+            ).toDateString() === today.toDateString()
     )
     return [...incompleteToday, ...completeToday]
 })
@@ -66,7 +69,7 @@ const totalDailyTasks: ComputedRef<number | null> = computed(() => {
 const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     return (
         allDailyTasks.value?.filter((task) => {
-            const lastCompleted = task.fields.lastCompleted
+            const lastCompleted = task.fields[returnLastUpdatedFieldName()]
             if (!lastCompleted) return false
             const lastCompletedDate = new Date(lastCompleted)
             return lastCompletedDate.toDateString() === today.toDateString()

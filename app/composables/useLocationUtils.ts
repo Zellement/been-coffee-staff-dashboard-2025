@@ -9,7 +9,17 @@ export const useLocationUtils = () => {
         })
         locationsStore.allLocations = locationsFetch?.items
         locationsStore.totalLocations = locationsFetch?.total
+        locationsStore.activeLocation = locationsFetch?.items?.[0] || null
     }
 
-    return { fetchLocations }
+    const returnLastUpdatedFieldName = (): string => {
+        switch (locationsStore.activeLocation?.fields?.slug) {
+            case 'ng10':
+                return 'lastCompletedAt_ng10'
+            default:
+                return 'lastCompletedAt_de65'
+        }
+    }
+
+    return { fetchLocations, returnLastUpdatedFieldName }
 }

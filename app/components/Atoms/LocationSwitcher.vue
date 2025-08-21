@@ -18,9 +18,9 @@ const allLocations: ComputedRef<TypeLocation[] | null> = computed(() => {
     return locationsStore.allLocations
 })
 
-const value = ref<string | undefined>(
-    locationsStore.activeLocation?.fields.postcode || undefined
-)
+const value: ComputedRef<string | undefined> = computed(() => {
+    return locationsStore.activeLocation?.fields.postcode || undefined
+})
 
 const locations: ComputedRef<string[] | null> = computed(() => {
     return allLocations.value

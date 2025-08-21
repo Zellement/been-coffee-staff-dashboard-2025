@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
 
     try {
         const entries = await client.getEntries(params)
+        console.log('Fetched entries:', entries)
         return entries
     } catch (err) {
         let message = 'Unknown error'

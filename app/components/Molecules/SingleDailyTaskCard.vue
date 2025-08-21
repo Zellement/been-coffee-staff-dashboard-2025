@@ -26,7 +26,7 @@
         <u-slideover
             v-model:open="open"
             :title="item.fields.title"
-            :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
+            :description="`Last completed: ${item.fields[returnLastUpdatedFieldName()] ? fullDateConverter(item.fields[returnLastUpdatedFieldName()], true) : 'Never'}`"
         >
             <p>{{ item.fields.title }}</p>
             <template #body>
@@ -68,12 +68,13 @@ const props = defineProps<Props>()
 const { fullDateConverter, convertNumberTo24HrTime } = useDateUtils()
 const { updateEntry } = useContentfulUtils()
 const { fetchDailyTasks } = useDailyTasksUtils()
+const { returnLastUpdatedFieldName } = useLocationUtils()
 
 const today = new Date()
 const currentHour = Number(today.getHours())
 
 const taskHasBeenCompletedToday: ComputedRef<boolean> = computed(() => {
-    const lastCompleted = props.item.fields.lastCompleted
+    const lastCompleted = props.item.fields[returnLastUpdatedFieldName()]
     if (!lastCompleted) return false
     const lastCompletedDate = new Date(lastCompleted)
     return lastCompletedDate.toDateString() === today.toDateString()
@@ -95,7 +96,7 @@ const completeTask = async (task: TypeDailyTask) => {
     try {
         await updateEntry(task.sys.id, {
             fields: {
-                lastCompleted: localISOTime
+                [returnLastUpdatedFieldName()]: localISOTime
             }
         })
         toast.add({
