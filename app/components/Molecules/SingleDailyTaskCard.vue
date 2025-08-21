@@ -108,8 +108,8 @@ const completeTask = async (task: TypeDailyTask) => {
         })
         toast.add({
             title: 'Task completed',
-            description: `Task "${task.fields.task.fields.title}" completed successfully!`,
-            color: 'success'
+            color: 'success',
+            icon: 'i-bx-check'
         })
         open.value = false
         // Wait before refetching to allow Contentful to update

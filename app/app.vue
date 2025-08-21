@@ -1,5 +1,5 @@
 <template>
-    <u-app :toaster="{ position: 'top-center' }">
+    <u-app :toaster="{ position: 'bottom-left', duration: 2000 }">
         <nuxt-layout>
             <nuxt-page />
         </nuxt-layout>
