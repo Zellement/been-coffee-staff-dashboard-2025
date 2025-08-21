@@ -8,6 +8,11 @@ html {
     scroll-behavior: smooth;
 }
 
+pre {
+    width: 100%;
+    overflow-x: auto;
+}
+
 body {
     font-family: var(--font-sans);
     font-size: var(--text-sm);

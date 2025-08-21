@@ -1,10 +1,10 @@
 <template>
-    <div class="">
-        <u-select
+    <div class="flex w-full">
+        <u-select-menu
             v-if="locations"
             v-model="value"
             :items="locations"
-            class="w-auto"
+            class="w-30"
         />
     </div>
 </template>

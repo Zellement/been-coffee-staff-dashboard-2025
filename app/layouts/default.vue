@@ -1,7 +1,7 @@
 <template>
     <div class="layout">
+        <location-switcher />
         <main>
-            <location-switcher />
             <slot />
         </main>
     </div>
