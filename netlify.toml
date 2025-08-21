@@ -1,6 +1,5 @@
 [build]
   command = "npx nuxi build"
-  publish = ".output/public"
 
 [functions]
   directory = ".netlify/functions" # Nitro outputs server routes here
