@@ -29,11 +29,11 @@
                         icon="i-bx-time"
                     >
                         Due
-                        {{
+                        <!-- {{
                             convertNumberTo24HrTime(
                                 item.fields.task.fields.dueByHour
                             )
-                        }}
+                        }} -->
                     </u-badge>
                 </template>
                 <p>{{ item.fields.task.fields.title }}</p>
@@ -74,7 +74,7 @@ const loading: Ref<boolean> = ref(false)
 
 const props = defineProps<Props>()
 
-const { fullDateConverter, convertNumberTo24HrTime } = useDateUtils()
+const { fullDateConverter } = useDateUtils()
 
 const today = new Date()
 const currentHour = Number(today.getHours())

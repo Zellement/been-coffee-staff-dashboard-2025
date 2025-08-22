@@ -1,24 +1,24 @@
 <template>
     <div class="">
-        <h1 class="uppercase">Daily tasks</h1>
+        <h2 class="uppercase">Routine tasks</h2>
         <div class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
                 <progress-bar-circular
-                    v-if="totalDailyTaskInstances"
+                    v-if="totalRoutineTaskInstances"
                     class="my-auto"
-                    :total-items="totalDailyTaskInstances"
+                    :total-items="totalRoutineTaskInstances"
                     :completed-items="taskCountCompletedToday"
                 />
             </div>
-            <div v-if="hasSortedDailyTasks" class="min-w-0 flex-1">
+            <div v-if="hasSortedRoutineTasks" class="min-w-0 flex-1">
                 <u-carousel
-                    v-if="sortedDailyTasks"
+                    v-if="sortedRoutineTasks"
                     v-slot="{ item }"
-                    :items="sortedDailyTasks"
+                    :items="sortedRoutineTasks"
                     auto-height
                     :ui="{ item: 'basis-48' }"
                 >
-                    <single-daily-task-card :item="item" />
+                    <single-routine-task-card :item="item" />
                 </u-carousel>
             </div>
         </div>
@@ -34,15 +34,15 @@ const today = new Date()
 
 /* Computed */
 
-const allDailyTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
+const allRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
     () => {
-        return tasksStore.allDailyTaskInstances
+        return tasksStore.allRoutineTaskInstances
     }
 )
 
-const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
-    if (!allDailyTaskInstances.value) return null
-    const incompleteToday = allDailyTaskInstances.value.filter(
+const sortedRoutineTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
+    if (!allRoutineTaskInstances.value) return null
+    const incompleteToday = allRoutineTaskInstances.value.filter(
         (task) =>
             new Date(task.fields.lastCompleted).toDateString() !==
             today.toDateString()
@@ -50,7 +50,7 @@ const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
     incompleteToday.sort((a, b) => {
         return a.fields.task.fields.dueByHour - b.fields.task.fields.dueByHour
     })
-    const completeToday = allDailyTaskInstances.value.filter(
+    const completeToday = allRoutineTaskInstances.value.filter(
         (task) =>
             new Date(task.fields.lastCompleted).toDateString() ===
             today.toDateString()
@@ -58,17 +58,17 @@ const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
     return [...incompleteToday, ...completeToday]
 })
 
-const hasSortedDailyTasks: ComputedRef<boolean> = computed(() => {
-    return !!sortedDailyTasks.value && sortedDailyTasks.value.length > 0
+const hasSortedRoutineTasks: ComputedRef<boolean> = computed(() => {
+    return !!sortedRoutineTasks.value && sortedRoutineTasks.value.length > 0
 })
 
-const totalDailyTaskInstances: ComputedRef<number | null> = computed(() => {
-    return tasksStore.totalDailyTaskInstances
+const totalRoutineTaskInstances: ComputedRef<number | null> = computed(() => {
+    return tasksStore.totalRoutineTaskInstances
 })
 
 const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     return (
-        allDailyTaskInstances.value?.filter((task) => {
+        allRoutineTaskInstances.value?.filter((task) => {
             const lastCompleted = task.fields.lastCompleted
             if (!lastCompleted) return false
             const lastCompletedDate = new Date(lastCompleted)
@@ -87,7 +87,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
-        'fields.task.sys.contentType.sys.id': 'dailyTask',
+        'fields.task.sys.contentType.sys.id': 'routineTask',
         include: 2
     }))
 })
@@ -99,9 +99,9 @@ watch(
             // console.log('location active:', activeLocationId)
             // console.log('Daily tasks data updated:', newData)
             // @ts-expect-error Always items
-            tasksStore.allDailyTaskInstances = newData.items
+            tasksStore.allRoutineTaskInstances = newData.items
             // @ts-expect-error Always total
-            tasksStore.totalDailyTaskInstances = newData.total
+            tasksStore.totalRoutineTaskInstances = newData.total
         }
     },
     { immediate: true }
