@@ -18,8 +18,23 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         'nuxt-viewport',
         '@nuxt/icon',
-        '@nuxt/ui'
+        '@nuxt/ui',
+        '@nuxtjs/supabase'
     ],
+
+    supabase: {
+        redirectOptions: {
+            login: '/login',
+            callback: '/confirm',
+            exclude: [
+                '/login',
+                '/register',
+                '/forgot-password',
+                '/update-password',
+                '/locations/**'
+            ]
+        }
+    },
 
     ui: {
         colorMode: false

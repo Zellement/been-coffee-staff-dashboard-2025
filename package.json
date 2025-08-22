@@ -21,6 +21,7 @@
     },
     "devDependencies": {
         "@nuxt/fonts": "^0.11.4",
+        "@nuxtjs/supabase": "^1.6.1",
         "@typescript-eslint/eslint-plugin": "8.40.0",
         "@typescript-eslint/parser": "8.40.0",
         "cf-content-types-generator": "^2.16.0",
