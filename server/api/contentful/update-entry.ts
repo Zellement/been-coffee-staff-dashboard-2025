@@ -31,8 +31,6 @@ export default defineEventHandler(async (event) => {
     const body = (await readBody(event)) as UpdateBody | undefined
     const id = body?.id
 
-    console.log('Updating entry', body)
-
     if (!id) {
         return sendError(
             event,

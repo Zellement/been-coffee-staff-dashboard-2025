@@ -74,8 +74,6 @@ const loading: Ref<boolean> = ref(false)
 const props = defineProps<Props>()
 
 const { fullDateConverter, convertNumberTo24HrTime } = useDateUtils()
-const { updateEntry } = useContentfulUtils()
-const { fetchDailyTaskInstances } = useTasksUtils()
 
 const today = new Date()
 const currentHour = Number(today.getHours())
@@ -101,9 +99,13 @@ var localISOTime = new Date(Date.now() - timezoneOffset)
 const completeTask = async (task: TypeDailyTask) => {
     loading.value = true
     try {
-        await updateEntry(task.sys.id, {
-            fields: {
-                lastCompleted: localISOTime
+        await $fetch(`/api/contentful/update-entry`, {
+            method: 'POST',
+            body: {
+                id: task.sys.id,
+                fields: {
+                    lastCompleted: localISOTime
+                }
             }
         })
         toast.add({
@@ -114,8 +116,8 @@ const completeTask = async (task: TypeDailyTask) => {
         open.value = false
         // Wait before refetching to allow Contentful to update
         setTimeout(() => {
-            fetchDailyTaskInstances()
             loading.value = false
+            refreshNuxtData()
         }, 2000)
     } catch (error) {
         toast.add({

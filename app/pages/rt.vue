@@ -1,5 +1,5 @@
 <template>
-    <div class="page p-20">
+    <!-- <div class="page p-20">
         <h1 class="mb-20 text-2xl">Routine tasks</h1>
         <div v-if="allRoutineTasks">
             <u-carousel
@@ -20,16 +20,17 @@
                     </u-card>
                 </div>
             </u-carousel>
-            <!-- <ul>
+           <ul>
                 <li v-for="task in allRoutineTasks" :key="task.sys.id">
                     {{ task.fields.title }}
                     <button @click="completeTask(task)">Complete me</button>
                 </li>
-            </ul> -->
+            </ul> 
         </div>
-    </div>
+    </div> -->
+    <div></div>
 </template>
-
+<!-- 
 <script setup lang="ts">
 const allRoutineTasks: Ref<TypeRoutineTask[] | null> = ref(null)
 
@@ -61,4 +62,4 @@ const completeTask = async (task: TypeRoutineTask) => {
         console.error('Error completing task', error)
     }
 }
-</script>
+</script> -->

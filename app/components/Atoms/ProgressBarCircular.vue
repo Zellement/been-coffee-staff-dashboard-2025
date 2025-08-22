@@ -30,7 +30,7 @@
                 cy="18"
                 r="16"
                 fill="none"
-                class="stroke-current transition-all"
+                class="stroke-current transition-all duration-1000 ease-in-out"
                 :class="progressBarClasses?.filledBar"
                 stroke-width="1"
                 stroke-dasharray="100"

@@ -28,7 +28,7 @@
 <script setup lang="ts">
 const tasksStore = useTasksStore()
 
-const { fetchDailyTaskInstances } = useTasksUtils()
+// const { fetchDailyTaskInstances } = useTasksUtils()
 
 const today = new Date()
 
@@ -77,5 +77,32 @@ const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     )
 })
 
-fetchDailyTaskInstances()
+const locationsStore = useLocationsStore()
+
+const activeLocationId: ComputedRef<string | undefined> = computed(() => {
+    return locationsStore.activeLocation?.sys.id
+})
+
+const { data } = useFetch('/api/contentful/fetch-entries', {
+    params: computed(() => ({
+        content_type: 'taskInstance',
+        'fields.location.sys.id': activeLocationId.value,
+        include: 2
+    }))
+})
+
+watch(
+    data,
+    (newData) => {
+        if (newData) {
+            // console.log('location active:', activeLocationId)
+            // console.log('Daily tasks data updated:', newData)
+            // @ts-expect-error Always items
+            tasksStore.allDailyTaskInstances = newData.items
+            // @ts-expect-error Always total
+            tasksStore.totalDailyTaskInstances = newData.total
+        }
+    },
+    { immediate: true }
+)
 </script>
