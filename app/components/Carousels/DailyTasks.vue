@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <h1 class="uppercase">Daily tasks</h1>
-        <div class="flex gap-4">
+        <div v-if="dataFetched" class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
                 <progress-bar-circular
                     v-if="totalDailyTaskInstances"
@@ -22,6 +22,14 @@
                 </u-carousel>
             </div>
         </div>
+        <div v-else class="flex w-full gap-4 overflow-hidden">
+            <u-skeleton class="h-16 w-16 shrink-0 rounded-full" />
+            <u-skeleton
+                v-for="i in 6"
+                :key="i"
+                class="h-16 shrink-0 basis-48"
+            />
+        </div>
     </div>
 </template>
 
@@ -31,6 +39,8 @@ const tasksStore = useTasksStore()
 // const { fetchDailyTaskInstances } = useTasksUtils()
 
 const today = new Date()
+
+const dataFetched: Ref<boolean> = ref(false)
 
 /* Computed */
 
@@ -83,24 +93,33 @@ const activeLocationId: ComputedRef<string | undefined> = computed(() => {
     return locationsStore.activeLocation?.sys.id
 })
 
-const { data } = useFetch('/api/contentful/fetch-entries', {
+const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
         'fields.task.sys.contentType.sys.id': 'dailyTask'
-    }))
+    })),
+    immediate: false
 })
 
+const shouldFetch = computed(() => !!activeLocationId.value)
+
 watch(
-    data,
-    (newData) => {
-        if (newData) {
-            // console.log('location active:', activeLocationId)
-            // console.log('Daily tasks data updated:', newData)
-            tasksStore.allDailyTaskInstances = newData.items
-            tasksStore.totalDailyTaskInstances = newData.total
+    shouldFetch,
+    (ready) => {
+        if (ready) {
+            execute().then(() => {
+                dataFetched.value = true
+            })
         }
     },
     { immediate: true }
 )
+
+watch(data, (newData) => {
+    if (newData) {
+        tasksStore.allDailyTaskInstances = newData.items
+        tasksStore.totalDailyTaskInstances = newData.total
+    }
+})
 </script>
