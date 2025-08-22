@@ -17,7 +17,8 @@ export default defineEventHandler(async (event) => {
 
     try {
         const entries = await client.getEntries(params)
-        return entries
+        // @ts-expect-error stringifySafe exists
+        return JSON.parse(entries.stringifySafe())
     } catch (err) {
         let message = 'Unknown error'
         if (err instanceof Error) {

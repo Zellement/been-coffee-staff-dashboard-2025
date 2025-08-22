@@ -34,19 +34,7 @@ const value = computed<string | undefined>({
 
 const locationsReduced: ComputedRef<string[] | null> = computed(() => {
     return allLocations.value
-        ? allLocations.value.map((location) => location.fields.postcode)
+        ? allLocations.value.map((location) => location.fields?.postcode)
         : null
-})
-
-onMounted(async () => {
-    const data = await $fetch('/api/contentful/fetch-entries', {
-        params: { content_type: 'location' }
-    })
-    // @ts-expect-error Always items
-    locationsStore.allLocations = data.items
-    // @ts-expect-error Always total
-    locationsStore.totalLocations = data.total
-    // @ts-expect-error Always items
-    locationsStore.activeLocation = data.items?.[0] || null
 })
 </script>

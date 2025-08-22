@@ -87,8 +87,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
-        'fields.task.sys.contentType.sys.id': 'routineTask',
-        include: 2
+        'fields.task.sys.contentType.sys.id': 'routineTask'
     }))
 })
 
@@ -96,11 +95,8 @@ watch(
     data,
     (newData) => {
         if (newData) {
-            // console.log('location active:', activeLocationId)
             // console.log('Daily tasks data updated:', newData)
-            // @ts-expect-error Always items
             tasksStore.allRoutineTaskInstances = newData.items
-            // @ts-expect-error Always total
             tasksStore.totalRoutineTaskInstances = newData.total
         }
     },
