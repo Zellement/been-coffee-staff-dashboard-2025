@@ -38,24 +38,15 @@ const locationsReduced: ComputedRef<string[] | null> = computed(() => {
         : null
 })
 
-const { data } = useFetch('/api/contentful/fetch-entries', {
-    params: computed(() => ({
-        content_type: 'location'
-    }))
+onMounted(async () => {
+    const data = await $fetch('/api/contentful/fetch-entries', {
+        params: { content_type: 'location' }
+    })
+    // @ts-expect-error Always items
+    locationsStore.allLocations = data.items
+    // @ts-expect-error Always total
+    locationsStore.totalLocations = data.total
+    // @ts-expect-error Always items
+    locationsStore.activeLocation = data.items?.[0] || null
 })
-
-watch(
-    data,
-    (newData) => {
-        if (newData) {
-            // @ts-expect-error Always items
-            locationsStore.allLocations = data.value?.items
-            // @ts-expect-error Always total
-            locationsStore.totalLocations = data.value?.total
-            // @ts-expect-error Always items
-            locationsStore.activeLocation = data.value?.items?.[0] || null
-        }
-    },
-    { immediate: true }
-)
 </script>

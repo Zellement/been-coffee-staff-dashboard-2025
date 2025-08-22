@@ -21,6 +21,7 @@
                     size="sm"
                     :variant="pastDueTime ? 'solid' : 'outline'"
                     :color="pastDueTime ? 'error' : 'neutral'"
+                    icon="i-bx-time"
                 >
                     Due
                     {{
