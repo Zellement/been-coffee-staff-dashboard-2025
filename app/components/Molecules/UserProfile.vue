@@ -1,6 +1,11 @@
 <template>
     <div class="p-default m-2 mt-0 rounded-br rounded-bl bg-white shadow">
-        <u-drawer direction="top" inset>
+        <u-drawer
+            direction="top"
+            inset
+            title="Show more user information"
+            description="View your profile information"
+        >
             <button class="flex w-full items-center gap-2">
                 <div
                     v-if="userStore.userContentfulData?.fields?.photo?.[0]"
@@ -29,8 +34,69 @@
                 </span>
             </button>
             <template #content>
-                <location-switcher />
-                <auth-sign-out />
+                <div
+                    class="p-default mx-auto flex w-full max-w-sm flex-col gap-5"
+                >
+                    <div class="grid w-full grid-cols-3 items-center">
+                        <span>Switch location</span>
+                        <location-switcher class="col-span-2" />
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <template
+                            v-for="(data, index) in profileData"
+                            :key="index"
+                        >
+                            <div
+                                v-if="data.value"
+                                class="grid w-full grid-cols-3 items-center"
+                            >
+                                <span>{{ data.key }}</span>
+                                <span class="col-span-2 font-bold">
+                                    {{ data.value ?? 'N/A' }}
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <h2 class="font-bold">Your history</h2>
+                        <div
+                            class="grid grid-cols-3 gap-1 overflow-clip rounded-tl rounded-tr font-bold"
+                        >
+                            <span class="bg-zinc-100 px-2 py-1">Date</span>
+                            <span
+                                class="col-span-2 bg-zinc-100 px-2 py-1"
+                            ></span>
+                        </div>
+
+                        <div class="grid grid-cols-3">
+                            <span class="px-2 py-1">
+                                {{ startDate }}
+                            </span>
+                            <span class="col-span-2 px-2 py-1">
+                                Started at Been Coffee
+                            </span>
+                        </div>
+
+                        <template
+                            v-for="(data, index) in historyData"
+                            :key="index"
+                        >
+                            <div
+                                v-if="data.value"
+                                class="grid w-full grid-cols-3 items-center"
+                            >
+                                <span class="px-2 py-1">
+                                    {{ data.value ?? 'N/A' }}
+                                </span>
+                                <span class="col-span-2 px-2 py-1">
+                                    {{ data.key }}
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+
+                    <auth-sign-out class="ml-auto" />
+                </div>
             </template>
         </u-drawer>
     </div>
@@ -44,5 +110,39 @@ const displayName: ComputedRef<string> = computed(() => {
         userStore.userContentfulData?.fields?.name ??
         userStore.userData?.display_name
     )
+})
+
+const { getMonthAndDayOnly, fullDateConverter } = useDateUtils()
+
+const profileData: ComputedRef<{ key: string; value: string | undefined }[]> =
+    computed(() => {
+        return [
+            {
+                key: 'Role',
+                value: userStore.userContentfulData?.fields?.role.fields?.title
+            },
+            {
+                key: 'Date of Birth',
+                value: getMonthAndDayOnly(
+                    new Date(userStore.userContentfulData?.fields?.dateOfBirth)
+                )
+            },
+            {
+                key: 'Till PIN',
+                value: userStore.userContentfulData?.fields?.tillPin
+            }
+        ]
+    })
+
+const startDate: ComputedRef<string | undefined> = computed(() => {
+    return fullDateConverter(
+        new Date(userStore.userContentfulData?.fields?.startDate)
+    )
+})
+
+const historyData: ComputedRef<
+    { id: string; key: string; value: string | undefined }[]
+> = computed(() => {
+    return userStore.userContentfulData.fields.history
 })
 </script>

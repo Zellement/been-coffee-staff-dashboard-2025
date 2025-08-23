@@ -1,10 +1,10 @@
 <template>
-    <div class="flex w-full">
+    <div class="flex">
         <u-select
             v-if="locationsReduced"
             v-model="value"
             :items="locationsReduced"
-            class="w-30"
+            class="w-full"
         />
     </div>
 </template>
