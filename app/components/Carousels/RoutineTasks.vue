@@ -3,22 +3,21 @@
         <h2 class="uc-text uc-text--xs">Routine tasks</h2>
         <div class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
-                <progress-bar-circular
-                    v-if="totalRoutineTaskInstances"
+                <progress-bar-circular-countdown
                     class="my-auto"
-                    :total-items="totalRoutineTaskInstances"
-                    :completed-items="taskCountCompletedToday"
+                    :left-number="0"
+                    :right-number="0"
                 />
             </div>
             <div v-if="hasSortedRoutineTasks" class="min-w-0 flex-1">
                 <u-carousel
-                    v-if="sortedRoutineTasks"
+                    v-if="sortedRoutineTaskInstances"
                     v-slot="{ item }"
-                    :items="sortedRoutineTasks"
+                    :items="sortedRoutineTaskInstances"
                     auto-height
                     :ui="{ item: 'basis-48' }"
                 >
-                    <single-routine-task-card :item="item" />
+                    <single-routine-task-card :key="item.sys.id" :item="item" />
                 </u-carousel>
             </div>
         </div>
@@ -30,6 +29,8 @@ const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
 
 const today = new Date()
+const futureDate = new Date(today)
+futureDate.setDate(futureDate.getDate() + 7)
 
 const dataFetched: Ref<boolean> = ref(false)
 
@@ -49,40 +50,67 @@ const allRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
     }
 )
 
-const sortedRoutineTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
-    if (!allRoutineTaskInstances.value) return null
-    const incompleteToday = allRoutineTaskInstances.value.filter(
-        (task) =>
-            new Date(task.fields.lastCompleted).toDateString() !==
-            today.toDateString()
-    )
-    incompleteToday.sort((a, b) => {
-        return a.fields.task.fields.dueByHour - b.fields.task.fields.dueByHour
+const sortedRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> =
+    computed(() => {
+        return [
+            ...newTasks.value,
+            ...overdueTasks.value,
+            ...upcomingTasks.value
+        ]
     })
-    const completeToday = allRoutineTaskInstances.value.filter(
-        (task) =>
-            new Date(task.fields.lastCompleted).toDateString() ===
-            today.toDateString()
-    )
-    return [...incompleteToday, ...completeToday]
-})
+
+const newTasks: ComputedRef<(TypeTaskInstance & { type: 'new' })[]> = computed(
+    () => {
+        if (!allRoutineTaskInstances.value) return []
+        return allRoutineTaskInstances.value
+            .filter((task: TypeTaskInstance) => {
+                return task.nextDueDate === null
+            })
+            .map((task: TypeTaskInstance) => ({
+                ...task,
+                type: 'new' as const
+            }))
+    }
+)
+
+const overdueTasks: ComputedRef<(TypeTaskInstance & { type: 'overdue' })[]> =
+    computed(() => {
+        if (!allRoutineTaskInstances.value) return []
+        return allRoutineTaskInstances.value
+            .filter((task: TypeTaskInstance) => {
+                const dueDate = task.nextDueDate
+                    ? new Date(task.nextDueDate)
+                    : null
+                return dueDate !== null && dueDate < today
+            })
+            .map((task: TypeTaskInstance) => ({
+                ...task,
+                type: 'overdue' as const
+            }))
+    })
+
+const upcomingTasks: ComputedRef<(TypeTaskInstance & { type: 'upcoming' })[]> =
+    computed(() => {
+        if (!allRoutineTaskInstances.value) return []
+        return allRoutineTaskInstances.value
+            .filter((task: TypeTaskInstance) => {
+                const dueDate = task.nextDueDate
+                    ? new Date(task.nextDueDate)
+                    : null
+                return (
+                    dueDate !== null && dueDate > today && dueDate <= futureDate
+                )
+            })
+            .map((task: TypeTaskInstance) => ({
+                ...task,
+                type: 'upcoming' as const
+            }))
+    })
 
 const hasSortedRoutineTasks: ComputedRef<boolean> = computed(() => {
-    return !!sortedRoutineTasks.value && sortedRoutineTasks.value.length > 0
-})
-
-const totalRoutineTaskInstances: ComputedRef<number | null> = computed(() => {
-    return tasksStore.totalRoutineTaskInstances
-})
-
-const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     return (
-        allRoutineTaskInstances.value?.filter((task) => {
-            const lastCompleted = task.fields.lastCompleted
-            if (!lastCompleted) return false
-            const lastCompletedDate = new Date(lastCompleted)
-            return lastCompletedDate.toDateString() === today.toDateString()
-        }).length || 0
+        !!sortedRoutineTaskInstances.value &&
+        sortedRoutineTaskInstances.value.length > 0
     )
 })
 
@@ -111,8 +139,33 @@ watch(
 
 watch(data, (newData) => {
     if (newData) {
-        tasksStore.allRoutineTaskInstances = newData.items
-        tasksStore.totalRoutineTaskInstances = newData.total
+        let finalData: (TypeTaskInstance & {
+            nextDueDate: Date | null
+            lastCompletedDate: Date | null
+        })[] = []
+        newData.items.map((taskInstance: TypeTaskInstance) => {
+            let lastCompletedDate = null
+            if (taskInstance.fields.lastCompleted) {
+                lastCompletedDate = new Date(taskInstance.fields.lastCompleted)
+            }
+            let nextDueDate = null
+            if (lastCompletedDate) {
+                nextDueDate = new Date(lastCompletedDate)
+                nextDueDate.setDate(
+                    nextDueDate.getDate() +
+                        taskInstance.fields.task.fields.frequencyInDays
+                )
+            }
+
+            const data = {
+                ...taskInstance,
+                nextDueDate: nextDueDate,
+                lastCompletedDate: lastCompletedDate
+            }
+
+            finalData.push(data)
+        })
+        tasksStore.allRoutineTaskInstances = finalData
     }
 })
 </script>

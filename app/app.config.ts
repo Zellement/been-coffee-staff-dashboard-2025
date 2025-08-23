@@ -69,13 +69,13 @@ export default defineAppConfig({
             variants: {
                 variant: {
                     solid: {
-                        root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy'
+                        root: 'bg-gradient-to-tl from-seashell-500 to-white text-navy'
                     },
                     outline: {
                         root: 'bg-default ring ring-default divide-y divide-default'
                     },
                     soft: {
-                        root: 'bg-elevated/50 divide-y divide-default'
+                        root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy'
                     },
                     subtle: {
                         root: 'bg-elevated/50 ring ring-default divide-y divide-default'
@@ -84,6 +84,12 @@ export default defineAppConfig({
             },
             defaultVariants: {
                 variant: 'outline'
+            }
+        },
+
+        slideover: {
+            slots: {
+                overlay: 'fixed inset-0 bg-zinc-700/75'
             }
         }
     }

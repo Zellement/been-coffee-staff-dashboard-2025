@@ -13,37 +13,65 @@
         <u-slideover
             v-model:open="open"
             :title="item.fields.task.fields.title"
-            :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
+            :description="`Last completed: ${item.lastCompletedDate ? fullDateConverter(item.lastCompletedDate) : 'Never'}`"
         >
-            <button class="flex flex-col items-start gap-1">
-                <template v-if="taskHasBeenCompletedToday">
-                    <u-badge size="sm" color="success" icon="i-bx-check">
-                        Done
-                    </u-badge>
-                </template>
-                <template v-else>
+            <button class="flex flex-col items-start gap-1 text-left">
+                <template v-if="item.type === 'upcoming'">
                     <u-badge
                         size="sm"
-                        :variant="pastDueTime ? 'solid' : 'outline'"
-                        :color="pastDueTime ? 'error' : 'neutral'"
-                        icon="i-bx-time"
+                        color="neutral"
+                        variant="outline"
+                        icon="i-bx-hourglass"
                     >
                         Due
-                        <!-- {{
-                            convertNumberTo24HrTime(
-                                item.fields.task.fields.dueByHour
-                            )
-                        }} -->
+                        <span class="font-semibold">{{
+                            shortDateConverter(item.nextDueDate)
+                        }}</span>
+                    </u-badge>
+                </template>
+                <template v-else-if="item.type === 'overdue'">
+                    <u-badge
+                        size="sm"
+                        color="error"
+                        icon="i-bx-error"
+                        class="animate-bounce"
+                    >
+                        Overdue
+                    </u-badge>
+                </template>
+                <template v-else-if="item.type === 'new'">
+                    <u-badge
+                        size="sm"
+                        color="warning"
+                        icon="i-bx-badge"
+                        class="animate-bounce"
+                    >
+                        New
                     </u-badge>
                 </template>
                 <p>{{ item.fields.task.fields.title }}</p>
             </button>
             <template #body>
-                <div class="flex flex-col items-start">
+                <div class="flex flex-col items-start text-left">
                     <rich-text
                         v-if="item.fields.task.fields.description"
                         :content="item.fields.task.fields.description"
                     />
+                    <div class="flex w-full gap-2 text-center">
+                        <u-card variant="soft" class="flex flex-1 flex-col">
+                            <div>Minutes to complete:</div>
+                            <div class="font-semibold">
+                                {{ item.fields.task.fields.minutesToComplete }}
+                            </div>
+                        </u-card>
+                        <u-card variant="soft" class="flex flex-1 flex-col">
+                            <div>Frequency:</div>
+                            <div class="font-semibold">
+                                {{ item.fields.task.fields.frequencyInDays }}
+                                days
+                            </div>
+                        </u-card>
+                    </div>
                 </div>
             </template>
             <template #footer>
@@ -72,23 +100,9 @@ interface Props {
 const open: Ref<boolean> = ref(false)
 const loading: Ref<boolean> = ref(false)
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
-const { fullDateConverter } = useDateUtils()
-
-const today = new Date()
-const currentHour = Number(today.getHours())
-
-const taskHasBeenCompletedToday: ComputedRef<boolean> = computed(() => {
-    const lastCompleted = props.item.fields.lastCompleted
-    if (!lastCompleted) return false
-    const lastCompletedDate = new Date(lastCompleted)
-    return lastCompletedDate.toDateString() === today.toDateString()
-})
-
-const pastDueTime: ComputedRef<boolean> = computed(() => {
-    return currentHour >= Number(props.item.fields.task.fields.dueByHour)
-})
+const { fullDateConverter, shortDateConverter } = useDateUtils()
 
 const toast = useToast()
 
