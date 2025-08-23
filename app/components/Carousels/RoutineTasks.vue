@@ -1,6 +1,19 @@
 <template>
     <div class="p-default">
-        <h2 class="uc-text uc-text--xs">Routine tasks</h2>
+        <u-slideover title="All Routine Tasks" aria-label="All Routine Tasks">
+            <h2 class="uc-text uc-text--xs flex items-center gap-2">
+                Routine tasks <u-icon name="i-bx-show" />
+            </h2>
+            <template #body>
+                <u-accordion :items="allRoutineTasksForAccordions">
+                    <template #body="{ item }">
+                        <div class="ml-4 border-l border-zinc-200 pl-4">
+                            <rich-text :content="item.description" />
+                        </div>
+                    </template>
+                </u-accordion>
+            </template>
+        </u-slideover>
         <div v-if="dataFetched" class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
                 <progress-bar-circular-countdown
@@ -27,13 +40,15 @@
             <u-skeleton
                 v-for="i in 6"
                 :key="i"
-                class="my-auto h-17 shrink-0 basis-48"
+                class="h-16 shrink-0 basis-48"
             />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import type { AccordionItem } from '@nuxt/ui'
+
 const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
 
@@ -51,6 +66,18 @@ const activeLocationId: ComputedRef<string | undefined> = computed(() => {
 
 const shouldFetch: ComputedRef<boolean> = computed(
     () => !!activeLocationId.value
+)
+
+const allRoutineTasksForAccordions: ComputedRef<AccordionItem[]> = computed(
+    () => {
+        return (
+            allRoutineTaskInstances.value?.map((task) => ({
+                id: task.sys.id,
+                label: task.fields.task.fields.title,
+                description: task.fields.task.fields.description
+            })) || []
+        )
+    }
 )
 
 const allRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(

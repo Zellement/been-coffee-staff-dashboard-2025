@@ -97,7 +97,7 @@ const progressBarClasses: ComputedRef<any> = computed(() => {
         : {
               circle: 'text-zinc-200',
               circleFill: 'none',
-              filledBar: 'text-zinc-500',
+              filledBar: 'text-tuscany-500',
               text: 'text-zinc-500',
               textLeft: 'bg-warning rounded-full px-2 text-white inline-block',
               textRight: 'bg-error rounded-full px-2 text-white inline-block',
