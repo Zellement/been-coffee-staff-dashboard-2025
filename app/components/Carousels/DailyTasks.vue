@@ -35,14 +35,21 @@
 
 <script setup lang="ts">
 const tasksStore = useTasksStore()
-
-// const { fetchDailyTaskInstances } = useTasksUtils()
+const locationsStore = useLocationsStore()
 
 const today = new Date()
 
 const dataFetched: Ref<boolean> = ref(false)
 
 /* Computed */
+
+const activeLocationId: ComputedRef<string | undefined> = computed(() => {
+    return locationsStore.activeLocation?.sys.id
+})
+
+const shouldFetch: ComputedRef<boolean> = computed(
+    () => !!activeLocationId.value
+)
 
 const allDailyTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
     () => {
@@ -87,11 +94,7 @@ const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     )
 })
 
-const locationsStore = useLocationsStore()
-
-const activeLocationId: ComputedRef<string | undefined> = computed(() => {
-    return locationsStore.activeLocation?.sys.id
-})
+/* Functions & lifecycle */
 
 const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
@@ -101,8 +104,6 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     })),
     immediate: false
 })
-
-const shouldFetch = computed(() => !!activeLocationId.value)
 
 watch(
     shouldFetch,

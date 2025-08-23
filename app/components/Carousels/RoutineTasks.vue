@@ -27,12 +27,21 @@
 
 <script setup lang="ts">
 const tasksStore = useTasksStore()
-
-// const { fetchDailyTaskInstances } = useTasksUtils()
+const locationsStore = useLocationsStore()
 
 const today = new Date()
 
+const dataFetched: Ref<boolean> = ref(false)
+
 /* Computed */
+
+const activeLocationId: ComputedRef<string | undefined> = computed(() => {
+    return locationsStore.activeLocation?.sys.id
+})
+
+const shouldFetch: ComputedRef<boolean> = computed(
+    () => !!activeLocationId.value
+)
 
 const allRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
     () => {
@@ -77,29 +86,33 @@ const taskCountCompletedToday: ComputedRef<number> = computed(() => {
     )
 })
 
-const locationsStore = useLocationsStore()
+/* Functions & lifecycle */
 
-const activeLocationId: ComputedRef<string | undefined> = computed(() => {
-    return locationsStore.activeLocation?.sys.id
-})
-
-const { data } = useFetch('/api/contentful/fetch-entries', {
+const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
         'fields.task.sys.contentType.sys.id': 'routineTask'
-    }))
+    })),
+    immediate: false
 })
 
 watch(
-    data,
-    (newData) => {
-        if (newData) {
-            // console.log('Daily tasks data updated:', newData)
-            tasksStore.allRoutineTaskInstances = newData.items
-            tasksStore.totalRoutineTaskInstances = newData.total
+    shouldFetch,
+    (ready) => {
+        if (ready) {
+            execute().then(() => {
+                dataFetched.value = true
+            })
         }
     },
     { immediate: true }
 )
+
+watch(data, (newData) => {
+    if (newData) {
+        tasksStore.allRoutineTaskInstances = newData.items
+        tasksStore.totalRoutineTaskInstances = newData.total
+    }
+})
 </script>
