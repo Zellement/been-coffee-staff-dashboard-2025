@@ -1,6 +1,6 @@
 <template>
     <div class="flex w-full">
-        <u-select-menu
+        <u-select
             v-if="locationsReduced"
             v-model="value"
             :items="locationsReduced"

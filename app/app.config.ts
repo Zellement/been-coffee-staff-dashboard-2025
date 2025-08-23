@@ -88,13 +88,19 @@ export default defineAppConfig({
             }
         },
 
+        drawer: {
+            slots: {
+                overlay: 'bg-zinc-700/75'
+            }
+        },
+
         skeleton: {
             base: 'bg-butterscotch-500/50'
         },
 
         slideover: {
             slots: {
-                overlay: 'fixed inset-0 bg-zinc-700/75',
+                overlay: 'bg-zinc-700/75',
                 title: 'uc-text',
                 description: 'font-bold'
             }

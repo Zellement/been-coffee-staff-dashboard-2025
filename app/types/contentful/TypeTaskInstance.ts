@@ -8,6 +8,7 @@ export interface TypeTaskInstanceFields {
     task: EntryFieldTypes.EntryLink<TypeDailyTaskSkeleton | TypeRoutineTaskSkeleton>;
     location: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
     lastCompleted?: EntryFieldTypes.Date;
+    completedBy?: EntryFieldTypes.Symbol;
 }
 
 export type TypeTaskInstanceSkeleton = EntrySkeletonType<TypeTaskInstanceFields, "taskInstance">;

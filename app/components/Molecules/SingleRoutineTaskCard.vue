@@ -104,6 +104,7 @@
             </template>
             <template #footer>
                 <u-button
+                    v-if="!isGeneralLogin"
                     :disabled="loading"
                     class="ml-auto"
                     :icon="
@@ -111,10 +112,20 @@
                             ? 'i-svg-spinners-blocks-shuffle-3'
                             : 'i-bx-check'
                     "
-                    @click="completeTask(item)"
+                    @click="handleCompleteTask(item)"
                 >
                     {{ loading ? 'Loading...' : 'Mark as complete' }}
                 </u-button>
+                <u-alert
+                    v-else
+                    variant="outline"
+                    color="neutral"
+                    icon="i-basil-info-circle-outline"
+                    :ui="{
+                        icon: '!size-6'
+                    }"
+                    description="You are logged in as a shop so task completion is disabled."
+                />
             </template>
         </u-slideover>
     </u-card>
@@ -125,52 +136,25 @@ interface Props {
     item: TypeTaskInstance
 }
 
+const userStore = useUserStore()
+
+const isGeneralLogin: ComputedRef<boolean> = computed(() => {
+    return userStore.isGeneralLogin
+})
+
 const open: Ref<boolean> = ref(false)
 const loading: Ref<boolean> = ref(false)
+
+const { completeTask } = useContentfulUtils()
 
 defineProps<Props>()
 
 const { fullDateConverter, shortDateConverter } = useDateUtils()
 
-const toast = useToast()
-
-var timezoneOffset = new Date().getTimezoneOffset() * 60000 //offset in milliseconds
-var localISOTime = new Date(Date.now() - timezoneOffset)
-    .toISOString()
-    .slice(0, -1)
-
-const completeTask = async (task: TypeDailyTask) => {
+const handleCompleteTask = async (task: TypeDailyTask) => {
     loading.value = true
-    try {
-        await $fetch(`/api/contentful/update-entry`, {
-            method: 'POST',
-            body: {
-                id: task.sys.id,
-                fields: {
-                    lastCompleted: localISOTime
-                }
-            }
-        })
-        toast.add({
-            title: 'Task completed',
-            color: 'success',
-            icon: 'i-bx-check'
-        })
-        open.value = false
-        // Wait before refetching to allow Contentful to update
-        setTimeout(() => {
-            loading.value = false
-            refreshNuxtData()
-        }, 2000)
-    } catch (error) {
-        toast.add({
-            title: 'Error completing task',
-            description: `Task "${task.fields.task.fields.title}" could not be completed.`,
-            color: 'error'
-        })
-        loading.value = false
-        console.error('Error completing task', error)
-    } finally {
-    }
+    await completeTask(task)
+    loading.value = false
+    open.value = false
 }
 </script>

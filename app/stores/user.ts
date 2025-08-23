@@ -3,12 +3,17 @@ import { defineStore } from 'pinia'
 interface UserData {
     display_name?: string
     contentful_id?: string
+    is_general_login?: boolean
 }
 
 export const useUserStore = defineStore('user', () => {
     const userData = ref<UserData | null>(null)
     const userContentfulData = ref<TypeEmployee | null>(null)
     const userMeta = ref<any>(null)
+
+    const isGeneralLogin: ComputedRef<boolean> = computed(() => {
+        return userData.value?.is_general_login || false
+    })
 
     async function setUserData() {
         const locationsStore = useLocationsStore()
@@ -17,7 +22,7 @@ export const useUserStore = defineStore('user', () => {
 
         const { data, error } = await client
             .from('profiles')
-            .select('display_name, contentful_id')
+            .select('display_name, contentful_id, is_general_login')
 
         if (error) {
             console.error('Error fetching user data:', error)
@@ -49,6 +54,7 @@ export const useUserStore = defineStore('user', () => {
         userData,
         userContentfulData,
         userMeta,
+        isGeneralLogin,
         setUserData
     }
 })

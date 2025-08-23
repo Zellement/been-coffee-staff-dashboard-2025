@@ -7,7 +7,7 @@ export interface TypeOrderFields {
     supplier: EntryFieldTypes.EntryLink<TypeSupplierSkeleton>;
     orderDate: EntryFieldTypes.Date;
     orderedBy: EntryFieldTypes.EntryLink<TypeEmployeeSkeleton>;
-    orderedFor: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
+    location: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
     details?: EntryFieldTypes.Text;
 }
 
