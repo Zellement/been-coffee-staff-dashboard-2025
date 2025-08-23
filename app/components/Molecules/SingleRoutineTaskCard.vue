@@ -12,10 +12,10 @@
         />
         <u-slideover
             v-model:open="open"
-            :title="item.fields.title"
+            :title="item.fields.task.fields.title"
             :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
         >
-            <button class="flex flex-col items-start">
+            <button class="flex flex-col items-start gap-1">
                 <template v-if="taskHasBeenCompletedToday">
                     <u-badge size="sm" color="success" icon="i-bx-check">
                         Done

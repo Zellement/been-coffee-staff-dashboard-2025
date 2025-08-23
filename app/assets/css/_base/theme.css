@@ -59,7 +59,18 @@
     --color-navy-900: #000000;
     --color-navy-950: #000000;
 
-    --color-seashell: #fff4e8;
+    --color-seashell: oklch(97.251% 0.01983 69.999);
+    --color-seashell-50: oklch(100% 0 none);
+    --color-seashell-100: oklch(99.723% 0.00285 84.559);
+    --color-seashell-200: oklch(99.005% 0.00681 67.746);
+    --color-seashell-300: oklch(98.482% 0.01128 71.902);
+    --color-seashell-400: oklch(97.769% 0.01537 67.646);
+    --color-seashell-500: oklch(97.251% 0.01983 69.999);
+    --color-seashell-600: oklch(96.029% 0.02842 69.169);
+    --color-seashell-700: oklch(94.817% 0.03704 68.659);
+    --color-seashell-800: oklch(93.593% 0.04667 69.283);
+    --color-seashell-900: oklch(92.405% 0.05529 68.812);
+    --color-seashell-950: oklch(91.911% 0.05972 69.415);
 
     /* -------------------------
   Fonts

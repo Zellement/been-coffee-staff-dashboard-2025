@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <h1 class="uppercase">Daily tasks</h1>
+        <h2 class="uc-text uc-text--xs">Daily tasks</h2>
         <div v-if="dataFetched" class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
                 <progress-bar-circular

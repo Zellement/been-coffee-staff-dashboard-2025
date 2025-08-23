@@ -1,5 +1,5 @@
 <template>
-    <div class="p-2">
+    <div class="m-2 mt-0 rounded-br rounded-bl bg-white p-2 shadow">
         <u-drawer direction="top" inset>
             <button class="flex w-full items-center gap-2">
                 <div class="w-10">
@@ -15,8 +15,10 @@
 
                 <span class="text-md font-bold">
                     Hello,
-                    {{ userStore.userContentfulData?.fields?.name }}</span
-                >
+                    <span class="">{{
+                        userStore.userContentfulData?.fields?.name
+                    }}</span>
+                </span>
             </button>
             <template #content>
                 <location-switcher />

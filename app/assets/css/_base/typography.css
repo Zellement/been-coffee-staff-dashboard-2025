@@ -32,6 +32,20 @@ strong {
     font-weight: var(--font-weight-bold);
 }
 
+.uc-text {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: bold;
+
+    &.uc-text--sm {
+        font-size: var(--text-sm);
+    }
+
+    &.uc-text--xs {
+        font-size: var(--text-xs);
+    }
+}
+
 /**
  * Outline styles
  */

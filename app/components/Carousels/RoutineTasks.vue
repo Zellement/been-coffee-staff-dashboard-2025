@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <h2 class="uppercase">Routine tasks</h2>
+        <h2 class="uc-text uc-text--xs">Routine tasks</h2>
         <div class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
                 <progress-bar-circular
