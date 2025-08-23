@@ -2,7 +2,8 @@
     <div class="p-default">
         <u-slideover title="All Routine Tasks" aria-label="All Routine Tasks">
             <h2 class="uc-text uc-text--xs flex items-center gap-2">
-                Routine tasks <u-icon name="i-bx-show" />
+                <span>Routine tasks</span>
+                <u-icon name="i-bxs-show" size="20" />
             </h2>
             <template #body>
                 <u-accordion :items="allRoutineTasksForAccordions">
@@ -156,7 +157,9 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
-        'fields.task.sys.contentType.sys.id': 'routineTask'
+        'fields.task.sys.contentType.sys.id': 'routineTask',
+        order: 'fields.title',
+        include: 3
     })),
     immediate: false
 })

@@ -76,6 +76,9 @@
   Fonts
   ------------------------- */
     --font-sans: 'Roboto', sans-serif;
+    --font-display: 'Riverside', sans-serif;
+    --font-outline: 'Riverside Outline', sans-serif;
+    --font-serif: 'Krete', serif;
 
     /* -------------------------
   Font sizes

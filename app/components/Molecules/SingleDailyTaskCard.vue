@@ -4,12 +4,15 @@
         class="relative"
         :title="item.fields.task.fields.title"
     >
-        <u-icon
-            v-if="loading"
-            class="absolute top-0 right-0 m-2"
-            size="16"
-            name="i-svg-spinners-blocks-shuffle-3"
-        />
+        <transition name="fade">
+            <div v-if="loading" class="absolute inset-0 z-10 flex bg-white/50">
+                <u-icon
+                    class="m-auto"
+                    size="16"
+                    name="i-svg-spinners-blocks-shuffle-3"
+                />
+            </div>
+        </transition>
         <u-slideover
             v-model:open="open"
             :title="item.fields.task.fields.title"

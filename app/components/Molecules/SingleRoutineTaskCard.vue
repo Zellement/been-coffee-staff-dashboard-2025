@@ -4,18 +4,34 @@
         class="relative"
         :title="item.fields.task.fields.title"
     >
-        <u-icon
-            v-if="loading"
-            class="absolute top-0 right-0 m-2"
-            size="16"
-            name="i-svg-spinners-blocks-shuffle-3"
-        />
+        <transition name="fade">
+            <div
+                v-if="loading"
+                class="dark:bg-navy-500/50 absolute inset-0 z-10 flex bg-white/50"
+            >
+                <u-icon
+                    class="m-auto"
+                    size="16"
+                    name="i-svg-spinners-blocks-shuffle-3"
+                />
+            </div>
+        </transition>
         <u-slideover
             v-model:open="open"
             :title="item.fields.task.fields.title"
             :description="`Last completed: ${item.lastCompletedDate ? fullDateConverter(item.lastCompletedDate) : 'Never'}`"
         >
             <button class="flex flex-col items-start gap-1 text-left">
+                <u-badge
+                    v-if="item.fields.task?.fields?.staffLevel?.fields"
+                    class="absolute top-1 right-1"
+                    size="xs"
+                    color="neutral"
+                    variant="outline"
+                    trailing-icon="i-bx-bxs-arrow-to-top"
+                >
+                    {{ item.fields.task.fields.staffLevel.fields.title }}
+                </u-badge>
                 <template v-if="item.type === 'upcoming'">
                     <u-badge
                         size="sm"
@@ -24,9 +40,7 @@
                         icon="i-bx-hourglass"
                     >
                         Due
-                        <span class="font-semibold">{{
-                            shortDateConverter(item.nextDueDate)
-                        }}</span>
+                        <span>{{ shortDateConverter(item.nextDueDate) }}</span>
                     </u-badge>
                 </template>
                 <template v-else-if="item.type === 'overdue'">
@@ -52,11 +66,13 @@
                 <p>{{ item.fields.task.fields.title }}</p>
             </button>
             <template #body>
-                <div class="flex flex-col items-start text-left">
-                    <rich-text
-                        v-if="item.fields.task.fields.description"
-                        :content="item.fields.task.fields.description"
-                    />
+                <div class="flex flex-col items-start gap-4 text-left">
+                    <div class="border-b pb-4">
+                        <rich-text
+                            v-if="item.fields.task.fields.description"
+                            :content="item.fields.task.fields.description"
+                        />
+                    </div>
                     <div class="flex w-full gap-2 text-center">
                         <u-card variant="soft" class="flex flex-1 flex-col">
                             <div>Minutes to complete:</div>
@@ -72,6 +88,18 @@
                             </div>
                         </u-card>
                     </div>
+
+                    <UAlert
+                        v-if="item.fields.task?.fields?.staffLevel?.fields"
+                        color="neutral"
+                        title="Heads up!"
+                        variant="outline"
+                        :description="`Only a ${item.fields.task.fields.staffLevel.fields.title} or a more senior member of the team (if applicable) should complete this task.`"
+                        icon="i-basil-info-circle-outline"
+                        :ui="{
+                            icon: '!size-6'
+                        }"
+                    />
                 </div>
             </template>
             <template #footer>

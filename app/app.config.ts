@@ -95,7 +95,8 @@ export default defineAppConfig({
         slideover: {
             slots: {
                 overlay: 'fixed inset-0 bg-zinc-700/75',
-                header: 'uc-text'
+                title: 'uc-text',
+                description: 'font-bold'
             }
         }
     }
