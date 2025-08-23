@@ -43,7 +43,10 @@ export default defineNuxtConfig({
     // Contentful image provider
     image: {
         provider: 'contentful',
-        contentful: {}
+
+        contentful: {
+            domain: 'images.ctfassets.net'
+        }
     },
 
     // Storyblok image provider

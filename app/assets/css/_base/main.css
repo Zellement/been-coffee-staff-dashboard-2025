@@ -17,6 +17,7 @@ body {
     font-family: var(--font-sans);
     font-size: var(--text-sm);
     background-color: var(--color-seashell);
+    color: var(--color-navy-500);
 
     @media (resolution >= 2dppx) {
         -webkit-font-smoothing: antialiased;

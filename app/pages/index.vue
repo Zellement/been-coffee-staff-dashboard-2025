@@ -9,7 +9,7 @@
         <h2>Locations</h2>
         <pre>{{ allLocations }}</pre>
         <pre>{{ allNoticeBoard }}</pre> -->
-        <kitchen-sink />
+        <!-- <kitchen-sink /> -->
     </div>
 </template>
 
