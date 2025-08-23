@@ -1,9 +1,10 @@
 <template>
     <div class="p-default">
         <h2 class="uc-text uc-text--xs">Routine tasks</h2>
-        <div class="flex gap-4">
+        <div v-if="dataFetched" class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">
                 <progress-bar-circular-countdown
+                    v-if="hasSortedRoutineTasks"
                     class="my-auto"
                     :left-number="newTasks.length"
                     :right-number="overdueTasks.length"
@@ -20,6 +21,14 @@
                     <single-routine-task-card :key="item.sys.id" :item="item" />
                 </u-carousel>
             </div>
+        </div>
+        <div v-else class="flex w-full gap-4 overflow-hidden">
+            <u-skeleton class="h-17 w-17 shrink-0 rounded-full" />
+            <u-skeleton
+                v-for="i in 6"
+                :key="i"
+                class="my-auto h-17 shrink-0 basis-48"
+            />
         </div>
     </div>
 </template>

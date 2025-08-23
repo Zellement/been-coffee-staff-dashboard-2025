@@ -2,7 +2,8 @@ export default defineAppConfig({
     ui: {
         colors: {
             primary: 'butterscotch',
-            neutral: 'navy'
+            neutral: 'navy',
+            elevated: 'seashell'
         },
 
         badge: {
@@ -85,6 +86,10 @@ export default defineAppConfig({
             defaultVariants: {
                 variant: 'outline'
             }
+        },
+
+        skeleton: {
+            base: 'bg-butterscotch-500/50'
         },
 
         slideover: {

@@ -23,11 +23,11 @@
             </div>
         </div>
         <div v-else class="flex w-full gap-4 overflow-hidden">
-            <u-skeleton class="h-16 w-16 shrink-0 rounded-full" />
+            <u-skeleton class="h-17 w-17 shrink-0 rounded-full" />
             <u-skeleton
                 v-for="i in 6"
                 :key="i"
-                class="h-16 shrink-0 basis-48"
+                class="h-17 shrink-0 basis-48"
             />
         </div>
     </div>
