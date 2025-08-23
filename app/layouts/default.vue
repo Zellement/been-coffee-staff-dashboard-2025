@@ -1,5 +1,6 @@
 <template>
     <div class="layout">
+        <user-profile />
         <location-switcher />
         <main>
             <slot />

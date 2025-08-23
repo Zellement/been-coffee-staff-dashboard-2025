@@ -61,7 +61,7 @@ export default defineAppConfig({
 
         card: {
             slots: {
-                root: 'overflow-hidden rounded-none rounded-tr-md rounded-bl-md h-full',
+                root: 'overflow-hidden rounded-none rounded-tr-md rounded-bl-md h-full border border-zinc-200',
                 header: 'p-3 sm:p-3',
                 body: 'p-3 sm:p-3 ',
                 footer: 'p-3 sm:p-3'
@@ -69,7 +69,7 @@ export default defineAppConfig({
             variants: {
                 variant: {
                     solid: {
-                        root: 'bg-gradient-to-br from-butterscotch-50 to-butterscotch-100 text-navy'
+                        root: 'bg-white text-navy'
                     },
                     outline: {
                         root: 'bg-default ring ring-default divide-y divide-default'
