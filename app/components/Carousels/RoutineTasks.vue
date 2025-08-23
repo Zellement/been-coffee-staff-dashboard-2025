@@ -5,8 +5,8 @@
             <div class="relative flex w-16 flex-col text-center">
                 <progress-bar-circular-countdown
                     class="my-auto"
-                    :left-number="0"
-                    :right-number="0"
+                    :left-number="newTasks.length"
+                    :right-number="overdueTasks.length"
                 />
             </div>
             <div v-if="hasSortedRoutineTasks" class="min-w-0 flex-1">
