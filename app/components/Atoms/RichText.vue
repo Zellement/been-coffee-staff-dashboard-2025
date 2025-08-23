@@ -1,9 +1,11 @@
 <template>
-    <RichTextRenderer
-        v-if="richTextContent"
-        :document="richTextContent"
-        :node-renderers="renderNodes"
-    />
+    <div class="content">
+        <RichTextRenderer
+            v-if="richTextContent"
+            :document="richTextContent"
+            :node-renderers="renderNodes"
+        />
+    </div>
 </template>
 
 <script setup>

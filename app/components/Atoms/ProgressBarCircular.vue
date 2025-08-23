@@ -5,13 +5,16 @@
             viewBox="0 0 36 36"
             xmlns="http://www.w3.org/2000/svg"
         >
+            <linearGradient id="greenGrd" x1="0%" x2="100%" y1="50%" y2="0%">
+                <stop offset="0%" stop-color="#005c06" />
+                <stop offset="100%" stop-color="#008a09" />
+            </linearGradient>
             <!-- Background Circle -->
             <circle
                 cx="18"
                 cy="18"
                 r="16"
-                fill="currentColor"
-                class=""
+                :fill="progressBarClasses?.circleFill"
                 :class="progressBarClasses?.unfilledBar"
             ></circle>
             <!-- Unfilled Circle -->
@@ -66,12 +69,14 @@ const progressBarClasses: ComputedRef<any> = computed(() => {
     return props.completedItems === props.totalItems
         ? {
               circle: 'text-green-200',
-              filledBar: 'text-green-500',
-              text: 'text-green-500',
+              circleFill: 'url(#greenGrd)',
+              filledBar: 'text-green-300',
+              text: 'text-green-300',
               unfilledBar: 'text-green-100'
           }
         : {
               circle: 'text-butterscotch-200',
+              circleFill: 'none',
               filledBar: 'text-butterscotch-500',
               text: 'text-butterscotch-500',
               unfilledBar: 'text-butterscotch-100'

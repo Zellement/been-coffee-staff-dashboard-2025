@@ -69,7 +69,7 @@ export default defineAppConfig({
             variants: {
                 variant: {
                     solid: {
-                        root: 'bg-gradient-to-tl from-seashell-300 to-seashell-500 text-navy'
+                        root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy'
                     },
                     outline: {
                         root: 'bg-default ring ring-default divide-y divide-default'

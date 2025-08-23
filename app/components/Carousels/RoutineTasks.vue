@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="p-default">
         <h2 class="uc-text uc-text--xs">Routine tasks</h2>
         <div class="flex gap-4">
             <div class="relative flex w-16 flex-col text-center">

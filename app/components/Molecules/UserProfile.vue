@@ -1,5 +1,5 @@
 <template>
-    <div class="m-2 mt-0 rounded-br rounded-bl bg-white p-2 shadow">
+    <div class="p-default m-2 mt-0 rounded-br rounded-bl bg-white shadow">
         <u-drawer direction="top" inset>
             <button class="flex w-full items-center gap-2">
                 <div class="w-10">
