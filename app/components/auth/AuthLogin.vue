@@ -2,13 +2,35 @@
     <div class="">
         <form class="flex w-full justify-center" @submit.prevent="handleLogin">
             <div class="flex w-full flex-col gap-4">
-                <u-input v-model="email" type="email" />
-                <u-input v-model="password" type="password" />
+                <u-input v-model="email" placeholder="Email" type="email" />
+                <u-input
+                    v-model="password"
+                    placeholder="Password"
+                    :type="showPassword ? 'text' : 'password'"
+                >
+                    <template #trailing>
+                        <UButton
+                            color="neutral"
+                            variant="link"
+                            size="sm"
+                            :icon="
+                                showPassword
+                                    ? 'i-lucide-eye-off'
+                                    : 'i-lucide-eye'
+                            "
+                            :aria-label="
+                                showPassword ? 'Hide password' : 'Show password'
+                            "
+                            :aria-pressed="showPassword"
+                            aria-controls="password"
+                            @click="showPassword = !showPassword"
+                        />
+                    </template>
+                </u-input>
                 <u-button
                     :ui="{ base: 'block text-center' }"
                     :label="label"
                     :icon="icon"
-                    @click="handleLogin"
                 />
             </div>
         </form>
@@ -23,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-const client = useSupabaseClient()
+const supabase = useSupabaseClient()
 
 const router = useRouter()
 const route = useRoute()
@@ -31,6 +53,7 @@ const route = useRoute()
 const loading: Ref<boolean> = ref(false)
 const email: Ref<string> = ref('')
 const password: Ref<string> = ref('')
+const showPassword: Ref<boolean> = ref(false)
 
 const label: ComputedRef<string> = computed(() =>
     loading.value ? 'Logging in...' : 'Login'
@@ -45,7 +68,7 @@ const errorMsg: Ref<string | null> = ref(null)
 const handleLogin = async () => {
     try {
         loading.value = true
-        const { error } = await client.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
             email: email.value,
             password: password.value
         })
@@ -58,3 +81,10 @@ const handleLogin = async () => {
     }
 }
 </script>
+
+<style>
+/* Hide the password reveal button in Edge */
+::-ms-reveal {
+    display: none;
+}
+</style>
