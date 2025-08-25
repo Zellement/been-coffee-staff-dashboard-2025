@@ -3,9 +3,16 @@
         <form class="flex w-full justify-center" @submit.prevent="handleReset">
             <div class="flex w-full flex-col gap-4">
                 <u-input
-                    v-model="email"
-                    type="email"
-                    placeholder="Enter your email address"
+                    v-model="password"
+                    type="password"
+                    required
+                    placeholder="Enter your new password"
+                />
+                <u-input
+                    v-model="passwordagain"
+                    type="password"
+                    required
+                    placeholder="Enter your new password again"
                 />
                 <u-button
                     :ui="{ base: 'block text-center' }"
@@ -34,10 +41,11 @@
 <script lang="ts" setup>
 const supabase = useSupabaseClient()
 
-const config = useRuntimeConfig()
-
+const password: Ref<string> = ref('')
+const passwordagain: Ref<string> = ref('')
 const loading: Ref<boolean> = ref(false)
-const email: Ref<string> = ref('')
+const successMsg: Ref<string> = ref('')
+const errorMsg: Ref<string> = ref('')
 
 const label: ComputedRef<string> = computed(() =>
     loading.value ? 'Sending...' : 'Send reset link'
@@ -47,23 +55,26 @@ const icon: ComputedRef<string> = computed(() =>
     loading.value ? 'i-svg-spinners-blocks-shuffle-3' : 'i-jam-padlock-open-f'
 )
 
-const successMsg: Ref<string | null> = ref(null)
-const errorMsg: Ref<string | null> = ref(null)
+const passwordsMatch: ComputedRef<boolean> = computed(() => {
+    return password.value === passwordagain.value
+})
 
 const handleReset = async () => {
+    loading.value = true
+    if (!passwordsMatch.value) {
+        errorMsg.value = 'Passwords do not match'
+        loading.value = false
+        return
+    }
+    errorMsg.value = ''
     try {
-        const { error } = await supabase.auth.resetPasswordForEmail(
-            email.value,
-            {
-                redirectTo: `${config.public.SITE_URL}/update-password`
-            }
-        )
+        const { error } = await supabase.auth.updateUser({
+            password: password.value
+        })
         if (error) throw error
-        successMsg.value =
-            'If this email exists, we will send you a password reset link. Check your inbox AND your junk/spam folders.'
+        successMsg.value = 'Sorted!'
     } catch (error) {
-        console.log(error)
-        errorMsg.value = (error as { message: string }).message
+        alert(error)
     }
 }
 </script>

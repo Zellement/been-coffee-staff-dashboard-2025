@@ -14,13 +14,13 @@ export default defineNuxtConfig({
     },
 
     modules: [
-      '@nuxt/image',
-      '@pinia/nuxt',
-      'nuxt-viewport',
-      '@nuxt/icon',
-      '@nuxt/ui',
-      '@nuxtjs/supabase',
-      'v-gsap-nuxt'
+        '@nuxt/image',
+        '@pinia/nuxt',
+        'nuxt-viewport',
+        '@nuxt/icon',
+        '@nuxt/ui',
+        '@nuxtjs/supabase',
+        'v-gsap-nuxt'
     ],
 
     supabase: {
