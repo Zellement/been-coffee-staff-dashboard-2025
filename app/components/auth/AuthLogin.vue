@@ -1,42 +1,46 @@
 <template>
-    <form class="flex w-full justify-center" @submit.prevent="handleLogin">
-        <div class="flex w-full flex-col gap-4">
-            <input
-                v-model="email"
-                class="dark:bg-navy-700 p-2"
-                type="email"
-                placeholder="Your email"
-            />
-            <input
-                v-model="password"
-                class="dark:bg-navy-700 p-2"
-                type="password"
-                placeholder="Your password"
-            />
-            <input
-                type="submit"
-                class="button cursor-pointer self-end"
-                :value="loading ? 'Bear with...' : 'Login'"
-                :disabled="loading"
-            />
-        </div>
-    </form>
-    <div v-if="errorMsg" class="text-red-500">
-        {{ errorMsg }}
+    <div class="">
+        <form class="flex w-full justify-center" @submit.prevent="handleLogin">
+            <div class="flex w-full flex-col gap-4">
+                <u-input v-model="email" type="email" />
+                <u-input v-model="password" type="password" />
+                <u-button
+                    :ui="{ base: 'block text-center' }"
+                    :label="label"
+                    :icon="icon"
+                    @click="handleLogin"
+                />
+            </div>
+        </form>
+        <u-alert
+            v-if="errorMsg"
+            class="mt-8"
+            :title="errorMsg"
+            variant="solid"
+            color="error"
+        />
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const client = useSupabaseClient()
 
 const router = useRouter()
 const route = useRoute()
 
-const loading = ref(false)
-const email = ref('')
-const password = ref('')
+const loading: Ref<boolean> = ref(false)
+const email: Ref<string> = ref('')
+const password: Ref<string> = ref('')
 
-const errorMsg = ref(null)
+const label: ComputedRef<string> = computed(() =>
+    loading.value ? 'Logging in...' : 'Login'
+)
+
+const icon: ComputedRef<string> = computed(() =>
+    loading.value ? 'i-svg-spinners-blocks-shuffle-3' : 'i-uil-padlock'
+)
+
+const errorMsg: Ref<string | null> = ref(null)
 
 const handleLogin = async () => {
     try {
@@ -48,7 +52,7 @@ const handleLogin = async () => {
         if (error) throw error
         router.push(`${route.query?.url ?? '/'}`)
     } catch (error) {
-        errorMsg.value = error.message
+        errorMsg.value = (error as { message: string }).message
     } finally {
         loading.value = false
     }
