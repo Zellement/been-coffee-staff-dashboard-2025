@@ -64,7 +64,7 @@ export default defineAppConfig({
             slots: {
                 root: 'overflow-hidden rounded-none rounded-tl-md rounded-br-md h-full border card-border',
                 header: 'p-3 sm:p-3',
-                body: 'p-3 sm:p-3 ',
+                body: 'p-3 sm:p-3',
                 footer: 'p-3 sm:p-3'
             },
             variants: {
@@ -80,6 +80,10 @@ export default defineAppConfig({
                     },
                     subtle: {
                         root: 'bg-elevated/50 ring ring-default divide-y divide-default'
+                    },
+                    task: {
+                        root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy flex flex-col gap-3 relative',
+                        body: 'flex flex-col gap-1 items-start'
                     }
                 }
             },

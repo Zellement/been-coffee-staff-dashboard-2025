@@ -68,8 +68,8 @@ export const useDateUtils = () => {
         const y = date.getFullYear()
 
         if (showTime) {
-            const hours = date.getHours()
-            const minutes = date.getMinutes()
+            const hours = date.getHours().toString().padStart(2, '0')
+            const minutes = date.getMinutes().toString().padStart(2, '0')
             return `${day}, ${d}${dSuffix} ${m} ${y} ${hours}:${minutes}`
         }
         if (showDay) {
