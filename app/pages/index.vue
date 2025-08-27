@@ -2,7 +2,7 @@
     <div class="page">
         <daily-tasks />
         <routine-tasks />
-        <latest-orders />
+        <upcoming-deliveries />
         <!-- <rich-text :content="allNoticeBoard.items?.[0]?.fields.content" />
         <h2>Employees</h2>
         <pre>{{ allEmployees }}</pre>
