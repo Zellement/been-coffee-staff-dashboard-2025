@@ -62,13 +62,9 @@
                         class="flex items-center justify-center gap-8"
                     >
                         <div class="m-auto overflow-hidden rounded-md bg-white">
-                            <img
-                                height="30"
-                                class="h-[30px]"
-                                :src="`${
-                                    item.fields?.supplier?.fields?.logo?.fields
-                                        ?.file?.url
-                                }?h=60&fit=fill&fm=webp`"
+                            <nuxt-img
+                                class="mt-2 h-4 w-auto max-w-full"
+                                :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
                                 :alt="item.fields.supplier.fields.title"
                             />
                         </div>
@@ -214,7 +210,6 @@ const badgeStyle: ComputedRef<{
 }> = computed(() => {
     const expectedDate = new Date(props.item.fields.expectedDeliveryDate)
     const now = new Date()
-    console.log(now.getDate(), expectedDate.getDate())
     if (now.getDate() > expectedDate.getDate()) {
         return { colour: 'error', variant: 'solid' }
     }

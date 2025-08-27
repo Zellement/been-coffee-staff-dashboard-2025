@@ -1,8 +1,8 @@
 <template>
     <div class="p-default">
-        <h2 class="uc-text uc-text--xs">Upcoming Deliveries</h2>
+        <h2 class="uc-text uc-text--xs">Deliveries</h2>
         <div v-if="dataFetched" class="flex gap-4">
-            <div v-if="orders" class="min-w-0 flex-1">
+            <div class="min-w-0 flex-1">
                 <u-carousel
                     v-if="sortedRoutineTaskInstances"
                     v-slot="{ item }"
@@ -47,55 +47,52 @@ const sortedRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> =
     computed(() => {
         return [
             ...todaysOrders.value,
-            ...overdueOrders.value
-            // ...remainingOrders.value,
+            ...overdueOrders.value,
+            ...remainingOrders.value
         ]
     })
 
-// const remainingOrders: ComputedRef<(TypeOrder & { type: 'new' })[]> = computed(
-//     () => {
-//         if (!orders.value) return []
-//         return orders.value
-//             .filter((task: TypeOrder) => {
-//                 return task.nextDueDate === null
-//             })
-//             .map((task: TypeOrder) => ({
-//                 ...task,
-//                 type: 'new' as const
-//             }))
-//     }
-// )
-
-const todaysOrders: ComputedRef<(TypeOrder & { type: 'todays' })[]> = computed(
-    () => {
-        if (!orders.value) return []
-        return orders.value
-            .filter((task: TypeOrder) => {
-                const dDate = new Date(task.fields.expectedDeliveryDate)
-                dDate.setHours(0, 0, 0, 0)
-                return dDate.getTime() === today.getTime()
-            })
-            .map((task: TypeOrder) => ({
-                ...task,
-                type: 'upcoming' as const
-            }))
-    }
-)
-
-const overdueOrders: ComputedRef<(TypeOrder & { type: 'overdue' })[]> =
-    computed(() => {
-        if (!orders.value) return []
-        return orders.value
-            .filter((task: TypeOrder) => {
-                const dDate = new Date(task.fields.expectedDeliveryDate)
-                dDate.setHours(0, 0, 0, 0)
-                return dDate.getTime() < today.getTime()
-            })
-            .map((task: TypeOrder) => ({
-                ...task,
-                type: 'overdue' as const
-            }))
+const remainingOrders: ComputedRef<TypeOrder[]> = computed(() => {
+    if (!orders.value) return []
+    // All orders that are left that are not in todaysOrders nor overdueOrders
+    return orders.value.filter((task: TypeOrder) => {
+        return task.fields.deliveryCheckedBy && task.fields.deliveryCheckedAt
     })
+})
+
+const todaysOrders: ComputedRef<TypeOrder[]> = computed(() => {
+    if (!orders.value) return []
+    return orders.value
+        .filter((task: TypeOrder) => {
+            const dDate = new Date(task.fields.expectedDeliveryDate)
+            dDate.setHours(0, 0, 0, 0)
+            return (
+                !task.fields.deliveryCheckedBy &&
+                !task.fields.deliveryCheckedAt &&
+                dDate.getTime() === today.getTime()
+            )
+        })
+        .map((task: TypeOrder) => ({
+            ...task
+        }))
+})
+
+const overdueOrders: ComputedRef<TypeOrder[]> = computed(() => {
+    if (!orders.value) return []
+    return orders.value
+        .filter((task: TypeOrder) => {
+            const dDate = new Date(task.fields.expectedDeliveryDate)
+            dDate.setHours(0, 0, 0, 0)
+            return (
+                !task.fields.deliveryCheckedBy &&
+                !task.fields.deliveryCheckedAt &&
+                dDate.getTime() < today.getTime()
+            )
+        })
+        .map((task: TypeOrder) => ({
+            ...task
+        }))
+})
 
 /* Functions & lifecycle */
 
