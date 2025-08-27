@@ -23,10 +23,11 @@
                 <u-badge
                     size="sm"
                     color="success"
-                    variant="outline"
-                    icon="i-bx-check"
+                    variant="solid"
+                    icon="i-ic-baseline-move-to-inbox"
+                    trailing-icon="i-bx-check"
                 >
-                    Done
+                    Checked
                 </u-badge>
             </template>
             <template v-else>
@@ -41,22 +42,26 @@
                 </u-badge>
             </template>
             <nuxt-img
-                class="mt-2 h-6"
-                :src="item.fields.supplier.fields.logo?.fields?.file?.url"
+                class="mt-2 h-4 w-auto max-w-full"
+                :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
                 :alt="item.fields.supplier.fields.title"
             />
         </u-card>
         <template #body>
-            <div class="flex flex-col items-start">
-                <div class="mb-4 w-full border-b pb-4 whitespace-pre-line">
+            <div class="flex flex-col items-start gap-8">
+                <div
+                    v-if="item.fields.details"
+                    class="mb-4 w-full pb-4 whitespace-pre-line"
+                >
                     {{ item.fields.details }}
                 </div>
+                <div v-else>Usual order from this supplier.</div>
                 <div class="grid w-full grid-cols-2 gap-2 text-center">
                     <u-card
                         variant="soft"
                         class="flex items-center justify-center gap-8"
                     >
-                        <div class="m-auto">
+                        <div class="m-auto overflow-hidden rounded-md bg-white">
                             <img
                                 height="30"
                                 class="h-[30px]"
@@ -73,7 +78,7 @@
                         class="flex items-center justify-center gap-8"
                     >
                         <div>Ordered by:</div>
-                        <div class="font-semibold">
+                        <div class="">
                             <img
                                 class="border-butterscotch-500 mx-auto rounded-full border-2 object-cover"
                                 :src="`${
@@ -101,20 +106,66 @@
                         </div>
                     </u-card>
                 </div>
+                <div
+                    v-if="
+                        item.fields.deliveryCheckedBy ||
+                        item.fields.deliveryCheckedAt
+                    "
+                    class="grid w-full grid-cols-2 gap-2 text-center"
+                >
+                    <u-card
+                        v-if="item.fields.deliveryCheckedBy"
+                        variant="outline"
+                        class="flex flex-1 flex-col"
+                    >
+                        <div>Checked by:</div>
+                        <div class="font-semibold">
+                            {{ item.fields.deliveryCheckedBy }}
+                        </div>
+                    </u-card>
+                    <u-card
+                        v-if="item.fields.deliveryCheckedAt"
+                        variant="outline"
+                        class="flex flex-1 flex-col"
+                    >
+                        <div>Checked at:</div>
+                        <div class="font-semibold">
+                            {{
+                                fullDateConverter(
+                                    item.fields.deliveryCheckedAt,
+                                    true
+                                )
+                            }}
+                        </div>
+                    </u-card>
+                </div>
             </div>
         </template>
         <template #footer>
-            <u-button
-                v-if="!isGeneralLogin"
-                :disabled="loading"
-                class="ml-auto"
-                :icon="
-                    loading ? 'i-svg-spinners-blocks-shuffle-3' : 'i-bx-check'
-                "
-                @click="handleCheckedOrder(item)"
-            >
-                {{ loading ? 'Loading...' : 'Mark as received & checked' }}
-            </u-button>
+            <div v-if="!isGeneralLogin" class="flex flex-col gap-2">
+                <u-alert
+                    variant="solid"
+                    color="neutral"
+                    title="Issue with this order?"
+                    description="If there is something wrong with this order, please contact your manager before approving this order."
+                />
+                <u-textarea
+                    v-model="feedback"
+                    placeholder="Any notes for this order?"
+                />
+                <u-button
+                    :disabled="loading"
+                    class="ml-auto"
+                    :icon="
+                        loading
+                            ? 'i-svg-spinners-blocks-shuffle-3'
+                            : 'i-bx-check'
+                    "
+                    @click="handleCheckedOrder(item)"
+                >
+                    {{ loading ? 'Loading...' : 'Mark as received & checked' }}
+                </u-button>
+            </div>
             <u-alert
                 v-else
                 variant="outline"
@@ -145,27 +196,37 @@ const loading: Ref<boolean> = ref(false)
 
 const props = defineProps<Props>()
 
+const feedback: Ref<string> = ref(props.item.fields.feedback || '')
+
 const { checkedOrder } = useContentfulUtils()
 const { fullDateConverter, inXDays } = useDateUtils()
 
 const orderHasBeenChecked: ComputedRef<boolean> = computed(() => {
-    return props.item.deliveryCheckedAt
+    return (
+        props.item.fields.deliveryCheckedAt &&
+        props.item.fields.deliveryCheckedBy
+    )
 })
 
 const badgeStyle: ComputedRef<{
-    colour: 'error' | 'neutral'
+    colour: 'error' | 'neutral' | 'warning'
     variant: 'solid' | 'outline'
 }> = computed(() => {
     const expectedDate = new Date(props.item.fields.expectedDeliveryDate)
     const now = new Date()
-    return now > expectedDate
-        ? { colour: 'error', variant: 'solid' }
-        : { colour: 'neutral', variant: 'outline' }
+    console.log(now.getDate(), expectedDate.getDate())
+    if (now.getDate() > expectedDate.getDate()) {
+        return { colour: 'error', variant: 'solid' }
+    }
+    if (now.getDate() === expectedDate.getDate()) {
+        return { colour: 'warning', variant: 'solid' }
+    }
+    return { colour: 'neutral', variant: 'outline' }
 })
 
 const handleCheckedOrder = async (task: TypeDailyTask) => {
     loading.value = true
-    await checkedOrder(task)
+    await checkedOrder(task, feedback.value)
     loading.value = false
     open.value = false
 }

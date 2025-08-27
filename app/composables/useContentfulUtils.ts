@@ -46,7 +46,7 @@ export const useContentfulUtils = () => {
         } finally {
         }
     }
-    const checkedOrder = async (task: TypeDailyTask) => {
+    const checkedOrder = async (task: TypeDailyTask, feedback?: string) => {
         const userStore = useUserStore()
         const toast = useToast()
         const uiStore = useUiStore()
@@ -64,7 +64,8 @@ export const useContentfulUtils = () => {
                     id: task.sys.id,
                     fields: {
                         deliveryCheckedAt: localISOTime,
-                        deliveryCheckedBy: `${userStore.userContentfulData.fields.name} ${userStore.userContentfulData.fields.surname}`
+                        deliveryCheckedBy: `${userStore.userContentfulData.fields.name} ${userStore.userContentfulData.fields.surname}`,
+                        feedback: feedback || ''
                     }
                 }
             })

@@ -73,7 +73,7 @@ export default defineAppConfig({
                         root: 'bg-gradient-to-tl from-seashell-500 to-white text-navy'
                     },
                     outline: {
-                        root: 'bg-default ring ring-default divide-y divide-default'
+                        root: 'bg-tuscany-500 ring-0 text-white'
                     },
                     soft: {
                         root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy'

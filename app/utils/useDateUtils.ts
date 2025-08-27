@@ -192,6 +192,10 @@ export const useDateUtils = () => {
         const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24))
         if (diffDays === 1) {
             return `tomorrow`
+        } else if (diffDays === 0) {
+            return `today`
+        } else if (diffDays < 0) {
+            return shortDateConverter(future)
         } else {
             return `in ${diffDays} days`
         }
