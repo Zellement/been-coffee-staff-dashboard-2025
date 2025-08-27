@@ -46,54 +46,56 @@ export const useContentfulUtils = () => {
         } finally {
         }
     }
+    const checkedOrder = async (task: TypeDailyTask) => {
+        const userStore = useUserStore()
+        const toast = useToast()
+        const uiStore = useUiStore()
 
-    return {
-        completeTask
+        const timezoneOffset = new Date().getTimezoneOffset() * 60000 //offset in milliseconds
+        const localISOTime = new Date(Date.now() - timezoneOffset)
+            .toISOString()
+            .slice(0, -1)
+
+        try {
+            uiStore.refreshing = true
+            await $fetch(`/api/contentful/update-entry`, {
+                method: 'POST',
+                body: {
+                    id: task.sys.id,
+                    fields: {
+                        deliveryCheckedAt: localISOTime,
+                        deliveryCheckedBy: `${userStore.userContentfulData.fields.name} ${userStore.userContentfulData.fields.surname}`
+                    }
+                }
+            })
+            toast.add({
+                title: 'Order marked as checked',
+                color: 'success',
+                icon: 'i-bx-check'
+            })
+            // Wait before refetching to allow Contentful to update
+            setTimeout(async () => {
+                try {
+                    await refreshNuxtData()
+                } catch (error) {
+                    console.error('Error refreshing data', error)
+                } finally {
+                    uiStore.refreshing = false
+                }
+            }, 2000)
+        } catch (error) {
+            toast.add({
+                title: 'Error checking order',
+                description: `Sorry, please contact a manager.`,
+                color: 'error'
+            })
+            console.error('Error checking order', error)
+        } finally {
+        }
     }
 
-    //     const fetchEntry = (entryId: string) => {
-    //         const { data, error } = useFetch(`/api/contentful/fetch-entry`, {
-    //             method: 'GET',
-    //             params: { id: entryId }
-    //         })
-    //         if (error.value) {
-    //             console.error('Error fetching entry by ID', error.value)
-    //             return null
-    //         }
-    //         return data
-    //     }
-    //     const fetchEntries = async (queryParams: Record<string, any>) => {
-    //         const { data, error } = await useFetch(
-    //             `/api/contentful/fetch-entries`,
-    //             {
-    //                 method: 'GET',
-    //                 params: queryParams
-    //             }
-    //         )
-    //         if (error.value) {
-    //             console.error('Error fetching entries', error.value)
-    //             return null
-    //         }
-    //         if (data.value) {
-    //             return data.value
-    //         }
-    //     }
-    //     const updateEntry = async (
-    //         id: { id: string },
-    //         body: Record<string, any>
-    //     ) => {
-    //         try {
-    //             return await $fetch(`/api/contentful/update-entry`, {
-    //                 method: 'POST',
-    //                 body: {
-    //                     id,
-    //                     ...body
-    //                 }
-    //             })
-    //         } catch (error) {
-    //             console.error('Error updating entry', error)
-    //             return null
-    //         }
-    //     }
-    //     return { fetchEntry, fetchEntries, updateEntry }
+    return {
+        completeTask,
+        checkedOrder
+    }
 }

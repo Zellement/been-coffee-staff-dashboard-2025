@@ -50,7 +50,23 @@
                     <div class="grid w-full grid-cols-2 gap-2 text-center">
                         <u-card
                             variant="soft"
-                            class="col-span-full flex flex-1 items-center justify-center gap-8"
+                            class="flex items-center justify-center gap-8"
+                        >
+                            <div class="m-auto">
+                                <img
+                                    height="30"
+                                    class="h-[30px]"
+                                    :src="`${
+                                        item.fields?.supplier?.fields?.logo
+                                            ?.fields?.file?.url
+                                    }?h=60&fit=fill&fm=webp`"
+                                    :alt="item.fields.supplier.fields.title"
+                                />
+                            </div>
+                        </u-card>
+                        <u-card
+                            variant="soft"
+                            class="flex items-center justify-center gap-8"
                         >
                             <div>Ordered by:</div>
                             <div class="font-semibold">
@@ -83,7 +99,7 @@
                     </div>
                 </div>
             </template>
-            <!-- <template #footer>
+            <template #footer>
                 <u-button
                     v-if="!isGeneralLogin"
                     :disabled="loading"
@@ -93,9 +109,9 @@
                             ? 'i-svg-spinners-blocks-shuffle-3'
                             : 'i-bx-check'
                     "
-                    @click="handleCompleteTask(item)"
+                    @click="handleCheckedOrder(item)"
                 >
-                    {{ loading ? 'Loading...' : 'Mark as complete' }}
+                    {{ loading ? 'Loading...' : 'Mark as received & checked' }}
                 </u-button>
                 <u-alert
                     v-else
@@ -107,7 +123,7 @@
                     }"
                     description="You are logged in as a shop so task completion is disabled."
                 />
-            </template> -->
+            </template>
         </u-slideover>
     </u-card>
 </template>
@@ -117,22 +133,19 @@ interface Props {
     item: TypeOrder
 }
 
-// const userStore = useUserStore()
+const userStore = useUserStore()
 
-// const isGeneralLogin: ComputedRef<boolean> = computed(() => {
-//     return userStore.isGeneralLogin
-// })
+const isGeneralLogin: ComputedRef<boolean> = computed(() => {
+    return userStore.isGeneralLogin
+})
 
 const open: Ref<boolean> = ref(false)
 const loading: Ref<boolean> = ref(false)
 
 const props = defineProps<Props>()
 
-// const { completeTask } = useContentfulUtils()
+const { checkedOrder } = useContentfulUtils()
 const { fullDateConverter, inXDays } = useDateUtils()
-
-// const today = new Date()
-// const currentHour = Number(today.getHours())
 
 const orderHasBeenChecked: ComputedRef<boolean> = computed(() => {
     return props.item.deliveryCheckedAt
@@ -149,14 +162,10 @@ const badgeStyle: ComputedRef<{
         : { colour: 'neutral', variant: 'outline' }
 })
 
-// const pastDueTime: ComputedRef<boolean> = computed(() => {
-//     return currentHour >= Number(props.item.fields.task.fields.dueByHour)
-// })
-
-// const handleCompleteTask = async (task: TypeDailyTask) => {
-//     loading.value = true
-//     await completeTask(task)
-//     loading.value = false
-//     open.value = false
-// }
+const handleCheckedOrder = async (task: TypeDailyTask) => {
+    loading.value = true
+    await checkedOrder(task)
+    loading.value = false
+    open.value = false
+}
 </script>
