@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <form class="flex w-full justify-center" @submit.prevent="handleLogin">
+        <form class="flex w-full justify-center">
             <div class="flex w-full flex-col gap-4">
                 <u-input v-model="email" placeholder="Email" type="email" />
                 <u-input
@@ -31,6 +31,7 @@
                     :ui="{ base: 'block text-center' }"
                     :label="label"
                     :icon="icon"
+                    @click="handleLogin"
                 />
             </div>
         </form>

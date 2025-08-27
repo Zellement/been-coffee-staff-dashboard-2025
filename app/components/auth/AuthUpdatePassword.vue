@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-8">
-        <form class="flex w-full justify-center" @submit.prevent="handleReset">
+        <form class="flex w-full justify-center">
             <div class="flex w-full flex-col gap-4">
                 <u-input
                     v-model="password"
@@ -18,6 +18,7 @@
                     :ui="{ base: 'block text-center' }"
                     :label="label"
                     :icon="icon"
+                    @click="handleReset"
                 />
             </div>
         </form>
