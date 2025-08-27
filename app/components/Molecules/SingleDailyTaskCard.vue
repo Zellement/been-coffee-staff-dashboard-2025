@@ -5,7 +5,7 @@
         :title="item.fields.task.fields.title"
     >
         <transition name="fade">
-            <div v-if="loading" class="absolute inset-0 z-10 flex bg-white/50">
+            <div v-if="loading" class="absolute inset-0 z-30 flex bg-white/80">
                 <u-icon
                     class="m-auto"
                     size="16"

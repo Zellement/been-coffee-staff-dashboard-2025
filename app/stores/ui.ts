@@ -6,6 +6,7 @@ export const useUiStore = defineStore('ui', () => {
      **/
     const showMobileNav: Ref<boolean> = ref(false)
     const animationsDisabled: Ref<boolean> = ref(false)
+    const refreshing: Ref<boolean> = ref(false)
 
     /**
      * Getters
@@ -36,6 +37,7 @@ export const useUiStore = defineStore('ui', () => {
     return {
         showMobileNav,
         animationsDisabled,
+        refreshing,
         toggleShowMobileNav,
         toggleAnimationsDisabled
     }

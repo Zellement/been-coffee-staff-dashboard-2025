@@ -72,7 +72,7 @@
                             <span class="px-2 py-1">
                                 {{ startDate }}
                             </span>
-                            <span class="col-span-2 px-2 py-1">
+                            <span class="col-span-2 px-2 py-1 font-bold">
                                 Started at Been Coffee
                             </span>
                         </div>
@@ -88,7 +88,7 @@
                                 <span class="px-2 py-1">
                                     {{ data.value ?? 'N/A' }}
                                 </span>
-                                <span class="col-span-2 px-2 py-1">
+                                <span class="col-span-2 px-2 py-1 font-bold">
                                     {{ data.key }}
                                 </span>
                             </div>
@@ -112,7 +112,7 @@ const displayName: ComputedRef<string> = computed(() => {
     )
 })
 
-const { getMonthAndDayOnly, fullDateConverter } = useDateUtils()
+const { getMonthAndDayOnly, shortDateConverter } = useDateUtils()
 
 const profileData: ComputedRef<{ key: string; value: string | undefined }[]> =
     computed(() => {
@@ -135,7 +135,7 @@ const profileData: ComputedRef<{ key: string; value: string | undefined }[]> =
     })
 
 const startDate: ComputedRef<string | undefined> = computed(() => {
-    return fullDateConverter(
+    return shortDateConverter(
         new Date(userStore.userContentfulData?.fields?.startDate)
     )
 })

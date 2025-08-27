@@ -2,6 +2,7 @@ export const useContentfulUtils = () => {
     const completeTask = async (task: TypeDailyTask) => {
         const userStore = useUserStore()
         const toast = useToast()
+        const uiStore = useUiStore()
 
         const timezoneOffset = new Date().getTimezoneOffset() * 60000 //offset in milliseconds
         const localISOTime = new Date(Date.now() - timezoneOffset)
@@ -9,6 +10,7 @@ export const useContentfulUtils = () => {
             .slice(0, -1)
 
         try {
+            uiStore.refreshing = true
             await $fetch(`/api/contentful/update-entry`, {
                 method: 'POST',
                 body: {
@@ -25,8 +27,14 @@ export const useContentfulUtils = () => {
                 icon: 'i-bx-check'
             })
             // Wait before refetching to allow Contentful to update
-            setTimeout(() => {
-                refreshNuxtData()
+            setTimeout(async () => {
+                try {
+                    await refreshNuxtData()
+                } catch (error) {
+                    console.error('Error refreshing data', error)
+                } finally {
+                    uiStore.refreshing = false
+                }
             }, 2000)
         } catch (error) {
             toast.add({
