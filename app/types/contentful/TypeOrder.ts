@@ -14,6 +14,7 @@ export interface TypeOrderFields {
     staffLevel?: EntryFieldTypes.EntryLink<TypeRoleSkeleton>;
     deliveryCheckedBy?: EntryFieldTypes.Symbol;
     deliveryCheckedAt?: EntryFieldTypes.Date;
+    feedback?: EntryFieldTypes.Text;
 }
 
 export type TypeOrderSkeleton = EntrySkeletonType<TypeOrderFields, "order">;

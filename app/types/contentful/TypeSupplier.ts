@@ -2,6 +2,7 @@ import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleC
 
 export interface TypeSupplierFields {
     title: EntryFieldTypes.Symbol;
+    logo: EntryFieldTypes.AssetLink;
 }
 
 export type TypeSupplierSkeleton = EntrySkeletonType<TypeSupplierFields, "supplier">;
