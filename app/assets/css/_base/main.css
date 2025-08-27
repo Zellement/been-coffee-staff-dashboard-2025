@@ -78,3 +78,10 @@ button:not(:disabled) {
 .p-default {
     padding: calc(var(--spacing) * 2);
 }
+
+.card-border {
+    border-left: 1px solid var(--color-seashell-300);
+    border-top: 1px solid var(--color-seashell-300);
+    border-bottom: 1px solid var(--color-seashell-800);
+    border-right: 1px solid var(--color-seashell-800);
+}

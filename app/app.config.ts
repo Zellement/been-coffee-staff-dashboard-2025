@@ -62,7 +62,7 @@ export default defineAppConfig({
 
         card: {
             slots: {
-                root: 'overflow-hidden rounded-none rounded-tl-md rounded-br-md h-full border border-l-seashell-300 border-t-seashell-300 border-b-seashell-800 border-r-seashell-800',
+                root: 'overflow-hidden rounded-none rounded-tl-md rounded-br-md h-full border card-border',
                 header: 'p-3 sm:p-3',
                 body: 'p-3 sm:p-3 ',
                 footer: 'p-3 sm:p-3'

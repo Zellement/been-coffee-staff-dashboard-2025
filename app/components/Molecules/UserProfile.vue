@@ -1,5 +1,7 @@
 <template>
-    <div class="p-default m-2 mt-0 rounded-br rounded-bl bg-white shadow">
+    <div
+        class="p-default from-seashell-400 to-seashell-100 card-border m-2 mt-0 rounded-br rounded-bl bg-gradient-to-b"
+    >
         <u-drawer
             direction="top"
             inset
