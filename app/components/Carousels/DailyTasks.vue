@@ -18,7 +18,7 @@
                     auto-height
                     :ui="{ item: 'basis-48' }"
                 >
-                    <single-daily-task-card :item="item" />
+                    <card-daily-task :item="item" />
                 </u-carousel>
             </div>
         </div>

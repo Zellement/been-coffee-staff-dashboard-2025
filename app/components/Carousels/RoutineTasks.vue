@@ -32,7 +32,7 @@
                     auto-height
                     :ui="{ item: 'basis-48' }"
                 >
-                    <single-routine-task-card :key="item.sys.id" :item="item" />
+                    <card-routine-task :key="item.sys.id" :item="item" />
                 </u-carousel>
             </div>
         </div>

@@ -1,106 +1,110 @@
 <template>
-    <div
-        class="p-default from-seashell-400 to-seashell-100 card-border m-2 mt-0 rounded-br rounded-bl bg-gradient-to-b"
-    >
-        <u-drawer
-            direction="top"
-            inset
-            title="Show more user information"
-            description="View your profile information"
+    <div class="m-2 flex flex-col">
+        <div
+            class="p-default from-seashell-400 to-seashell-100 card-border mt-0 rounded-br rounded-bl bg-gradient-to-b"
         >
-            <button class="flex w-full items-center gap-2">
-                <div
-                    v-if="userStore.userContentfulData?.fields?.photo?.[0]"
-                    class="w-10"
-                >
+            <u-drawer
+                direction="top"
+                inset
+                title="Show more user information"
+                description="View your profile information"
+            >
+                <button class="flex w-full items-center gap-2">
+                    <div
+                        v-if="userStore.userContentfulData?.fields?.photo?.[0]"
+                        class="w-10"
+                    >
+                        <img
+                            class="border-butterscotch-500 rounded-full border-2 object-cover"
+                            :src="`${
+                                userStore.userContentfulData?.fields?.photo?.[0]
+                                    ?.fields?.file?.url
+                            }?w=50&h=50&fit=fill&f=face&fm=webp`"
+                            :alt="userStore.userContentfulData?.fields?.name"
+                        />
+                    </div>
                     <img
-                        class="border-butterscotch-500 rounded-full border-2 object-cover"
-                        :src="`${
-                            userStore.userContentfulData?.fields?.photo?.[0]
-                                ?.fields?.file?.url
-                        }?w=50&h=50&fit=fill&f=face&fm=webp`"
-                        :alt="userStore.userContentfulData?.fields?.name"
+                        v-else
+                        class="size-10"
+                        src="@/assets/images/been-staff-dashboard.png"
                     />
-                </div>
-                <img
-                    v-else
-                    class="size-10"
-                    src="@/assets/images/been-staff-dashboard.png"
-                />
 
-                <span class="text-md font-bold">
-                    Hello,
-                    <span class="">
-                        {{ displayName }}
+                    <span class="text-md font-bold">
+                        Hello,
+                        <span class="">
+                            {{ displayName }}
+                        </span>
                     </span>
-                </span>
-            </button>
-            <template #content>
-                <div
-                    class="p-default mx-auto flex w-full max-w-sm flex-col gap-5"
-                >
-                    <div class="grid w-full grid-cols-3 items-center">
-                        <span>Switch location</span>
-                        <location-switcher class="col-span-2" />
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <template
-                            v-for="(data, index) in profileData"
-                            :key="index"
-                        >
-                            <div
-                                v-if="data.value"
-                                class="grid w-full grid-cols-3 items-center"
+                </button>
+                <template #content>
+                    <div
+                        class="p-default mx-auto flex w-full max-w-sm flex-col gap-5"
+                    >
+                        <div class="grid w-full grid-cols-3 items-center">
+                            <span>Switch location</span>
+                            <location-switcher class="col-span-2" />
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <template
+                                v-for="(data, index) in profileData"
+                                :key="index"
                             >
-                                <span>{{ data.key }}</span>
-                                <span class="col-span-2 font-bold">
-                                    {{ data.value ?? 'N/A' }}
-                                </span>
+                                <div
+                                    v-if="data.value"
+                                    class="grid w-full grid-cols-3 items-center"
+                                >
+                                    <span>{{ data.key }}</span>
+                                    <span class="col-span-2 font-bold">
+                                        {{ data.value ?? 'N/A' }}
+                                    </span>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <h2 class="font-bold">Your history</h2>
+                            <div
+                                class="grid grid-cols-3 gap-1 overflow-clip rounded-tl rounded-tr font-bold"
+                            >
+                                <span class="bg-zinc-100 px-2 py-1">Date</span>
+                                <span
+                                    class="col-span-2 bg-zinc-100 px-2 py-1"
+                                ></span>
                             </div>
-                        </template>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <h2 class="font-bold">Your history</h2>
-                        <div
-                            class="grid grid-cols-3 gap-1 overflow-clip rounded-tl rounded-tr font-bold"
-                        >
-                            <span class="bg-zinc-100 px-2 py-1">Date</span>
-                            <span
-                                class="col-span-2 bg-zinc-100 px-2 py-1"
-                            ></span>
-                        </div>
 
-                        <div class="grid grid-cols-3">
-                            <span class="px-2 py-1">
-                                {{ startDate }}
-                            </span>
-                            <span class="col-span-2 px-2 py-1 font-bold">
-                                Started at Been Coffee
-                            </span>
-                        </div>
-
-                        <template
-                            v-for="(data, index) in historyData"
-                            :key="index"
-                        >
-                            <div
-                                v-if="data.value"
-                                class="grid w-full grid-cols-3 items-center"
-                            >
+                            <div class="grid grid-cols-3">
                                 <span class="px-2 py-1">
-                                    {{ data.value ?? 'N/A' }}
+                                    {{ startDate }}
                                 </span>
                                 <span class="col-span-2 px-2 py-1 font-bold">
-                                    {{ data.key }}
+                                    Started at Been Coffee
                                 </span>
                             </div>
-                        </template>
-                    </div>
 
-                    <auth-sign-out class="ml-auto" />
-                </div>
-            </template>
-        </u-drawer>
+                            <template
+                                v-for="(data, index) in historyData"
+                                :key="index"
+                            >
+                                <div
+                                    v-if="data.value"
+                                    class="grid w-full grid-cols-3 items-center"
+                                >
+                                    <span class="px-2 py-1">
+                                        {{ data.value ?? 'N/A' }}
+                                    </span>
+                                    <span
+                                        class="col-span-2 px-2 py-1 font-bold"
+                                    >
+                                        {{ data.key }}
+                                    </span>
+                                </div>
+                            </template>
+                        </div>
+
+                        <auth-sign-out class="ml-auto" />
+                    </div>
+                </template>
+            </u-drawer>
+        </div>
     </div>
 </template>
 
@@ -113,7 +117,6 @@ const displayName: ComputedRef<string> = computed(() => {
         userStore.userData?.display_name
     )
 })
-
 const { getMonthAndDayOnly, shortDateConverter } = useDateUtils()
 
 const profileData: ComputedRef<{ key: string; value: string | undefined }[]> =

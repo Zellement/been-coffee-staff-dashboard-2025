@@ -16,7 +16,7 @@ export default defineAppConfig({
                 {
                     color: 'success',
                     variant: 'solid',
-                    class: 'bg-gradient-to-br from-green-500 to-green-700 text-white '
+                    class: 'bg-gradient-to-br from-green-600 to-green-800 text-white '
                 }
             ]
         },

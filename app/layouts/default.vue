@@ -4,6 +4,7 @@
         <main>
             <slot />
         </main>
+        <sticky-footer />
     </div>
 </template>
 

@@ -10,12 +10,11 @@
                     auto-height
                     :ui="{ item: 'basis-48' }"
                 >
-                    <pre>{{ item?.fields }}</pre>
+                    <card-order :item="item" />
                 </u-carousel>
             </div>
         </div>
         <div v-else class="flex w-full gap-4 overflow-hidden">
-            <u-skeleton class="h-17 w-17 shrink-0 rounded-full" />
             <u-skeleton
                 v-for="i in 6"
                 :key="i"
@@ -51,14 +50,13 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     immediate: false
 })
 
-orders.value = data.value?.items || []
-
 watch(
     shouldFetch,
     (ready) => {
         if (ready) {
             execute().then(() => {
                 dataFetched.value = true
+                orders.value = data.value?.items || []
             })
         }
     },
