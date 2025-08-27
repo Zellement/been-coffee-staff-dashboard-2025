@@ -40,7 +40,7 @@
                         icon="i-bx-hourglass"
                     >
                         Due
-                        <span>{{ shortDateConverter(item.nextDueDate) }}</span>
+                        <span>{{ inXDays(item.nextDueDate) }}</span>
                     </u-badge>
                 </template>
                 <template v-else-if="item.type === 'overdue'">
@@ -149,7 +149,7 @@ const { completeTask } = useContentfulUtils()
 
 defineProps<Props>()
 
-const { fullDateConverter, shortDateConverter } = useDateUtils()
+const { fullDateConverter, inXDays } = useDateUtils()
 
 const handleCompleteTask = async (task: TypeDailyTask) => {
     loading.value = true

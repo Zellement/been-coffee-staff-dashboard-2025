@@ -176,6 +176,27 @@ export const useDateUtils = () => {
         return `${y}-${m <= 8 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`
     }
 
+    // Returns a string like 'in 3 days' or 'in 1 week'
+    /**
+     * Returns a string like 'in 3 days' or 'in tomorrow' for a future date.
+     * @param futureDate - The future date to compare to today.
+     * @returns A string describing how many days in the future the date is.
+     */
+    const inXDays = (futureDate: Date): string => {
+        const today = new Date()
+        // Zero out the time for both dates to compare only the calendar day
+        today.setHours(0, 0, 0, 0)
+        const future = new Date(futureDate)
+        future.setHours(0, 0, 0, 0)
+        const diffTime = future.getTime() - today.getTime()
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24))
+        if (diffDays === 1) {
+            return `tomorrow`
+        } else {
+            return `in ${diffDays} days`
+        }
+    }
+
     return {
         extractHourAndMinute,
         getTodaysDateInUrlEncodedFormat,
@@ -183,6 +204,7 @@ export const useDateUtils = () => {
         shortDateConverter,
         convertNumberTo24HrTime,
         getMonthAndDayOnly,
-        backwardsDate
+        backwardsDate,
+        inXDays
     }
 }

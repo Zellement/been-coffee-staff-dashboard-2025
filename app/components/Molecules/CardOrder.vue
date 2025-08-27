@@ -33,18 +33,53 @@
                         icon="i-bx-time"
                     >
                         Due
-                        {{
-                            shortDateConverter(item.fields.expectedDeliveryDate)
-                        }}
+                        {{ inXDays(item.fields.expectedDeliveryDate) }}
                     </u-badge>
-                    yo yo
                 </template>
-                <p>{{ item.fields.supplier.fields.title }}</p>
+                <nuxt-img
+                    class="mt-2 h-6"
+                    :src="item.fields.supplier.fields.logo?.fields?.file?.url"
+                    :alt="item.fields.supplier.fields.title"
+                />
             </button>
             <template #body>
                 <div class="flex flex-col items-start">
-                    <div class="whitespace-pre-line">
+                    <div class="mb-4 w-full border-b pb-4 whitespace-pre-line">
                         {{ item.fields.details }}
+                    </div>
+                    <div class="grid w-full grid-cols-2 gap-2 text-center">
+                        <u-card
+                            variant="soft"
+                            class="col-span-full flex flex-1 items-center justify-center gap-8"
+                        >
+                            <div>Ordered by:</div>
+                            <div class="font-semibold">
+                                <img
+                                    class="border-butterscotch-500 mx-auto rounded-full border-2 object-cover"
+                                    :src="`${
+                                        item.fields?.orderedBy?.fields
+                                            ?.photo?.[0]?.fields?.file?.url
+                                    }?w=50&h=50&fit=fill&f=face&fm=webp`"
+                                    :alt="item.fields.orderedBy?.fields?.name"
+                                />
+                            </div>
+                        </u-card>
+                        <u-card variant="soft" class="flex flex-1 flex-col">
+                            <div>Order date:</div>
+                            <div class="font-semibold">
+                                {{ fullDateConverter(item.fields.orderDate) }}
+                            </div>
+                        </u-card>
+                        <u-card variant="soft" class="flex flex-1 flex-col">
+                            <div>Expected delivery date:</div>
+                            <div class="font-semibold">
+                                {{
+                                    fullDateConverter(
+                                        item.fields.expectedDeliveryDate
+                                    )
+                                }}
+                            </div>
+                        </u-card>
                     </div>
                 </div>
             </template>
@@ -94,7 +129,7 @@ const loading: Ref<boolean> = ref(false)
 const props = defineProps<Props>()
 
 // const { completeTask } = useContentfulUtils()
-const { fullDateConverter, shortDateConverter } = useDateUtils()
+const { fullDateConverter, inXDays } = useDateUtils()
 
 // const today = new Date()
 // const currentHour = Number(today.getHours())
