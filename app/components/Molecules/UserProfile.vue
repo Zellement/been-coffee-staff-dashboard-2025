@@ -1,7 +1,7 @@
 <template>
     <div class="m-2 flex flex-col">
         <div
-            class="p-default from-seashell-400 to-seashell-100 card-border mt-0 rounded-br rounded-bl bg-gradient-to-b"
+            class="p-default from-seashell-400 to-seashell-100 dark:from-navy-600 dark:to-navy-500 card-border mt-0 rounded-br rounded-bl bg-gradient-to-b"
         >
             <u-drawer
                 direction="top"

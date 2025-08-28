@@ -16,7 +16,7 @@
 .dark {
     /* dark mode overrides */
     --app-bg: var(--color-navy-700);
-    --app-fg: var(--color-seashell-300);
+    --app-fg: var(--color-navy-50);
 
     background-color: var(--app-bg) !important;
     color: var(--app-fg) !important;
