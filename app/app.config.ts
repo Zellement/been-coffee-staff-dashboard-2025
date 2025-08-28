@@ -70,19 +70,19 @@ export default defineAppConfig({
             variants: {
                 variant: {
                     solid: {
-                        root: 'bg-gradient-to-tl from-seashell-500 to-white text-navy'
+                        root: 'bg-gradient-to-tl from-seashell-500 to-white text-navy dark:from-navy-500 dark:to-navy-600 dark:text-butterscotch-500'
                     },
                     outline: {
                         root: 'bg-tuscany-500 ring-0 text-white'
                     },
                     soft: {
-                        root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy'
+                        root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy dark:text-butterscotch-500'
                     },
                     subtle: {
                         root: 'bg-elevated/50 ring ring-default divide-y divide-default'
                     },
                     task: {
-                        root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy flex flex-col gap-3 relative',
+                        root: 'bg-gradient-to-tl from-seashell-200 to-white text-navy flex flex-col gap-3 relative dark:from-navy-500 dark:to-navy-600 dark:text-butterscotch-500',
                         body: 'flex flex-col gap-1 items-start'
                     }
                 }

@@ -42,7 +42,7 @@
                 </u-badge>
             </template>
             <nuxt-img
-                class="mt-2 h-4 w-auto max-w-full"
+                class="mt-2 h-5 w-auto max-w-full rounded bg-white p-0.5"
                 :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
                 :alt="item.fields.supplier.fields.title"
             />

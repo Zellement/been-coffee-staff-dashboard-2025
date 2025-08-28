@@ -1,6 +1,30 @@
 :root {
-    --ui-success: var(--color-green-600);
-    --ui-error: var(--color-red-700);
+    /* light mode */
+    --app-bg: var(--color-seashell-300);
+    --app-fg: var(--color-navy-500);
+
+    background-color: var(--app-bg);
+    color: var(--app-fg);
+
+    /* light */
+    --card-b-top: var(--color-seashell-300);
+    --card-b-left: var(--color-seashell-300);
+    --card-b-right: var(--color-seashell-800);
+    --card-b-bottom: var(--color-seashell-800);
+}
+
+.dark {
+    /* dark mode overrides */
+    --app-bg: var(--color-navy-700);
+    --app-fg: var(--color-seashell-300);
+
+    background-color: var(--app-bg) !important;
+    color: var(--app-fg) !important;
+
+    --card-b-top: var(--color-navy-400);
+    --card-b-left: var(--color-navy-400);
+    --card-b-right: var(--color-navy-700);
+    --card-b-bottom: var(--color-navy-700);
 }
 
 @theme static {

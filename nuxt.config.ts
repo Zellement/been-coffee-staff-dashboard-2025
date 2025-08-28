@@ -37,10 +37,6 @@ export default defineNuxtConfig({
         }
     },
 
-    ui: {
-        colorMode: false
-    },
-
     // Contentful image provider
     image: {
         provider: 'contentful',
