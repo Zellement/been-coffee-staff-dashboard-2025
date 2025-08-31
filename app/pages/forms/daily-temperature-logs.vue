@@ -3,9 +3,11 @@
         <h1 class="uc-text">Daily Temperature Logs</h1>
 
         <div v-if="state.hasSent" class="flex flex-col items-start gap-2">
-            <u-alert color="success" title="Success" />
-
-            <p>Please check the log has been updated correctly.</p>
+            <u-alert
+                color="success"
+                title="Success"
+                description="Your temperature logs have been submitted successfully. Please check the log has been updated correctly."
+            />
             <u-button
                 to="https://docs.google.com/spreadsheets/d/1Bh5vjjW7wU8HaMsP7-R0M0XTlx1Ohd9uh25AK3ZZrIY/edit#gid=0"
                 target="_blank"
@@ -22,7 +24,7 @@
             color="error"
             title="Error"
             description="There was an error submitting your temperature logs.  Please let Dan know
-                    pronto.                    To see the form again, please refresh this page."
+                    pronto. To see the form again, please refresh this page."
             icon="noto:skull-and-crossbones"
         />
 

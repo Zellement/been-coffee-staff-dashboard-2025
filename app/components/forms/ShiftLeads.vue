@@ -54,7 +54,7 @@
                 <span class="pl-8">Other</span>
             </label>
             <label v-if="isOtherSelected">
-                <input
+                <u-input
                     class="mt-4 w-full p-1 md:mt-2"
                     type="text"
                     placeholder="Hello, who are you?"
