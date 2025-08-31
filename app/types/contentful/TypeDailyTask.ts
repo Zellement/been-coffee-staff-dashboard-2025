@@ -5,6 +5,7 @@ export interface TypeDailyTaskFields {
     dueByHour: EntryFieldTypes.Integer;
     description: EntryFieldTypes.RichText;
     article?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<EntrySkeletonType>>;
+    completeVia?: EntryFieldTypes.Symbol;
 }
 
 export type TypeDailyTaskSkeleton = EntrySkeletonType<TypeDailyTaskFields, "dailyTask">;

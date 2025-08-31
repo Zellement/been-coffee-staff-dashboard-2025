@@ -2,6 +2,7 @@ import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleC
 
 export interface TypeRoleFields {
     title: EntryFieldTypes.Symbol;
+    isManagementOrLeadRole: EntryFieldTypes.Boolean;
 }
 
 export type TypeRoleSkeleton = EntrySkeletonType<TypeRoleFields, "role">;

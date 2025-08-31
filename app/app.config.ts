@@ -7,7 +7,8 @@ export default defineAppConfig({
             neutral: 'seashell',
             elevated: 'butterscotch',
             inverted: 'navy',
-            success: 'green'
+            success: 'green',
+            highlighted: 'blue'
         },
 
         button: {
@@ -147,16 +148,18 @@ export default defineAppConfig({
                 description: 'font-bold text-primary',
                 content: 'ring-navy-400 divide-navy-400'
             }
-        }
+        },
 
-        // alert: {
-        //     compoundVariants: [
-        //         {
-        //             variant: 'outline',
-        //             color: 'warning',
-        //             class: 'bg-red-500 !text-red-500 dark:bg-red-600 dark:text-red-400'
-        //         }
-        //     ]
-        // }
+        input: {
+            slots: {
+                base: 'text-red-500'
+            },
+            variants: {
+                variant: {
+                    outline:
+                        'text-navy-500 dark:text-seashell-500 ring-navy-500 dark:ring-seashell-500'
+                }
+            }
+        }
     }
 })

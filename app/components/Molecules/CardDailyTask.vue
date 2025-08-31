@@ -46,27 +46,37 @@
         </template>
         <template #footer>
             <u-button
-                v-if="!isGeneralLogin"
-                :disabled="loading"
-                class="ml-auto"
-                :icon="
-                    loading ? 'i-svg-spinners-blocks-shuffle-3' : 'i-bx-check'
-                "
-                color="tertiary"
-                @click="handleCompleteTask(item)"
+                v-if="hasCompleteVia"
+                :to="item.fields.task.fields.completeVia"
             >
-                {{ loading ? 'Loading...' : 'Mark as complete' }}
+                Go to temperature logging form
             </u-button>
-            <u-alert
-                v-else
-                variant="outline"
-                color="neutral"
-                icon="i-basil-info-circle-outline"
-                :ui="{
-                    icon: '!size-6'
-                }"
-                description="You are logged in as a shop so task completion is disabled."
-            />
+            <template v-else>
+                <u-button
+                    v-if="!isGeneralLogin"
+                    :disabled="loading"
+                    class="ml-auto"
+                    :icon="
+                        loading
+                            ? 'i-svg-spinners-blocks-shuffle-3'
+                            : 'i-bx-check'
+                    "
+                    color="tertiary"
+                    @click="handleCompleteTask(item)"
+                >
+                    {{ loading ? 'Loading...' : 'Mark as complete' }}
+                </u-button>
+                <u-alert
+                    v-else
+                    variant="outline"
+                    color="neutral"
+                    icon="i-basil-info-circle-outline"
+                    :ui="{
+                        icon: '!size-6'
+                    }"
+                    description="You are logged in as a shop so task completion is disabled."
+                />
+            </template>
         </template>
     </u-slideover>
 </template>
@@ -80,6 +90,10 @@ const userStore = useUserStore()
 
 const isGeneralLogin: ComputedRef<boolean> = computed(() => {
     return userStore.isGeneralLogin
+})
+
+const hasCompleteVia: ComputedRef<boolean> = computed(() => {
+    return !!props.item.fields.task.fields.completeVia
 })
 
 const open: Ref<boolean> = ref(false)

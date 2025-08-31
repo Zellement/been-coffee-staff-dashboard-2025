@@ -13,8 +13,6 @@ export default defineEventHandler(async (event) => {
 
     const params = getQuery(event)
 
-    // console.log('trying to fetch entries', params)
-
     try {
         const entries = await client.getEntries(params)
         // @ts-expect-error stringifySafe exists
