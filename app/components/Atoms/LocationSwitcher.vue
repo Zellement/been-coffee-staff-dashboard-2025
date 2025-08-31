@@ -5,6 +5,7 @@
             v-model="value"
             :items="locationsReduced"
             class="w-full"
+            variant="outline"
         />
     </div>
 </template>

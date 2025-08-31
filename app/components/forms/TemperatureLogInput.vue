@@ -2,7 +2,7 @@
     <label
         class="grid w-full grid-cols-12 justify-between gap-2 lg:items-center"
     >
-        <span class="col-span-full mb-2 font-bold md:col-span-4">
+        <span class="col-span-full font-bold md:col-span-4">
             {{ item }}
         </span>
         <span

@@ -1,7 +1,7 @@
 <template>
     <div class="layout">
         <user-profile />
-        <main>
+        <main class="pb-12">
             <slot />
         </main>
         <sticky-footer />

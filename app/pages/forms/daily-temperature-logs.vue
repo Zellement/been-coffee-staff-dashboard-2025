@@ -62,21 +62,17 @@
             v-if="!state.isSending && !state.hasSent && !state.hasErrored"
             id="daily-temperature-logs"
             ref="dailyTemperatureLogs"
-            class="flex flex-col gap-8"
+            class="flex flex-col gap-6"
             name="daily-temperature-logs"
             @submit.prevent="submitToGoogleSheets"
         >
             <shift-leads />
 
-            <div
-                class="flex flex-row items-center justify-start gap-2 text-xs italic"
-            >
-                <p>
-                    Freezers: -18&deg;C or lower &bull; Fridges: 1&deg;C -
-                    7&deg;C
-                </p>
-            </div>
-            <h2 class="h4">Bar Area</h2>
+            <ul>
+                <li>Freezers: -18&deg;C or lower</li>
+                <li>Fridges: 1&deg;C - 7&deg;C</li>
+            </ul>
+            <h2 class="uc-text">Bar Area</h2>
             <temperature-log-input item="Milk Fridge" />
             <temperature-log-input item="Blender Fridge" />
             <temperature-log-input item="Savoury Fridge" />
@@ -86,7 +82,7 @@
                 item="Daltons Freezer"
                 plus-or-minus="minus"
             />
-            <h2 class="h4">Back of House</h2>
+            <h2 class="uc-text">Back of House</h2>
             <temperature-log-input
                 item="Double Freezer"
                 plus-or-minus="minus"
@@ -96,23 +92,19 @@
                 plus-or-minus="minus"
             />
             <temperature-log-input item="Fridge" />
-            <textarea
+            <u-textarea
                 placeholder="Notes and comments"
-                class="dark:bg-navy-400 h-40 p-2"
                 name="Comments"
+                variant="outline"
             />
-            <button type="submit" class="button self-start">
-                I'm done, submit!
-            </button>
+            <u-button type="submit" class="self-end" color="tertiary">
+                Submit temperatures
+            </u-button>
         </form>
         <div v-else-if="state.isSending" class="">Sending, please wait...</div>
     </div>
 </template>
 <script setup>
-// import { useSupabaseStore } from '@/stores/supabase'
-
-// const supabaseStore = useSupabaseStore()
-
 const dailyTemperatureLogs = ref()
 
 const runtimeConfig = useRuntimeConfig()
@@ -128,8 +120,6 @@ const submitToGoogleSheets = () => {
     state.hasSent = false
     fetch(scriptURL, { method: 'POST', body: formData })
         .then(async () => {
-            // await supabaseStore.setCheck('daily_temperatures', user)
-            // await supabaseStore.setCheck('daily_temperatures_time', dateTime)
             state.isSending = false
             state.hasSent = true
         })

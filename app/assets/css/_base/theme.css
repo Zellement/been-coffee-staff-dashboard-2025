@@ -16,6 +16,7 @@
     --ui-text: var(--color-navy-100);
 
     --ui-warning: var(--color-tuscany-300);
+    --ui-error: var(--color-red-700);
 
     --card-b-top: var(--color-navy-400);
     --card-b-left: var(--color-navy-400);

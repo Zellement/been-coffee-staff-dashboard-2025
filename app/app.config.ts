@@ -86,16 +86,6 @@ export default defineAppConfig({
             }
         },
 
-        textarea: {
-            compoundVariants: [
-                {
-                    color: 'neutral',
-                    variant: 'outline',
-                    class: 'bg-white text-primary ring-navy-300 dark:bg-navy-900 dark:text-navy-200 dark:ring-navy-400'
-                }
-            ]
-        },
-
         card: {
             slots: {
                 root: 'overflow-hidden rounded-none rounded-tl-md rounded-br-md h-full border card-border',
@@ -151,13 +141,36 @@ export default defineAppConfig({
         },
 
         input: {
-            slots: {
-                base: 'text-red-500'
-            },
             variants: {
                 variant: {
                     outline:
                         'text-navy-500 dark:text-seashell-500 ring-navy-500 dark:ring-seashell-500'
+                }
+            }
+        },
+
+        textarea: {
+            variants: {
+                variant: {
+                    outline:
+                        'text-navy-500 dark:text-seashell-500 ring-navy-500 dark:ring-seashell-500 placeholder:text-navy-300 dark:placeholder:text-navy-300'
+                }
+            },
+
+            compoundVariants: [
+                {
+                    color: 'neutral',
+                    variant: 'outline',
+                    class: 'bg-white text-primary ring-navy-300 dark:bg-navy-900 dark:text-navy-200 dark:ring-navy-400'
+                }
+            ]
+        },
+
+        select: {
+            variants: {
+                variant: {
+                    outline:
+                        'text-navy-500 dark:text-seashell-500 ring-navy-500 dark:ring-seashell-500 '
                 }
             }
         }
