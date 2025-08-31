@@ -116,6 +116,9 @@ export default defineAppConfig({
                     subtle: {
                         root: 'bg-red-300'
                     },
+                    success: {
+                        root: ' bg-gradient-to-r from-green-600 to-green-700 text-white'
+                    },
                     task: {
                         root: 'bg-gradient-to-tl from-seashell-200 to-white flex flex-col gap-3 relative dark:from-navy-500 dark:to-navy-600 ',
                         body: 'flex flex-col gap-1 items-start'

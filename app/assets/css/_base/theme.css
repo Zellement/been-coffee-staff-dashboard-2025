@@ -13,7 +13,7 @@
 
 .dark {
     --ui-bg: var(--color-navy-800);
-    --ui-text: var(--color-seashell-200);
+    --ui-text: var(--color-navy-100);
 
     --ui-warning: var(--color-tuscany-300);
 

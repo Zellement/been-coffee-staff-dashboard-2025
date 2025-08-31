@@ -116,7 +116,7 @@
                 >
                     <u-card
                         v-if="item.fields.deliveryCheckedBy"
-                        variant="outline"
+                        variant="success"
                         class="flex flex-1 flex-col"
                     >
                         <p class="uc-text">Checked by:</p>
@@ -126,7 +126,7 @@
                     </u-card>
                     <u-card
                         v-if="item.fields.deliveryCheckedAt"
-                        variant="outline"
+                        variant="success"
                         class="flex flex-1 flex-col"
                     >
                         <p class="uc-text">Checked at:</p>
