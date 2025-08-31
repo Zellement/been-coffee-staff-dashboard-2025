@@ -1,8 +1,5 @@
 export const useContentfulUtils = () => {
-    const completeTask = async (
-        task: TypeTaskInstance,
-        doNotRefresh?: boolean
-    ) => {
+    const completeTask = async (task: TypeTaskInstance, key: string) => {
         const userStore = useUserStore()
         const toast = useToast()
         const uiStore = useUiStore()
@@ -30,17 +27,15 @@ export const useContentfulUtils = () => {
                 icon: 'i-bx-check'
             })
             // Wait before refetching to allow Contentful to update
-            if (!doNotRefresh) {
-                setTimeout(async () => {
-                    try {
-                        await refreshNuxtData()
-                    } catch (error) {
-                        console.error('Error refreshing data', error)
-                    } finally {
-                        uiStore.refreshing = false
-                    }
-                }, 2000)
-            }
+            setTimeout(async () => {
+                try {
+                    await refreshNuxtData(key)
+                } catch (error) {
+                    console.error('Error refreshing data', error)
+                } finally {
+                    uiStore.refreshing = false
+                }
+            }, 750)
         } catch (error) {
             toast.add({
                 title: 'Error completing task',
@@ -82,7 +77,7 @@ export const useContentfulUtils = () => {
             // Wait before refetching to allow Contentful to update
             setTimeout(async () => {
                 try {
-                    await refreshNuxtData()
+                    await refreshNuxtData(['orders'])
                 } catch (error) {
                     console.error('Error refreshing data', error)
                 } finally {

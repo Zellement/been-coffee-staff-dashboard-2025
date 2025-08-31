@@ -97,6 +97,9 @@ const taskCountCompletedToday: ComputedRef<number> = computed(() => {
 /* Functions & lifecycle */
 
 const { data, execute } = useFetch('/api/contentful/fetch-entries', {
+    key: 'dailyTasks',
+    lazy: true,
+    server: false,
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,

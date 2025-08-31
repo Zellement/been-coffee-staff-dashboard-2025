@@ -48,6 +48,7 @@
             <u-button
                 v-if="hasCompleteVia"
                 :to="item.fields.task.fields.completeVia"
+                color="tertiary"
             >
                 Go to temperature logging form
             </u-button>
@@ -120,7 +121,7 @@ const pastDueTime: ComputedRef<boolean> = computed(() => {
 
 const handleCompleteTask = async (task: TypeDailyTask) => {
     loading.value = true
-    await completeTask(task)
+    await completeTask(task, 'dailyTasks')
     loading.value = false
     open.value = false
 }

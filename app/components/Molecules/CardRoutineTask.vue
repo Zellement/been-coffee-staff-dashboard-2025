@@ -146,7 +146,7 @@ const { fullDateConverter, inXDays } = useDateUtils()
 
 const handleCompleteTask = async (task: TypeDailyTask) => {
     loading.value = true
-    await completeTask(task)
+    await completeTask(task, 'routineTasks')
     loading.value = false
     open.value = false
 }

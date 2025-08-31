@@ -145,7 +145,7 @@ const submitToGoogleSheets = async () => {
         }
 
         if (task.value) {
-            await completeTask(task.value)
+            await completeTask(task.value, 'dailyTasks')
         }
 
         state.hasSent = true

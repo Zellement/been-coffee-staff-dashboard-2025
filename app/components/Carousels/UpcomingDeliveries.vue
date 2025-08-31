@@ -97,6 +97,9 @@ const overdueOrders: ComputedRef<TypeOrder[]> = computed(() => {
 /* Functions & lifecycle */
 
 const { data, execute } = useFetch('/api/contentful/fetch-entries', {
+    key: 'orders',
+    lazy: true,
+    server: false,
     params: computed(() => ({
         content_type: 'order',
         'fields.location.sys.id': activeLocationId.value,

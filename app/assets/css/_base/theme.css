@@ -4,7 +4,7 @@
 
     --ui-warning: var(--color-tuscany-500);
     --ui-success: var(--color-green-500);
-
+    --ui-text-highlighted: var(--color-navy-800);
     /* light */
     --card-b-top: var(--color-seashell-300);
     --card-b-left: var(--color-seashell-300);
@@ -19,6 +19,7 @@
     --ui-warning: var(--color-tuscany-300);
     --ui-error: var(--color-red-700);
     --ui-success: var(--color-green-600);
+    --ui-text-highlighted: var(--color-white);
 
     --card-b-top: var(--color-navy-400);
     --card-b-left: var(--color-navy-400);

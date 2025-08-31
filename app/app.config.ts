@@ -16,7 +16,7 @@ export default defineAppConfig({
                 {
                     color: 'tertiary',
                     variant: 'solid',
-                    class: 'bg-navy-500 text-butterscotch-500 dark:bg-butterscotch-500 dark:text-navy-500 hover:bg-tuscany-800 hover:text-seashell-300'
+                    class: 'bg-navy-500 text-white dark:bg-butterscotch-500 dark:text-navy-500 hover:bg-tuscany-800 hover:text-seashell-300'
                 }
             ]
         },
@@ -128,7 +128,7 @@ export default defineAppConfig({
         },
 
         skeleton: {
-            base: 'bg-butterscotch-500/50'
+            base: 'bg-tuscany-500/50'
         },
 
         slideover: {
