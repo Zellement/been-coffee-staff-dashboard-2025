@@ -1,13 +1,12 @@
 import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
 import type { TypeArticleSkeleton } from "./TypeArticle";
-import type { TypeRoleSkeleton } from "./TypeRole";
 
 export interface TypeRoutineTaskFields {
     title: EntryFieldTypes.Symbol;
     description: EntryFieldTypes.RichText;
     minutesToComplete: EntryFieldTypes.Integer;
     frequencyInDays: EntryFieldTypes.Integer;
-    staffLevel?: EntryFieldTypes.EntryLink<TypeRoleSkeleton>;
+    staffLevel?: EntryFieldTypes.Symbol;
     article?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeArticleSkeleton>>;
 }
 

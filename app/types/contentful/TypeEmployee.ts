@@ -1,12 +1,12 @@
 import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
 import type { TypeLocationSkeleton } from "./TypeLocation";
-import type { TypeRoleSkeleton } from "./TypeRole";
 
 export interface TypeEmployeeFields {
     name: EntryFieldTypes.Symbol;
     surname: EntryFieldTypes.Symbol;
     primaryLocation?: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
-    role: EntryFieldTypes.EntryLink<TypeRoleSkeleton>;
+    jobRole: EntryFieldTypes.Symbol<"Assistant Manager" | "Barista" | "Director" | "Manager" | "Shift Lead" | "Support" | "_ShopLogin">;
+    jobRoleAddendum?: EntryFieldTypes.Symbol;
     photo?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
     dateOfBirth?: EntryFieldTypes.Date;
     startDate?: EntryFieldTypes.Date;

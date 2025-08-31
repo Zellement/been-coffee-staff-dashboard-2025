@@ -128,7 +128,7 @@ const profileData: ComputedRef<{ key: string; value: string | undefined }[]> =
         return [
             {
                 key: 'Role',
-                value: userStore.userContentfulData?.fields?.role.fields?.title
+                value: userStore.userContentfulData?.fields?.jobRole
             },
             {
                 key: 'Date of Birth',

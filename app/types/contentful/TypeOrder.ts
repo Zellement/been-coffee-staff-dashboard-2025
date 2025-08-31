@@ -1,7 +1,6 @@
 import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
 import type { TypeEmployeeSkeleton } from "./TypeEmployee";
 import type { TypeLocationSkeleton } from "./TypeLocation";
-import type { TypeRoleSkeleton } from "./TypeRole";
 import type { TypeSupplierSkeleton } from "./TypeSupplier";
 
 export interface TypeOrderFields {
@@ -11,7 +10,6 @@ export interface TypeOrderFields {
     location: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
     details?: EntryFieldTypes.Text;
     expectedDeliveryDate: EntryFieldTypes.Date;
-    staffLevel?: EntryFieldTypes.EntryLink<TypeRoleSkeleton>;
     deliveryCheckedBy?: EntryFieldTypes.Symbol;
     deliveryCheckedAt?: EntryFieldTypes.Date;
     feedback?: EntryFieldTypes.Text;

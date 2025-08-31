@@ -18,14 +18,14 @@
     >
         <u-card variant="task" :title="item.fields.task.fields.title">
             <u-badge
-                v-if="item.fields.task?.fields?.staffLevel?.fields"
+                v-if="item.fields.task?.fields?.staffLevel"
                 class="absolute top-1 right-1"
                 size="xs"
                 color="neutral"
                 variant="outline"
                 trailing-icon="i-bx-bxs-arrow-to-top"
             >
-                {{ item.fields.task.fields.staffLevel.fields.title }}
+                {{ item.fields.task.fields.staffLevel }}
             </u-badge>
             <template v-if="item.type === 'upcoming'">
                 <u-badge
@@ -85,11 +85,11 @@
                 </div>
 
                 <u-alert
-                    v-if="item.fields.task?.fields?.staffLevel?.fields"
+                    v-if="item.fields.task?.fields?.staffLevel"
                     color="neutral"
                     title="Heads up!"
                     variant="outline"
-                    :description="`Only a ${item.fields.task.fields.staffLevel.fields.title} or a more senior member of the team (if applicable) should complete this task.`"
+                    :description="`Only completable by ${item.fields.task.fields.staffLevel}.`"
                     icon="i-basil-info-circle-outline"
                     :ui="{
                         icon: '!size-6'

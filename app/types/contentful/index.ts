@@ -3,11 +3,9 @@ export type { TypeArticleCategories, TypeArticleCategoriesFields, TypeArticleCat
 export type { TypeBeenAwesomeWinner, TypeBeenAwesomeWinnerFields, TypeBeenAwesomeWinnerSkeleton } from "./TypeBeenAwesomeWinner";
 export type { TypeDailyTask, TypeDailyTaskFields, TypeDailyTaskSkeleton } from "./TypeDailyTask";
 export type { TypeEmployee, TypeEmployeeFields, TypeEmployeeSkeleton } from "./TypeEmployee";
-export type { TypeImageWithFocalPoint, TypeImageWithFocalPointFields, TypeImageWithFocalPointSkeleton } from "./TypeImageWithFocalPoint";
 export type { TypeLocation, TypeLocationFields, TypeLocationSkeleton } from "./TypeLocation";
 export type { TypeNoticeBoard, TypeNoticeBoardFields, TypeNoticeBoardSkeleton } from "./TypeNoticeBoard";
 export type { TypeOrder, TypeOrderFields, TypeOrderSkeleton } from "./TypeOrder";
-export type { TypeRole, TypeRoleFields, TypeRoleSkeleton } from "./TypeRole";
 export type { TypeRoutineTask, TypeRoutineTaskFields, TypeRoutineTaskSkeleton } from "./TypeRoutineTask";
 export type { TypeStandingOrder, TypeStandingOrderFields, TypeStandingOrderSkeleton } from "./TypeStandingOrder";
 export type { TypeSupplier, TypeSupplierFields, TypeSupplierSkeleton } from "./TypeSupplier";

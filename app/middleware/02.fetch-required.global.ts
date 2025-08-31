@@ -22,15 +22,10 @@ export default defineNuxtRouteMiddleware(async () => {
         params: {
             content_type: 'employee',
             include: 3,
-            'fields.role.sys.contentType.sys.id': 'role',
-            'fields.role.fields.title[nin]': 'Shop Login'
+            'fields.jobRole[nin]': '_ShopLogin'
         }
     })
 
     employeesStore.allEmployees = employeeData.items
-    employeesStore.allLeads = employeeData.items?.filter(
-        (employee: TypeEmployee) => {
-            return employee.fields.role.fields.isManagementOrLeadRole
-        }
-    )
+    employeesStore.allLeads = employeeData.items
 })
