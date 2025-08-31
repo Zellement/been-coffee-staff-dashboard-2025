@@ -8,6 +8,7 @@
                     v-slot="{ item }"
                     :items="sortedRoutineTaskInstances"
                     auto-height
+                    drag-free
                     :ui="{ item: 'basis-48' }"
                 >
                     <card-order :item="item" />

@@ -28,6 +28,7 @@
                 <u-carousel
                     v-if="sortedRoutineTaskInstances"
                     v-slot="{ item }"
+                    drag-free
                     :items="sortedRoutineTaskInstances"
                     auto-height
                     :ui="{ item: 'basis-48' }"

@@ -14,6 +14,7 @@
                 <u-carousel
                     v-if="sortedDailyTasks"
                     v-slot="{ item }"
+                    drag-free
                     :items="sortedDailyTasks"
                     auto-height
                     :ui="{ item: 'basis-48' }"
