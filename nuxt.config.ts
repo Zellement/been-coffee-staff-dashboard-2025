@@ -144,6 +144,12 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             WEBSITE_URL: import.meta.env.WEBSITE_URL
+            // GOOGLE_SHEETS_SCRIPT_DAILY_CASH_BREAKDOWN:
+            //     process.env.GOOGLE_SHEETS_SCRIPT_DAILY_CASH_BREAKDOWN,
+            // GOOGLE_SHEETS_SCRIPT_ROUTINE_TASKS:
+            //     process.env.GOOGLE_SHEETS_SCRIPT_ROUTINE_TASKS,
+            // GOOGLE_SHEETS_SCRIPT_DAILY_TEMPERATURE_LOGS:
+            //     process.env.GOOGLE_SHEETS_SCRIPT_DAILY_TEMPERATURE_LOGS
         },
         CONTENTFUL_CDA_ACCESS_TOKEN: import.meta.env
             .CONTENTFUL_CDA_ACCESS_TOKEN,

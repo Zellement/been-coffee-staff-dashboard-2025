@@ -1,5 +1,8 @@
 export const useContentfulUtils = () => {
-    const completeTask = async (task: TypeDailyTask) => {
+    const completeTask = async (
+        task: TypeTaskInstance,
+        doNotRefresh?: boolean
+    ) => {
         const userStore = useUserStore()
         const toast = useToast()
         const uiStore = useUiStore()
@@ -27,15 +30,17 @@ export const useContentfulUtils = () => {
                 icon: 'i-bx-check'
             })
             // Wait before refetching to allow Contentful to update
-            setTimeout(async () => {
-                try {
-                    await refreshNuxtData()
-                } catch (error) {
-                    console.error('Error refreshing data', error)
-                } finally {
-                    uiStore.refreshing = false
-                }
-            }, 2000)
+            if (!doNotRefresh) {
+                setTimeout(async () => {
+                    try {
+                        await refreshNuxtData()
+                    } catch (error) {
+                        console.error('Error refreshing data', error)
+                    } finally {
+                        uiStore.refreshing = false
+                    }
+                }, 2000)
+            }
         } catch (error) {
             toast.add({
                 title: 'Error completing task',
@@ -46,7 +51,7 @@ export const useContentfulUtils = () => {
         } finally {
         }
     }
-    const checkedOrder = async (task: TypeDailyTask, feedback?: string) => {
+    const checkedOrder = async (task: TypeOrder, feedback?: string) => {
         const userStore = useUserStore()
         const toast = useToast()
         const uiStore = useUiStore()

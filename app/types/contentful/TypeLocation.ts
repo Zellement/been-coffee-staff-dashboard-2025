@@ -5,6 +5,9 @@ export interface TypeLocationFields {
     slug: EntryFieldTypes.Symbol;
     temperatureLoggingItemsBar: EntryFieldTypes.Object;
     temperatureLoggingItemsBack: EntryFieldTypes.Object;
+    googleSheetsScriptTemperatureLogs?: EntryFieldTypes.Symbol;
+    googleSheetsScriptCashBreakdown?: EntryFieldTypes.Symbol;
+    googleSheetsScriptRoutineTasks?: EntryFieldTypes.Symbol;
 }
 
 export type TypeLocationSkeleton = EntrySkeletonType<TypeLocationFields, "location">;
