@@ -1,7 +1,7 @@
 <template>
     <div class="m-2 mt-0 flex flex-col">
         <div
-            class="p-default dark:from-navy-600 dark:to-navy-500 card-border mt-0 rounded-br rounded-bl bg-gradient-to-b from-neutral-700"
+            class="p-default dark:from-navy-600 dark:to-navy-500 card-border mt-0 rounded-br rounded-bl bg-gradient-to-b from-neutral-700 dark:!border-t-0"
         >
             <u-drawer
                 direction="top"

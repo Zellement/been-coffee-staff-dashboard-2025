@@ -16,7 +16,7 @@
         :title="item.fields.task.fields.title"
         :description="`Last completed: ${item.lastCompletedDate ? fullDateConverter(item.lastCompletedDate) : 'Never'}`"
     >
-        <u-card variant="task" :title="item.fields.task.fields.title">
+        <u-card variant="solid" :title="item.fields.task.fields.title">
             <u-badge
                 v-if="item.fields.task?.fields?.staffLevel"
                 class="absolute top-1 right-1"

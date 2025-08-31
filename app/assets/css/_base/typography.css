@@ -37,6 +37,7 @@ strong {
     letter-spacing: 0.15em;
     font-weight: bold;
     color: var(--color-tuscany-700);
+    margin-bottom: calc(var(--spacing) * 2);
 
     &.uc-text--sm {
         font-size: var(--text-sm);

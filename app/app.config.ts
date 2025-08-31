@@ -59,7 +59,7 @@ export default defineAppConfig({
                 next: 'absolute rounded-full',
                 dots: 'absolute inset-x-0 -bottom-7 flex flex-wrap items-center justify-center gap-3',
                 dot: [
-                    'cursor-pointer size-3 bg-accented rounded-full',
+                    'cursor-pointer size-3 bg-butterscotch-200 dark:bg-navy-200 rounded-full',
                     'transition'
                 ]
             },
@@ -80,7 +80,7 @@ export default defineAppConfig({
                 },
                 active: {
                     true: {
-                        dot: 'data-[state=active]:bg-inverted'
+                        dot: 'data-[state=active]:bg-butterscotch-500 dark:data-[state=active]:bg-butterscotch-500'
                     }
                 }
             }
@@ -96,7 +96,8 @@ export default defineAppConfig({
             variants: {
                 variant: {
                     solid: {
-                        root: 'bg-gradient-to-tl from-seashell-500 card-border to-white  dark:from-navy-500 dark:to-navy-600 '
+                        root: 'bg-gradient-to-tl to-seashell-300 from-seashell-600 flex flex-col gap-3 relative dark:from-navy-500 dark:to-navy-700 text-navy-900 dark:text-seashell-500',
+                        body: 'flex flex-col gap-1 items-start'
                     },
                     outline: {
                         root: 'card-border ring-0'
@@ -109,10 +110,6 @@ export default defineAppConfig({
                     },
                     success: {
                         root: ' bg-gradient-to-r from-green-600 to-green-700 text-white'
-                    },
-                    task: {
-                        root: 'bg-gradient-to-tl from-seashell-200 to-white flex flex-col gap-3 relative dark:from-navy-500 dark:to-navy-600 ',
-                        body: 'flex flex-col gap-1 items-start'
                     }
                 }
             },

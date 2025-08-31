@@ -1,5 +1,5 @@
 <template>
-    <div class="p-default">
+    <div class="p-c-default">
         <u-slideover title="All Routine Tasks" aria-label="All Routine Tasks">
             <h2 class="uc-text uc-text--xs flex items-center gap-2">
                 <span>Routine tasks</span>
