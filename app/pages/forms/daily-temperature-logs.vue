@@ -34,7 +34,7 @@
             name="daily-temperature-logs"
             @submit.prevent="submitToGoogleSheets"
         >
-            <!-- <shift-leads /> -->
+            <shift-leads />
             <input name="Team member" value="Dan" />
 
             <ul>

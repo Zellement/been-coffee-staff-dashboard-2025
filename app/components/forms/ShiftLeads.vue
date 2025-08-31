@@ -1,14 +1,11 @@
 <template>
     <p>leads</p>
-    <!-- <div class="shift-leads flex flex-col">
+    <div class="shift-leads flex flex-col">
         <h2 class="h4 mb-4">Lead</h2>
-        <div
-            v-if="hasTeam"
-            class="flex flex-col md:flex-row md:flex-wrap md:gap-8"
-        >
+        <div v-if="hasTeam" class="flex flex-wrap gap-8">
             <label
                 v-for="member in team"
-                :key="member.id"
+                :key="member.sys.id"
                 class="relative flex flex-row items-center gap-2 py-3"
             >
                 <input
@@ -24,15 +21,16 @@
                     class="shift-leads__img-wrapper absolute top-1/2 left-0 flex aspect-square h-12 w-12 -translate-y-1/2 overflow-hidden rounded-full p-1"
                 >
                     <img
-                        v-if="member.image"
-                        :alt="member.name"
-                        :src="$urlFor(member.image).width(60).height(60).url()"
-                        class="h-full w-full rounded-full object-cover"
+                        class="border-butterscotch-500 rounded-full border-2 object-cover"
+                        :src="`${
+                            member?.fields?.photo?.[0]?.fields?.file?.url
+                        }?w=50&h=50&fit=fill&f=face&fm=webp`"
+                        :alt="member?.fields?.name"
                     />
                 </div>
-                <span class="shift-leads__member-name pl-8">{{
-                    member.name
-                }}</span>
+                <span class="shift-leads__member-name pl-8">
+                    {{ member.fields.name }}
+                </span>
             </label>
             <label class="relative flex flex-row items-center gap-2 py-3">
                 <input
@@ -55,7 +53,7 @@
                 </div>
                 <span class="pl-8">Other</span>
             </label>
-            <label v-if="otherSelected">
+            <label v-if="isOtherSelected">
                 <input
                     class="mt-4 w-full p-1 md:mt-2"
                     type="text"
@@ -64,38 +62,52 @@
                 />
             </label>
         </div>
-    </div> -->
+    </div>
 </template>
 
-<script setup>
-// const state = reactive({
-//     isOtherSelected: false
-// })
+<script lang="ts" setup>
+const employeesStore = useEmployeesStore()
 
-// const otherSelected = computed(() => {
-//     return state.isOtherSelected
-// })
+const leadEmployees: ComputedRef<TypeEmployee[] | null> = computed(() => {
+    return employeesStore.allLeads
+})
 
-// const toggleIsOtherSelected = (value) => {
-//     state.isOtherSelected = value ?? !state.isOtherSelected
-// }
+const isOtherSelected: Ref<boolean> = ref(false)
 
-// const query = groq`*[_type == "teamMember" && managerKeyHolder && !formerEmployee]|order(name asc){
-//     name,
-//       image
-// }
-// `
+const toggleIsOtherSelected = (value: boolean) => {
+    isOtherSelected.value = value ?? isOtherSelected.value
+}
 
-// const sanity = useSanity()
-
-// const { data } = await useAsyncData('latestUpdatedArticles', () =>
-//     sanity.fetch(query)
-// )
-
-// const hasTeam = computed(() => {
-//     return data.value && data.value.length > 0
-// })
-// const team = computed(() => {
-//     return data.value
-// })
+const hasTeam = computed(() => {
+    return leadEmployees.value && leadEmployees.value.length > 0
+})
+const team = computed(() => {
+    return leadEmployees.value
+})
 </script>
+
+<style>
+.shift-leads label {
+    cursor: pointer;
+}
+
+.shift-leads__img-wrapper {
+    pointer-events: none;
+    filter: grayscale(1);
+    transition-property: color, border-color, background-color, filter;
+    transition-duration: 300ms;
+}
+.shift-leads input[type='radio']:checked + .shift-leads__img-wrapper {
+    border-color: #1e293b; /* navy-500 */
+    filter: none;
+}
+.dark .shift-leads input[type='radio']:checked + .shift-leads__img-wrapper {
+    border-color: #b48a78; /* tuscany-500 */
+}
+.shift-leads input[type='radio']:checked ~ .shift-leads__member-name {
+    color: #b48a78; /* tuscany-500 */
+}
+.dark .shift-leads input[type='radio']:checked ~ .shift-leads__member-name {
+    color: #ffcb74; /* butterscotch-500 */
+}
+</style>
