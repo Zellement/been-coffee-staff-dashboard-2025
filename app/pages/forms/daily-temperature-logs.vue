@@ -72,31 +72,28 @@
                 <li>Freezers: -18&deg;C or lower</li>
                 <li>Fridges: 1&deg;C - 7&deg;C</li>
             </ul>
+
             <h2 class="uc-text">Bar Area</h2>
-            <temperature-log-input item="Milk Fridge" />
-            <temperature-log-input item="Blender Fridge" />
-            <temperature-log-input item="Savoury Fridge" />
-            <temperature-log-input item="Savoury Display" />
-            <temperature-log-input item="Bar Freezer" plus-or-minus="minus" />
             <temperature-log-input
-                item="Daltons Freezer"
-                plus-or-minus="minus"
+                v-for="item in temperatureLoggingItemsBar"
+                :key="item.id"
+                :item="item.key"
+                :plus-or-minus="item.value"
             />
             <h2 class="uc-text">Back of House</h2>
             <temperature-log-input
-                item="Double Freezer"
-                plus-or-minus="minus"
+                v-for="item in temperatureLoggingItemsBack"
+                :key="item.id"
+                :item="item.key"
+                :plus-or-minus="item.value"
             />
-            <temperature-log-input
-                item="Single Freezer"
-                plus-or-minus="minus"
-            />
-            <temperature-log-input item="Fridge" />
+
             <u-textarea
                 placeholder="Notes and comments"
                 name="Comments"
                 variant="outline"
             />
+
             <u-button type="submit" class="self-end" color="tertiary">
                 Submit temperatures
             </u-button>
@@ -104,26 +101,56 @@
         <div v-else-if="state.isSending" class="">Sending, please wait...</div>
     </div>
 </template>
-<script setup>
+<script lang="ts" setup>
+const locationsStore = useLocationsStore()
+
+const currentLocation: ComputedRef<TypeLocation | undefined> = computed(() => {
+    return locationsStore.activeLocation
+})
+
+const temperatureLoggingItemsBar: ComputedRef<TemperatureRepeaterItem[]> =
+    computed(() => {
+        return currentLocation.value?.fields?.temperatureLoggingItemsBar ?? []
+    })
+
+const temperatureLoggingItemsBack: ComputedRef<TemperatureRepeaterItem[]> =
+    computed(() => {
+        return currentLocation.value?.fields?.temperatureLoggingItemsBack ?? []
+    })
+
 const dailyTemperatureLogs = ref()
 
 const runtimeConfig = useRuntimeConfig()
-
 const scriptURL =
-    runtimeConfig.public.GOOGLE_SHEETS_SCRIPT_DAILY_TEMPERATURE_LOGS
+    runtimeConfig?.public?.GOOGLE_SHEETS_SCRIPT_DAILY_TEMPERATURE_LOGS || ''
 
-const submitToGoogleSheets = () => {
+const submitToGoogleSheets = async () => {
     const formData = new FormData(dailyTemperatureLogs.value)
-    // const user = formData.get('Team member')
-    // const dateTime = new Date()
     state.isSending = true
     state.hasSent = false
-    fetch(scriptURL, { method: 'POST', body: formData })
-        .then(async () => {
-            state.isSending = false
-            state.hasSent = true
+    state.hasErrored = false
+    try {
+        if (
+            !scriptURL ||
+            typeof scriptURL !== 'string' ||
+            scriptURL.trim() === ''
+        ) {
+            throw new Error('Google Sheets script URL is not defined.')
+        }
+        const response = await fetch(scriptURL as string, {
+            method: 'POST',
+            body: formData
         })
-        .catch((error) => console.error('Error!', error.message))
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        state.isSending = false
+        state.hasSent = true
+    } catch (error: any) {
+        state.isSending = false
+        state.hasErrored = true
+        console.error('Error!', error?.message || error)
+    }
 }
 
 useHead({

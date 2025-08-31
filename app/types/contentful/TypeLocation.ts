@@ -3,6 +3,8 @@ import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleC
 export interface TypeLocationFields {
     postcode?: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
+    temperatureLoggingItemsBar: EntryFieldTypes.Object;
+    temperatureLoggingItemsBack: EntryFieldTypes.Object;
 }
 
 export type TypeLocationSkeleton = EntrySkeletonType<TypeLocationFields, "location">;

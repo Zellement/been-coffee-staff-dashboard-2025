@@ -43,11 +43,9 @@
 </template>
 
 <script lang="ts" setup>
-type PlusOrMinus = 'plus' | 'minus'
-
 interface Props {
     item: string
-    plusOrMinus: PlusOrMinus
+    plusOrMinus?: PlusOrMinus
 }
 
 const props = withDefaults(defineProps<Props>(), {

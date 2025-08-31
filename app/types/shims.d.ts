@@ -13,6 +13,17 @@ declare global {
         subItems?: NavItem[]
     }
 
+    type PlusOrMinus = 'plus' | 'minus'
+    interface RepeaterItem {
+        id: string
+        key: string
+        value: string
+    }
+
+    interface TemperatureRepeaterItem extends RepeaterItem {
+        value: PlusOrMinus
+    }
+
     interface UtmParameters {
         [key: `utm_${string}`]: string
     }
