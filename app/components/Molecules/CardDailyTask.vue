@@ -52,6 +52,7 @@
                 :icon="
                     loading ? 'i-svg-spinners-blocks-shuffle-3' : 'i-bx-check'
                 "
+                color="tertiary"
                 @click="handleCompleteTask(item)"
             >
                 {{ loading ? 'Loading...' : 'Mark as complete' }}

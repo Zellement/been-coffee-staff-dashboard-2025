@@ -75,9 +75,9 @@ const progressBarClasses: ComputedRef<any> = computed(() => {
               unfilledBar: 'text-green-100'
           }
         : {
-              circle: 'text-butterscotch-200',
+              circle: 'text-butterscotch-200 dark:text-butterscotch-900',
               circleFill: 'none',
-              filledBar: 'text-butterscotch-500',
+              filledBar: 'dark:text-butterscotch-500 text-tuscany-500',
               text: 'text-butterscotch-500',
               unfilledBar: 'text-butterscotch-100'
           }

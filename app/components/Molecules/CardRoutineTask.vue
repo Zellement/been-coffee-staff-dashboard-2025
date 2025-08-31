@@ -69,14 +69,14 @@
                     />
                 </div>
                 <div class="flex w-full gap-2 text-center">
-                    <u-card variant="soft" class="flex flex-1 flex-col">
-                        <div>Minutes to complete:</div>
+                    <u-card variant="outline" class="flex flex-1 flex-col">
+                        <p class="uc-text">Minutes to complete:</p>
                         <div class="font-semibold">
                             {{ item.fields.task.fields.minutesToComplete }}
                         </div>
                     </u-card>
-                    <u-card variant="soft" class="flex flex-1 flex-col">
-                        <div>Frequency:</div>
+                    <u-card variant="outline" class="flex flex-1 flex-col">
+                        <p class="uc-text">Frequency:</p>
                         <div class="font-semibold">
                             {{ item.fields.task.fields.frequencyInDays }}
                             days
@@ -102,6 +102,7 @@
                 v-if="!isGeneralLogin"
                 :disabled="loading"
                 class="ml-auto"
+                color="tertiary"
                 :icon="
                     loading ? 'i-svg-spinners-blocks-shuffle-3' : 'i-bx-check'
                 "

@@ -4,16 +4,23 @@
             <nuxt-page />
         </nuxt-layout>
 
-        <UModal v-model:open="showOverlay" :dismissible="false">
+        <u-modal
+            v-model:open="showOverlay"
+            :ui="{
+                content: 'bg-transparent ring-0 shadow-none'
+            }"
+            :dismissible="false"
+        >
             <template #content>
                 <div class="flex items-center p-4">
                     <u-icon
                         class="m-auto"
+                        size="32"
                         name="i-svg-spinners-blocks-shuffle-3"
                     />
                 </div>
             </template>
-        </UModal>
+        </u-modal>
     </u-app>
 </template>
 

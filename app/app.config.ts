@@ -1,21 +1,42 @@
 export default defineAppConfig({
     ui: {
         colors: {
-            primary: 'var(--app-primary)',
-            secondary: 'var(--app-secondary)',
-            tertiary: 'var(--app-tertiary)',
-            neutral: 'var(--app-neutral)',
-            elevated: 'var(--app-elevated)'
+            primary: 'navy',
+            secondary: 'tuscany',
+            tertiary: 'butterscotch',
+            neutral: 'seashell',
+            elevated: 'butterscotch',
+            inverted: 'navy',
+            success: 'green'
         },
 
-        button: {},
+        button: {
+            compoundVariants: [
+                {
+                    color: 'tertiary',
+                    variant: 'solid',
+                    class: 'bg-navy-500 text-butterscotch-500 dark:bg-butterscotch-500 dark:text-navy-500 hover:bg-tuscany-800 hover:text-seashell-300'
+                }
+            ]
+        },
+
+        modal: {
+            slots: {
+                overlay: 'bg-seashell-500/75 dark:bg-navy-500/75'
+            }
+        },
 
         badge: {
             compoundVariants: [
                 {
                     color: 'error',
                     variant: 'solid',
-                    class: 'bg-gradient-to-br from-red-500 to-red-700 text-white '
+                    class: 'bg-gradient-to-br from-red-600 to-red-800 text-white '
+                },
+                {
+                    color: 'neutral',
+                    variant: 'outline',
+                    class: 'dark:ring-navy-400 ring-navy-100 bg-transparent'
                 },
                 {
                     color: 'success',
@@ -64,6 +85,16 @@ export default defineAppConfig({
             }
         },
 
+        textarea: {
+            compoundVariants: [
+                {
+                    color: 'neutral',
+                    variant: 'outline',
+                    class: 'bg-white text-primary ring-navy-300 dark:bg-navy-900 dark:text-navy-200 dark:ring-navy-400'
+                }
+            ]
+        },
+
         card: {
             slots: {
                 root: 'overflow-hidden rounded-none rounded-tl-md rounded-br-md h-full border card-border',
@@ -74,19 +105,19 @@ export default defineAppConfig({
             variants: {
                 variant: {
                     solid: {
-                        root: 'bg-gradient-to-tl from-seashell-500 to-white  dark:from-navy-500 dark:to-navy-600 '
+                        root: 'bg-gradient-to-tl from-seashell-500 card-border to-white  dark:from-navy-500 dark:to-navy-600 '
                     },
                     outline: {
-                        root: 'bg-tuscany-500 ring-0 text-white'
+                        root: 'card-border ring-0'
                     },
                     soft: {
-                        root: 'bg-gradient-to-tl from-seashell-200 to-white  '
+                        root: ''
                     },
                     subtle: {
-                        root: 'bg-elevated/50 ring ring-default divide-y divide-default'
+                        root: 'bg-red-300'
                     },
                     task: {
-                        root: 'bg-gradient-to-tl from-seashell-200 to-white  flex flex-col gap-3 relative dark:from-navy-500 dark:to-navy-600 ',
+                        root: 'bg-gradient-to-tl from-seashell-200 to-white flex flex-col gap-3 relative dark:from-navy-500 dark:to-navy-600 ',
                         body: 'flex flex-col gap-1 items-start'
                     }
                 }
@@ -108,10 +139,21 @@ export default defineAppConfig({
 
         slideover: {
             slots: {
-                overlay: 'bg-zinc-700/75',
-                title: 'uc-text',
-                description: 'font-bold'
+                overlay: 'bg-seashell-700/75 dark:bg-navy-700/75',
+                title: 'uc-text text-secondary',
+                description: 'font-bold text-primary',
+                content: 'ring-navy-400 divide-navy-400'
             }
         }
+
+        // alert: {
+        //     compoundVariants: [
+        //         {
+        //             variant: 'outline',
+        //             color: 'warning',
+        //             class: 'bg-red-500 !text-red-500 dark:bg-red-600 dark:text-red-400'
+        //         }
+        //     ]
+        // }
     }
 })

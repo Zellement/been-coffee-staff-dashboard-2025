@@ -58,22 +58,27 @@
                 <div v-else>Usual order from this supplier.</div>
                 <div class="grid w-full grid-cols-2 gap-2 text-center">
                     <u-card
-                        variant="soft"
-                        class="flex items-center justify-center gap-8"
+                        variant="outline"
+                        class="flex items-center justify-center gap-8 text-center"
                     >
-                        <div class="m-auto overflow-hidden rounded-md bg-white">
+                        <p class="uc-text">
+                            {{ item.fields.supplier.fields.title }}
+                        </p>
+                        <div
+                            class="m-auto mt-2 self-center overflow-hidden rounded-md bg-white"
+                        >
                             <nuxt-img
-                                class="mt-2 h-4 w-auto max-w-full"
+                                class="m-auto h-4 w-auto max-w-full"
                                 :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
                                 :alt="item.fields.supplier.fields.title"
                             />
                         </div>
                     </u-card>
                     <u-card
-                        variant="soft"
+                        variant="outline"
                         class="flex items-center justify-center gap-8"
                     >
-                        <div>Ordered by:</div>
+                        <p class="uc-text">Ordered by:</p>
                         <div class="">
                             <img
                                 class="border-butterscotch-500 mx-auto rounded-full border-2 object-cover"
@@ -85,14 +90,14 @@
                             />
                         </div>
                     </u-card>
-                    <u-card variant="soft" class="flex flex-1 flex-col">
-                        <div>Order date:</div>
+                    <u-card variant="outline" class="flex flex-1 flex-col">
+                        <p class="uc-text">Order date:</p>
                         <div class="font-semibold">
                             {{ fullDateConverter(item.fields.orderDate) }}
                         </div>
                     </u-card>
-                    <u-card variant="soft" class="flex flex-1 flex-col">
-                        <div>Expected delivery date:</div>
+                    <u-card variant="outline" class="flex flex-1 flex-col">
+                        <p class="uc-text">Expected delivery date:</p>
                         <div class="font-semibold">
                             {{
                                 fullDateConverter(
@@ -114,7 +119,7 @@
                         variant="outline"
                         class="flex flex-1 flex-col"
                     >
-                        <div>Checked by:</div>
+                        <p class="uc-text">Checked by:</p>
                         <div class="font-semibold">
                             {{ item.fields.deliveryCheckedBy }}
                         </div>
@@ -124,7 +129,7 @@
                         variant="outline"
                         class="flex flex-1 flex-col"
                     >
-                        <div>Checked at:</div>
+                        <p class="uc-text">Checked at:</p>
                         <div class="font-semibold">
                             {{
                                 fullDateConverter(
@@ -140,18 +145,22 @@
         <template #footer>
             <div v-if="!isGeneralLogin" class="flex flex-col gap-2">
                 <u-alert
-                    variant="solid"
-                    color="neutral"
+                    variant="outline"
+                    color="warning"
                     title="Issue with this order?"
                     description="If there is something wrong with this order, please contact your manager before approving this order."
                 />
                 <u-textarea
                     v-model="feedback"
                     placeholder="Any notes for this order?"
+                    color="neutral"
+                    variant="outline"
+                    name="feedback"
                 />
                 <u-button
                     :disabled="loading"
                     class="ml-auto"
+                    color="tertiary"
                     :icon="
                         loading
                             ? 'i-svg-spinners-blocks-shuffle-3'

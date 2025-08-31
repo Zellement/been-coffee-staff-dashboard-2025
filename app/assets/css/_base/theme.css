@@ -1,12 +1,8 @@
 :root {
-    /* light mode */
-    --app-primary: var(--color-navy-500);
-    --app-secondary: var(--color-tuscany-500);
-    --app-neutral: var(--color-seashell-500);
-    --app-elevated: var(--color-butterscotch-500);
-
     --ui-bg: var(--color-seashell-500);
     --ui-text: var(--color-navy-800);
+
+    --ui-warning: var(--color-tuscany-500);
 
     /* light */
     --card-b-top: var(--color-seashell-300);
@@ -16,32 +12,18 @@
 }
 
 .dark {
-    /* dark mode overrides */
-    --app-primary: var(--color-navy-500);
-    --app-secondary: var(--color-tuscany-500);
-    --app-neutral: var(--color-seashell-500);
-    --app-elevated: var(--color-butterscotch-500);
-
     --ui-bg: var(--color-navy-800);
     --ui-text: var(--color-seashell-200);
 
+    --ui-warning: var(--color-tuscany-300);
+
     --card-b-top: var(--color-navy-400);
     --card-b-left: var(--color-navy-400);
-    --card-b-right: var(--color-navy-700);
-    --card-b-bottom: var(--color-navy-700);
+    --card-b-right: var(--color-navy-900);
+    --card-b-bottom: var(--color-navy-900);
 }
 
 @theme static {
-    --color-primary: var(--app-primary);
-    --color-secondary: var(--app-secondary);
-    --color-tertiary: var(--app-tertiary);
-    --color-neutral: var(--app-neutral);
-    --color-elevated: var(--app-elevated);
-
-    /* helpful extras */
-    --color-default: var(--ui-bg); /* page/card bg */
-    --color-foreground: var(--ui-text);
-
     /* -------------------------
   Colours
   ------------------------- */
