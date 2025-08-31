@@ -1,5 +1,6 @@
 <template>
-    <div class="mx-auto flex w-full max-w-screen-md flex-col px-10 pt-0 pb-32">
+    <div>rts</div>
+    <!-- <div class="mx-auto flex w-full max-w-screen-md flex-col px-10 pt-0 pb-32">
         <h1 class="h1 mb-8">Routine Tasks</h1>
 
         <div
@@ -112,51 +113,51 @@
             <button type="submit" class="button">Submit this form</button>
         </form>
         <div v-else-if="state.isSending" class="">Sending, please wait...</div>
-    </div>
+    </div> -->
 </template>
 <script setup>
-const routineTasksStore = useRoutineTasksStore()
-const teamStore = useTeamStore()
+// const routineTasksStore = useRoutineTasksStore()
+// const teamStore = useTeamStore()
 
-const allRoutineTasks = computed(() => {
-    if (!routineTasksStore?.routineTasks) return
-    return routineTasksStore?.routineTasks?.sort((a, b) =>
-        a.title.localeCompare(b.title)
-    )
-})
+// const allRoutineTasks = computed(() => {
+//     if (!routineTasksStore?.routineTasks) return
+//     return routineTasksStore?.routineTasks?.sort((a, b) =>
+//         a.title.localeCompare(b.title)
+//     )
+// })
 
-const currentTeam = computed(() => {
-    return teamStore.currentTeam.sort((a, b) => a.name.localeCompare(b.name))
-})
-const whoCompleted = ref()
+// const currentTeam = computed(() => {
+//     return teamStore.currentTeam.sort((a, b) => a.name.localeCompare(b.name))
+// })
+// const whoCompleted = ref()
 
-const routineTasksForm = ref()
+// const routineTasksForm = ref()
 
-const runtimeConfig = useRuntimeConfig()
+// const runtimeConfig = useRuntimeConfig()
 
-const scriptURL = runtimeConfig.public.GOOGLE_SHEETS_SCRIPT_ROUTINE_TASKS
+// const scriptURL = runtimeConfig.public.GOOGLE_SHEETS_SCRIPT_ROUTINE_TASKS
 
-const submitToGoogleSheets = () => {
-    const formData = new FormData(routineTasksForm.value)
-    const field = formData.get('Task')
-    state.isSending = true
-    state.hasSent = false
-    fetch(scriptURL, { method: 'POST', body: formData })
-        .then(async () => {
-            await routineTasksStore.setRoutineTask(field)
-            state.isSending = false
-            state.hasSent = true
-        })
-        .catch((error) => console.error('Error!', error.message))
-}
+// const submitToGoogleSheets = () => {
+//     const formData = new FormData(routineTasksForm.value)
+//     const field = formData.get('Task')
+//     state.isSending = true
+//     state.hasSent = false
+//     fetch(scriptURL, { method: 'POST', body: formData })
+//         .then(async () => {
+//             await routineTasksStore.setRoutineTask(field)
+//             state.isSending = false
+//             state.hasSent = true
+//         })
+//         .catch((error) => console.error('Error!', error.message))
+// }
 
-useHead({
-    title: 'Routine Tasks'
-})
+// useHead({
+//     title: 'Routine Tasks'
+// })
 
-const state = reactive({
-    isSending: false,
-    hasSent: false,
-    hasErrored: false
-})
+// const state = reactive({
+//     isSending: false,
+//     hasSent: false,
+//     hasErrored: false
+// })
 </script>

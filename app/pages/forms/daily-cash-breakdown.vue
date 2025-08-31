@@ -1,5 +1,6 @@
 <template>
-    <div class="mx-auto flex w-full max-w-screen-md flex-col px-10 pt-0 pb-32">
+    <p>cash</p>
+    <!-- <div class="mx-auto flex w-full max-w-screen-md flex-col px-10 pt-0 pb-32">
         <h1 class="h1 mb-8">Daily Cash Breakdown</h1>
 
         <div
@@ -108,43 +109,43 @@
             <button type="submit" class="button">I'm done, submit!</button>
         </form>
         <div v-else-if="state.isSending" class="">Sending, please wait...</div>
-    </div>
+    </div> -->
 </template>
 <script setup>
-import { useSupabaseStore } from '@/stores/supabase'
+// import { useSupabaseStore } from '@/stores/supabase'
 
-const supabaseStore = useSupabaseStore()
+// const supabaseStore = useSupabaseStore()
 
-const dailyCashBreakdown = ref()
+// const dailyCashBreakdown = ref()
 
-const runtimeConfig = useRuntimeConfig()
+// const runtimeConfig = useRuntimeConfig()
 
-const scriptURL = runtimeConfig.public.GOOGLE_SHEETS_SCRIPT_DAILY_CASH_BREAKDOWN
-// const form = document.forms['submit-to-google-sheet']
+// const scriptURL = runtimeConfig.public.GOOGLE_SHEETS_SCRIPT_DAILY_CASH_BREAKDOWN
+// // const form = document.forms['submit-to-google-sheet']
 
-const submitToGoogleSheets = () => {
-    const formData = new FormData(dailyCashBreakdown.value)
-    const user = formData.get('Team member')
-    const dateTime = new Date()
-    state.isSending = true
-    state.hasSent = false
-    fetch(scriptURL, { method: 'POST', body: formData })
-        .then(async () => {
-            await supabaseStore.setCheck('daily_cash_breakdown', user)
-            await supabaseStore.setCheck('daily_cash_breakdown_time', dateTime)
-            state.isSending = false
-            state.hasSent = true
-        })
-        .catch((error) => console.error('Error!', error.message))
-}
+// const submitToGoogleSheets = () => {
+//     const formData = new FormData(dailyCashBreakdown.value)
+//     const user = formData.get('Team member')
+//     const dateTime = new Date()
+//     state.isSending = true
+//     state.hasSent = false
+//     fetch(scriptURL, { method: 'POST', body: formData })
+//         .then(async () => {
+//             await supabaseStore.setCheck('daily_cash_breakdown', user)
+//             await supabaseStore.setCheck('daily_cash_breakdown_time', dateTime)
+//             state.isSending = false
+//             state.hasSent = true
+//         })
+//         .catch((error) => console.error('Error!', error.message))
+// }
 
-useHead({
-    title: 'Daily Cash Breakdown'
-})
+// useHead({
+//     title: 'Daily Cash Breakdown'
+// })
 
-const state = reactive({
-    isSending: false,
-    hasSent: false,
-    hasErrored: false
-})
+// const state = reactive({
+//     isSending: false,
+//     hasSent: false,
+//     hasErrored: false
+// })
 </script>
