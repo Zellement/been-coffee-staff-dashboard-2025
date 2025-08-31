@@ -1,10 +1,14 @@
 export default defineAppConfig({
     ui: {
         colors: {
-            primary: 'butterscotch',
-            neutral: 'navy',
-            elevated: 'seashell'
+            primary: 'var(--app-primary)',
+            secondary: 'var(--app-secondary)',
+            tertiary: 'var(--app-tertiary)',
+            neutral: 'var(--app-neutral)',
+            elevated: 'var(--app-elevated)'
         },
+
+        button: {},
 
         badge: {
             compoundVariants: [

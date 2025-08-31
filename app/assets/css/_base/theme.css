@@ -1,10 +1,12 @@
 :root {
     /* light mode */
-    --app-bg: var(--color-seashell-300);
-    --app-fg: var(--color-navy-500);
+    --app-primary: var(--color-navy-500);
+    --app-secondary: var(--color-tuscany-500);
+    --app-neutral: var(--color-seashell-500);
+    --app-elevated: var(--color-butterscotch-500);
 
-    background-color: var(--app-bg);
-    color: var(--app-fg);
+    --ui-bg: var(--color-seashell-500);
+    --ui-text: var(--color-navy-800);
 
     /* light */
     --card-b-top: var(--color-seashell-300);
@@ -15,11 +17,13 @@
 
 .dark {
     /* dark mode overrides */
-    --app-bg: var(--color-navy-700);
-    --app-fg: var(--color-navy-50);
+    --app-primary: var(--color-navy-500);
+    --app-secondary: var(--color-tuscany-500);
+    --app-neutral: var(--color-seashell-500);
+    --app-elevated: var(--color-butterscotch-500);
 
-    background-color: var(--app-bg) !important;
-    color: var(--app-fg) !important;
+    --ui-bg: var(--color-navy-800);
+    --ui-text: var(--color-seashell-200);
 
     --card-b-top: var(--color-navy-400);
     --card-b-left: var(--color-navy-400);
@@ -28,6 +32,16 @@
 }
 
 @theme static {
+    --color-primary: var(--app-primary);
+    --color-secondary: var(--app-secondary);
+    --color-tertiary: var(--app-tertiary);
+    --color-neutral: var(--app-neutral);
+    --color-elevated: var(--app-elevated);
+
+    /* helpful extras */
+    --color-default: var(--ui-bg); /* page/card bg */
+    --color-foreground: var(--ui-text);
+
     /* -------------------------
   Colours
   ------------------------- */
@@ -71,17 +85,16 @@
     --color-tuscany-900: #1b0c06;
     --color-tuscany-950: #000000;
 
-    --color-navy-50: #5a5fb5;
-    --color-navy-100: #4e53ad;
-    --color-navy-200: #414690;
-    --color-navy-300: #343874;
-    --color-navy-400: #282b58;
-    --color-navy-500: #1b1d3c;
-    --color-navy-600: #0a0a15;
-    --color-navy-700: #000000;
-    --color-navy-800: #000000;
-    --color-navy-900: #000000;
-    --color-navy-950: #000000;
+    --color-navy-50: rgba(244 244 245);
+    --color-navy-100: rgba(232 232 236);
+    --color-navy-200: rgba(198 199 206);
+    --color-navy-300: rgba(164 165 177);
+    --color-navy-400: rgba(95 97 119);
+    --color-navy-500: rgba(27 29 60);
+    --color-navy-600: rgba(24 26 54);
+    --color-navy-700: rgba(16 17 36);
+    --color-navy-800: rgba(12 13 27);
+    --color-navy-900: rgba(8 9 18);
 
     --color-seashell: oklch(97.251% 0.01983 69.999);
     --color-seashell-50: oklch(100% 0 none);

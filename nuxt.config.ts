@@ -23,6 +23,12 @@ export default defineNuxtConfig({
         'v-gsap-nuxt'
     ],
 
+    ui: {
+        theme: {
+            colors: ['tertiary']
+        }
+    },
+
     supabase: {
         redirectOptions: {
             login: '/login',

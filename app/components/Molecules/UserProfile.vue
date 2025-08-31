@@ -1,7 +1,7 @@
 <template>
     <div class="m-2 flex flex-col">
         <div
-            class="p-default from-seashell-400 to-seashell-100 dark:from-navy-600 dark:to-navy-500 card-border mt-0 rounded-br rounded-bl bg-gradient-to-b"
+            class="p-default from-primary-700 dark:from-navy-600 dark:to-navy-500 card-border mt-0 rounded-br rounded-bl bg-gradient-to-b"
         >
             <u-drawer
                 direction="top"
@@ -65,10 +65,14 @@
                             <div
                                 class="grid grid-cols-3 gap-1 overflow-clip rounded-tl rounded-tr font-bold"
                             >
-                                <span class="bg-zinc-100 px-2 py-1">Date</span>
                                 <span
-                                    class="col-span-2 bg-zinc-100 px-2 py-1"
-                                ></span>
+                                    class="bg-secondary text-seashell px-2 py-1"
+                                >
+                                    Date
+                                </span>
+                                <span
+                                    class="bg-secondary text-seashell col-span-2 px-2 py-1"
+                                />
                             </div>
 
                             <div class="grid grid-cols-3">
