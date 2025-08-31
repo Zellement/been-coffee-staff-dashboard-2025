@@ -36,6 +36,7 @@ strong {
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: bold;
+    color: var(--color-tuscany-700);
 
     &.uc-text--sm {
         font-size: var(--text-sm);
@@ -44,6 +45,10 @@ strong {
     &.uc-text--xs {
         font-size: var(--text-xs);
     }
+}
+
+.dark .uc-text {
+    color: var(--color-butterscotch-200);
 }
 
 /**

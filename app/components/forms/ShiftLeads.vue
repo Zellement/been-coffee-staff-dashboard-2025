@@ -1,7 +1,5 @@
 <template>
-    <p>leads</p>
     <div class="shift-leads flex flex-col">
-        <h2 class="h4 mb-4">Lead</h2>
         <div v-if="hasTeam" class="flex flex-wrap gap-8">
             <label
                 v-for="member in team"
@@ -28,7 +26,7 @@
                         :alt="member?.fields?.name"
                     />
                 </div>
-                <span class="shift-leads__member-name pl-8">
+                <span class="shift-leads__member-name pl-8 transition-all">
                     {{ member.fields.name }}
                 </span>
             </label>
@@ -53,10 +51,11 @@
                 </div>
                 <span class="pl-8">Other</span>
             </label>
-            <label v-if="isOtherSelected">
+            <label v-if="isOtherSelected" class="flex basis-full">
                 <u-input
-                    class="mt-4 w-full p-1 md:mt-2"
+                    class="w-56 p-1"
                     type="text"
+                    variant="outline"
                     placeholder="Hello, who are you?"
                     name="Other team member"
                 />

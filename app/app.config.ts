@@ -144,7 +144,7 @@ export default defineAppConfig({
             variants: {
                 variant: {
                     outline:
-                        'text-navy-500 dark:text-seashell-500 ring-navy-500 dark:ring-seashell-500'
+                        'text-navy-500 dark:text-seashell-500 ring-navy-500 dark:ring-seashell-500 placeholder:text-navy-300 dark:placeholder:text-navy-300'
                 }
             }
         },

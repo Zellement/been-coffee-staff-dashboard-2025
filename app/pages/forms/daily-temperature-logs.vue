@@ -1,6 +1,6 @@
 <template>
     <div class="p-default">
-        <h1 class="uc-text">Daily Temperature Logs</h1>
+        <h1 class="uc-text mb-8">Daily Temperature Logs</h1>
 
         <div v-if="state.hasSent" class="flex flex-col items-start gap-2">
             <u-alert
