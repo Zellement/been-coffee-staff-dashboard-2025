@@ -12,6 +12,27 @@ export const useLocationsStore = defineStore('locations', () => {
      * Getters
      **/
 
+    const getAllTeamMembers: ComputedRef<TypeEmployee[]> = computed(() => {
+        const getTeamFromActiveLocation =
+            allLocations.value?.filter(
+                (location) => location.sys.id === activeLocation.value?.sys.id
+            ) || []
+
+        return getTeamFromActiveLocation?.[0]?.fields.teamHierarchy || []
+    })
+
+    const acceptableShiftLeads: string[] = [
+        'Manager',
+        'Assistant Manager',
+        'Shift Lead'
+    ]
+
+    const getAllLeads: ComputedRef<TypeEmployee[]> = computed(() => {
+        return getAllTeamMembers.value.filter((member) =>
+            acceptableShiftLeads.includes(member.fields.jobRole)
+        )
+    })
+
     /**
      * Actions
      **/
@@ -22,6 +43,8 @@ export const useLocationsStore = defineStore('locations', () => {
     return {
         allLocations,
         totalLocations,
-        activeLocation
+        activeLocation,
+        getAllTeamMembers,
+        getAllLeads
     }
 })

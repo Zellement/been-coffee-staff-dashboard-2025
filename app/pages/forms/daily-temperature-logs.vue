@@ -37,7 +37,6 @@
             @submit.prevent="submitToGoogleSheets"
         >
             <shift-leads />
-            <input name="Team member" value="Dan" />
 
             <ul>
                 <li>Freezers: -18&deg;C or lower</li>

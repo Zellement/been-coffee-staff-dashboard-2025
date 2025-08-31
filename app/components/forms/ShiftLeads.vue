@@ -66,10 +66,10 @@
 </template>
 
 <script lang="ts" setup>
-const employeesStore = useEmployeesStore()
+const locationsStore = useLocationsStore()
 
 const leadEmployees: ComputedRef<TypeEmployee[] | null> = computed(() => {
-    return employeesStore.allLeads
+    return locationsStore.getAllLeads
 })
 
 const isOtherSelected: Ref<boolean> = ref(false)

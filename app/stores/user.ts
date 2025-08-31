@@ -39,8 +39,12 @@ export const useUserStore = defineStore('user', () => {
             'contentful_id' in userData.value
         ) {
             const contentfulData = await $fetch('/api/contentful/fetch-entry', {
-                params: { id: (userData.value as UserData).contentful_id }
+                params: {
+                    id: (userData.value as UserData).contentful_id,
+                    include: 10
+                }
             })
+
             userContentfulData.value = contentfulData || null
 
             locationsStore.activeLocation =
