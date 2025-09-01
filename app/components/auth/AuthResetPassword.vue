@@ -20,7 +20,7 @@
             class="mt-8"
             :title="successMsg"
             variant="solid"
-            color="success"
+            color="neutral"
         />
         <u-alert
             v-if="errorMsg"

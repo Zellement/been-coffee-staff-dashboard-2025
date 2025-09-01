@@ -28,7 +28,8 @@
                     </template>
                 </u-input>
                 <u-button
-                    :ui="{ base: 'block text-center' }"
+                    variant="solid"
+                    color="tertiary"
                     :label="label"
                     :icon="icon"
                     @click="handleLogin"

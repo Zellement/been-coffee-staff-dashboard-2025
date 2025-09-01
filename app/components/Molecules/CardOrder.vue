@@ -14,7 +14,7 @@
         :description="`Ordered: ${item.fields.orderDate ? fullDateConverter(item.fields.orderDate, false) : 'Unknown'}`"
     >
         <u-card
-            variant="solid"
+            variant="subtle"
             class="relative"
             :title="item.fields.supplier.fields.title"
             :description="fullDateConverter(item.fields.orderDate)"
@@ -22,7 +22,7 @@
             <template v-if="orderHasBeenChecked">
                 <u-badge
                     size="sm"
-                    color="success"
+                    color="neutral"
                     variant="solid"
                     icon="i-ic-baseline-move-to-inbox"
                     trailing-icon="i-bx-check"
@@ -116,7 +116,6 @@
                 >
                     <u-card
                         v-if="item.fields.deliveryCheckedBy"
-                        variant="success"
                         class="flex flex-1 flex-col"
                     >
                         <p class="uc-text">Checked by:</p>
@@ -126,7 +125,6 @@
                     </u-card>
                     <u-card
                         v-if="item.fields.deliveryCheckedAt"
-                        variant="success"
                         class="flex flex-1 flex-col"
                     >
                         <p class="uc-text">Checked at:</p>

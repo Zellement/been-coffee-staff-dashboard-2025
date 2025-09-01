@@ -32,7 +32,8 @@ export default defineNuxtConfig({
                 'success',
                 'info',
                 'warning',
-                'error'
+                'error',
+                'highlighted'
             ]
         }
     },

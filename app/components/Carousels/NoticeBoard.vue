@@ -10,7 +10,7 @@
             }"
         >
             <template #default="{ item }">
-                <u-card variant="solid">
+                <u-card variant="outline">
                     <h3 class="h4 mb-2">{{ item.fields.title }}</h3>
                     <rich-text :content="item.fields.content" />
                 </u-card>

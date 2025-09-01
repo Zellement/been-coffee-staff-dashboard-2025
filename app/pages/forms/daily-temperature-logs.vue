@@ -4,7 +4,7 @@
 
         <div v-if="state.hasSent" class="flex flex-col items-start gap-2">
             <u-alert
-                color="success"
+                color="neutral"
                 title="Success"
                 description="Your temperature logs have been submitted successfully. Please check the log has been updated correctly."
                 :actions="[

@@ -4,7 +4,7 @@
 
         <u-alert
             v-if="state.hasSent"
-            color="success"
+            color="neutral"
             title="Success"
             description="Your cash breakdown has been submitted successfully."
             :actions="[
