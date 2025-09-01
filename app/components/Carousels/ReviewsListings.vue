@@ -18,18 +18,20 @@
                     </div>
 
                     <div class="relative flex gap-1">
-                        <Icon
+                        <u-icon
                             v-for="i in 5"
                             :key="i"
+                            size="18"
                             name="ic:outline-star-outline"
-                            class="text-butterscotch h-6 w-6 opacity-30"
+                            class="text-butterscotch-500 opacity-30"
                         />
                         <div class="absolute top-0 left-0 flex gap-1">
-                            <Icon
+                            <u-icon
                                 v-for="i in item.rating"
                                 :key="i"
+                                size="18"
                                 name="ic:outline-star"
-                                class="text-butterscotch h-6 w-6"
+                                class="text-butterscotch-500"
                             />
                         </div>
                     </div>
@@ -40,8 +42,7 @@
                     <u-alert
                         v-if="item.response?.text"
                         class="mt-4"
-                        color="secondary"
-                        title="Response"
+                        color="tertiary"
                         variant="outline"
                         :description="item.response?.text"
                     />
