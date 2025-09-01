@@ -2,13 +2,14 @@
     <div class="p-default relative">
         <h2 class="uc-text uc-text--carousel-title">Reviews</h2>
         <div
-            class="absolute top-2 right-2 mb-4 flex items-center gap-2 text-xs"
+            class="absolute top-1 right-2 mb-4 flex items-center gap-2 text-xs"
         >
             <USwitch
                 v-model="showDetails"
                 unchecked-icon="i-lucide-x"
                 checked-icon="i-lucide-check"
                 label="Details"
+                size="sm"
             />
         </div>
         <u-carousel
