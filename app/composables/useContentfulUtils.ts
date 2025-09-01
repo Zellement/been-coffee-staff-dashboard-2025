@@ -1,13 +1,13 @@
 export const useContentfulUtils = () => {
+    const timezoneOffset = new Date().getTimezoneOffset() * 60000 //offset in milliseconds
+    const localISOTime = new Date(Date.now() - timezoneOffset)
+        .toISOString()
+        .slice(0, -1)
+
     const completeTask = async (task: TypeTaskInstance, key: string) => {
         const userStore = useUserStore()
         const toast = useToast()
         const uiStore = useUiStore()
-
-        const timezoneOffset = new Date().getTimezoneOffset() * 60000 //offset in milliseconds
-        const localISOTime = new Date(Date.now() - timezoneOffset)
-            .toISOString()
-            .slice(0, -1)
 
         try {
             uiStore.refreshing = true
@@ -43,18 +43,13 @@ export const useContentfulUtils = () => {
                 color: 'error'
             })
             console.error('Error completing task', error)
-        } finally {
         }
     }
+
     const checkedOrder = async (task: TypeOrder, feedback?: string) => {
         const userStore = useUserStore()
         const toast = useToast()
         const uiStore = useUiStore()
-
-        const timezoneOffset = new Date().getTimezoneOffset() * 60000 //offset in milliseconds
-        const localISOTime = new Date(Date.now() - timezoneOffset)
-            .toISOString()
-            .slice(0, -1)
 
         try {
             uiStore.refreshing = true
@@ -91,12 +86,25 @@ export const useContentfulUtils = () => {
                 color: 'error'
             })
             console.error('Error checking order', error)
-        } finally {
         }
+    }
+
+    const uploadGoogleReviews = async (data: any, locationId: string) => {
+        await $fetch(`/api/contentful/update-entry`, {
+            method: 'POST',
+            body: {
+                id: locationId,
+                fields: {
+                    googleReviewDataLastFetched: localISOTime,
+                    googleReviewData: data
+                }
+            }
+        })
     }
 
     return {
         completeTask,
-        checkedOrder
+        checkedOrder,
+        uploadGoogleReviews
     }
 }

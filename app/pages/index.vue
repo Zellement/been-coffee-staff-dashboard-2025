@@ -4,6 +4,7 @@
         <routine-tasks />
         <upcoming-deliveries />
         <notice-board />
+        <reviews-listings />
         <!-- <rich-text :content="allNoticeBoard.items?.[0]?.fields.content" />
         <h2>Employees</h2>
         <pre>{{ allEmployees }}</pre>

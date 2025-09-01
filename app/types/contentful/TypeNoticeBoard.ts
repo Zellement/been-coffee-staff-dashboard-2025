@@ -3,7 +3,7 @@ import type { TypeLocationSkeleton } from "./TypeLocation";
 
 export interface TypeNoticeBoardFields {
     title: EntryFieldTypes.Symbol;
-    sticky?: EntryFieldTypes.Boolean;
+    sticky: EntryFieldTypes.Boolean;
     content: EntryFieldTypes.RichText;
     locations: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeLocationSkeleton>>;
 }
