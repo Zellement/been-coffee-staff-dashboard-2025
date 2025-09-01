@@ -1,9 +1,7 @@
 <template>
-    <div class="p-default relative">
-        <h2 class="uc-text uc-text--carousel-title">Reviews</h2>
-        <div
-            class="absolute top-1 right-2 mb-4 flex items-center gap-2 text-xs"
-        >
+    <div class="p-default relative mb-8">
+        <div class="flex items-center justify-between">
+            <h2 class="uc-text uc-text--carousel-title">Reviews</h2>
             <USwitch
                 v-model="showDetails"
                 unchecked-icon="i-lucide-x"

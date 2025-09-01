@@ -29,6 +29,7 @@ const value = computed<string | undefined>({
         if (location) {
             locationsStore.activeLocation = location
             // Force all fetches to refetch data
+            refreshNuxtData()
         }
     }
 })

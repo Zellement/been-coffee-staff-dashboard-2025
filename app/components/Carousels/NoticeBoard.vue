@@ -53,7 +53,8 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'noticeBoard',
         limit: 20,
-        order: 'sys.createdAt'
+        order: 'sys.createdAt',
+        'fields.locations.sys.id[in]': activeLocationId.value
     })),
     immediate: false
 })
