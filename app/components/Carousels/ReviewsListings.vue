@@ -78,7 +78,7 @@
                         :items="getDetails(item)"
                         orientation="horizontal"
                         class="w-3/4"
-                        size="xl"
+                        size="md"
                     />
 
                     <u-alert
@@ -141,11 +141,11 @@ const getDetails = (item: NormalisedReview): TimelineItem[] => {
 }
 
 const getRatingIcon = (rating: number): string => {
-    if (rating === 5) return 'i-material-symbols-counter-5'
-    if (rating === 4) return 'i-material-symbols-counter-4'
-    if (rating === 3) return 'i-material-symbols-counter-3'
-    if (rating === 2) return 'i-material-symbols-counter-2'
-    return 'i-material-symbols-counter-1'
+    if (rating === 5) return 'i-noto-v1-digit-five'
+    if (rating === 4) return 'i-noto-v1-digit-four'
+    if (rating === 3) return 'i-noto-v1-digit-three'
+    if (rating === 2) return 'i-noto-v1-digit-two'
+    return 'i-noto-v1-digit-one'
 }
 
 const locationsStore = useLocationsStore()
