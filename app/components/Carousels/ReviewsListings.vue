@@ -273,7 +273,10 @@ async function fetchTripadvisorReviews(): Promise<NormalisedReview[]> {
 watch(
     [activeLocation, shouldFetchReviews],
     async () => {
+        console.log('Review watcher triggered')
         if (!activeLocation.value) return
+
+        console.log('Active location:', activeLocation.value)
 
         try {
             if (!shouldFetchReviews.value) {

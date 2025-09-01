@@ -38,20 +38,22 @@ export const useUserStore = defineStore('user', () => {
             typeof userData.value === 'object' &&
             'contentful_id' in userData.value
         ) {
-            const contentfulData = await $fetch('/api/contentful/fetch-entry', {
-                params: {
-                    id: (userData.value as UserData).contentful_id,
-                    include: 10
+            const contentfulData = await $fetch(
+                '/api/contentful/fetch-entries',
+                {
+                    params: {
+                        content_type: 'employee',
+                        include: 1,
+                        'sys.id': (userData.value as UserData).contentful_id
+                    }
                 }
-            })
+            )
 
-            userContentfulData.value = contentfulData || null
+            userContentfulData.value = contentfulData.items[0] || null
 
-            locationsStore.activeLocation =
-                (contentfulData &&
-                    'fields' in contentfulData &&
-                    contentfulData.fields?.primaryLocation) ||
-                null
+            locationsStore.setActiveLocation(
+                userContentfulData.value.fields.primaryLocation.sys.id || null
+            )
         }
     }
     return {

@@ -37,6 +37,17 @@ export const useLocationsStore = defineStore('locations', () => {
      * Actions
      **/
 
+    const setActiveLocation = (locId: string) => {
+        if (allLocations.value) {
+            const foundLocation = allLocations.value.find(
+                (loc) => loc.sys.id === locId
+            )
+            if (foundLocation) {
+                activeLocation.value = foundLocation
+            }
+        }
+    }
+
     /**
      * Return
      **/
@@ -45,6 +56,7 @@ export const useLocationsStore = defineStore('locations', () => {
         totalLocations,
         activeLocation,
         getAllTeamMembers,
-        getAllLeads
+        getAllLeads,
+        setActiveLocation
     }
 })
