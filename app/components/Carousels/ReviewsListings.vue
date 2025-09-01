@@ -261,7 +261,6 @@ async function fetchTripadvisorReviews(): Promise<NormalisedReview[]> {
             method: 'GET',
             params: { place_id: tripadvisorPlaceId.value }
         })
-        console.log('TripAdvisor reviews fetched:', res)
         return normalizeTripAdvisor(res)
     } catch (e) {
         console.warn('TripAdvisor reviews fetch failed:', e)
@@ -273,10 +272,7 @@ async function fetchTripadvisorReviews(): Promise<NormalisedReview[]> {
 watch(
     [activeLocation, shouldFetchReviews],
     async () => {
-        console.log('Review watcher triggered')
         if (!activeLocation.value) return
-
-        console.log('Active location:', activeLocation.value)
 
         try {
             if (!shouldFetchReviews.value) {
@@ -288,6 +284,8 @@ watch(
                 dataFetched.value = true
                 return
             }
+
+            console.log('Fetching reviews...')
 
             const [g, t] = await Promise.all([
                 fetchGoogleReviews(),
