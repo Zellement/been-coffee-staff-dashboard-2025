@@ -61,24 +61,23 @@
                         variant="outline"
                         class="flex items-center justify-center gap-8 text-center"
                     >
-                        <p class="uc-text">
-                            {{ item.fields.supplier.fields.title }}
-                        </p>
                         <div
                             class="m-auto mt-2 self-center overflow-hidden rounded-md bg-white"
                         >
-                            <nuxt-img
-                                class="m-auto h-4 w-auto max-w-full"
-                                :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
-                                :alt="item.fields.supplier.fields.title"
-                            />
+                            <div class="h-8 max-w-full">
+                                <nuxt-img
+                                    class="h-full w-full object-contain"
+                                    :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
+                                    :alt="item.fields.supplier.fields.title"
+                                />
+                            </div>
                         </div>
                     </u-card>
                     <u-card
                         variant="outline"
                         class="flex items-center justify-center gap-8"
                     >
-                        <p class="uc-text">Ordered by:</p>
+                        <p class="uc-text uc-text--2xs">Ordered by:</p>
                         <div class="">
                             <img
                                 class="border-butterscotch-500 mx-auto rounded-full border-2 object-cover"
@@ -91,13 +90,15 @@
                         </div>
                     </u-card>
                     <u-card variant="outline" class="flex flex-1 flex-col">
-                        <p class="uc-text">Order date:</p>
+                        <p class="uc-text uc-text--2xs">Order date:</p>
                         <div class="font-semibold">
                             {{ fullDateConverter(item.fields.orderDate) }}
                         </div>
                     </u-card>
                     <u-card variant="outline" class="flex flex-1 flex-col">
-                        <p class="uc-text">Expected delivery date:</p>
+                        <p class="uc-text uc-text--2xs">
+                            Expected delivery date:
+                        </p>
                         <div class="font-semibold">
                             {{
                                 fullDateConverter(
@@ -118,7 +119,7 @@
                         v-if="item.fields.deliveryCheckedBy"
                         class="flex flex-1 flex-col"
                     >
-                        <p class="uc-text">Checked by:</p>
+                        <p class="uc-text uc-text--2xs">Checked by:</p>
                         <div class="font-semibold">
                             {{ item.fields.deliveryCheckedBy }}
                         </div>
@@ -127,7 +128,7 @@
                         v-if="item.fields.deliveryCheckedAt"
                         class="flex flex-1 flex-col"
                     >
-                        <p class="uc-text">Checked at:</p>
+                        <p class="uc-text uc-text--2xs">Checked at:</p>
                         <div class="font-semibold">
                             {{
                                 fullDateConverter(
@@ -143,7 +144,7 @@
         <template #footer>
             <div v-if="!isGeneralLogin" class="flex flex-col gap-2">
                 <u-alert
-                    variant="outline"
+                    variant="solid"
                     color="warning"
                     title="Issue with this order?"
                     description="If there is something wrong with this order, please contact your manager before approving this order."

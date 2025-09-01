@@ -1,5 +1,6 @@
 :root {
     --ui-success: var(--color-green-700);
+    --ui-warning: var(--color-amber-500);
     --ui-tertiary: var(--color-tuscany-500);
 
     /* Neutral */
@@ -30,6 +31,7 @@
 
 .dark {
     --ui-success: var(--color-green-400);
+    --ui-warning: var(--color-amber-400);
     --ui-tertiary: var(--color-tuscany-400);
 
     /* Neutral */
