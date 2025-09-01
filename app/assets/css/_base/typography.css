@@ -36,7 +36,7 @@ strong {
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: bold;
-    color: var(--color-tuscany-700);
+    /* color: var(--color-tuscany-700); */
 
     &.uc-text--sm {
         font-size: var(--text-sm);

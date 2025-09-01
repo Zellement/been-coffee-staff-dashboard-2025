@@ -64,7 +64,7 @@
                         <div
                             class="m-auto mt-2 self-center overflow-hidden rounded-md bg-white"
                         >
-                            <div class="h-8 max-w-full">
+                            <div class="h-8 max-w-full p-1">
                                 <nuxt-img
                                     class="h-full w-full object-contain"
                                     :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
@@ -108,37 +108,19 @@
                         </div>
                     </u-card>
                 </div>
-                <div
+                <u-alert
                     v-if="
                         item.fields.deliveryCheckedBy ||
                         item.fields.deliveryCheckedAt
                     "
-                    class="grid w-full grid-cols-2 gap-2 text-center"
-                >
-                    <u-card
-                        v-if="item.fields.deliveryCheckedBy"
-                        class="flex flex-1 flex-col"
-                    >
-                        <p class="uc-text uc-text--2xs">Checked by:</p>
-                        <div class="font-semibold">
-                            {{ item.fields.deliveryCheckedBy }}
-                        </div>
-                    </u-card>
-                    <u-card
-                        v-if="item.fields.deliveryCheckedAt"
-                        class="flex flex-1 flex-col"
-                    >
-                        <p class="uc-text uc-text--2xs">Checked at:</p>
-                        <div class="font-semibold">
-                            {{
-                                fullDateConverter(
-                                    item.fields.deliveryCheckedAt,
-                                    true
-                                )
-                            }}
-                        </div>
-                    </u-card>
-                </div>
+                    title="Order checked & approved"
+                    icon="i-bx-check"
+                    :ui="{
+                        icon: '!size-5'
+                    }"
+                    :description="`By ${item.fields.deliveryCheckedBy} on ${fullDateConverter(item.fields.deliveryCheckedAt, true)}`"
+                    color="success"
+                />
             </div>
         </template>
         <template #footer>
