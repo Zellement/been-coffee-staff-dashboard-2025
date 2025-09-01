@@ -1,10 +1,10 @@
 <template>
     <div class="p-c-default">
         <u-slideover title="All Routine Tasks" aria-label="All Routine Tasks">
-            <h2 class="uc-text uc-text--carousel-title flex items-center gap-2">
-                <span>Routine tasks</span>
-                <u-icon name="i-bxs-show" size="20" />
-            </h2>
+            <div class="flex items-center justify-between pr-2">
+                <h2 class="uc-text uc-text--carousel-title">Routine tasks</h2>
+                <u-button size="xs" icon="i-bxs-show" variant="outline" />
+            </div>
             <template #body>
                 <u-accordion :items="allRoutineTasksForAccordions">
                     <template #body="{ item }">
