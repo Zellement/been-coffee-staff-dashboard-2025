@@ -1,9 +1,12 @@
 :root {
+    --ui-success: var(--color-green-700);
+    --ui-tertiary: var(--color-tuscany-500);
+
     /* Neutral */
     --ui-text-dimmed: var(--ui-color-secondary-400);
     --ui-text-muted: var(--ui-color-secondary-500);
     --ui-text-toned: var(--ui-color-secondary-600);
-    --ui-text: var(--ui-color-secondary-700);
+    --ui-text: var(--ui-color-secondary-900);
     --ui-text-highlighted: var(--ui-color-secondary-900);
     --ui-text-inverted: var(--color-white);
 
@@ -26,11 +29,14 @@
 }
 
 .dark {
+    --ui-success: var(--color-green-400);
+    --ui-tertiary: var(--color-tuscany-400);
+
     /* Neutral */
     --ui-text-dimmed: var(--ui-color-primary-500);
     --ui-text-muted: var(--ui-color-primary-400);
     --ui-text-toned: var(--ui-color-primary-300);
-    --ui-text: var(--ui-color-primary-200);
+    --ui-text: var(--ui-color-primary-100);
     --ui-text-highlighted: var(--color-white);
     --ui-text-inverted: var(--ui-color-primary-900);
 
@@ -42,7 +48,7 @@
 
     --ui-border: var(--ui-color-primary-800);
     --ui-border-muted: var(--ui-color-primary-700);
-    --ui-border-accented: var(--ui-color-primary-700);
+    --ui-border-accented: var(--ui-color-primary-400);
     --ui-border-inverted: var(--color-white);
 
     /* Card */

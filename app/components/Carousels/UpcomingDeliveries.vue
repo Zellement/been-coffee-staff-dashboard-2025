@@ -49,17 +49,10 @@ const sortedRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> =
         return [
             ...todaysOrders.value,
             ...overdueOrders.value,
-            ...remainingOrders.value
+            ...upcomingOrders.value,
+            ...completedOrders.value
         ]
     })
-
-const remainingOrders: ComputedRef<TypeOrder[]> = computed(() => {
-    if (!orders.value) return []
-    // All orders that are left that are not in todaysOrders nor overdueOrders
-    return orders.value.filter((task: TypeOrder) => {
-        return task.fields.deliveryCheckedBy && task.fields.deliveryCheckedAt
-    })
-})
 
 const todaysOrders: ComputedRef<TypeOrder[]> = computed(() => {
     if (!orders.value) return []
@@ -93,6 +86,31 @@ const overdueOrders: ComputedRef<TypeOrder[]> = computed(() => {
         .map((task: TypeOrder) => ({
             ...task
         }))
+})
+
+const upcomingOrders: ComputedRef<TypeOrder[]> = computed(() => {
+    if (!orders.value) return []
+    return orders.value
+        .filter((task: TypeOrder) => {
+            const dDate = new Date(task.fields.expectedDeliveryDate)
+            dDate.setHours(0, 0, 0, 0)
+            return (
+                !task.fields.deliveryCheckedBy &&
+                !task.fields.deliveryCheckedAt &&
+                dDate.getTime() > today.getTime()
+            )
+        })
+        .map((task: TypeOrder) => ({
+            ...task
+        }))
+})
+
+const completedOrders: ComputedRef<TypeOrder[]> = computed(() => {
+    if (!orders.value) return []
+    // All orders that are left that are not in todaysOrders nor overdueOrders
+    return orders.value.filter((task: TypeOrder) => {
+        return task.fields.deliveryCheckedBy && task.fields.deliveryCheckedAt
+    })
 })
 
 /* Functions & lifecycle */

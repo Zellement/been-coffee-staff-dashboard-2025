@@ -22,7 +22,7 @@
             <template v-if="orderHasBeenChecked">
                 <u-badge
                     size="sm"
-                    color="neutral"
+                    color="success"
                     variant="solid"
                     icon="i-ic-baseline-move-to-inbox"
                     trailing-icon="i-bx-check"
@@ -211,16 +211,31 @@ const orderHasBeenChecked: ComputedRef<boolean> = computed(() => {
     )
 })
 
+const expectedDeliveryDate: ComputedRef<Date> = computed(() => {
+    return new Date(props.item.fields.expectedDeliveryDate)
+})
+
 const badgeStyle: ComputedRef<{
     colour: 'error' | 'neutral' | 'warning'
     variant: 'solid' | 'outline'
 }> = computed(() => {
-    const expectedDate = new Date(props.item.fields.expectedDeliveryDate)
+    const expectedDate = expectedDeliveryDate.value
     const now = new Date()
-    if (now.getDate() > expectedDate.getDate()) {
+    if (
+        now.getFullYear() > expectedDate.getFullYear() ||
+        (now.getFullYear() === expectedDate.getFullYear() &&
+            now.getMonth() > expectedDate.getMonth()) ||
+        (now.getFullYear() === expectedDate.getFullYear() &&
+            now.getMonth() === expectedDate.getMonth() &&
+            now.getDate() > expectedDate.getDate())
+    ) {
         return { colour: 'error', variant: 'solid' }
     }
-    if (now.getDate() === expectedDate.getDate()) {
+    if (
+        now.getFullYear() === expectedDate.getFullYear() &&
+        now.getMonth() === expectedDate.getMonth() &&
+        now.getDate() === expectedDate.getDate()
+    ) {
         return { colour: 'warning', variant: 'solid' }
     }
     return { colour: 'neutral', variant: 'outline' }

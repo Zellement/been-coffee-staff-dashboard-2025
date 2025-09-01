@@ -15,7 +15,7 @@
     >
         <u-card variant="subtle" :title="item.fields.task.fields.title">
             <template v-if="taskHasBeenCompletedToday">
-                <u-badge size="sm" color="neutral" icon="i-bx-check">
+                <u-badge size="sm" color="success" icon="i-bx-check">
                     Done
                 </u-badge>
             </template>
@@ -70,7 +70,6 @@
                 <u-alert
                     v-else
                     variant="outline"
-                    color="neutral"
                     icon="i-basil-info-circle-outline"
                     :ui="{
                         icon: '!size-6'

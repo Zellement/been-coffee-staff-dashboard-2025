@@ -3,7 +3,10 @@ export default defineAppConfig({
         colors: {
             primary: 'navy',
             secondary: 'butterscotch',
-            tertiary: 'tuscany'
+            tertiary: 'tuscany',
+            info: 'purple',
+            error: 'red',
+            success: 'green'
         },
         // avatar: {
         //     slots: {
@@ -125,7 +128,7 @@ export default defineAppConfig({
             // defaultVariants: {
             //     variant: 'outline'
             // }
-        }
+        },
         // drawer: {
         //     slots: {
         //         overlay: 'bg-zinc-700/75'
@@ -134,14 +137,11 @@ export default defineAppConfig({
         // skeleton: {
         //     base: 'bg-tuscany-500/50'
         // },
-        // slideover: {
-        //     slots: {
-        //         overlay: 'bg-seashell-700/75 dark:bg-navy-700/75',
-        //         title: 'uc-text text-secondary',
-        //         description: 'font-bold text-primary',
-        //         content: 'ring-navy-400 divide-navy-400'
-        //     }
-        // },
+        slideover: {
+            slots: {
+                title: 'uc-text'
+            }
+        }
         // input: {
         //     variants: {
         //         variant: {
