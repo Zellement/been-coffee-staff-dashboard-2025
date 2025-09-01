@@ -21,7 +21,7 @@
                 }"
                 variant="subtle"
             >
-                <h3 class="h4 mb-2">{{ item.fields.title }}</h3>
+                <h3 class="h5 mb-2">{{ item.fields.title }}</h3>
                 <rich-text :content="item.fields.content" />
             </u-card>
         </u-carousel>

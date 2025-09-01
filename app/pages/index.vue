@@ -6,6 +6,7 @@
         <notice-board class="col-span-full" />
         <reviews-listings class="col-span-full" />
         <standing-orders class="col-span-full" />
+        <been-awesome-winners class="col-span-full" />
         <!-- <rich-text :content="allNoticeBoard.items?.[0]?.fields.content" />
         <h2>Employees</h2>
         <pre>{{ allEmployees }}</pre>

@@ -3,7 +3,9 @@ import type { TypeEmployeeSkeleton } from "./TypeEmployee";
 import type { TypeLocationSkeleton } from "./TypeLocation";
 
 export interface TypeBeenAwesomeWinnerFields {
-    employee: EntryFieldTypes.EntryLink<TypeEmployeeSkeleton>;
+    name: EntryFieldTypes.Symbol;
+    photo?: EntryFieldTypes.AssetLink;
+    employee?: EntryFieldTypes.EntryLink<TypeEmployeeSkeleton>;
     from: EntryFieldTypes.Date;
     details: EntryFieldTypes.Text;
     location: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
