@@ -1,52 +1,74 @@
 <template>
-    <div class="p-default">
+    <div class="p-default relative">
         <h2 class="uc-text uc-text--carousel-title">Reviews</h2>
+        <div
+            class="absolute top-2 right-2 mb-4 flex items-center gap-2 text-xs"
+        >
+            <USwitch
+                v-model="showDetails"
+                unchecked-icon="i-lucide-x"
+                checked-icon="i-lucide-check"
+                label="Details"
+            />
+        </div>
         <u-carousel v-if="dataFetched" dots :items="reviewData">
             <template #default="{ item }">
-                <u-card variant="solid">
-                    <div class="mb-4 flex items-center gap-2">
-                        <u-avatar
+                <div class="mb-4 flex items-center gap-2">
+                    <u-avatar-group>
+                        <img
+                            v-if="item.authorPhoto"
                             :src="item.authorPhoto ?? ''"
-                            icon="i-lucide-image"
                             :alt="item.author ?? ''"
+                            class="size-10"
+                        />
+                        <u-avatar
+                            :icon="
+                                item.source === 'Google'
+                                    ? 'i-akar-icons-google-fill'
+                                    : 'i-simple-icons-tripadvisor'
+                            "
                             size="lg"
                         />
-                        <div class="flex flex-col">
-                            <p class="uc-text">{{ item.author }}</p>
-                            <p>{{ fullDateConverter(item.createdAt) }}</p>
-                        </div>
+                    </u-avatar-group>
+                    <div class="flex flex-col">
+                        <p class="uc-text">{{ item.author }}</p>
+                        <p>{{ fullDateConverter(item.createdAt) }}</p>
                     </div>
+                </div>
 
-                    <div class="relative flex gap-1">
+                <div class="relative mb-4 flex gap-1">
+                    <u-icon
+                        v-for="i in 5"
+                        :key="i"
+                        size="18"
+                        name="ic:outline-star-outline"
+                        class="text-butterscotch-500 opacity-30"
+                    />
+                    <div class="absolute top-0 left-0 flex gap-1">
                         <u-icon
-                            v-for="i in 5"
+                            v-for="i in item.rating"
                             :key="i"
                             size="18"
-                            name="ic:outline-star-outline"
-                            class="text-butterscotch-500 opacity-30"
+                            name="ic:outline-star"
+                            class="text-butterscotch-500"
                         />
-                        <div class="absolute top-0 left-0 flex gap-1">
-                            <u-icon
-                                v-for="i in item.rating"
-                                :key="i"
-                                size="18"
-                                name="ic:outline-star"
-                                class="text-butterscotch-500"
-                            />
-                        </div>
                     </div>
+                </div>
+
+                <div v-if="showDetails" class="flex flex-col gap-2">
                     <h3 v-if="item.title" class="h5">{{ item.title }}</h3>
+
                     <p v-if="item.text" class="whitespace-pre-line">
                         {{ item.text }}
                     </p>
                     <u-alert
                         v-if="item.response?.text"
                         class="mt-4"
-                        color="tertiary"
-                        variant="outline"
+                        color="info"
+                        variant="soft"
                         :description="item.response?.text"
                     />
-                </u-card>
+                </div>
             </template>
         </u-carousel>
     </div>
@@ -75,7 +97,8 @@ interface NormalisedReview {
 const locationsStore = useLocationsStore()
 
 const reviewData = ref<NormalisedReview[]>([])
-const dataFetched = ref(false)
+const dataFetched: Ref<boolean> = ref(false)
+const showDetails: Ref<boolean> = ref(false)
 
 const { uploadReviews } = useContentfulUtils()
 const { fullDateConverter } = useDateUtils()

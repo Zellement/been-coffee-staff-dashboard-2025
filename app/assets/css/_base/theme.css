@@ -2,6 +2,7 @@
     --ui-success: var(--color-green-700);
     --ui-warning: var(--color-amber-500);
     --ui-tertiary: var(--color-tuscany-500);
+    --ui-info: var(--color-purple-800);
 
     /* Neutral */
     --ui-text-dimmed: var(--ui-color-secondary-400);
@@ -33,6 +34,7 @@
     --ui-success: var(--color-green-400);
     --ui-warning: var(--color-amber-400);
     --ui-tertiary: var(--color-tuscany-400);
+    --ui-info: var(--color-purple-400);
 
     /* Neutral */
     --ui-text-dimmed: var(--ui-color-primary-400);
@@ -45,11 +47,11 @@
     --ui-bg: var(--ui-color-primary-900);
     --ui-bg-muted: var(--ui-color-primary-800);
     --ui-bg-elevated: var(--ui-color-primary-800);
-    --ui-bg-accented: var(--ui-color-primary-700);
+    --ui-bg-accented: var(--ui-color-primary-500);
     --ui-bg-inverted: var(--color-white);
 
     --ui-border: var(--ui-color-primary-800);
-    --ui-border-muted: var(--ui-color-primary-700);
+    --ui-border-muted: var(--ui-color-primary-600);
     --ui-border-accented: var(--ui-color-primary-400);
     --ui-border-inverted: var(--color-white);
 
@@ -103,6 +105,18 @@
     --color-tuscany-800: #492011;
     --color-tuscany-900: #1b0c06;
     --color-tuscany-950: #000000;
+
+    --color-purple-50: #faf5f9;
+    --color-purple-100: #f6edf5;
+    --color-purple-200: #eedceb;
+    --color-purple-300: #e0c1db;
+    --color-purple-400: #cc9ac2;
+    --color-purple-500: #ba7aac;
+    --color-purple-600: #a45e91;
+    --color-purple-700: #8b4b78;
+    --color-purple-800: #744064;
+    --color-purple-900: #623955;
+    --color-purple-950: #47243c;
 
     --color-navy-50: rgba(244 244 245);
     --color-navy-100: rgba(232 232 236);

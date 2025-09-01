@@ -1,5 +1,5 @@
 <template>
-    <div class="p-default">
+    <div class="p-default mb-8">
         <h2 class="uc-text uc-text--carousel-title">Notice Board</h2>
         <u-carousel
             v-if="dataFetched"
@@ -10,10 +10,8 @@
             }"
         >
             <template #default="{ item }">
-                <u-card variant="subtle">
-                    <h3 class="h4 mb-2">{{ item.fields.title }}</h3>
-                    <rich-text :content="item.fields.content" />
-                </u-card>
+                <h3 class="h4 mb-2">{{ item.fields.title }}</h3>
+                <rich-text :content="item.fields.content" />
             </template>
         </u-carousel>
     </div>
