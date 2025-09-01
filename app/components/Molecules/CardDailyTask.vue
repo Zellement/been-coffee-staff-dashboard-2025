@@ -50,7 +50,7 @@
                 :to="item.fields.task.fields.completeVia"
                 color="tertiary"
             >
-                Go to temperature logging form
+                Go to form
             </u-button>
             <template v-else>
                 <u-button

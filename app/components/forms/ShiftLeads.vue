@@ -1,6 +1,6 @@
 <template>
     <div class="shift-leads flex flex-col">
-        <div v-if="hasTeam" class="flex flex-wrap gap-8">
+        <div v-if="hasTeam" class="flex flex-wrap gap-4">
             <label
                 v-for="member in team"
                 :key="member.sys.id"
@@ -68,7 +68,9 @@
 const locationsStore = useLocationsStore()
 
 const leadEmployees: ComputedRef<TypeEmployee[] | null> = computed(() => {
-    return locationsStore.getAllLeads
+    return locationsStore.getAllLeads.sort((a, b) => {
+        return a.fields.name.localeCompare(b.fields.name)
+    })
 })
 
 const isOtherSelected: Ref<boolean> = ref(false)

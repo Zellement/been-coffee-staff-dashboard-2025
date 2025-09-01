@@ -1,56 +1,27 @@
 <template>
-    <p>cash</p>
-    <!-- <div class="mx-auto flex w-full max-w-screen-md flex-col px-10 pt-0 pb-32">
-        <h1 class="h1 mb-8">Daily Cash Breakdown</h1>
+    <div class="p-default">
+        <h1 class="uc-text mb-8">Daily Cash Breakdown</h1>
 
-        <div
+        <u-alert
             v-if="state.hasSent"
-            class="mb-8 flex flex-row items-center gap-6 border border-green-500 p-4"
-        >
-            <Icon name="noto-v1:party-popper" class="h-12 w-12 animate-pulse" />
-            <div>
-                <h2 class="h2">Yeah, we all good!</h2>
-                <p>All sent, thanks.</p>
-                <p class="text-xs">
-                    To see the form again, please refresh this page.
-                </p>
-            </div>
-        </div>
-
-        <div
-            v-if="state.hasErrored"
-            class="mb-8 flex flex-row items-center gap-6 border border-red-500 p-4"
-        >
-            <Icon
-                name="noto:skull-and-crossbones"
-                class="h-12 w-12 animate-ping"
-            />
-            <div>
-                <h2 class="h2">Hmmm...</h2>
-                <p>
-                    Looks like something isn't behaving. Please let Dan know
-                    pronto.
-                </p>
-                <p>
-                    In the meantime, let's go old school and
-                    <a
-                        class="underline"
-                        href="https://forms.gle/ain6gfLguMcnRQsa7"
-                        target="_blank"
-                        >use this form</a
-                    >.
-                </p>
-                <p class="text-xs">
-                    To see the form again, please refresh this page.
-                </p>
-            </div>
-        </div>
+            color="success"
+            title="Success"
+            description="Your cash breakdown has been submitted successfully."
+        />
+        <u-alert
+            v-else-if="state.hasErrored"
+            color="error"
+            title="Error"
+            description="There was an error submitting your cash breakdown.  Please let Dan know
+                    pronto. To see the form again, please refresh this page."
+            icon="noto:skull-and-crossbones"
+        />
 
         <form
             v-if="!state.isSending && !state.hasSent && !state.hasErrored"
             id="daily-cash-breakdown"
             ref="dailyCashBreakdown"
-            class="daily-cash-breakdown-form flex flex-col gap-8"
+            class="flex flex-col gap-6"
             name="daily-cash-breakdown"
             @submit.prevent="submitToGoogleSheets"
         >
@@ -101,51 +72,97 @@
                 collection="Spare Coins"
                 collection-style="bg-red-500"
             />
-            <textarea
+
+            <u-textarea
                 placeholder="Notes and comments"
-                class="h-40"
                 name="Comments"
+                variant="outline"
             />
-            <button type="submit" class="button">I'm done, submit!</button>
+            <u-button type="submit" class="self-end" color="tertiary">
+                Submit cash breakdown
+            </u-button>
         </form>
         <div v-else-if="state.isSending" class="">Sending, please wait...</div>
-    </div> -->
+    </div>
 </template>
-<script setup>
-// import { useSupabaseStore } from '@/stores/supabase'
+<script lang="ts" setup>
+const locationsStore = useLocationsStore()
 
-// const supabaseStore = useSupabaseStore()
+const { completeTask } = useContentfulUtils()
+const toast = useToast()
 
-// const dailyCashBreakdown = ref()
+const task: Ref<TypeTaskInstance | null> = ref(null)
+const dailyCashBreakdown = ref()
 
-// const runtimeConfig = useRuntimeConfig()
+const state = reactive({
+    isSending: false,
+    hasSent: false,
+    hasErrored: false
+})
 
-// const scriptURL = runtimeConfig.public.GOOGLE_SHEETS_SCRIPT_DAILY_CASH_BREAKDOWN
-// // const form = document.forms['submit-to-google-sheet']
+const activeLocation: ComputedRef<TypeLocation | undefined> = computed(() => {
+    return locationsStore.activeLocation
+})
 
-// const submitToGoogleSheets = () => {
-//     const formData = new FormData(dailyCashBreakdown.value)
-//     const user = formData.get('Team member')
-//     const dateTime = new Date()
-//     state.isSending = true
-//     state.hasSent = false
-//     fetch(scriptURL, { method: 'POST', body: formData })
-//         .then(async () => {
-//             await supabaseStore.setCheck('daily_cash_breakdown', user)
-//             await supabaseStore.setCheck('daily_cash_breakdown_time', dateTime)
-//             state.isSending = false
-//             state.hasSent = true
-//         })
-//         .catch((error) => console.error('Error!', error.message))
-// }
+const scriptURL: ComputedRef<string> = computed(() => {
+    return activeLocation.value.fields.googleSheetsScriptTemperatureLogs || ''
+})
 
-// useHead({
-//     title: 'Daily Cash Breakdown'
-// })
+onMounted(async () => {
+    try {
+        const params = {
+            content_type: 'taskInstance',
+            'fields.location.sys.id': activeLocation.value?.sys?.id,
+            'fields.task.sys.contentType.sys.id': 'dailyTask',
+            'fields.task.fields.title': 'Cash Breakdown'
+        }
+        const data = await $fetch('/api/contentful/fetch-entries', { params })
+        if (data?.items?.length) {
+            task.value = data.items[0] || null
+        }
+    } catch (error) {
+        console.error('Error fetching task instance:', error)
+    }
+})
 
-// const state = reactive({
-//     isSending: false,
-//     hasSent: false,
-//     hasErrored: false
-// })
+const submitToGoogleSheets = async () => {
+    const formData = new FormData(dailyCashBreakdown.value)
+    for (const [key, value] of formData.entries()) {
+        console.log(key, value)
+    }
+    state.isSending = true
+    state.hasSent = false
+    state.hasErrored = false
+    try {
+        if (!scriptURL.value || typeof scriptURL.value !== 'string') {
+            toast.add({ title: 'Google Sheets script URL is not defined.' })
+            throw new Error('Google Sheets script URL is not defined.')
+        }
+        const response: any = await fetch(scriptURL.value, {
+            method: 'POST',
+            body: formData
+        })
+
+        if (!response.ok) {
+            toast.add({ title: 'Error sending data to Google Sheets.' })
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        if (task.value) {
+            await completeTask(task.value, 'dailyTasks')
+        }
+
+        state.hasSent = true
+    } catch (error: any) {
+        state.isSending = false
+        state.hasErrored = true
+        console.error('Error!', error?.message || error)
+    } finally {
+        state.isSending = false
+    }
+}
+
+useHead({
+    title: 'Daily Cash Breakdown'
+})
 </script>
