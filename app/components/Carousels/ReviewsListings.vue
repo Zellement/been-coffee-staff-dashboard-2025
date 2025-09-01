@@ -11,8 +11,18 @@
                 label="Details"
             />
         </div>
-        <u-carousel v-if="dataFetched" dots :items="reviewData">
-            <template #default="{ item }">
+        <u-carousel
+            v-if="dataFetched"
+            v-slot="{ item }"
+            dots
+            :ui="{
+                root: 'flex',
+                container: 'items-stretch h-full',
+                item: 'h-full flex'
+            }"
+            :items="reviewData"
+        >
+            <u-card variant="subtle" :ui="{ root: 'h-full flex w-full' }">
                 <div class="mb-4 flex items-center gap-2">
                     <u-avatar-group>
                         <img
@@ -61,6 +71,16 @@
                     <p v-if="item.text" class="whitespace-pre-line">
                         {{ item.text }}
                     </p>
+                    <p v-else>No review left.</p>
+
+                    <u-timeline
+                        v-if="getDetails(item).length"
+                        :items="getDetails(item)"
+                        orientation="horizontal"
+                        class="w-3/4"
+                        size="xl"
+                    />
+
                     <u-alert
                         v-if="item.response?.text"
                         class="mt-4"
@@ -69,12 +89,14 @@
                         :description="item.response?.text"
                     />
                 </div>
-            </template>
+            </u-card>
         </u-carousel>
     </div>
 </template>
 
 <script lang="ts" setup>
+import type { TimelineItem } from '@nuxt/ui'
+
 interface NormalisedReview {
     id: string
     source: 'Google' | 'TripAdvisor'
@@ -84,14 +106,46 @@ interface NormalisedReview {
     author?: string | null
     authorProfileUrl?: string | null
     authorPhoto?: string | null
-    link?: string | null
     createdAt: string // ISO
-    updatedAt?: string | null
+    details?: {
+        food?: number | null
+        service?: number | null
+        atmosphere?: number | null
+    }
     response?: {
         text?: string | null
-        createdAt?: string | null
-        updatedAt?: string | null
     } | null
+}
+
+const getDetails = (item: NormalisedReview): TimelineItem[] => {
+    const details: TimelineItem[] = []
+    if (item.details?.food) {
+        details.push({
+            title: 'Food',
+            icon: getRatingIcon(item.details.food)
+        })
+    }
+    if (item.details?.service) {
+        details.push({
+            title: 'Service',
+            icon: getRatingIcon(item.details.service)
+        })
+    }
+    if (item.details?.atmosphere) {
+        details.push({
+            title: 'Atmosphere',
+            icon: getRatingIcon(item.details.atmosphere)
+        })
+    }
+    return details
+}
+
+const getRatingIcon = (rating: number): string => {
+    if (rating === 5) return 'i-material-symbols-counter-5'
+    if (rating === 4) return 'i-material-symbols-counter-4'
+    if (rating === 3) return 'i-material-symbols-counter-3'
+    if (rating === 2) return 'i-material-symbols-counter-2'
+    return 'i-material-symbols-counter-1'
 }
 
 const locationsStore = useLocationsStore()
@@ -145,19 +199,17 @@ function normalizeGoogle(res: any): NormalisedReview[] {
             author: r?.user?.name ?? null,
             authorProfileUrl: r?.user?.link ?? null,
             authorPhoto: r?.user?.thumbnail ?? null,
-            link: r?.link ?? null,
             createdAt: r?.iso_date ?? new Date().toISOString(),
-            updatedAt: r?.iso_date_of_last_edit ?? r?.iso_date ?? null,
+            details: {
+                food: r?.details?.food ?? null,
+                service: r?.details?.service ?? null,
+                atmosphere: r?.details?.atmosphere ?? null
+            },
             response: r?.response
                 ? {
                       text:
                           r?.response?.snippet ??
                           r?.response?.extracted_snippet?.original ??
-                          null,
-                      createdAt: r?.response?.iso_date ?? null,
-                      updatedAt:
-                          r?.response?.iso_date_of_last_edit ??
-                          r?.response?.iso_date ??
                           null
                   }
                 : null
@@ -183,14 +235,10 @@ function normalizeTripAdvisor(res: any): NormalisedReview[] {
             author: r?.user?.username ?? null,
             authorProfileUrl: null,
             authorPhoto: r?.user?.avatar?.thumbnail ?? null,
-            link: r?.url ?? null,
             createdAt: r?.published_date ?? new Date().toISOString(),
-            updatedAt: null,
             response: r?.owner_response
                 ? {
-                      text: r?.owner_response?.text ?? null,
-                      createdAt: r?.owner_response?.published_date ?? null,
-                      updatedAt: null
+                      text: r?.owner_response?.text ?? null
                   }
                 : null
         })

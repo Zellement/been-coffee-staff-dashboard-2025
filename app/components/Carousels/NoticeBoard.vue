@@ -3,16 +3,27 @@
         <h2 class="uc-text uc-text--carousel-title">Notice Board</h2>
         <u-carousel
             v-if="dataFetched"
+            v-slot="{ item }"
             dots
             :items="orders"
             :autoplay="{
                 delay: 10000
             }"
+            :ui="{
+                root: 'flex',
+                container: 'items-stretch  h-full',
+                item: 'h-full flex'
+            }"
         >
-            <template #default="{ item }">
+            <u-card
+                :ui="{
+                    root: 'h-full flex w-full'
+                }"
+                variant="subtle"
+            >
                 <h3 class="h4 mb-2">{{ item.fields.title }}</h3>
                 <rich-text :content="item.fields.content" />
-            </template>
+            </u-card>
         </u-carousel>
     </div>
 </template>
