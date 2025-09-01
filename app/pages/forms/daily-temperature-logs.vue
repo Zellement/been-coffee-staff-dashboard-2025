@@ -7,14 +7,22 @@
                 color="success"
                 title="Success"
                 description="Your temperature logs have been submitted successfully. Please check the log has been updated correctly."
+                :actions="[
+                    {
+                        label: 'Go home',
+                        color: 'neutral',
+                        variant: 'subtle',
+                        to: '/'
+                    },
+                    {
+                        label: 'View logs',
+                        color: 'neutral',
+                        variant: 'subtle',
+                        target: '_blank',
+                        to: 'https://docs.google.com/spreadsheets/d/1Bh5vjjW7wU8HaMsP7-R0M0XTlx1Ohd9uh25AK3ZZrIY/edit#gid=0'
+                    }
+                ]"
             />
-            <u-button
-                to="https://docs.google.com/spreadsheets/d/1Bh5vjjW7wU8HaMsP7-R0M0XTlx1Ohd9uh25AK3ZZrIY/edit#gid=0"
-                target="_blank"
-                color="tertiary"
-            >
-                View temperature logs
-            </u-button>
             <p class="mt-12 text-xs">
                 To see the form again, please refresh this page.
             </p>
@@ -123,9 +131,7 @@ onMounted(async () => {
 
 const submitToGoogleSheets = async () => {
     const formData = new FormData(dailyTemperatureLogs.value)
-    for (const [key, value] of formData.entries()) {
-        console.log(key, value)
-    }
+
     state.isSending = true
     state.hasSent = false
     state.hasErrored = false

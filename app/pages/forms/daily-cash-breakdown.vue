@@ -7,6 +7,14 @@
             color="success"
             title="Success"
             description="Your cash breakdown has been submitted successfully."
+            :actions="[
+                {
+                    label: 'Go home',
+                    color: 'neutral',
+                    variant: 'subtle',
+                    to: '/'
+                }
+            ]"
         />
         <u-alert
             v-else-if="state.hasErrored"
@@ -89,7 +97,7 @@ const activeLocation: ComputedRef<TypeLocation | undefined> = computed(() => {
 })
 
 const scriptURL: ComputedRef<string> = computed(() => {
-    return activeLocation.value.fields.googleSheetsScriptTemperatureLogs || ''
+    return activeLocation.value.fields.googleSheetsScriptCashBreakdown || ''
 })
 
 onMounted(async () => {
@@ -111,9 +119,7 @@ onMounted(async () => {
 
 const submitToGoogleSheets = async () => {
     const formData = new FormData(dailyCashBreakdown.value)
-    for (const [key, value] of formData.entries()) {
-        console.log(key, value)
-    }
+
     state.isSending = true
     state.hasSent = false
     state.hasErrored = false
