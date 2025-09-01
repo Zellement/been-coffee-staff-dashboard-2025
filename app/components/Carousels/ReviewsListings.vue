@@ -19,7 +19,7 @@
                             v-if="item.authorPhoto"
                             :src="item.authorPhoto ?? ''"
                             :alt="item.author ?? ''"
-                            class="size-10"
+                            class="bg-tuscany-500 size-9"
                         />
                         <u-avatar
                             :icon="

@@ -46,7 +46,7 @@
 
     --ui-bg: var(--ui-color-primary-900);
     --ui-bg-muted: var(--ui-color-primary-800);
-    --ui-bg-elevated: var(--ui-color-primary-800);
+    --ui-bg-elevated: var(--ui-color-primary-600);
     --ui-bg-accented: var(--ui-color-primary-500);
     --ui-bg-inverted: var(--color-white);
 
