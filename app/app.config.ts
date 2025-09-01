@@ -170,6 +170,14 @@ export default defineAppConfig({
                         'text-navy-500 dark:text-seashell-500 ring-navy-500 dark:ring-seashell-500 '
                 }
             }
+        },
+
+        radioGroup: {
+            variants: {
+                variant: {
+                    table: 'text-navy-500 dark:text-seashell-500 ring-navy-500 dark:ring-seashell-500 '
+                }
+            }
         }
     }
 })

@@ -6,10 +6,10 @@
             <div class="col-span-3 flex flex-row gap-3 self-end md:col-span-4">
                 <div class="flex w-4 self-stretch" :class="style" />
                 <div class="flex flex-col">
-                    <h3 class="font-riverside leading-none">
+                    <p class="">
                         {{ titleBrow }}
-                    </h3>
-                    <h3 class="font-riverside text-xl leading-none">
+                    </p>
+                    <h3 class="uc-text !m-0">
                         {{ title }}
                     </h3>
                 </div>
@@ -52,6 +52,7 @@
                 </p>
             </div>
         </div>
+
         <div class="flex flex-col gap-2">
             <div class="grid grid-cols-12 items-center">
                 <span class="col-span-2 font-bold">Cash</span>
@@ -71,7 +72,7 @@
                     :value="getValue(denomination)"
                     :name="`${collection} ${denomination.denomination} value`"
                 />
-                <input
+                <u-input
                     v-model="denomination.value"
                     class="col-span-5"
                     :name="`${collection} ${denomination.denomination} count`"
@@ -82,22 +83,14 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps({
-    collection: {
-        type: String,
-        required: true
-    },
-    collectionBrow: {
-        type: String,
-        required: false,
-        default: null
-    },
-    collectionStyle: {
-        type: String,
-        required: true
-    }
-})
+<script lang="ts" setup>
+interface Props {
+    collection?: string
+    collectionBrow?: string | null
+    collectionStyle?: string
+}
+
+const props = defineProps<Props>()
 
 const title = computed(() => {
     return props.collection
@@ -131,7 +124,7 @@ const formatter = new Intl.NumberFormat('en-UK', {
     currency: 'GBP'
 })
 
-const getValue = (denomination) => {
+const getValue = (denomination: { value: number; multiple: number }) => {
     return formatter.format(denomination.value * denomination.multiple)
 }
 
@@ -169,13 +162,5 @@ const differenceColor = computed(() => {
         : difference.value === 0
           ? 'text-green-500'
           : 'text-red-500'
-})
-
-watch(difference, (newVal, oldVal) => {
-    if (newVal === oldVal) return false
-    state.totalsAnimating = true
-    setTimeout(() => {
-        state.totalsAnimating = false
-    }, 500)
 })
 </script>

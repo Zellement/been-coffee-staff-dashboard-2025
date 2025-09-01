@@ -28,35 +28,10 @@
             <shift-leads />
 
             <div>
-                <h2 class="h4">Waste</h2>
+                <h2 class="uc-text">Waste</h2>
                 <p class="mb-4">Have you put waste through the till?</p>
-                <label class="flex flex-row items-center gap-2">
-                    <input
-                        type="radio"
-                        required
-                        value="yes"
-                        name="Waste thru till"
-                    />
-                    <span>Yes</span>
-                </label>
-                <label class="flex flex-row items-center gap-2">
-                    <input
-                        type="radio"
-                        required
-                        value="No, zero waste to declare"
-                        name="Waste thru till"
-                    />
-                    <span>No, zero waste to declare</span>
-                </label>
-                <label class="flex flex-row items-center gap-2">
-                    <input
-                        type="radio"
-                        required
-                        value="No, see notes"
-                        name="Waste thru till"
-                    />
-                    <span>No, see notes</span>
-                </label>
+
+                <URadioGroup v-model="value" variant="table" :items="items" />
             </div>
             <daily-cash-breakdown-collection
                 collection-brow="(Black tin)"
@@ -86,6 +61,8 @@
     </div>
 </template>
 <script lang="ts" setup>
+import type { RadioGroupValue, RadioGroupItem } from '@nuxt/ui'
+
 const locationsStore = useLocationsStore()
 
 const { completeTask } = useContentfulUtils()
@@ -93,6 +70,13 @@ const toast = useToast()
 
 const task: Ref<TypeTaskInstance | null> = ref(null)
 const dailyCashBreakdown = ref()
+
+const items = ref<RadioGroupItem[]>([
+    'Yes',
+    'No, zero waste to declare',
+    'No, see notes'
+])
+const value = ref<RadioGroupValue>('Yes')
 
 const state = reactive({
     isSending: false,
