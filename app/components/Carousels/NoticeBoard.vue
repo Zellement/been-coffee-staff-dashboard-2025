@@ -12,7 +12,7 @@
             :ui="{
                 root: 'flex',
                 container: 'items-stretch  h-full',
-                item: 'h-full flex'
+                item: 'h-full flex md:basis-1/2 2xl:basis-sm'
             }"
         >
             <u-card

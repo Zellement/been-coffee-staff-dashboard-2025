@@ -1,11 +1,11 @@
 <template>
-    <div class="page flex flex-col gap-4">
-        <daily-tasks />
-        <routine-tasks />
-        <upcoming-deliveries />
-        <notice-board />
-        <reviews-listings />
-        <standing-orders />
+    <div class="page grid grid-cols-12 gap-4">
+        <daily-tasks class="col-span-full md:col-span-6" />
+        <routine-tasks class="col-span-full md:col-span-6" />
+        <upcoming-deliveries class="col-span-full" />
+        <notice-board class="col-span-full" />
+        <reviews-listings class="col-span-full" />
+        <standing-orders class="col-span-full" />
         <!-- <rich-text :content="allNoticeBoard.items?.[0]?.fields.content" />
         <h2>Employees</h2>
         <pre>{{ allEmployees }}</pre>
