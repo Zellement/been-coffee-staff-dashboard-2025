@@ -191,7 +191,7 @@ export default defineNuxtConfig({
         transpile: ['@effect-digital/vue-utils']
     },
 
-    devtools: { enabled: true },
+    devtools: { enabled: false },
 
     compatibilityDate: '2024-08-08'
 })

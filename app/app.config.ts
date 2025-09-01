@@ -11,12 +11,33 @@ export default defineAppConfig({
             highlighted: 'blue'
         },
 
+        avatar: {
+            slots: {
+                root: ' bg-secondary'
+            }
+        },
+
         button: {
             compoundVariants: [
                 {
                     color: 'tertiary',
                     variant: 'solid',
                     class: 'bg-navy-500 text-white dark:bg-butterscotch-500 dark:text-navy-500 hover:bg-tuscany-800 hover:text-seashell-300'
+                }
+            ]
+        },
+
+        alert: {
+            variants: {
+                color: {
+                    secondary: '!text-red-500'
+                }
+            },
+            compoundVariants: [
+                {
+                    color: 'secondary',
+                    variant: 'solid',
+                    class: { root: '!text-white' }
                 }
             ]
         },

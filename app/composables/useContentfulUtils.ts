@@ -89,14 +89,14 @@ export const useContentfulUtils = () => {
         }
     }
 
-    const uploadGoogleReviews = async (data: any, locationId: string) => {
+    const uploadReviews = async (data: any, locationId: string) => {
         await $fetch(`/api/contentful/update-entry`, {
             method: 'POST',
             body: {
                 id: locationId,
                 fields: {
-                    googleReviewDataLastFetched: localISOTime,
-                    googleReviewData: data
+                    reviewDataLastFetched: localISOTime,
+                    reviewData: data
                 }
             }
         })
@@ -105,6 +105,6 @@ export const useContentfulUtils = () => {
     return {
         completeTask,
         checkedOrder,
-        uploadGoogleReviews
+        uploadReviews
     }
 }

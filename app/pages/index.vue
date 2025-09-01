@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page flex flex-col gap-4">
         <daily-tasks />
         <routine-tasks />
         <upcoming-deliveries />

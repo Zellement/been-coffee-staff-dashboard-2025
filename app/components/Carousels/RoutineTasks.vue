@@ -1,7 +1,7 @@
 <template>
     <div class="p-c-default">
         <u-slideover title="All Routine Tasks" aria-label="All Routine Tasks">
-            <h2 class="uc-text uc-text--xs flex items-center gap-2">
+            <h2 class="uc-text uc-text--carousel-title flex items-center gap-2">
                 <span>Routine tasks</span>
                 <u-icon name="i-bxs-show" size="20" />
             </h2>

@@ -1,6 +1,6 @@
 <template>
     <div class="p-c-default">
-        <h2 class="uc-text uc-text--xs">Deliveries</h2>
+        <h2 class="uc-text uc-text--carousel-title">Deliveries</h2>
         <div v-if="dataFetched" class="flex gap-4">
             <div class="min-w-0 flex-1">
                 <u-carousel

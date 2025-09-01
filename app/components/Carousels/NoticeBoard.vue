@@ -1,6 +1,6 @@
 <template>
     <div class="p-default">
-        <h2 class="uc-text uc-text--xs">Notice Board</h2>
+        <h2 class="uc-text uc-text--carousel-title">Notice Board</h2>
         <u-carousel
             v-if="dataFetched"
             dots
