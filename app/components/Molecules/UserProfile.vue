@@ -61,47 +61,13 @@
                             </template>
                         </div>
                         <div class="flex flex-col gap-2">
-                            <h2 class="font-bold">Your history</h2>
-                            <div
-                                class="grid grid-cols-3 gap-1 overflow-clip rounded-tl rounded-tr font-bold"
-                            >
-                                <span
-                                    class="bg-secondary text-seashell px-2 py-1"
-                                >
-                                    Date
-                                </span>
-                                <span
-                                    class="bg-secondary text-seashell col-span-2 px-2 py-1"
-                                />
-                            </div>
+                            <h2 class="uc-text">Your history</h2>
 
-                            <div class="grid grid-cols-3">
-                                <span class="px-2 py-1">
-                                    {{ startDate }}
-                                </span>
-                                <span class="col-span-2 px-2 py-1 font-bold">
-                                    Started at Been Coffee
-                                </span>
-                            </div>
-
-                            <template
-                                v-for="(data, index) in historyData"
-                                :key="index"
-                            >
-                                <div
-                                    v-if="data.value"
-                                    class="grid w-full grid-cols-3 items-center"
-                                >
-                                    <span class="px-2 py-1">
-                                        {{ data.value ?? 'N/A' }}
-                                    </span>
-                                    <span
-                                        class="col-span-2 px-2 py-1 font-bold"
-                                    >
-                                        {{ data.key }}
-                                    </span>
-                                </div>
-                            </template>
+                            <u-timeline
+                                v-if="fullHistoryData.length"
+                                :items="fullHistoryData"
+                                size="md"
+                            />
                         </div>
 
                         <auth-sign-out class="ml-auto" />
@@ -113,6 +79,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { TimelineItem } from '@nuxt/ui'
+
 const userStore = useUserStore()
 
 const displayName: ComputedRef<string> = computed(() => {
@@ -149,9 +117,19 @@ const startDate: ComputedRef<string | undefined> = computed(() => {
     )
 })
 
-const historyData: ComputedRef<
-    { id: string; key: string; value: string | undefined }[]
-> = computed(() => {
-    return userStore.userContentfulData.fields.history
+const fullHistoryData: ComputedRef<TimelineItem[]> = computed(() => {
+    const userHistory = userStore.userContentfulData?.fields?.history ?? []
+    return [
+        {
+            title: 'Joined Been Coffee',
+            date: startDate.value,
+            icon: 'i-lucide-milestone'
+        },
+        ...userHistory.map((item: any) => ({
+            title: item.key,
+            date: item.value,
+            icon: 'i-lucide-milestone'
+        }))
+    ]
 })
 </script>

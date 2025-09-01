@@ -9,7 +9,7 @@
                     :type="showPassword ? 'text' : 'password'"
                 >
                     <template #trailing>
-                        <UButton
+                        <u-button
                             color="neutral"
                             variant="link"
                             size="sm"
