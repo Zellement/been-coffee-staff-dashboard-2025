@@ -12,74 +12,78 @@
             />
         </div>
         <div class="flex flex-col gap-8 lg:flex-row lg:items-center">
-            <u-card
-                class="lg:shrink-0 lg:basis-[300px]"
-                variant="solid"
+            <u-carousel
+                v-slot="{ item, index }"
+                dots
+                drag-free
+                :items="allWinners"
                 :ui="{
-                    root: 'bg-black dark:bg-white'
+                    root: 'flex',
+                    container: 'items-center h-full',
+                    item: 'ps-2 basis-80'
                 }"
             >
-                <div class="flex flex-col items-center py-8">
-                    <img
-                        src="@/assets/images/beenawesome.png"
-                        class="mb-8 w-full max-w-[180px]"
-                    />
-                    <h2 class="uc-text text-lg !text-white dark:!text-black">
-                        {{ currentWinner.fields.name }}
-                    </h2>
-
-                    <p>
-                        Since {{ fullDateConverter(currentWinner.fields.from) }}
-                    </p>
-
-                    <img
-                        class="mt-8 rounded shadow-xl"
-                        :src="`${
-                            currentWinner.fields.photo?.fields?.file?.url
-                        }?w=230&h=320&fit=fill&f=face&fm=webp`"
-                        :alt="currentWinner.fields.name"
-                    />
-                </div>
-            </u-card>
-            <div class="lg:min-w-0 lg:flex-1">
-                <u-carousel
-                    v-slot="{ item }"
-                    dots
-                    drag-free
-                    :items="previousWinners"
+                <u-card
+                    v-if="index === 0"
+                    variant="solid"
                     :ui="{
-                        root: 'flex',
-                        container: 'items-stretch h-full',
-                        item: 'h-full flex basis-3/4 sm:basis-[280px]'
+                        root: 'bg-black dark:bg-white'
                     }"
                 >
-                    <u-card
-                        :ui="{
-                            root: 'h-full flex w-full justify-center'
-                        }"
-                        variant="subtle"
-                    >
-                        <div class="flex w-full flex-col items-center py-4">
-                            <h2 class="uc-text">
-                                {{ item.fields.name }}
-                            </h2>
+                    <div class="flex flex-col items-center p-2">
+                        <img
+                            src="@/assets/images/beenawesome.png"
+                            class="mb-8 w-full max-w-[180px]"
+                            :class="
+                                colorMode.value === 'dark'
+                                    ? ''
+                                    : 'brightness-50 invert'
+                            "
+                        />
+                        <h2
+                            class="uc-text text-lg !text-white dark:!text-black"
+                        >
+                            {{ item.fields.name }}
+                        </h2>
 
-                            <p>
-                                From
-                                {{ fullDateConverter(item.fields.from) }}
-                            </p>
+                        <p>Since {{ fullDateConverter(item.fields.from) }}</p>
 
-                            <img
-                                class="mt-8 rounded shadow-xl"
-                                :src="`${
-                                    item.fields.photo?.fields?.file?.url
-                                }?w=180&h=250&fit=fill&f=face&fm=webp`"
-                                :alt="item.fields.name"
-                            />
-                        </div>
-                    </u-card>
-                </u-carousel>
-            </div>
+                        <img
+                            class="mt-8 rounded shadow-xl"
+                            :src="`${
+                                item.fields.photo?.fields?.file?.url
+                            }?w=230&h=320&fit=fill&f=face&fm=webp`"
+                            :alt="item.fields.name"
+                        />
+                    </div>
+                </u-card>
+                <u-card
+                    v-else
+                    :ui="{
+                        root: '!basis-65'
+                    }"
+                    variant="subtle"
+                >
+                    <div class="flex w-full flex-col items-center p-2">
+                        <h2 class="uc-text">
+                            {{ item.fields.name }}
+                        </h2>
+
+                        <p>
+                            From
+                            {{ fullDateConverter(item.fields.from) }}
+                        </p>
+
+                        <img
+                            class="mt-4 w-full rounded shadow-xl"
+                            :src="`${
+                                item.fields.photo?.fields?.file?.url
+                            }?w=300&h=370&fit=fill&f=face&fm=webp`"
+                            :alt="item.fields.name"
+                        />
+                    </div>
+                </u-card>
+            </u-carousel>
         </div>
     </div>
 </template>
@@ -88,6 +92,8 @@
 const locationsStore = useLocationsStore()
 const cachedDataStore = useCachedDataStore()
 
+const colorMode = useColorMode()
+
 const dataFetched: Ref<boolean> = ref(false)
 
 const { fullDateConverter } = useDateUtils()
@@ -95,16 +101,6 @@ const { fullDateConverter } = useDateUtils()
 const allWinners: ComputedRef<TypeBeenAwesomeWinner[]> = computed(() => {
     return cachedDataStore.cachedBeenAwesomeWinners || []
 })
-
-const previousWinners: ComputedRef<TypeBeenAwesomeWinner[]> = computed(() => {
-    return allWinners.value.slice(1)
-})
-
-const currentWinner: ComputedRef<TypeBeenAwesomeWinner | undefined> = computed(
-    () => {
-        return allWinners.value[0]
-    }
-)
 
 /* Computed */
 
