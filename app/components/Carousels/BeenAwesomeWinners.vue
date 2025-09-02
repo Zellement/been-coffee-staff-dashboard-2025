@@ -64,14 +64,36 @@
                     }"
                     variant="subtle"
                 >
-                    <div class="flex w-full flex-col items-center p-2">
-                        <h2 class="uc-text">
+                    <div
+                        class="flex w-full flex-col items-center p-2 text-center"
+                    >
+                        <h2 class="uc-text mb-2">
                             {{ item.fields.name }}
                         </h2>
 
-                        <p>
-                            From
-                            {{ fullDateConverter(item.fields.from) }}
+                        <p class="flex flex-col">
+                            <span class="flex items-center gap-2">
+                                <u-icon name="i-bx-log-in" />
+                                {{ fullDateConverter(item.fields.from) }}
+                            </span>
+                            <span class="text-tertiary flex items-center gap-2">
+                                <u-icon name="i-bx-log-out" />
+                                {{
+                                    fullDateConverter(
+                                        getFollowingWinnersStartDate(index)
+                                    )
+                                }}
+                            </span>
+                        </p>
+
+                        <p class="mt-2">
+                            {{
+                                duration(
+                                    getFollowingWinnersStartDate(index),
+                                    item.fields.from
+                                )
+                            }}
+                            days
                         </p>
 
                         <img
@@ -115,6 +137,17 @@ const shouldFetch: ComputedRef<boolean> = computed(
 )
 
 /* Functions & lifecycle */
+
+const getFollowingWinnersStartDate = (index: number) => {
+    return allWinners.value[index - 1]?.fields.from
+}
+
+const duration = (to: string, from: string) => {
+    const startDate = new Date(from)
+    const endDate = new Date(to)
+    const months = (endDate.getTime() - startDate.getTime()) / 1000 / 86400
+    return months
+}
 
 const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     key: 'beenAwesomeWinners',
