@@ -30,7 +30,7 @@
                         root: 'bg-black dark:bg-white'
                     }"
                 >
-                    <div class="flex flex-col items-center p-2">
+                    <div class="flex flex-col items-center p-8">
                         <img
                             src="@/assets/images/beenawesome.png"
                             class="mb-8 w-full max-w-[180px]"
@@ -46,7 +46,10 @@
                             {{ item.fields.name }}
                         </h2>
 
-                        <p>Since {{ fullDateConverter(item.fields.from) }}</p>
+                        <p class="flex items-center gap-1">
+                            <u-icon name="i-bx-log-in" />
+                            {{ fullDateConverter(item.fields.from) }}
+                        </p>
 
                         <img
                             class="mt-8 rounded shadow-xl"
@@ -57,15 +60,9 @@
                         />
                     </div>
                 </u-card>
-                <u-card
-                    v-else
-                    :ui="{
-                        root: '!basis-65'
-                    }"
-                    variant="subtle"
-                >
+                <u-card v-else variant="subtle">
                     <div
-                        class="flex w-full flex-col items-center p-2 text-center"
+                        class="flex w-full flex-col items-center p-8 text-center"
                     >
                         <h2 class="uc-text mb-2">
                             {{ item.fields.name }}
