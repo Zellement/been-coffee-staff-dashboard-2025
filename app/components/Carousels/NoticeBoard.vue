@@ -21,7 +21,15 @@
                 }"
                 variant="subtle"
             >
-                <h3 class="h5 mb-2">{{ item.fields.title }}</h3>
+                <div class="mb-4 flex items-start justify-between">
+                    <h3 class="h5">{{ item.fields.title }}</h3>
+                    <u-badge
+                        v-if="item.fields.sticky"
+                        variant="outline"
+                        color="neutral"
+                        label="This notice is pinned"
+                    />
+                </div>
                 <rich-text :content="item.fields.content" />
             </u-card>
         </u-carousel>

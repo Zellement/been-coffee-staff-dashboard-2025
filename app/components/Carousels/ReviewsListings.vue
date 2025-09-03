@@ -77,7 +77,7 @@
                         :items="getDetails(item)"
                         orientation="horizontal"
                         class="w-3/4"
-                        size="md"
+                        :default-value="2"
                     />
 
                     <u-alert
