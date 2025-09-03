@@ -11,99 +11,93 @@
                 @click="cachedDataStore.clearAllCachedData"
             />
         </div>
-        <div class="flex flex-col gap-8 lg:flex-row lg:items-center">
-            <u-carousel
-                v-slot="{ item, index }"
-                dots
-                drag-free
-                :items="allWinners"
+        <u-carousel
+            v-slot="{ item, index }"
+            dots
+            drag-free
+            :items="allWinners"
+            :ui="{
+                root: 'flex',
+                container: 'items-center h-full',
+                item: 'ps-2 basis-80'
+            }"
+        >
+            <u-card
+                v-if="index === 0"
+                variant="solid"
                 :ui="{
-                    root: 'flex',
-                    container: 'items-center h-full',
-                    item: 'ps-2 basis-80'
+                    root: 'bg-black dark:bg-white'
                 }"
             >
-                <u-card
-                    v-if="index === 0"
-                    variant="solid"
-                    :ui="{
-                        root: 'bg-black dark:bg-white'
-                    }"
-                >
-                    <div class="flex flex-col items-center p-8">
-                        <img
-                            src="@/assets/images/beenawesome.png"
-                            class="mb-8 w-full max-w-[180px]"
-                            :class="
-                                colorMode.value === 'dark'
-                                    ? ''
-                                    : 'brightness-50 invert'
-                            "
-                        />
-                        <h2
-                            class="uc-text text-lg !text-white dark:!text-black"
-                        >
-                            {{ item.fields.name }}
-                        </h2>
+                <div class="flex flex-col items-center p-8">
+                    <img
+                        src="@/assets/images/beenawesome.png"
+                        class="mb-8 w-full max-w-[180px]"
+                        :class="
+                            colorMode.value === 'dark'
+                                ? ''
+                                : 'brightness-50 invert'
+                        "
+                    />
+                    <h2 class="uc-text text-lg !text-white dark:!text-black">
+                        {{ item.fields.name }}
+                    </h2>
 
-                        <p class="flex items-center gap-1">
+                    <p class="flex items-center gap-1">
+                        <u-icon name="i-bx-log-in" />
+                        {{ fullDateConverter(item.fields.from) }}
+                    </p>
+
+                    <img
+                        class="mt-8 rounded shadow-xl"
+                        :src="`${
+                            item.fields.photo?.fields?.file?.url
+                        }?w=230&h=320&fit=fill&f=face&fm=webp`"
+                        :alt="item.fields.name"
+                    />
+                </div>
+            </u-card>
+            <u-card v-else variant="subtle">
+                <div class="flex w-full flex-col items-center p-8 text-center">
+                    <h2 class="uc-text mb-2">
+                        {{ item.fields.name }}
+                    </h2>
+
+                    <p class="flex flex-col">
+                        <span class="flex items-center gap-2">
                             <u-icon name="i-bx-log-in" />
                             {{ fullDateConverter(item.fields.from) }}
-                        </p>
-
-                        <img
-                            class="mt-8 rounded shadow-xl"
-                            :src="`${
-                                item.fields.photo?.fields?.file?.url
-                            }?w=230&h=320&fit=fill&f=face&fm=webp`"
-                            :alt="item.fields.name"
-                        />
-                    </div>
-                </u-card>
-                <u-card v-else variant="subtle">
-                    <div
-                        class="flex w-full flex-col items-center p-8 text-center"
-                    >
-                        <h2 class="uc-text mb-2">
-                            {{ item.fields.name }}
-                        </h2>
-
-                        <p class="flex flex-col">
-                            <span class="flex items-center gap-2">
-                                <u-icon name="i-bx-log-in" />
-                                {{ fullDateConverter(item.fields.from) }}
-                            </span>
-                            <span class="text-tertiary flex items-center gap-2">
-                                <u-icon name="i-bx-log-out" />
-                                {{
-                                    fullDateConverter(
-                                        getFollowingWinnersStartDate(index)
-                                    )
-                                }}
-                            </span>
-                        </p>
-
-                        <p class="mt-2">
+                        </span>
+                        <span class="text-tertiary flex items-center gap-2">
+                            <u-icon name="i-bx-log-out" />
                             {{
-                                duration(
-                                    getFollowingWinnersStartDate(index),
-                                    item.fields.from
+                                fullDateConverter(
+                                    getFollowingWinnersStartDate(index)
                                 )
                             }}
-                            days
-                        </p>
+                        </span>
+                    </p>
 
-                        <img
-                            class="mt-4 w-full rounded shadow-xl"
-                            :src="`${
-                                item.fields.photo?.fields?.file?.url
-                            }?w=300&h=370&fit=fill&f=face&fm=webp`"
-                            :alt="item.fields.name"
-                        />
-                    </div>
-                </u-card>
-            </u-carousel>
-        </div>
+                    <p class="mt-2">
+                        {{
+                            duration(
+                                getFollowingWinnersStartDate(index),
+                                item.fields.from
+                            )
+                        }}
+                        days
+                    </p>
+
+                    <img
+                        class="mt-4 w-full rounded shadow-xl"
+                        :src="`${
+                            item.fields.photo?.fields?.file?.url
+                        }?w=300&h=370&fit=fill&f=face&fm=webp`"
+                        :alt="item.fields.name"
+                    />
+                </div>
+            </u-card>
+        </u-carousel>
     </div>
 </template>
 
