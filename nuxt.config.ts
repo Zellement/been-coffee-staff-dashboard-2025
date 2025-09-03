@@ -56,32 +56,10 @@ export default defineNuxtConfig({
     // Contentful image provider
     image: {
         provider: 'contentful',
-
         contentful: {
             domain: 'images.ctfassets.net'
         }
     },
-
-    // Storyblok image provider
-    // image: {
-    //     domains: [
-    //         'https://a.storyblok.com',
-    //         'localhost',
-    //     ],
-    //     screens: {
-    //         '3xs': 21 * 16,
-    //         '2xs': 23 * 16,
-    //         xs: 25.625 * 16,
-    //         sm: 30 * 16,
-    //         'sm-md': 35 * 16,
-    //         md: 43.125 * 16,
-    //         lg: 54.875 * 16,
-    //         xl: 79.6875 * 16,
-    //         '2xl': 90 * 16,
-    //         '3xl': 100 * 16,
-    //         max: 1920
-    //     }
-    // },
 
     css: ['@/assets/css/app.css'],
 
@@ -140,18 +118,11 @@ export default defineNuxtConfig({
                 }
             ]
         }
-        // pageTransition: { name: 'page', mode: 'out-in' }
     },
 
     runtimeConfig: {
         public: {
             WEBSITE_URL: import.meta.env.WEBSITE_URL
-            // GOOGLE_SHEETS_SCRIPT_DAILY_CASH_BREAKDOWN:
-            //     process.env.GOOGLE_SHEETS_SCRIPT_DAILY_CASH_BREAKDOWN,
-            // GOOGLE_SHEETS_SCRIPT_ROUTINE_TASKS:
-            //     process.env.GOOGLE_SHEETS_SCRIPT_ROUTINE_TASKS,
-            // GOOGLE_SHEETS_SCRIPT_DAILY_TEMPERATURE_LOGS:
-            //     process.env.GOOGLE_SHEETS_SCRIPT_DAILY_TEMPERATURE_LOGS
         },
         CONTENTFUL_CDA_ACCESS_TOKEN: import.meta.env
             .CONTENTFUL_CDA_ACCESS_TOKEN,
