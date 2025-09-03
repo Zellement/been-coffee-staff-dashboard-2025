@@ -1,38 +1,54 @@
 <template>
     <div class="p-default mb-8">
         <h2 class="uc-text uc-text--carousel-title">Notice Board</h2>
-        <u-carousel
-            v-if="dataFetched"
-            v-slot="{ item }"
-            dots
-            :items="orders"
-            :autoplay="{
-                delay: 10000
-            }"
-            :ui="{
-                root: 'flex',
-                container: 'items-stretch  h-full',
-                item: 'h-full flex md:basis-1/2 2xl:basis-sm'
-            }"
-        >
-            <u-card
-                :ui="{
-                    root: 'h-full flex w-full'
-                }"
-                variant="subtle"
-            >
-                <div class="mb-4 flex items-start justify-between">
-                    <h3 class="h5">{{ item.fields.title }}</h3>
-                    <u-badge
-                        v-if="item.fields.sticky"
-                        variant="outline"
-                        color="neutral"
-                        label="This notice is pinned"
+        <div class="relative">
+            <transition name="fade">
+                <u-carousel
+                    v-if="dataFetched"
+                    v-slot="{ item }"
+                    dots
+                    :items="orders"
+                    :autoplay="{
+                        delay: 10000
+                    }"
+                    :ui="{
+                        root: 'flex',
+                        container: 'items-stretch  h-full',
+                        item: 'h-full flex md:basis-1/2 2xl:basis-sm'
+                    }"
+                >
+                    <u-card
+                        :ui="{
+                            root: 'h-full flex w-full'
+                        }"
+                        variant="subtle"
+                    >
+                        <div class="mb-4 flex items-start justify-between">
+                            <h3 class="h5">{{ item.fields.title }}</h3>
+                            <u-badge
+                                v-if="item.fields.sticky"
+                                variant="outline"
+                                color="neutral"
+                                label="This notice is pinned"
+                            />
+                        </div>
+                        <rich-text :content="item.fields.content" />
+                    </u-card>
+                </u-carousel>
+            </transition>
+            <transition name="fade-absolute">
+                <div
+                    v-if="!dataFetched"
+                    class="flex w-full gap-4 overflow-hidden"
+                >
+                    <u-skeleton
+                        v-for="i in 6"
+                        :key="i"
+                        class="h-40 shrink-0 basis-full md:basis-1/2 2xl:basis-sm"
                     />
                 </div>
-                <rich-text :content="item.fields.content" />
-            </u-card>
-        </u-carousel>
+            </transition>
+        </div>
     </div>
 </template>
 

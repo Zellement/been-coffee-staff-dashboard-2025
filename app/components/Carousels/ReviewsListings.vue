@@ -10,86 +10,107 @@
                 size="sm"
             />
         </div>
-        <u-carousel
-            v-if="dataFetched"
-            v-slot="{ item }"
-            dots
-            :ui="{
-                root: 'flex',
-                container: 'items-stretch h-full',
-                item: 'h-full flex sm:basis-1/2 lg:basis-1/3 2xl:basis-96'
-            }"
-            :items="reviewData"
-        >
-            <u-card variant="subtle" :ui="{ root: 'h-full flex w-full' }">
-                <div class="mb-4 flex items-center gap-2">
-                    <u-avatar-group>
-                        <img
-                            v-if="item.authorPhoto"
-                            :src="item.authorPhoto ?? ''"
-                            :alt="item.author ?? ''"
-                            class="bg-tuscany-500 size-9"
-                        />
-                        <u-avatar
-                            :icon="
-                                item.source === 'Google'
-                                    ? 'i-akar-icons-google-fill'
-                                    : 'i-simple-icons-tripadvisor'
-                            "
-                            size="lg"
-                        />
-                    </u-avatar-group>
-                    <div class="flex flex-col">
-                        <p class="uc-text">{{ item.author }}</p>
-                        <p>{{ fullDateConverter(item.createdAt) }}</p>
-                    </div>
-                </div>
+        <div class="relative">
+            <transition name="fade">
+                <u-carousel
+                    v-if="dataFetched"
+                    v-slot="{ item }"
+                    dots
+                    :ui="{
+                        root: 'flex',
+                        container: 'items-stretch h-full',
+                        item: 'h-full basis-4/5 flex sm:basis-1/2 lg:basis-1/3 2xl:basis-96'
+                    }"
+                    :items="reviewData"
+                >
+                    <u-card
+                        variant="subtle"
+                        :ui="{ root: 'h-full flex w-full' }"
+                    >
+                        <div class="mb-4 flex items-center gap-2">
+                            <u-avatar-group>
+                                <img
+                                    v-if="item.authorPhoto"
+                                    :src="item.authorPhoto ?? ''"
+                                    :alt="item.author ?? ''"
+                                    class="bg-tuscany-500 size-9"
+                                />
+                                <u-avatar
+                                    :icon="
+                                        item.source === 'Google'
+                                            ? 'i-akar-icons-google-fill'
+                                            : 'i-simple-icons-tripadvisor'
+                                    "
+                                    size="lg"
+                                />
+                            </u-avatar-group>
+                            <div class="flex flex-col">
+                                <p class="uc-text">{{ item.author }}</p>
+                                <p>{{ fullDateConverter(item.createdAt) }}</p>
+                            </div>
+                        </div>
 
-                <div class="relative mb-4 flex gap-1">
-                    <u-icon
-                        v-for="i in 5"
+                        <div class="relative mb-4 flex gap-1">
+                            <u-icon
+                                v-for="i in 5"
+                                :key="i"
+                                size="18"
+                                name="ic:outline-star-outline"
+                                class="text-butterscotch-500 opacity-30"
+                            />
+                            <div class="absolute top-0 left-0 flex gap-1">
+                                <u-icon
+                                    v-for="i in item.rating"
+                                    :key="i"
+                                    size="18"
+                                    name="ic:outline-star"
+                                    class="text-butterscotch-500"
+                                />
+                            </div>
+                        </div>
+
+                        <div v-if="showDetails" class="flex flex-col gap-2">
+                            <h3 v-if="item.title" class="h5">
+                                {{ item.title }}
+                            </h3>
+
+                            <p v-if="item.text" class="whitespace-pre-line">
+                                {{ item.text }}
+                            </p>
+                            <p v-else>No review left.</p>
+
+                            <u-timeline
+                                v-if="getDetails(item).length"
+                                :items="getDetails(item)"
+                                orientation="horizontal"
+                                class="w-3/4"
+                                :default-value="2"
+                            />
+
+                            <u-alert
+                                v-if="item.response?.text"
+                                class="mt-4"
+                                color="info"
+                                variant="soft"
+                                :description="item.response?.text"
+                            />
+                        </div>
+                    </u-card>
+                </u-carousel>
+            </transition>
+            <transition name="fade-absolute">
+                <div
+                    v-if="!dataFetched"
+                    class="flex w-full gap-4 overflow-hidden"
+                >
+                    <u-skeleton
+                        v-for="i in 6"
                         :key="i"
-                        size="18"
-                        name="ic:outline-star-outline"
-                        class="text-butterscotch-500 opacity-30"
-                    />
-                    <div class="absolute top-0 left-0 flex gap-1">
-                        <u-icon
-                            v-for="i in item.rating"
-                            :key="i"
-                            size="18"
-                            name="ic:outline-star"
-                            class="text-butterscotch-500"
-                        />
-                    </div>
-                </div>
-
-                <div v-if="showDetails" class="flex flex-col gap-2">
-                    <h3 v-if="item.title" class="h5">{{ item.title }}</h3>
-
-                    <p v-if="item.text" class="whitespace-pre-line">
-                        {{ item.text }}
-                    </p>
-                    <p v-else>No review left.</p>
-
-                    <u-timeline
-                        v-if="getDetails(item).length"
-                        :items="getDetails(item)"
-                        orientation="horizontal"
-                        class="w-3/4"
-                        :default-value="2"
-                    />
-
-                    <u-alert
-                        v-if="item.response?.text"
-                        class="mt-4"
-                        color="info"
-                        variant="soft"
-                        :description="item.response?.text"
+                        class="h-36 shrink-0 basis-4/5 sm:basis-1/2 lg:basis-1/3 2xl:basis-96"
                     />
                 </div>
-            </u-card>
-        </u-carousel>
+            </transition>
+        </div>
     </div>
 </template>
 

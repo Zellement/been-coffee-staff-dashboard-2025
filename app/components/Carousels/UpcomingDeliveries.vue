@@ -1,26 +1,35 @@
 <template>
     <div class="p-c-default">
         <h2 class="uc-text uc-text--carousel-title">Deliveries</h2>
-        <div v-if="dataFetched" class="flex gap-4">
-            <div class="min-w-0 flex-1">
-                <u-carousel
-                    v-if="sortedRoutineTaskInstances"
-                    v-slot="{ item }"
-                    :items="sortedRoutineTaskInstances"
-                    auto-height
-                    drag-free
-                    :ui="{ item: 'basis-48' }"
+        <div class="relative">
+            <transition name="fade">
+                <div v-if="dataFetched" class="flex gap-4">
+                    <div class="min-w-0 flex-1">
+                        <u-carousel
+                            v-if="sortedRoutineTaskInstances"
+                            v-slot="{ item }"
+                            :items="sortedRoutineTaskInstances"
+                            auto-height
+                            drag-free
+                            :ui="{ item: 'basis-48' }"
+                        >
+                            <card-order :item="item" />
+                        </u-carousel>
+                    </div>
+                </div>
+            </transition>
+            <transition name="fade-absolute">
+                <div
+                    v-if="!dataFetched"
+                    class="flex w-full gap-4 overflow-hidden"
                 >
-                    <card-order :item="item" />
-                </u-carousel>
-            </div>
-        </div>
-        <div v-else class="flex w-full gap-4 overflow-hidden">
-            <u-skeleton
-                v-for="i in 6"
-                :key="i"
-                class="h-17 shrink-0 basis-48"
-            />
+                    <u-skeleton
+                        v-for="i in 6"
+                        :key="i"
+                        class="h-17 shrink-0 basis-48"
+                    />
+                </div>
+            </transition>
         </div>
     </div>
 </template>
