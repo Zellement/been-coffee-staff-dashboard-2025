@@ -41,4 +41,7 @@
 //     content_type: 'noticeBoard',
 //     include: 1
 // })
+useHead({
+    title: 'Been Coffee Staff Dashboard'
+})
 </script>
