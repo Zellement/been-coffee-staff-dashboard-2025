@@ -11,7 +11,7 @@
             :ui="{
                 root: 'flex',
                 container: 'items-center h-full',
-                item: 'ps-2 basis-56'
+                item: 'ps-2 basis-62'
             }"
         >
             <u-card variant="subtle">
