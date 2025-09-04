@@ -33,7 +33,11 @@
                             drag-free
                             :items="sortedRoutineTaskInstances"
                             auto-height
-                            :ui="{ item: 'basis-48' }"
+                            :ui="{
+                                root: 'flex',
+                                container: 'items-stretch h-full',
+                                item: 'basis-48'
+                            }"
                         >
                             <card-routine-task
                                 :key="item.sys.id"

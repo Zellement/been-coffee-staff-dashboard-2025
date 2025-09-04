@@ -16,17 +16,13 @@
         :title="item.fields.task.fields.title"
         :description="`Last completed: ${item.lastCompletedDate ? fullDateConverter(item.lastCompletedDate) : 'Never'}`"
     >
-        <u-card variant="subtle" :title="item.fields.task.fields.title">
-            <u-badge
-                v-if="item.fields.task?.fields?.staffLevel"
-                class="absolute top-1 right-1"
-                size="xs"
-                color="neutral"
-                variant="outline"
-                trailing-icon="i-bx-bxs-arrow-to-top"
-            >
-                {{ item.fields.task.fields.staffLevel }}
-            </u-badge>
+        <u-card
+            :ui="{
+                root: 'h-full flex w-full'
+            }"
+            variant="subtle"
+            :title="item.fields.task.fields.title"
+        >
             <template v-if="item.type === 'upcoming'">
                 <u-badge
                     size="sm"
@@ -59,6 +55,16 @@
                 </u-badge>
             </template>
             <p>{{ item.fields.task.fields.title }}</p>
+            <u-badge
+                v-if="item.fields.task?.fields?.staffLevel"
+                size="xs"
+                color="neutral"
+                variant="outline"
+                trailing-icon="i-bx-bxs-arrow-to-top"
+                class="uc-text"
+            >
+                {{ item.fields.task.fields.staffLevel }}
+            </u-badge>
         </u-card>
         <template #body>
             <div class="flex flex-col items-start gap-4 text-left">
