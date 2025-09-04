@@ -18,7 +18,12 @@ export const useLocationsStore = defineStore('locations', () => {
                 (location) => location.sys.id === activeLocation.value?.sys.id
             ) || []
 
-        return getTeamFromActiveLocation?.[0]?.fields.teamHierarchy || []
+        const team = getTeamFromActiveLocation?.[0]?.fields.teamHierarchy || []
+
+        if (team.length > 0) {
+            console.log('were here')
+            return team.filter((member: TypeEmployee) => member?.fields?.name)
+        }
     })
 
     const acceptableShiftLeads: string[] = [
