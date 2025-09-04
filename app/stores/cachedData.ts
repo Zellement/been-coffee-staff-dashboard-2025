@@ -7,16 +7,19 @@ export const useCachedDataStore = defineStore(
         const cachedBeenAwesomeWinners = ref<TypeBeenAwesomeWinner[] | null>(
             null
         )
+        const cachedAllArticles = ref<TypeArticle[] | null>(null)
 
         const clearAllCachedData = () => {
             cachedStandingOrders.value = null
             cachedBeenAwesomeWinners.value = null
+            cachedAllArticles.value = null
             localStorage.removeItem('cachedData')
         }
 
         return {
             cachedStandingOrders,
             cachedBeenAwesomeWinners,
+            cachedAllArticles,
             clearAllCachedData
         }
     },

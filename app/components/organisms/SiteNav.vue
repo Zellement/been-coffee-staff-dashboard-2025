@@ -1,5 +1,9 @@
 <template>
-    <u-slideover title="Dashboard navigation">
+    <u-slideover
+        v-model:open="show"
+        description="All Been Coffee articles"
+        title="Dashboard navigation"
+    >
         <u-button
             label="Menu"
             size="xs"
@@ -12,9 +16,39 @@
         />
 
         <template #body>
-            <Placeholder class="m-4 h-full" />
+            {{ articles }}
         </template>
     </u-slideover>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const cachedDataStore = useCachedDataStore()
+const articles: Ref<TypeArticle[] | null> = ref(null)
+
+const show: Ref<boolean> = ref(false)
+
+const fetchArticles = async () => {
+    const data = await $fetch('/api/contentful/fetch-entries', {
+        method: 'GET',
+        params: {
+            content_type: 'article',
+            include: 2
+        }
+    })
+
+    articles.value = data.items || null
+    cachedDataStore.cachedAllArticles = articles.value
+}
+
+watch(show, (newVal) => {
+    if (newVal) {
+        if (cachedDataStore.cachedAllArticles) {
+            articles.value = cachedDataStore.cachedAllArticles
+            console.log('dont need to')
+            return
+        }
+        console.log('fetching')
+        fetchArticles()
+    }
+})
+</script>
