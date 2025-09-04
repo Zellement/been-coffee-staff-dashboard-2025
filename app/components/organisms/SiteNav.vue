@@ -18,7 +18,6 @@
         <template #body>
             <u-navigation-menu
                 v-if="articles"
-                color="neutral"
                 orientation="vertical"
                 :items="articles"
                 class="w-full justify-center"
