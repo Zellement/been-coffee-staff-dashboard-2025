@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import type { NavigationMenuItem } from '@nuxt/ui'
 
 export const useCachedDataStore = defineStore(
     'cachedData',
@@ -7,12 +8,17 @@ export const useCachedDataStore = defineStore(
         const cachedBeenAwesomeWinners = ref<TypeBeenAwesomeWinner[] | null>(
             null
         )
+
         const cachedAllArticles = ref<TypeArticle[] | null>(null)
+        const cachedAllCategoriesWithArticles = ref<
+            NavigationMenuItem[] | null
+        >(null)
 
         const clearAllCachedData = () => {
             cachedStandingOrders.value = null
             cachedBeenAwesomeWinners.value = null
             cachedAllArticles.value = null
+            cachedAllCategoriesWithArticles.value = null
             localStorage.removeItem('cachedData')
         }
 
@@ -20,12 +26,13 @@ export const useCachedDataStore = defineStore(
             cachedStandingOrders,
             cachedBeenAwesomeWinners,
             cachedAllArticles,
+            cachedAllCategoriesWithArticles,
             clearAllCachedData
         }
-    },
-    {
-        persist: {
-            storage: piniaPluginPersistedstate.localStorage()
-        }
     }
+    // {
+    //     persist: {
+    //         storage: piniaPluginPersistedstate.localStorage()
+    //     }
+    // }
 )
