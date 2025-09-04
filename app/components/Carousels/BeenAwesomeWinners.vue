@@ -58,7 +58,7 @@
                 </div>
             </u-card>
             <u-card v-else variant="subtle">
-                <div class="flex w-full flex-col items-center p-8 text-center">
+                <div class="flex w-full flex-col items-center p-5 text-center">
                     <h2 class="uc-text mb-2">
                         {{ item.fields.name }}
                     </h2>
