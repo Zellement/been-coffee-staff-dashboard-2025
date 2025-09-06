@@ -116,10 +116,8 @@ watch(show, (newVal) => {
     if (newVal) {
         if (cachedDataStore.cachedAllArticles) {
             articles.value = cachedDataStore.cachedAllArticles
-            console.log('dont need to')
             return
         }
-        console.log('fetching')
         fetchArticles()
     }
 })

@@ -1,7 +1,7 @@
 <template>
     <div class="sticky top-0 z-10 m-2 mt-0 flex flex-col">
         <div
-            class="p-default bg-secondary-100 dark:bg-primary-600 card-border mt-0 rounded-br rounded-bl dark:!border-t-0"
+            class="p-default bg-secondary-100 dark:bg-primary-600 card-border mt-0 flex items-center justify-between rounded-br rounded-bl dark:!border-t-0"
         >
             <u-drawer
                 direction="top"
@@ -74,6 +74,8 @@
                     </div>
                 </template>
             </u-drawer>
+
+            <share-button />
         </div>
     </div>
 </template>

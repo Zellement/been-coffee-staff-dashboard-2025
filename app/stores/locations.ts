@@ -21,7 +21,6 @@ export const useLocationsStore = defineStore('locations', () => {
         const team = getTeamFromActiveLocation?.[0]?.fields.teamHierarchy || []
 
         if (team.length > 0) {
-            console.log('were here')
             return team.filter((member: TypeEmployee) => member?.fields?.name)
         }
     })

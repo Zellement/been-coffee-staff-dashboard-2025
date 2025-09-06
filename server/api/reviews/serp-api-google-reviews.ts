@@ -13,7 +13,6 @@ export default defineEventHandler(async (event) => {
             sort_by: 'newestFirst',
             api_key: process.env.SERP_API_KEY
         })
-        console.log(response)
         return response
     } catch (err) {
         console.error(err)
