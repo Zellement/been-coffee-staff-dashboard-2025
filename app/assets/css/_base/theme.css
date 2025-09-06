@@ -2,7 +2,7 @@
     --ui-success: var(--color-green-700);
     --ui-warning: var(--color-amber-500);
     --ui-tertiary: var(--color-tuscany-500);
-    --ui-info: var(--color-purple-800);
+    --ui-info: var(--color-blue-800);
 
     /* Neutral */
     --ui-text-dimmed: var(--ui-color-secondary-400);
@@ -34,7 +34,7 @@
     --ui-success: var(--color-green-400);
     --ui-warning: var(--color-amber-400);
     --ui-tertiary: var(--color-tuscany-400);
-    --ui-info: var(--color-purple-400);
+    --ui-info: var(--color-blue-400);
 
     /* Neutral */
     --ui-text-dimmed: var(--ui-color-primary-400);

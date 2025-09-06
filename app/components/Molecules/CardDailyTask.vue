@@ -1,12 +1,6 @@
 <template>
     <transition name="fade">
-        <div v-if="loading" class="absolute inset-0 z-30 flex bg-white/80">
-            <u-icon
-                class="m-auto"
-                size="16"
-                name="i-svg-spinners-blocks-shuffle-3"
-            />
-        </div>
+        <loading-overlay v-if="loading" />
     </transition>
     <u-slideover
         v-model:open="open"

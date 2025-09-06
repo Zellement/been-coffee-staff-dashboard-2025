@@ -1,6 +1,6 @@
 <template>
     <div class="p-default mb-8">
-        <h2 class="uc-text uc-text--carousel-title">Notice Board</h2>
+        <carousel-title-and-action title="Notice Board" />
         <div class="relative">
             <transition name="fade">
                 <u-carousel

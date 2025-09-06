@@ -1,6 +1,6 @@
 <template>
     <div class="p-c-default">
-        <h2 class="uc-text uc-text--carousel-title">Daily tasks</h2>
+        <carousel-title-and-action title="Daily tasks" />
         <div class="relative">
             <transition name="fade">
                 <div v-if="dataFetched" class="flex gap-4">

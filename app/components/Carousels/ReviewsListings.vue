@@ -1,15 +1,14 @@
 <template>
     <div class="p-default relative mb-8">
-        <div class="flex items-center justify-between">
-            <h2 class="uc-text uc-text--carousel-title">Reviews</h2>
-            <USwitch
+        <carousel-title-and-action title="Reviews">
+            <u-switch
                 v-model="showDetails"
                 unchecked-icon="i-lucide-x"
                 checked-icon="i-lucide-check"
                 label="Details"
                 size="sm"
             />
-        </div>
+        </carousel-title-and-action>
         <div class="relative">
             <transition name="fade">
                 <u-carousel

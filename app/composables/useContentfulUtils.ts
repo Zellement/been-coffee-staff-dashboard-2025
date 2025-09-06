@@ -35,7 +35,7 @@ export const useContentfulUtils = () => {
                 } finally {
                     uiStore.refreshing = false
                 }
-            }, 750)
+            }, 2500)
         } catch (error) {
             toast.add({
                 title: 'Error completing task',
@@ -78,7 +78,7 @@ export const useContentfulUtils = () => {
                 } finally {
                     uiStore.refreshing = false
                 }
-            }, 2000)
+            }, 2500)
         } catch (error) {
             toast.add({
                 title: 'Error checking order',

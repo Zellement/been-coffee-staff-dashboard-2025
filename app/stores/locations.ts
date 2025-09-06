@@ -20,8 +20,8 @@ export const useLocationsStore = defineStore('locations', () => {
 
         const team = getTeamFromActiveLocation?.[0]?.fields.teamHierarchy || []
 
-        if (team.length > 0) {
-            return team.filter((member: TypeEmployee) => member?.fields?.name)
+        if (team.length && team.length > 0) {
+            return team?.filter((member: TypeEmployee) => member?.fields?.name)
         }
     })
 
@@ -32,7 +32,7 @@ export const useLocationsStore = defineStore('locations', () => {
     ]
 
     const getAllLeads: ComputedRef<TypeEmployee[]> = computed(() => {
-        return getAllTeamMembers.value.filter((member) =>
+        return getAllTeamMembers.value?.filter((member) =>
             acceptableShiftLeads.includes(member.fields.jobRole)
         )
     })

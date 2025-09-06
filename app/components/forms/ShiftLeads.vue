@@ -68,7 +68,7 @@
 const locationsStore = useLocationsStore()
 
 const leadEmployees: ComputedRef<TypeEmployee[] | null> = computed(() => {
-    return locationsStore.getAllLeads.sort((a, b) => {
+    return locationsStore?.getAllLeads?.sort((a, b) => {
         return a.fields.name.localeCompare(b.fields.name)
     })
 })

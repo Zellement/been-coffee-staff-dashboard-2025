@@ -1,14 +1,13 @@
 <template>
     <div class="p-default mb-8">
-        <div class="flex items-center justify-between">
-            <h2 class="uc-text uc-text--carousel-title">Standing Orders</h2>
+        <carousel-title-and-action title="Standing Orders">
             <u-button
                 size="xs"
                 icon="i-bx-refresh"
                 variant="outline"
                 @click="cachedDataStore.clearAllCachedData"
             />
-        </div>
+        </carousel-title-and-action>
         <div class="relative">
             <transition name="fade">
                 <u-carousel

@@ -1,16 +1,13 @@
 <template>
     <div class="p-default mb-8">
-        <div class="flex items-center justify-between">
-            <h2 class="uc-text uc-text--carousel-title">
-                Been Awesome Winners
-            </h2>
+        <carousel-title-and-action title="Been Awesome Winners">
             <u-button
                 size="xs"
                 icon="i-bx-refresh"
                 variant="outline"
                 @click="cachedDataStore.clearAllCachedData"
             />
-        </div>
+        </carousel-title-and-action>
         <u-carousel
             v-slot="{ item, index }"
             dots

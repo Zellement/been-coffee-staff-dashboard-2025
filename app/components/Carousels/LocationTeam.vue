@@ -1,8 +1,6 @@
 <template>
     <div class="p-default mb-8">
-        <div class="flex items-center justify-between">
-            <h2 class="uc-text uc-text--carousel-title">Team</h2>
-        </div>
+        <carousel-title-and-action title="Team" />
         <u-carousel
             v-slot="{ item }"
             dots
