@@ -68,18 +68,20 @@ const transformAndStoreArticles = (
     const categoryList: NavigationMenuItem[] = []
 
     items.forEach((item) => {
-        if (item.fields.categories && Array.isArray(item.fields.categories)) {
-            item.fields.categories.forEach((cat: TypeArticleCategories) => {
-                if (cat?.fields?.slug && !categorySet.has(cat.fields.slug)) {
-                    categorySet.add(cat.fields.slug)
-                    categoryList.push({
-                        label: cat.fields.title,
-                        to: `/category/${cat.fields.slug}`,
-                        icon: cat.fields.icon || 'i-bx-info-circle',
-                        slug: cat.fields.slug // store raw slug for matching
-                    })
-                }
-            })
+        if (item.fields.category) {
+            if (
+                item.fields.category?.fields?.slug &&
+                !categorySet.has(item.fields.category.fields.slug)
+            ) {
+                categorySet.add(item.fields.category.fields.slug)
+                categoryList.push({
+                    label: item.fields.category.fields.title,
+                    to: `/category/${item.fields.category.fields.slug}`,
+                    icon:
+                        item.fields.category.fields.icon || 'i-bx-info-circle',
+                    slug: item.fields.category.fields.slug // store raw slug for matching
+                })
+            }
         }
     })
 
@@ -93,11 +95,8 @@ const transformAndStoreArticles = (
         const children = items
             .filter(
                 (article) =>
-                    article.fields.categories &&
-                    article.fields.categories.some(
-                        (cat: TypeArticleCategories) =>
-                            cat?.fields?.slug === category.slug
-                    )
+                    article.fields.category &&
+                    article.fields.category.fields.slug === category.slug
             )
             .map((article) => ({
                 label: article.fields.title,
