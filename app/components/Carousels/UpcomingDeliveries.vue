@@ -19,16 +19,7 @@
                 </div>
             </transition>
             <transition name="fade-absolute">
-                <div
-                    v-if="!dataFetched"
-                    class="flex w-full gap-4 overflow-hidden"
-                >
-                    <u-skeleton
-                        v-for="i in 6"
-                        :key="i"
-                        class="h-17 shrink-0 basis-48"
-                    />
-                </div>
+                <skeleton-loop v-if="!dataFetched" />
             </transition>
         </div>
     </div>

@@ -37,16 +37,10 @@
                 </u-carousel>
             </transition>
             <transition name="fade-absolute">
-                <div
+                <skeleton-loop
                     v-if="!dataFetched"
-                    class="flex w-full gap-4 overflow-hidden"
-                >
-                    <u-skeleton
-                        v-for="i in 6"
-                        :key="i"
-                        class="h-40 shrink-0 basis-full md:basis-1/2 2xl:basis-sm"
-                    />
-                </div>
+                    skeleton-class="h-40 shrink-0 basis-full md:basis-1/2 2xl:basis-sm"
+                />
             </transition>
         </div>
     </div>
