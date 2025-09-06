@@ -127,7 +127,7 @@ watch(
             })
         }
     },
-    { immediate: true }
+    { immediate: false }
 )
 
 watch(data, (newData) => {

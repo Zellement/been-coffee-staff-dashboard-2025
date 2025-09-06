@@ -368,6 +368,6 @@ watch(
             console.error('Review watcher failed:', e)
         }
     },
-    { immediate: true }
+    { immediate: false }
 )
 </script>
