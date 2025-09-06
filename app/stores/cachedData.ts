@@ -29,10 +29,10 @@ export const useCachedDataStore = defineStore(
             cachedAllCategoriesWithArticles,
             clearAllCachedData
         }
+    },
+    {
+        persist: {
+            storage: piniaPluginPersistedstate.localStorage()
+        }
     }
-    // {
-    //     persist: {
-    //         storage: piniaPluginPersistedstate.localStorage()
-    //     }
-    // }
 )
