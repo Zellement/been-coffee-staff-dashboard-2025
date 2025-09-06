@@ -74,8 +74,9 @@ const transformAndStoreArticles = (
                     categorySet.add(cat.fields.slug)
                     categoryList.push({
                         label: cat.fields.title,
-                        to: cat.fields.slug,
-                        icon: cat.fields.icon || 'i-bx-info-circle'
+                        to: `/category/${cat.fields.slug}`,
+                        icon: cat.fields.icon || 'i-bx-info-circle',
+                        slug: cat.fields.slug // store raw slug for matching
                     })
                 }
             })
@@ -95,7 +96,7 @@ const transformAndStoreArticles = (
                     article.fields.categories &&
                     article.fields.categories.some(
                         (cat: TypeArticleCategories) =>
-                            cat?.fields?.slug === category.to
+                            cat?.fields?.slug === category.slug
                     )
             )
             .map((article) => ({
@@ -103,8 +104,10 @@ const transformAndStoreArticles = (
                 to: `/article/${article.fields.slug}`,
                 description: article.fields.description
             }))
+        // Remove the helper slug property from the returned object
+        const { ...rest } = category
         return {
-            ...category,
+            ...rest,
             children
         }
     })
@@ -121,4 +124,13 @@ watch(show, (newVal) => {
         fetchArticles()
     }
 })
+
+const route = useRoute()
+
+watch(
+    () => route.path,
+    () => {
+        show.value = false
+    }
+)
 </script>
