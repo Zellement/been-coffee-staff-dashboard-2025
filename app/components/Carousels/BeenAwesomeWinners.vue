@@ -140,25 +140,23 @@ const duration = (to: string, from: string) => {
 const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     key: 'beenAwesomeWinners',
     lazy: true,
+    watch: false,
     server: false,
+    immediate: false,
     params: computed(() => ({
         content_type: 'beenAwesomeWinner',
         'fields.location.sys.id': activeLocationId.value,
         order: '-fields.from'
-    })),
-    immediate: false
+    }))
 })
 
 watch(
     shouldFetch,
-    (ready) => {
+    async (ready) => {
         if (ready) {
-            execute().then(() => {
-                console.log('Fetched Been Awesome winners:', data.value?.items)
-                dataFetched.value = true
-                cachedDataStore.cachedBeenAwesomeWinners =
-                    data.value?.items || []
-            })
+            await execute()
+            dataFetched.value = true
+            cachedDataStore.cachedBeenAwesomeWinners = data.value?.items || []
         }
     },
     { immediate: false }

@@ -110,21 +110,21 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     key: 'dailyTasks',
     lazy: true,
     server: false,
+    watch: false,
+    immediate: false,
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
         'fields.task.sys.contentType.sys.id': 'dailyTask'
-    })),
-    immediate: false
+    }))
 })
 
 watch(
     shouldFetch,
-    (ready) => {
+    async (ready) => {
         if (ready) {
-            execute().then(() => {
-                dataFetched.value = true
-            })
+            await execute()
+            dataFetched.value = true
         }
     },
     { immediate: false }

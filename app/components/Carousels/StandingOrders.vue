@@ -85,22 +85,21 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     key: 'standingOrder',
     lazy: true,
     server: false,
+    watch: false,
+    immediate: false,
     params: computed(() => ({
         content_type: 'standingOrder',
         'fields.location.sys.id': activeLocationId.value
-    })),
-    immediate: false
+    }))
 })
 
 watch(
     shouldFetch,
-    (ready) => {
+    async (ready) => {
         if (ready) {
-            execute().then(() => {
-                console.log('Fetched standing orders:', data.value?.items)
-                dataFetched.value = true
-                cachedDataStore.cachedStandingOrders = orders.value
-            })
+            await execute()
+            dataFetched.value = true
+            cachedDataStore.cachedStandingOrders = orders.value
         }
     },
     { immediate: false }

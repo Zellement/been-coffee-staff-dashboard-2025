@@ -119,23 +119,23 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     key: 'orders',
     lazy: true,
     server: false,
+    watch: false,
+    immediate: false,
     params: computed(() => ({
         content_type: 'order',
         'fields.location.sys.id': activeLocationId.value,
         order: 'fields.expectedDeliveryDate',
         limit: 20
-    })),
-    immediate: false
+    }))
 })
 
 watch(
     shouldFetch,
-    (ready) => {
+    async (ready) => {
         if (ready) {
-            execute().then(() => {
-                dataFetched.value = true
-                orders.value = data.value?.items || []
-            })
+            await execute()
+            dataFetched.value = true
+            orders.value = data.value?.items || []
         }
     },
     { immediate: false }

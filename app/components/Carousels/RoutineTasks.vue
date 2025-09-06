@@ -173,23 +173,24 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
     key: 'routineTasks',
     lazy: true,
     server: false,
+    watch: false,
+    immediate: false,
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
         'fields.task.sys.contentType.sys.id': 'routineTask',
         order: 'fields.title',
         include: 3
-    })),
-    immediate: false
+    }))
 })
 
 watch(
     shouldFetch,
-    (ready) => {
+    async (ready) => {
         if (ready) {
-            execute().then(() => {
-                dataFetched.value = true
-            })
+            console.log('Fetching routine tasks...')
+            await execute()
+            dataFetched.value = true
         }
     },
     { immediate: false }
