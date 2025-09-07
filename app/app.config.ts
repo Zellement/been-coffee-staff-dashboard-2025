@@ -22,6 +22,14 @@ export default defineAppConfig({
             slots: {
                 title: 'uc-text'
             }
+        },
+
+        button: {
+            variants: {
+                size: {
+                    '2xs': 'px-1 gap-1 py-px text-2xs'
+                }
+            }
         }
     }
 })

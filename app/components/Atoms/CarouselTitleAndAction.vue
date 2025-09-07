@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-between">
+    <div class="mb-2 flex items-end justify-between">
         <h2 class="uc-text uc-text--carousel-title">
             {{ title }}
         </h2>

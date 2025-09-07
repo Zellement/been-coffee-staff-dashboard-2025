@@ -52,7 +52,6 @@ strong {
 
     &.uc-text--carousel-title {
         font-size: var(--text-xs);
-        margin-bottom: calc(var(--spacing) * 2);
     }
 }
 

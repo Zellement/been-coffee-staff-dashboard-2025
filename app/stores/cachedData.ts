@@ -4,7 +4,6 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 export const useCachedDataStore = defineStore(
     'cachedData',
     () => {
-        const cachedStandingOrders = ref<TypeStandingOrder[] | null>(null)
         const cachedBeenAwesomeWinners = ref<TypeBeenAwesomeWinner[] | null>(
             null
         )
@@ -15,7 +14,6 @@ export const useCachedDataStore = defineStore(
         >(null)
 
         const clearAllCachedData = () => {
-            cachedStandingOrders.value = null
             cachedBeenAwesomeWinners.value = null
             cachedAllArticles.value = null
             cachedAllCategoriesWithArticles.value = null
@@ -23,7 +21,6 @@ export const useCachedDataStore = defineStore(
         }
 
         return {
-            cachedStandingOrders,
             cachedBeenAwesomeWinners,
             cachedAllArticles,
             cachedAllCategoriesWithArticles,
