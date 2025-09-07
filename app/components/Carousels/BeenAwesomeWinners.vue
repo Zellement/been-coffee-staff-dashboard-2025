@@ -2,10 +2,17 @@
     <div v-if="hasWinners" class="p-default mb-8">
         <carousel-title-and-action title="Been Awesome Winners">
             <u-button
-                size="xs"
-                icon="i-bx-refresh"
+                size="2xs"
+                :label="
+                    beenAwesomeStore.lastFetched
+                        ? shortDateConverter(
+                              new Date(beenAwesomeStore.lastFetched)
+                          )
+                        : 'Refresh'
+                "
+                trailing-icon="i-bx-refresh"
                 variant="outline"
-                @click="cachedDataStore.clearAllCachedData"
+                @click="beenAwesomeStore.clearCache"
             />
         </carousel-title-and-action>
         <u-carousel
@@ -100,14 +107,14 @@
 
 <script lang="ts" setup>
 const locationsStore = useLocationsStore()
-const cachedDataStore = useCachedDataStore()
+const beenAwesomeStore = useBeenAwesomeStore()
 
 const colorMode = useColorMode()
 
-const { fullDateConverter } = useDateUtils()
+const { fullDateConverter, shortDateConverter } = useDateUtils()
 
 const allWinners: ComputedRef<TypeBeenAwesomeWinner[]> = computed(() => {
-    return cachedDataStore.cachedBeenAwesomeWinners || []
+    return beenAwesomeStore.cachedBeenAwesomeWinners || []
 })
 
 const hasWinners: ComputedRef<boolean> = computed(() => {
@@ -123,7 +130,7 @@ const activeLocationId: ComputedRef<string | undefined> = computed(() => {
 const shouldFetch: ComputedRef<boolean> = computed(
     () =>
         locationsStore.safeToFetchAllData &&
-        cachedDataStore.cachedBeenAwesomeWinners === null
+        beenAwesomeStore.cachedBeenAwesomeWinners === null
 )
 
 /* Functions & lifecycle */
@@ -154,7 +161,8 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
 
 watch(data, (newData) => {
     if (newData) {
-        cachedDataStore.cachedBeenAwesomeWinners = newData.items || []
+        beenAwesomeStore.cachedBeenAwesomeWinners = newData.items || []
+        beenAwesomeStore.lastFetched = new Date()
     }
 })
 </script>
