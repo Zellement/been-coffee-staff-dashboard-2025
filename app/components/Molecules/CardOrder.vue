@@ -146,16 +146,7 @@
                     {{ loading ? 'Loading...' : 'Mark as received & checked' }}
                 </u-button>
             </div>
-            <u-alert
-                v-else
-                variant="outline"
-                color="neutral"
-                icon="i-basil-info-circle-outline"
-                :ui="{
-                    icon: '!size-6'
-                }"
-                description="You are logged in as a shop so task completion is disabled."
-            />
+            <alert-logged-in-as-shop v-else />
         </template>
     </u-slideover>
 </template>
