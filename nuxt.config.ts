@@ -20,8 +20,7 @@ export default defineNuxtConfig({
         'nuxt-viewport',
         '@nuxt/icon',
         '@nuxt/ui',
-        '@nuxtjs/supabase',
-        'v-gsap-nuxt'
+        '@nuxtjs/supabase'
     ],
 
     ui: {

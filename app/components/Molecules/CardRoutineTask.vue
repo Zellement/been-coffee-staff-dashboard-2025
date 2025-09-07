@@ -8,6 +8,7 @@
         :description="`Last completed: ${item.lastCompletedDate ? fullDateConverter(item.lastCompletedDate) : 'Never'}`"
     >
         <u-card
+            class="cursor-pointer"
             :ui="{
                 root: 'h-full flex w-full'
             }"

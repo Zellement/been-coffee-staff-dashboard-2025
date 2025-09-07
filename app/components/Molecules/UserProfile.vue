@@ -9,7 +9,7 @@
                 title="Show more user information"
                 description="View your profile information"
             >
-                <button class="flex w-full items-center gap-2">
+                <button class="flex w-full cursor-pointer items-center gap-2">
                     <div
                         v-if="userStore.userContentfulData?.fields?.photo?.[0]"
                         class="w-10"

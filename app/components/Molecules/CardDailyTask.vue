@@ -7,7 +7,11 @@
         :title="item.fields.task.fields.title"
         :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
     >
-        <u-card variant="subtle" :title="item.fields.task.fields.title">
+        <u-card
+            class="cursor-pointer"
+            variant="subtle"
+            :title="item.fields.task.fields.title"
+        >
             <template v-if="taskHasBeenCompletedToday">
                 <u-badge size="sm" color="success" icon="i-bx-check">
                     Done

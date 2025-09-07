@@ -9,7 +9,7 @@
     >
         <u-card
             variant="subtle"
-            class="relative"
+            class="relative cursor-pointer"
             :title="item.fields.supplier.fields.title"
             :description="fullDateConverter(item.fields.orderDate)"
         >
