@@ -3,7 +3,7 @@
         <carousel-title-and-action title="Daily tasks" />
         <div class="relative">
             <transition name="fade">
-                <div v-if="dataFetched" class="flex gap-4">
+                <div v-if="hasDailyTaskInstances" class="flex gap-4">
                     <div class="relative flex w-16 flex-col">
                         <progress-bar-circular
                             v-if="totalDailyTaskInstances"
@@ -28,7 +28,7 @@
             </transition>
             <transition name="fade-absolute">
                 <div
-                    v-if="!dataFetched"
+                    v-if="!hasDailyTaskInstances"
                     class="flex w-full gap-4 overflow-hidden"
                 >
                     <u-skeleton class="h-17 w-17 shrink-0 rounded-full" />
@@ -49,8 +49,6 @@ const locationsStore = useLocationsStore()
 
 const today = new Date()
 
-const dataFetched: Ref<boolean> = ref(false)
-
 /* Computed */
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
@@ -58,7 +56,7 @@ const activeLocationId: ComputedRef<string | undefined> = computed(() => {
 })
 
 const shouldFetch: ComputedRef<boolean> = computed(
-    () => !!activeLocationId.value
+    () => locationsStore.safeToFetchAllData
 )
 
 const allDailyTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
@@ -66,6 +64,12 @@ const allDailyTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
         return tasksStore.allDailyTaskInstances
     }
 )
+
+const hasDailyTaskInstances: ComputedRef<boolean> = computed(() => {
+    return (
+        !!allDailyTaskInstances.value && allDailyTaskInstances.value.length > 0
+    )
+})
 
 const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
     if (!allDailyTaskInstances.value) return null
@@ -106,29 +110,18 @@ const taskCountCompletedToday: ComputedRef<number> = computed(() => {
 
 /* Functions & lifecycle */
 
-const { data, execute } = useFetch('/api/contentful/fetch-entries', {
+const { data } = useFetch('/api/contentful/fetch-entries', {
     key: 'dailyTasks',
     lazy: true,
     server: false,
-    watch: false,
-    immediate: false,
+    watch: [shouldFetch],
+    immediate: true,
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
         'fields.task.sys.contentType.sys.id': 'dailyTask'
     }))
 })
-
-watch(
-    shouldFetch,
-    async (ready) => {
-        if (ready) {
-            await execute()
-            dataFetched.value = true
-        }
-    },
-    { immediate: false }
-)
 
 watch(data, (newData) => {
     if (newData) {

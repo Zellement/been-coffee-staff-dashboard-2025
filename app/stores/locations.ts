@@ -37,6 +37,10 @@ export const useLocationsStore = defineStore('locations', () => {
         )
     })
 
+    const safeToFetchAllData: ComputedRef<boolean> = computed(() => {
+        return !!activeLocation.value
+    })
+
     /**
      * Actions
      **/
@@ -61,6 +65,7 @@ export const useLocationsStore = defineStore('locations', () => {
         activeLocation,
         getAllTeamMembers,
         getAllLeads,
+        safeToFetchAllData,
         setActiveLocation
     }
 })
