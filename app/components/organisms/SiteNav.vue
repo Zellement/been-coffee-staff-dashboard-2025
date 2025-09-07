@@ -32,6 +32,22 @@
                 variant="outline"
                 label="Loading"
             />
+            <u-alert
+                variant="outline"
+                class="mt-4"
+                color="neutral"
+                :description="`Article data last fetched ${articlesStore.lastFetched ? fullDateConverter(articlesStore.lastFetched, true) : 'never'}`"
+                icon="i-material-symbols-info-outline"
+            />
+            <u-button
+                class="mt-4"
+                label="Fetch latest articles"
+                size="xs"
+                color="neutral"
+                variant="outline"
+                trailing-icon="i-material-symbols-refresh"
+                @click="fetchArticles"
+            />
         </template>
     </u-slideover>
 </template>
@@ -39,8 +55,12 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const cachedDataStore = useCachedDataStore()
-const articles: Ref<NavigationMenuItem[] | null> = ref(null)
+const articlesStore = useArticlesStore()
+const articles = computed(() => {
+    return articlesStore.cachedAllCategoriesWithArticles
+})
+
+const { fullDateConverter } = useDateUtils()
 
 const show: Ref<boolean> = ref(false)
 
@@ -54,15 +74,14 @@ const fetchArticles = async () => {
         }
     })
 
-    const organisedArticles = transformAndStoreArticles(data.items) as any
-    cachedDataStore.cachedAllCategoriesWithArticles = organisedArticles
-    articles.value = organisedArticles
+    const organisedArticles = transformArticles(data.items) as any
+    articlesStore.cachedAllCategoriesWithArticles = organisedArticles
+    articlesStore.cachedAllArticles = data.items
+    articlesStore.lastFetched = new Date()
 }
 
 // Get articles and put them into their categories
-const transformAndStoreArticles = (
-    items: TypeArticle[]
-): NavigationMenuItem[] => {
+const transformArticles = (items: TypeArticle[]): NavigationMenuItem[] => {
     // Deduplicate categories using a Set
     const categorySet = new Set<string>()
     const categoryList: NavigationMenuItem[] = []
@@ -116,8 +135,7 @@ const transformAndStoreArticles = (
 
 watch(show, (newVal) => {
     if (newVal) {
-        if (cachedDataStore.cachedAllArticles) {
-            articles.value = cachedDataStore.cachedAllArticles
+        if (articlesStore.cachedAllArticles) {
             return
         }
         fetchArticles()
