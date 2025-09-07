@@ -5,7 +5,7 @@
         <upcoming-deliveries class="col-span-full" />
         <notice-board class="col-span-full" />
         <reviews-listings class="col-span-full" />
-        <standing-orders class="col-span-full" />
+        <standing-orders class="col-span-full mb-[2000px]" />
         <been-awesome-winners class="col-span-full" />
         <location-team class="col-span-full" />
         <!-- <rich-text :content="allNoticeBoard.items?.[0]?.fields.content" />
