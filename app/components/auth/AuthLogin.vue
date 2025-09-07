@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <form class="flex w-full justify-center">
+        <form class="flex w-full justify-center" @submit.prevent="handleLogin">
             <div class="flex w-full flex-col gap-4">
                 <u-input v-model="email" placeholder="Email" type="email" />
                 <u-input
@@ -32,7 +32,7 @@
                     color="tertiary"
                     :label="label"
                     :icon="icon"
-                    @click="handleLogin"
+                    type="submit"
                 />
             </div>
         </form>
@@ -68,6 +68,7 @@ const icon: ComputedRef<string> = computed(() =>
 const errorMsg: Ref<string | null> = ref(null)
 
 const handleLogin = async () => {
+    console.log('Logging in...')
     try {
         loading.value = true
         const { error } = await supabase.auth.signInWithPassword({

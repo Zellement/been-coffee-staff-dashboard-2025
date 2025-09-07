@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-8">
-        <form class="flex w-full justify-center">
+        <form class="flex w-full justify-center" @submit.prevent="handleReset">
             <div class="flex w-full flex-col gap-4">
                 <u-input
                     v-model="email"
@@ -8,10 +8,12 @@
                     placeholder="Enter your email address"
                 />
                 <u-button
+                    variant="solid"
+                    color="tertiary"
                     :ui="{ base: 'block text-center' }"
                     :label="label"
                     :icon="icon"
-                    @click="handleReset"
+                    type="submit"
                 />
             </div>
         </form>

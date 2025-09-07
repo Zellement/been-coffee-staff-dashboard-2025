@@ -40,11 +40,14 @@
                     <div
                         class="p-default mx-auto flex w-full max-w-sm flex-col gap-5"
                     >
-                        <div class="grid w-full grid-cols-3 items-center">
+                        <div
+                            v-if="!isGeneralLogin"
+                            class="grid w-full grid-cols-3 items-center"
+                        >
                             <span>Switch location</span>
                             <location-switcher class="col-span-2" />
                         </div>
-                        <div class="flex flex-col gap-2">
+                        <div v-if="!isGeneralLogin" class="flex flex-col gap-2">
                             <template
                                 v-for="(data, index) in profileData"
                                 :key="index"
@@ -60,7 +63,7 @@
                                 </div>
                             </template>
                         </div>
-                        <div class="flex flex-col gap-2">
+                        <div v-if="!isGeneralLogin" class="flex flex-col gap-2">
                             <h2 class="uc-text">Your history</h2>
 
                             <u-timeline
@@ -70,7 +73,9 @@
                             />
                         </div>
 
-                        <auth-sign-out class="ml-auto" />
+                        <auth-sign-out
+                            :class="isGeneralLogin ? 'mx-auto mt-4' : 'ml-auto'"
+                        />
                     </div>
                 </template>
             </u-drawer>
@@ -92,6 +97,10 @@ const displayName: ComputedRef<string> = computed(() => {
     )
 })
 const { getMonthAndDayOnly, shortDateConverter } = useDateUtils()
+
+const isGeneralLogin: ComputedRef<boolean> = computed(() => {
+    return userStore.isGeneralLogin
+})
 
 const profileData: ComputedRef<{ key: string; value: string | undefined }[]> =
     computed(() => {
