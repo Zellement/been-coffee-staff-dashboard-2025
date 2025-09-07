@@ -58,7 +58,6 @@
 const locationsStore = useLocationsStore()
 const cachedDataStore = useCachedDataStore()
 
-const dataFetched: Ref<boolean> = ref(false)
 const orders: ComputedRef<TypeStandingOrder[]> = computed(() => {
     return cachedDataStore.cachedStandingOrders || []
 })
@@ -75,35 +74,23 @@ const activeLocationId: ComputedRef<string | undefined> = computed(() => {
 
 const shouldFetch: ComputedRef<boolean> = computed(
     () =>
-        !!activeLocationId.value &&
+        locationsStore.safeToFetchAllData &&
         cachedDataStore.cachedStandingOrders === null
 )
 
 /* Functions & lifecycle */
 
-const { data, execute } = useFetch('/api/contentful/fetch-entries', {
+const { data } = useFetch('/api/contentful/fetch-entries', {
     key: 'standingOrder',
     lazy: true,
     server: false,
-    watch: false,
-    immediate: false,
+    watch: [shouldFetch],
+    immediate: true,
     params: computed(() => ({
         content_type: 'standingOrder',
         'fields.location.sys.id': activeLocationId.value
     }))
 })
-
-watch(
-    shouldFetch,
-    async (ready) => {
-        if (ready) {
-            await execute()
-            dataFetched.value = true
-            cachedDataStore.cachedStandingOrders = orders.value
-        }
-    },
-    { immediate: false }
-)
 
 watch(data, (newData) => {
     if (newData) {

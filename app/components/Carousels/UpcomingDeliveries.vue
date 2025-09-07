@@ -3,7 +3,7 @@
         <carousel-title-and-action title="Deliveries" />
         <div class="relative">
             <transition name="fade">
-                <div v-if="dataFetched" class="flex gap-4">
+                <div v-if="hasOrders" class="flex gap-4">
                     <div class="min-w-0 flex-1">
                         <u-carousel
                             v-if="sortedRoutineTaskInstances"
@@ -19,7 +19,7 @@
                 </div>
             </transition>
             <transition name="fade-absolute">
-                <skeleton-loop v-if="!dataFetched" />
+                <skeleton-loop v-if="!hasOrders" />
             </transition>
         </div>
     </div>
@@ -28,17 +28,20 @@
 <script setup lang="ts">
 const locationsStore = useLocationsStore()
 
-const dataFetched: Ref<boolean> = ref(false)
 const orders: Ref<TypeOrder[]> = ref([])
 
 /* Computed */
+
+const hasOrders: ComputedRef<boolean> = computed(() => {
+    return orders.value && orders.value.length > 0
+})
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
     return locationsStore.activeLocation?.sys.id
 })
 
 const shouldFetch: ComputedRef<boolean> = computed(
-    () => !!activeLocationId.value
+    () => locationsStore.safeToFetchAllData
 )
 
 const today = new Date()
@@ -115,12 +118,12 @@ const completedOrders: ComputedRef<TypeOrder[]> = computed(() => {
 
 /* Functions & lifecycle */
 
-const { data, execute } = useFetch('/api/contentful/fetch-entries', {
+const { data } = useFetch('/api/contentful/fetch-entries', {
     key: 'orders',
     lazy: true,
     server: false,
-    watch: false,
-    immediate: false,
+    watch: [shouldFetch],
+    immediate: true,
     params: computed(() => ({
         content_type: 'order',
         'fields.location.sys.id': activeLocationId.value,
@@ -128,18 +131,6 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
         limit: 20
     }))
 })
-
-watch(
-    shouldFetch,
-    async (ready) => {
-        if (ready) {
-            await execute()
-            dataFetched.value = true
-            orders.value = data.value?.items || []
-        }
-    },
-    { immediate: false }
-)
 
 watch(data, (newData) => {
     if (newData) {

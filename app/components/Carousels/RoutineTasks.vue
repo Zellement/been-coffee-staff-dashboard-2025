@@ -16,7 +16,7 @@
         </u-slideover>
         <div class="relative">
             <transition name="fade">
-                <div v-if="dataFetched" class="flex gap-4">
+                <div v-if="hasRoutineTaskInstances" class="flex gap-4">
                     <div class="relative flex w-16 flex-col text-center">
                         <progress-bar-circular-countdown
                             v-if="hasSortedRoutineTasks"
@@ -48,7 +48,7 @@
             </transition>
             <transition name="fade-absolute">
                 <div
-                    v-if="!dataFetched"
+                    v-if="!hasRoutineTaskInstances"
                     class="flex w-full gap-4 overflow-hidden"
                 >
                     <u-skeleton class="h-17 w-17 shrink-0 rounded-full" />
@@ -73,8 +73,6 @@ const today = new Date()
 const futureDate = new Date(today)
 futureDate.setDate(futureDate.getDate() + 7)
 
-const dataFetched: Ref<boolean> = ref(false)
-
 /* Computed */
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
@@ -82,7 +80,7 @@ const activeLocationId: ComputedRef<string | undefined> = computed(() => {
 })
 
 const shouldFetch: ComputedRef<boolean> = computed(
-    () => !!activeLocationId.value
+    () => locationsStore.safeToFetchAllData
 )
 
 const allRoutineTasksForAccordions: ComputedRef<AccordionItem[]> = computed(
@@ -102,6 +100,13 @@ const allRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
         return tasksStore.allRoutineTaskInstances
     }
 )
+
+const hasRoutineTaskInstances: ComputedRef<boolean> = computed(() => {
+    return (
+        !!allRoutineTaskInstances.value &&
+        allRoutineTaskInstances.value.length > 0
+    )
+})
 
 const sortedRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> =
     computed(() => {
@@ -169,12 +174,12 @@ const hasSortedRoutineTasks: ComputedRef<boolean> = computed(() => {
 
 /* Functions & lifecycle */
 
-const { data, execute } = useFetch('/api/contentful/fetch-entries', {
+const { data } = useFetch('/api/contentful/fetch-entries', {
     key: 'routineTasks',
     lazy: true,
     server: false,
-    watch: false,
-    immediate: false,
+    watch: [shouldFetch],
+    immediate: true,
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
@@ -183,18 +188,6 @@ const { data, execute } = useFetch('/api/contentful/fetch-entries', {
         include: 3
     }))
 })
-
-watch(
-    shouldFetch,
-    async (ready) => {
-        if (ready) {
-            console.log('Fetching routine tasks...')
-            await execute()
-            dataFetched.value = true
-        }
-    },
-    { immediate: false }
-)
 
 watch(data, (newData) => {
     if (newData) {
