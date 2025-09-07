@@ -50,7 +50,7 @@
     --ui-bg-accented: var(--ui-color-primary-500);
     --ui-bg-inverted: var(--color-white);
 
-    --ui-border: var(--ui-color-primary-500);
+    --ui-border: var(--ui-color-primary-400);
     --ui-border-muted: var(--ui-color-primary-600);
     --ui-border-accented: var(--ui-color-primary-400);
     --ui-border-inverted: var(--color-white);

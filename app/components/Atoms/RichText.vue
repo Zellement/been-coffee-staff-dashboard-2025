@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="prose dark:prose-invert">
         <RichTextRenderer
             v-if="richTextContent"
             :document="richTextContent"
@@ -28,8 +28,37 @@ const renderNodes = computed(() => ({
     [INLINES.ENTRY_HYPERLINK]: customHyperlink,
     [INLINES.HYPERLINK]: customHyperlink,
     [BLOCKS.TABLE]: customTable,
-    [BLOCKS.PARAGRAPH]: customParagraph
+    [BLOCKS.PARAGRAPH]: customParagraph,
+    [BLOCKS.EMBEDDED_ASSET]: customAsset
 }))
+
+const customAsset = (node, key) => {
+    const asset = node.data.target
+    const contentType = asset?.fields?.file?.contentType
+    let url = asset?.fields?.file?.url
+    const title = asset?.fields?.title || ''
+    if (!url) return null
+    // Ensure url is absolute
+    if (url.startsWith('//')) url = 'https:' + url
+    if (contentType && contentType.startsWith('image/')) {
+        return h('img', {
+            key,
+            src: url,
+            alt: title,
+            class: 'my-4 rounded shadow'
+        })
+    }
+    if (contentType && contentType.startsWith('video/')) {
+        return h('video', {
+            key,
+            src: url,
+            controls: true,
+            class: 'my-4 rounded shadow'
+        })
+    }
+    // fallback for other asset types
+    return h('a', { key, href: url, target: '_blank' }, title || url)
+}
 
 const emailRegex =
     /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/gi

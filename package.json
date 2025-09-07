@@ -22,6 +22,7 @@
     "devDependencies": {
         "@nuxt/fonts": "^0.11.4",
         "@nuxtjs/supabase": "^1.6.1",
+        "@tailwindcss/typography": "^0.5.16",
         "@types/safe-json-stringify": "^1.1.5",
         "@typescript-eslint/eslint-plugin": "8.40.0",
         "@typescript-eslint/parser": "8.40.0",
