@@ -331,10 +331,8 @@ async function fetchTripadvisorReviews(): Promise<NormalisedReview[]> {
 
 /* --- Initialisation / reactions ---------------------------------------- */
 watch(
-    [activeLocation, shouldFetchReviews],
+    [shouldFetchReviews],
     async () => {
-        if (!activeLocation.value) return
-
         try {
             if (!shouldFetchReviews.value) {
                 // Cached (already merged) reviews from Contentful
@@ -345,8 +343,6 @@ watch(
                 dataFetched.value = true
                 return
             }
-
-            console.log('Fetching reviews...')
 
             const [g, t] = await Promise.all([
                 fetchGoogleReviews(),
@@ -368,6 +364,6 @@ watch(
             console.error('Review watcher failed:', e)
         }
     },
-    { immediate: false }
+    { immediate: true }
 )
 </script>
