@@ -33,7 +33,7 @@
                     icon="i-bx-error"
                     class="animate-bounce"
                 >
-                    Overdue
+                    Overdue {{ inXDays(item.nextDueDate) }}
                 </u-badge>
             </template>
             <template v-else-if="item.type === 'new'">

@@ -4,10 +4,10 @@
         <div class="relative">
             <transition name="fade">
                 <u-carousel
-                    v-if="hasOrders"
+                    v-if="hasNotices"
                     v-slot="{ item }"
                     dots
-                    :items="orders"
+                    :items="notices"
                     :autoplay="{
                         delay: 10000
                     }"
@@ -24,7 +24,17 @@
                         variant="subtle"
                     >
                         <div class="mb-4 flex items-start justify-between">
-                            <h3 class="h5">{{ item.fields.title }}</h3>
+                            <div class="flex flex-col items-start gap-1">
+                                <h3 class="h5 uc-text uc-text--sm">
+                                    {{ item.fields.title }}
+                                </h3>
+                                <u-badge
+                                    variant="outline"
+                                    :label="
+                                        fullDateConverter(item.sys.updatedAt)
+                                    "
+                                />
+                            </div>
                             <u-badge
                                 v-if="item.fields.sticky"
                                 variant="outline"
@@ -38,7 +48,7 @@
             </transition>
             <transition name="fade-absolute">
                 <skeleton-loop
-                    v-if="!hasOrders"
+                    v-if="!hasNotices"
                     skeleton-class="h-40 shrink-0 basis-full md:basis-1/2 2xl:basis-sm"
                 />
             </transition>
@@ -49,12 +59,14 @@
 <script lang="ts" setup>
 const locationsStore = useLocationsStore()
 
-const orders: Ref<TypeOrder[]> = ref([])
+const notices: Ref<TypeNoticeBoard[]> = ref([])
+
+const { fullDateConverter } = useDateUtils()
 
 /* Computed */
 
-const hasOrders: ComputedRef<boolean> = computed(() => {
-    return orders.value?.length > 0
+const hasNotices: ComputedRef<boolean> = computed(() => {
+    return notices.value?.length > 0
 })
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
@@ -82,7 +94,11 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
 
 watch(data, (newData) => {
     if (newData) {
-        orders.value = newData.items || []
+        const sevenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000)
+        notices.value = (newData.items || []).filter(
+            (item: TypeNoticeBoard) =>
+                new Date(item.sys.updatedAt) >= sevenDaysAgo
+        )
     }
 })
 </script>

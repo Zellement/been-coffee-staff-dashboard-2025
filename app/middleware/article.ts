@@ -1,5 +1,4 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-    console.log(to)
     const article = await $fetch('/api/contentful/fetch-entries', {
         params: {
             content_type: 'article',

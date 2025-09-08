@@ -1,8 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to) => {
     const categoriesStore = useCategoriesStore()
 
-    console.log(to)
-
     // Directly filter on the referenced category's fields (single reference)
     const entries = await $fetch('/api/contentful/fetch-entries', {
         params: {

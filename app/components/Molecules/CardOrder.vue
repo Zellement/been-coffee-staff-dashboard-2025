@@ -74,6 +74,9 @@
                         <p class="uc-text uc-text--2xs">Ordered by:</p>
                         <div class="">
                             <img
+                                v-if="
+                                    item.fields?.orderedBy?.fields?.photo?.[0]
+                                "
                                 class="border-butterscotch-500 mx-auto rounded-full border-2 object-cover"
                                 :src="`${
                                     item.fields?.orderedBy?.fields?.photo?.[0]
@@ -81,6 +84,7 @@
                                 }?w=50&h=50&fit=fill&f=face&fm=webp`"
                                 :alt="item.fields.orderedBy?.fields?.name"
                             />
+                            <p v-else>Unknown</p>
                         </div>
                     </u-card>
                     <u-card variant="outline" class="flex flex-1 flex-col">

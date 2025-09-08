@@ -111,8 +111,8 @@ const hasRoutineTaskInstances: ComputedRef<boolean> = computed(() => {
 const sortedRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> =
     computed(() => {
         return [
-            ...newTasks.value,
             ...overdueTasks.value,
+            ...newTasks.value,
             ...upcomingTasks.value
         ]
     })

@@ -1,6 +1,5 @@
 <template>
     <div class="p-default relative mb-8">
-        {{ shouldFetchReviews }}
         <carousel-title-and-action title="Reviews">
             <u-switch
                 v-model="showDetails"
@@ -44,9 +43,12 @@
                                     size="lg"
                                 />
                             </u-avatar-group>
-                            <div class="flex flex-col">
+                            <div class="flex flex-col items-start gap-1">
                                 <p class="uc-text">{{ item.author }}</p>
-                                <p>{{ fullDateConverter(item.createdAt) }}</p>
+                                <u-badge
+                                    variant="outline"
+                                    :label="fullDateConverter(item.createdAt)"
+                                />
                             </div>
                         </div>
 
@@ -312,7 +314,6 @@ async function fetchGoogleReviews(): Promise<NormalisedReview[]> {
             params: { place_id: googlePlaceId.value }
         })
 
-        console.log('werehere')
         return normalizeGoogle(res)
     } catch (e) {
         console.warn('Google reviews fetch failed:', e)
