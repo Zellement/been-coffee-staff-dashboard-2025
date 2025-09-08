@@ -5,7 +5,7 @@
         :ui="{
             icon: '!size-6'
         }"
-        description="You are logged in as a shop so task completion is disabled as a user's details is required. Please log in on your phone."
+        description="This device is logged in as a shop / dashboard so task completion is disabled as a user's details is required. Please log in on your phone."
     />
 </template>
 
