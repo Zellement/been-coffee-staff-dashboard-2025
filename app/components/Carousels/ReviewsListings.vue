@@ -353,11 +353,8 @@ watch(
                 return
             }
 
-            const needFetch =
-                locationsStore.safeToFetchAllData && !isToday(lastFetched.value)
-
             // Use cached data if we shouldn't fetch now
-            if (!needFetch) {
+            if (!shouldFetchReviews.value) {
                 const cached = location.fields?.reviewData ?? []
                 reviewData.value = Array.isArray(cached) ? cached : []
                 dataFetched.value = true
