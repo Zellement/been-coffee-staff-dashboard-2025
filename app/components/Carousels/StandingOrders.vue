@@ -12,7 +12,7 @@
                 "
                 trailing-icon="i-bx-refresh"
                 variant="outline"
-                @click="fetchAgain"
+                @click="fetchData"
             />
         </carousel-title-and-action>
         <div class="relative">
@@ -54,7 +54,7 @@
             <transition name="fade-absolute">
                 <skeleton-loop
                     v-if="!hasOrders"
-                    skeleton-class="h-36 shrink-0 basis-4/5 sm:basis-1/2 lg:basis-1/3 2xl:basis-96"
+                    skeleton-class="h-56 shrink-0 basis-4/5 sm:basis-1/2 lg:basis-1/3 2xl:basis-96"
                 />
             </transition>
         </div>
@@ -83,12 +83,8 @@ const activeLocationId: ComputedRef<string | undefined> = computed(() => {
 
 /* Functions & lifecycle */
 
-const fetchAgain = () => {
-    standingOrdersStore.clearCache()
-    fetchData()
-}
-
 const fetchData = async () => {
+    standingOrdersStore.clearCache()
     const data = await $fetch('/api/contentful/fetch-entries', {
         method: 'GET',
         params: {
