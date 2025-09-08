@@ -55,6 +55,10 @@ export const useUserStore = defineStore('user', () => {
                 userContentfulData.value.fields.primaryLocation.sys.id || null
             )
         }
+        // Is user a dashboard general user
+        if (userContentfulData.value.fields.jobRole === '_DashLogin') {
+            navigateTo(`/location`)
+        }
     }
     return {
         userData,
