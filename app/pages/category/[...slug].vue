@@ -8,7 +8,7 @@
         </h2>
         <div
             v-if="hasArticles"
-            class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4 xl:gap-12"
+            class="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-4 lg:gap-6"
         >
             <u-card
                 v-for="article in articles"
