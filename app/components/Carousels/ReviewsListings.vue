@@ -1,5 +1,6 @@
 <template>
     <div class="p-default relative mb-8">
+        {{ shouldFetchReviews }}
         <carousel-title-and-action title="Reviews">
             <u-switch
                 v-model="showDetails"
@@ -189,7 +190,9 @@ const lastFetched = computed(
     () => activeLocation.value?.fields?.reviewDataLastFetched ?? null
 )
 
-const shouldFetchReviews = computed(() => !isToday(lastFetched.value))
+const shouldFetchReviews = computed(
+    () => !isToday(lastFetched.value) && locationsStore.safeToFetchAllData
+)
 
 const googlePlaceId = computed(
     () => activeLocation.value?.fields?.googlePlaceId ?? null
@@ -308,6 +311,8 @@ async function fetchGoogleReviews(): Promise<NormalisedReview[]> {
             method: 'GET',
             params: { place_id: googlePlaceId.value }
         })
+
+        console.log('werehere')
         return normalizeGoogle(res)
     } catch (e) {
         console.warn('Google reviews fetch failed:', e)
@@ -331,31 +336,53 @@ async function fetchTripadvisorReviews(): Promise<NormalisedReview[]> {
 
 /* --- Initialisation / reactions ---------------------------------------- */
 watch(
-    [shouldFetchReviews],
+    [
+        activeLocation,
+        googlePlaceId,
+        tripadvisorPlaceId,
+        lastFetched,
+        () => locationsStore.safeToFetchAllData
+    ],
     async () => {
         try {
-            if (!shouldFetchReviews.value) {
-                // Cached (already merged) reviews from Contentful
-                const cached = activeLocation.value?.fields?.reviewData ?? []
-                // If your cached data is already in the normalized shape, keep as-is.
-                // If not, you can run a normaliser here as well.
+            const location = activeLocation.value
+
+            if (!location) {
+                // no location yet; keep skeleton
+                dataFetched.value = false
+                return
+            }
+
+            const needFetch =
+                locationsStore.safeToFetchAllData && !isToday(lastFetched.value)
+
+            // Use cached data if we shouldn't fetch now
+            if (!needFetch) {
+                const cached = location.fields?.reviewData ?? []
                 reviewData.value = Array.isArray(cached) ? cached : []
                 dataFetched.value = true
                 return
             }
 
+            // If we do want to fetch, but have no IDs yet, wait until they exist
+            if (!googlePlaceId.value && !tripadvisorPlaceId.value) {
+                dataFetched.value = false // still waiting for IDs
+                return
+            }
+
+            dataFetched.value = false
             const [g, t] = await Promise.all([
                 fetchGoogleReviews(),
                 fetchTripadvisorReviews()
             ])
-            const final = mergeAndSort(g, t)
 
+            const final = mergeAndSort(g, t)
             reviewData.value = final
             dataFetched.value = true
 
-            if (activeLocation.value?.sys?.id) {
+            if (location.sys?.id) {
                 try {
-                    await uploadReviews(final, activeLocation.value.sys.id)
+                    await uploadReviews(final, location.sys.id)
                 } catch (e) {
                     console.warn('uploadReviews failed:', e)
                 }
