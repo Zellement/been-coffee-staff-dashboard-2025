@@ -4,8 +4,8 @@ import type { TypeLocationSkeleton } from "./TypeLocation";
 export interface TypeEmployeeFields {
     name: EntryFieldTypes.Symbol;
     surname: EntryFieldTypes.Symbol;
-    primaryLocation?: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
-    jobRole: EntryFieldTypes.Symbol<"Assistant Manager" | "Barista" | "Director" | "Manager" | "Shift Lead" | "Support" | "_ShopLogin">;
+    primaryLocation: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
+    jobRole: EntryFieldTypes.Symbol<"Assistant Manager" | "Barista" | "Director" | "Manager" | "Shift Lead" | "Support" | "_DashLogin" | "_ShopLogin">;
     jobRoleAddendum?: EntryFieldTypes.Symbol;
     photo?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
     dateOfBirth?: EntryFieldTypes.Date;

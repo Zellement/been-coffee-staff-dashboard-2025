@@ -2,7 +2,7 @@ import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleC
 import type { TypeLocationSkeleton } from "./TypeLocation";
 
 export interface TypeTableBookingFields {
-    for: EntryFieldTypes.Symbol;
+    name: EntryFieldTypes.Symbol;
     location: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
     dateTime: EntryFieldTypes.Date;
     people: EntryFieldTypes.Integer;

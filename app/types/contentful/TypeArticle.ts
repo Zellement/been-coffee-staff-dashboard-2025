@@ -6,7 +6,7 @@ export interface TypeArticleFields {
     subtitle: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
     files?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
-    nextArticle?: EntryFieldTypes.EntryLink<EntrySkeletonType>;
+    nextArticle?: EntryFieldTypes.EntryLink<TypeArticleSkeleton>;
     category: EntryFieldTypes.EntryLink<TypeArticleCategoriesSkeleton>;
     content: EntryFieldTypes.RichText;
 }
