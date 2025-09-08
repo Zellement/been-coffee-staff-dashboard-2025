@@ -21,8 +21,8 @@
                         <progress-bar-circular-countdown
                             v-if="hasSortedRoutineTasks"
                             class="my-auto"
-                            :left-number="newTasks.length"
-                            :right-number="overdueTasks.length"
+                            :left-number="tasksStore.newTasks.length"
+                            :right-number="tasksStore.overdueTasks.length"
                         />
                     </div>
                     <div v-if="hasSortedRoutineTasks" class="min-w-0 flex-1">
@@ -69,10 +69,6 @@ import type { AccordionItem } from '@nuxt/ui'
 const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
 
-const today = new Date()
-const futureDate = new Date(today)
-futureDate.setDate(futureDate.getDate() + 7)
-
 /* Computed */
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
@@ -111,67 +107,10 @@ const hasRoutineTaskInstances: ComputedRef<boolean> = computed(() => {
 const sortedRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> =
     computed(() => {
         return [
-            ...overdueTasks.value,
-            ...newTasks.value,
-            ...upcomingTasks.value
+            ...tasksStore.overdueTasks,
+            ...tasksStore.newTasks,
+            ...tasksStore.upcomingTasks
         ]
-    })
-
-const newTasks: ComputedRef<(TypeTaskInstance & { type: 'new' })[]> = computed(
-    () => {
-        if (!allRoutineTaskInstances.value) return []
-        return allRoutineTaskInstances.value
-            .filter((task: TypeTaskInstance) => {
-                return task.nextDueDate === null
-            })
-            .map((task: TypeTaskInstance) => ({
-                ...task,
-                type: 'new' as const
-            }))
-    }
-)
-
-const overdueTasks: ComputedRef<(TypeTaskInstance & { type: 'overdue' })[]> =
-    computed(() => {
-        if (!allRoutineTaskInstances.value) return []
-        return allRoutineTaskInstances.value
-            .filter((task: TypeTaskInstance) => {
-                const dueDate = task.nextDueDate
-                    ? new Date(task.nextDueDate)
-                    : null
-                return dueDate !== null && dueDate < today
-            })
-            .map((task: TypeTaskInstance) => ({
-                ...task,
-                type: 'overdue' as const
-            }))
-    })
-
-const upcomingTasks: ComputedRef<(TypeTaskInstance & { type: 'upcoming' })[]> =
-    computed(() => {
-        if (!allRoutineTaskInstances.value) return []
-        const tasks = allRoutineTaskInstances.value
-            .filter((task: TypeTaskInstance) => {
-                const dueDate = task.nextDueDate
-                    ? new Date(task.nextDueDate)
-                    : null
-                return (
-                    dueDate !== null && dueDate > today && dueDate <= futureDate
-                )
-            })
-            .map((task: TypeTaskInstance) => ({
-                ...task,
-                type: 'upcoming' as const
-            }))
-
-        tasks.sort((a, b) => {
-            if (a.nextDueDate && b.nextDueDate) {
-                return a.nextDueDate.getTime() - b.nextDueDate.getTime()
-            }
-            return 0
-        })
-
-        return tasks
     })
 
 const hasSortedRoutineTasks: ComputedRef<boolean> = computed(() => {
