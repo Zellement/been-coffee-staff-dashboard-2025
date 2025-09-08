@@ -12,13 +12,13 @@
                 "
                 trailing-icon="i-bx-refresh"
                 variant="outline"
-                @click="standingOrdersStore.clearCache"
+                @click="fetchAgain"
             />
         </carousel-title-and-action>
         <div class="relative">
             <transition name="fade">
                 <u-carousel
-                    v-if="hasOrders"
+                    v-if="hasOrders && orders"
                     v-slot="{ item }"
                     dots
                     drag-free
@@ -65,14 +65,14 @@
 const locationsStore = useLocationsStore()
 const standingOrdersStore = useStandingOrdersStore()
 
-const orders: ComputedRef<TypeStandingOrder[]> = computed(() => {
-    return standingOrdersStore.cachedStandingOrders || []
+const orders: ComputedRef<TypeStandingOrder[] | null> = computed(() => {
+    return standingOrdersStore.cachedStandingOrders || null
 })
 
 const { shortDateConverter } = useDateUtils()
 
 const hasOrders: ComputedRef<boolean> = computed(() => {
-    return orders.value.length > 0
+    return !!orders.value && orders.value?.length > 0
 })
 
 /* Computed */
@@ -81,30 +81,28 @@ const activeLocationId: ComputedRef<string | undefined> = computed(() => {
     return locationsStore.activeLocation?.sys.id
 })
 
-const shouldFetch: ComputedRef<boolean> = computed(
-    () =>
-        locationsStore.safeToFetchAllData &&
-        standingOrdersStore.cachedStandingOrders === null
-)
-
 /* Functions & lifecycle */
 
-const { data } = useFetch('/api/contentful/fetch-entries', {
-    key: 'standingOrder',
-    lazy: true,
-    server: false,
-    watch: [shouldFetch],
-    immediate: true,
-    params: computed(() => ({
-        content_type: 'standingOrder',
-        'fields.location.sys.id': activeLocationId.value
-    }))
-})
+const fetchAgain = () => {
+    standingOrdersStore.clearCache()
+    fetchData()
+}
 
-watch(data, (newData) => {
-    if (newData) {
-        standingOrdersStore.cachedStandingOrders = newData.items || []
-        standingOrdersStore.lastFetched = new Date()
+const fetchData = async () => {
+    const data = await $fetch('/api/contentful/fetch-entries', {
+        method: 'GET',
+        params: {
+            content_type: 'standingOrder',
+            'fields.location.sys.id': activeLocationId.value
+        }
+    })
+    standingOrdersStore.cachedStandingOrders = data?.items
+    standingOrdersStore.lastFetched = new Date()
+}
+
+onMounted(async () => {
+    if (activeLocationId.value && !hasOrders.value) {
+        await fetchData()
     }
 })
 </script>
