@@ -5,10 +5,10 @@ export interface TypeArticleFields {
     title: EntryFieldTypes.Symbol;
     subtitle: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
-    content: EntryFieldTypes.RichText;
     files?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
     nextArticle?: EntryFieldTypes.EntryLink<EntrySkeletonType>;
-    categories: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeArticleCategoriesSkeleton>>;
+    category: EntryFieldTypes.EntryLink<TypeArticleCategoriesSkeleton>;
+    content: EntryFieldTypes.RichText;
 }
 
 export type TypeArticleSkeleton = EntrySkeletonType<TypeArticleFields, "article">;

@@ -165,6 +165,6 @@ const submitToGoogleSheets = async () => {
 }
 
 useHead({
-    title: 'Daily Temperature Logs'
+    title: 'Daily Temperature Logs | Been Coffee Staff Dashboard'
 })
 </script>

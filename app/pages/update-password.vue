@@ -16,6 +16,6 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Update your password'
+    title: 'Update your password | Been Coffee Staff Dashboard'
 })
 </script>

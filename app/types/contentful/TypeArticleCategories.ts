@@ -4,6 +4,7 @@ export interface TypeArticleCategoriesFields {
     title: EntryFieldTypes.Symbol;
     description: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
+    icon?: EntryFieldTypes.Symbol;
 }
 
 export type TypeArticleCategoriesSkeleton = EntrySkeletonType<TypeArticleCategoriesFields, "articleCategories">;

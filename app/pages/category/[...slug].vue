@@ -58,4 +58,8 @@ const currentCategory: ComputedRef<TypeArticleCategories | null> = computed(
         return categoriesStore.currentCategory
     }
 )
+
+useHead({
+    title: `${currentCategory.value?.fields.title} | Been Coffee Staff Dashboard`
+})
 </script>

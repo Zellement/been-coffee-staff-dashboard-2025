@@ -13,7 +13,7 @@
 
 <script setup>
 useHead({
-    title: 'Login to the Been Staff Dashboard'
+    title: 'Login | Been Coffee Staff Dashboard'
 })
 
 definePageMeta({

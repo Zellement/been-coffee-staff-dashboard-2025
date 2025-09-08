@@ -66,6 +66,14 @@
             </div>
             <div class="xl:col-span-2">
                 <rich-text :content="currentArticle.fields.content" />
+                <u-button
+                    v-if="currentArticle.fields.nextArticle"
+                    class="mt-8"
+                    :label="`Next article: ${currentArticle.fields.nextArticle.fields.title}`"
+                    trailing-icon="i-material-symbols-arrow-right-alt"
+                    :to="`/article/${currentArticle.fields.nextArticle.fields.slug}`"
+                    color="tertiary"
+                />
             </div>
         </div>
     </div>
@@ -90,5 +98,9 @@ const { fullDateConverter } = useDateUtils()
 
 definePageMeta({
     middleware: 'article'
+})
+
+useHead({
+    title: `${currentArticle.value?.fields.title} | Been Coffee Staff Dashboard`
 })
 </script>

@@ -12,7 +12,7 @@
 
 <script setup>
 useHead({
-    title: 'Reset your password'
+    title: 'Reset your password. | Been Coffee Staff Dashboard'
 })
 
 definePageMeta({

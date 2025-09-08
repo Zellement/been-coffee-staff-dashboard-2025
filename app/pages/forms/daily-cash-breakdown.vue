@@ -153,6 +153,6 @@ const submitToGoogleSheets = async () => {
 }
 
 useHead({
-    title: 'Daily Cash Breakdown'
+    title: 'Daily Cash Breakdown | Been Coffee Staff Dashboard'
 })
 </script>

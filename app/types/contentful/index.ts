@@ -11,4 +11,3 @@ export type { TypeStandingOrder, TypeStandingOrderFields, TypeStandingOrderSkele
 export type { TypeSupplier, TypeSupplierFields, TypeSupplierSkeleton } from "./TypeSupplier";
 export type { TypeTableBooking, TypeTableBookingFields, TypeTableBookingSkeleton } from "./TypeTableBooking";
 export type { TypeTaskInstance, TypeTaskInstanceFields, TypeTaskInstanceSkeleton } from "./TypeTaskInstance";
-export type { TypeTeamHierarchy, TypeTeamHierarchyFields, TypeTeamHierarchySkeleton } from "./TypeTeamHierarchy";
