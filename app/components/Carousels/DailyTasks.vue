@@ -9,7 +9,9 @@
                             v-if="totalDailyTaskInstances"
                             class="my-auto"
                             :total-items="totalDailyTaskInstances"
-                            :completed-items="taskCountCompletedToday"
+                            :completed-items="
+                                tasksStore.taskCountCompletedToday
+                            "
                         />
                     </div>
                     <div v-if="hasSortedDailyTasks" class="min-w-0 flex-1">
@@ -95,17 +97,6 @@ const hasSortedDailyTasks: ComputedRef<boolean> = computed(() => {
 
 const totalDailyTaskInstances: ComputedRef<number | null> = computed(() => {
     return tasksStore.totalDailyTaskInstances
-})
-
-const taskCountCompletedToday: ComputedRef<number> = computed(() => {
-    return (
-        allDailyTaskInstances.value?.filter((task) => {
-            const lastCompleted = task.fields.lastCompleted
-            if (!lastCompleted) return false
-            const lastCompletedDate = new Date(lastCompleted)
-            return lastCompletedDate.toDateString() === today.toDateString()
-        }).length || 0
-    )
 })
 
 /* Functions & lifecycle */

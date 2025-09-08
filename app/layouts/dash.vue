@@ -12,6 +12,7 @@
             />
             <colour-mode />
         </div>
+        <daily-snapshot />
         <main class="pb-24">
             <slot />
         </main>

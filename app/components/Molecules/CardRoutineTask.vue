@@ -5,7 +5,11 @@
     <u-slideover
         v-model:open="open"
         :title="item.fields.task.fields.title"
-        :description="`Last completed: ${item.lastCompletedDate ? fullDateConverter(item.lastCompletedDate) : 'Never'}`"
+        :description="
+            item.fields.completedBy && item.fields.lastCompleted
+                ? `Last completed by ${item.fields.completedBy} on ${fullDateConverter(item.fields.lastCompleted, true)}`
+                : 'New task'
+        "
     >
         <u-card
             class="cursor-pointer"
@@ -66,6 +70,17 @@
                         :content="item.fields.task.fields.description"
                     />
                 </div>
+
+                <u-alert
+                    v-if="item.fields.lastCompleted || item.fields.completedBy"
+                    :title="`Due ${inXDays(item.nextDueDate)}`"
+                    :ui="{
+                        icon: '!size-5'
+                    }"
+                    variant="solid"
+                    color="neutral"
+                />
+
                 <div class="flex w-full gap-2 text-center">
                     <u-card variant="outline" class="flex flex-1 flex-col">
                         <p class="uc-text">Minutes to complete:</p>

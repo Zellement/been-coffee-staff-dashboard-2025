@@ -14,6 +14,18 @@ export const useTasksStore = defineStore('tasks', () => {
      * Getters
      **/
 
+    const taskCountCompletedToday: ComputedRef<number> = computed(() => {
+        const today = new Date()
+        return (
+            allDailyTaskInstances.value?.filter((task) => {
+                const lastCompleted = task.fields.lastCompleted
+                if (!lastCompleted) return false
+                const lastCompletedDate = new Date(lastCompleted)
+                return lastCompletedDate.toDateString() === today.toDateString()
+            }).length || 0
+        )
+    })
+
     /**
      * Actions
      **/
@@ -24,6 +36,7 @@ export const useTasksStore = defineStore('tasks', () => {
     return {
         allDailyTaskInstances,
         totalDailyTaskInstances,
-        allRoutineTaskInstances
+        allRoutineTaskInstances,
+        taskCountCompletedToday
     }
 })
