@@ -150,7 +150,7 @@ const overdueTasks: ComputedRef<(TypeTaskInstance & { type: 'overdue' })[]> =
 const upcomingTasks: ComputedRef<(TypeTaskInstance & { type: 'upcoming' })[]> =
     computed(() => {
         if (!allRoutineTaskInstances.value) return []
-        return allRoutineTaskInstances.value
+        const tasks = allRoutineTaskInstances.value
             .filter((task: TypeTaskInstance) => {
                 const dueDate = task.nextDueDate
                     ? new Date(task.nextDueDate)
@@ -163,6 +163,15 @@ const upcomingTasks: ComputedRef<(TypeTaskInstance & { type: 'upcoming' })[]> =
                 ...task,
                 type: 'upcoming' as const
             }))
+
+        tasks.sort((a, b) => {
+            if (a.nextDueDate && b.nextDueDate) {
+                return a.nextDueDate.getTime() - b.nextDueDate.getTime()
+            }
+            return 0
+        })
+
+        return tasks
     })
 
 const hasSortedRoutineTasks: ComputedRef<boolean> = computed(() => {
