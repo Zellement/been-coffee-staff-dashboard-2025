@@ -4,7 +4,10 @@
         <div class="relative">
             <transition name="fade">
                 <div v-if="hasDailyTaskInstances" class="flex gap-4">
-                    <div class="relative flex w-16 flex-col">
+                    <div
+                        v-if="!hideProgressCircle"
+                        class="relative flex w-16 flex-col"
+                    >
                         <progress-bar-circular
                             v-if="totalDailyTaskInstances"
                             class="my-auto"
@@ -46,6 +49,12 @@
 </template>
 
 <script setup lang="ts">
+interface Props {
+    hideProgressCircle?: boolean
+}
+
+defineProps<Props>()
+
 const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
 

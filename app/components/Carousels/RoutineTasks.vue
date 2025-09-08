@@ -2,7 +2,12 @@
     <div class="p-c-default">
         <u-slideover title="All Routine Tasks" aria-label="All Routine Tasks">
             <carousel-title-and-action title="Routine tasks">
-                <u-button size="xs" icon="i-bxs-show" variant="outline" />
+                <u-button
+                    size="xs"
+                    icon="i-bxs-show"
+                    variant="outline"
+                    class="mr-2"
+                />
             </carousel-title-and-action>
             <template #body>
                 <u-accordion :items="allRoutineTasksForAccordions">
@@ -17,7 +22,10 @@
         <div class="relative">
             <transition name="fade">
                 <div v-if="hasRoutineTaskInstances" class="flex gap-4">
-                    <div class="relative flex w-16 flex-col text-center">
+                    <div
+                        v-if="!hideProgressCircle"
+                        class="relative flex w-16 flex-col text-center"
+                    >
                         <progress-bar-circular-countdown
                             v-if="hasSortedRoutineTasks"
                             class="my-auto"
@@ -64,6 +72,12 @@
 </template>
 
 <script setup lang="ts">
+interface Props {
+    hideProgressCircle?: boolean
+}
+
+defineProps<Props>()
+
 import type { AccordionItem } from '@nuxt/ui'
 
 const tasksStore = useTasksStore()
