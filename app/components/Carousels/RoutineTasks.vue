@@ -21,8 +21,8 @@
                         <progress-bar-circular-countdown
                             v-if="hasSortedRoutineTasks"
                             class="my-auto"
-                            :left-number="tasksStore.newTasks.length"
-                            :right-number="tasksStore.overdueTasks.length"
+                            :left-number="tasksStore.overdueTasks.length"
+                            :right-number="tasksStore.newTasks.length"
                         />
                     </div>
                     <div v-if="hasSortedRoutineTasks" class="min-w-0 flex-1">

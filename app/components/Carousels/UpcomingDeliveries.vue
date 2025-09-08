@@ -27,13 +27,16 @@
 
 <script setup lang="ts">
 const locationsStore = useLocationsStore()
+const ordersStore = useOrdersStore()
 
-const orders: Ref<TypeOrder[]> = ref([])
+const orders: ComputedRef<TypeOrder[] | null> = computed(() => {
+    return ordersStore.allOrders
+})
 
 /* Computed */
 
 const hasOrders: ComputedRef<boolean> = computed(() => {
-    return orders.value && orders.value.length > 0
+    return !!orders.value && orders.value.length > 0
 })
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
@@ -44,77 +47,15 @@ const shouldFetch: ComputedRef<boolean> = computed(
     () => locationsStore.safeToFetchAllData
 )
 
-const today = new Date()
-today.setHours(0, 0, 0, 0)
-
 const sortedRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> =
     computed(() => {
         return [
-            ...todaysOrders.value,
-            ...overdueOrders.value,
-            ...upcomingOrders.value,
-            ...completedOrders.value
+            ...ordersStore.todaysOrders,
+            ...ordersStore.overdueOrders,
+            ...ordersStore.upcomingOrders,
+            ...ordersStore.completedOrders
         ]
     })
-
-const todaysOrders: ComputedRef<TypeOrder[]> = computed(() => {
-    if (!orders.value) return []
-    return orders.value
-        .filter((task: TypeOrder) => {
-            const dDate = new Date(task.fields.expectedDeliveryDate)
-            dDate.setHours(0, 0, 0, 0)
-            return (
-                !task.fields.deliveryCheckedBy &&
-                !task.fields.deliveryCheckedAt &&
-                dDate.getTime() === today.getTime()
-            )
-        })
-        .map((task: TypeOrder) => ({
-            ...task
-        }))
-})
-
-const overdueOrders: ComputedRef<TypeOrder[]> = computed(() => {
-    if (!orders.value) return []
-    return orders.value
-        .filter((task: TypeOrder) => {
-            const dDate = new Date(task.fields.expectedDeliveryDate)
-            dDate.setHours(0, 0, 0, 0)
-            return (
-                !task.fields.deliveryCheckedBy &&
-                !task.fields.deliveryCheckedAt &&
-                dDate.getTime() < today.getTime()
-            )
-        })
-        .map((task: TypeOrder) => ({
-            ...task
-        }))
-})
-
-const upcomingOrders: ComputedRef<TypeOrder[]> = computed(() => {
-    if (!orders.value) return []
-    return orders.value
-        .filter((task: TypeOrder) => {
-            const dDate = new Date(task.fields.expectedDeliveryDate)
-            dDate.setHours(0, 0, 0, 0)
-            return (
-                !task.fields.deliveryCheckedBy &&
-                !task.fields.deliveryCheckedAt &&
-                dDate.getTime() > today.getTime()
-            )
-        })
-        .map((task: TypeOrder) => ({
-            ...task
-        }))
-})
-
-const completedOrders: ComputedRef<TypeOrder[]> = computed(() => {
-    if (!orders.value) return []
-    // All orders that are left that are not in todaysOrders nor overdueOrders
-    return orders.value.filter((task: TypeOrder) => {
-        return task.fields.deliveryCheckedBy && task.fields.deliveryCheckedAt
-    })
-})
 
 /* Functions & lifecycle */
 
@@ -134,7 +75,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
 
 watch(data, (newData) => {
     if (newData) {
-        orders.value = newData.items || []
+        ordersStore.allOrders = newData.items || []
     }
 })
 </script>
