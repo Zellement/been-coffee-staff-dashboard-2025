@@ -46,8 +46,8 @@
                 }"
             >
                 <h2 class="uc-text flex flex-col items-center">
-                    <span class="text-[0.7em]">Table</span>
-                    Bookings Today
+                    <span class="text-[0.7em]">Today's</span>
+                    Table Bookings
                 </h2>
                 <p class="text-3xl" :class="getColour(totalBookingsToday)">
                     {{ totalBookingsToday }}

@@ -23,7 +23,9 @@
                         }"
                         variant="subtle"
                     >
-                        <div class="mb-4 flex items-start justify-between">
+                        <div
+                            class="mb-4 flex items-start justify-between gap-4"
+                        >
                             <div class="flex flex-col items-start gap-1">
                                 <h3 class="h5 uc-text uc-text--sm">
                                     {{ item.fields.title }}
@@ -39,7 +41,8 @@
                                 v-if="item.fields.sticky"
                                 variant="outline"
                                 color="neutral"
-                                label="This notice is pinned"
+                                label="Pinned"
+                                icon="i-ic-baseline-push-pin"
                             />
                         </div>
                         <rich-text :content="item.fields.content" />

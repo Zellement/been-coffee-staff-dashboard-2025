@@ -1,7 +1,7 @@
 <template>
     <div class="layout">
         <div
-            class="p-default bg-seashell-50 dark:bg-primary-800 sticky top-0 z-10 mb-2 flex w-full items-center justify-end gap-4"
+            class="p-default bg-seashell-50 dark:bg-primary-800 sticky top-0 z-10 flex w-full items-center justify-end gap-4"
         >
             <u-progress v-model="timer" class="max-w-80" :max="REFRESH_TIMER" />
             <u-button
@@ -13,7 +13,7 @@
             <colour-mode />
         </div>
         <daily-snapshot />
-        <main class="pb-24">
+        <main class="pb-10">
             <slot />
         </main>
     </div>

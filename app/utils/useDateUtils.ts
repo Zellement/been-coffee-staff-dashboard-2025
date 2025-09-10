@@ -92,6 +92,22 @@ export const useDateUtils = () => {
         return `${formattedHours}:${formattedMinutes}`
     }
 
+    // Returns a date like 'Thu, 4 Jan' - without the year
+    /**
+     * Converts a date to a short format without the year (e.g., "Thu, 4 Jan").
+     * @param value - The date to convert (Date or string).
+     * @returns The formatted date string.
+     */
+    const dateConverterWithDayNoYear = (value: string) => {
+        const event = new Date(value)
+        const options: Intl.DateTimeFormatOptions = {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric'
+        }
+        return event.toLocaleDateString('en-UK', options)
+    }
+
     /**
      * Returns today's date in URL-encoded format (MM%2FDD%2FYYYY).
      * @param date - The date to format.
@@ -206,6 +222,7 @@ export const useDateUtils = () => {
         getTodaysDateInUrlEncodedFormat,
         fullDateConverter,
         shortDateConverter,
+        dateConverterWithDayNoYear,
         convertNumberTo24HrTime,
         getMonthAndDayOnly,
         backwardsDate,
