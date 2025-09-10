@@ -18,7 +18,6 @@
         <u-carousel
             v-slot="{ item, index }"
             dots
-            drag-free
             :items="allWinners"
             :ui="{
                 root: 'flex',

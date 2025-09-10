@@ -21,7 +21,6 @@
                     v-if="hasOrders && orders"
                     v-slot="{ item }"
                     dots
-                    drag-free
                     :items="orders"
                     :ui="{
                         root: 'flex',

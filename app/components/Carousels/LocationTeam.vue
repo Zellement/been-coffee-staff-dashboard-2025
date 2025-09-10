@@ -4,7 +4,6 @@
         <u-carousel
             v-slot="{ item }"
             dots
-            drag-free
             :items="allLocationTeam"
             :ui="{
                 root: 'flex',
