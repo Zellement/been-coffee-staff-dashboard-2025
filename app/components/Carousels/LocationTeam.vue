@@ -18,9 +18,9 @@
                     </h2>
                     <h3>{{ item.fields.jobRole }}</h3>
                     <u-button-group class="mt-2">
-                        <u-button
+                        <u-badge
                             variant="outline"
-                            size="xs"
+                            size="sm"
                             color="tertiary"
                             icon="i-material-symbols-play-circle-rounded"
                             :label="
@@ -35,9 +35,9 @@
                                     : 'Start date unknown'
                             "
                         />
-                        <u-button
+                        <u-badge
                             variant="outline"
-                            size="xs"
+                            size="sm"
                             color="tertiary"
                             icon="i-icon-park-solid-birthday-cake"
                             :label="

@@ -65,21 +65,39 @@
                     <h2 class="uc-text mb-2">
                         {{ item.fields.name }}
                     </h2>
-
-                    <p class="flex flex-col">
-                        <span class="flex items-center gap-2">
-                            <u-icon name="i-bx-log-in" />
-                            {{ fullDateConverter(item.fields.from) }}
-                        </span>
-                        <span class="text-tertiary flex items-center gap-2">
-                            <u-icon name="i-bx-log-out" />
-                            {{
+                    <u-button-group>
+                        <u-badge
+                            variant="outline"
+                            size="sm"
+                            color="tertiary"
+                            icon="i-bx-log-in"
+                            :label="
+                                item.fields.from
+                                    ? `${new Date(
+                                          item.fields.from
+                                      ).toLocaleDateString(undefined, {
+                                          year: 'numeric',
+                                          month: 'short',
+                                          day: 'numeric'
+                                      })}`
+                                    : 'Start date unknown'
+                            "
+                        />
+                        <u-badge
+                            variant="outline"
+                            size="sm"
+                            color="tertiary"
+                            trailing-icon="i-bx-log-out"
+                            :ui="{
+                                trailingIcon: 'rotate-180'
+                            }"
+                            :label="
                                 fullDateConverter(
                                     getFollowingWinnersStartDate(index)
                                 )
-                            }}
-                        </span>
-                    </p>
+                            "
+                        />
+                    </u-button-group>
 
                     <p class="mt-2">
                         {{
