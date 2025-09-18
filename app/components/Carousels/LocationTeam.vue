@@ -16,7 +16,14 @@
                     <h2 class="uc-text">
                         {{ item.fields.name }}
                     </h2>
-                    <h3>{{ item.fields.jobRole }}</h3>
+                    <h3>
+                        {{ item.fields.jobRole }}
+                        {{
+                            item.fields.jobRoleAddendum
+                                ? ` (${item.fields.jobRoleAddendum})`
+                                : ''
+                        }}
+                    </h3>
                     <u-button-group class="mt-2">
                         <u-badge
                             variant="outline"

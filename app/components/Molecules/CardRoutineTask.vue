@@ -14,7 +14,8 @@
         <u-card
             class="cursor-pointer"
             :ui="{
-                root: 'h-full flex w-full'
+                root: 'h-full flex w-full flex-col',
+                body: 'flex flex-col h-full items-start'
             }"
             variant="subtle"
             :title="item.fields.task.fields.title"
@@ -50,17 +51,26 @@
                     New
                 </u-badge>
             </template>
-            <p>{{ item.fields.task.fields.title }}</p>
-            <u-badge
-                v-if="item.fields.task?.fields?.staffLevel"
-                size="xs"
-                color="neutral"
-                variant="outline"
-                trailing-icon="i-bx-bxs-arrow-to-top"
-                class="uc-text"
-            >
-                {{ item.fields.task.fields.staffLevel }}
-            </u-badge>
+            <p class="">{{ item.fields.task.fields.title }}</p>
+
+            <div class="mt-auto self-start">
+                <u-button-group orientation="vertical" class="mt-auto pt-2">
+                    <u-badge
+                        v-if="item.fields.task?.fields?.staffLevel"
+                        size="xs"
+                        variant="outline"
+                        trailing-icon="i-bx-bxs-arrow-to-top"
+                        class="uppercase"
+                        :label="item.fields.task.fields.staffLevel"
+                    />
+                    <u-badge
+                        size="xs"
+                        variant="outline"
+                        class="font-semibold"
+                        :label="`Estimated ${item.fields.task.fields.minutesToComplete} mins`"
+                    />
+                </u-button-group>
+            </div>
         </u-card>
         <template #body>
             <div class="flex flex-col items-start gap-4 text-left">

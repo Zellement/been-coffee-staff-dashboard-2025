@@ -53,7 +53,7 @@
             <transition name="fade-absolute">
                 <skeleton-loop
                     v-if="!hasOrders"
-                    skeleton-class="h-56 shrink-0 basis-4/5 sm:basis-1/2 lg:basis-1/3 2xl:basis-96"
+                    skeleton-class="h-96 shrink-0 basis-4/5 sm:basis-1/2 lg:basis-1/3 2xl:basis-96"
                 />
             </transition>
         </div>

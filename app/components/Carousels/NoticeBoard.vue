@@ -91,17 +91,32 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'noticeBoard',
         order: 'sys.createdAt',
-        'fields.locations.sys.id[in]': activeLocationId.value
+        'fields.locations.sys.id[in]': activeLocationId.value,
+        include: 1,
+        limit: 100
     }))
 })
 
 watch(data, (newData) => {
     if (newData) {
-        const sevenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000)
-        notices.value = (newData.items || []).filter(
-            (item: TypeNoticeBoard) =>
-                new Date(item.sys.updatedAt) >= sevenDaysAgo
-        )
+        // Check if the boolean for 'sticky' is enabled and filter accordingly
+        // Also filter out notices older than 14 days
+        const fourteenDaysAgo = new Date()
+        fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14)
+        notices.value = newData.items
+            .filter((item: TypeNoticeBoard) => {
+                const updatedAt = new Date(item.sys.createdAt)
+                return item.fields.sticky || updatedAt >= fourteenDaysAgo
+            })
+            .sort((a: TypeNoticeBoard, b: TypeNoticeBoard) => {
+                // Sort by sticky first, then by updatedAt date (newest first)
+                if (a.fields.sticky && !b.fields.sticky) return -1
+                if (!a.fields.sticky && b.fields.sticky) return 1
+                return (
+                    new Date(b.sys.updatedAt).getTime() -
+                    new Date(a.sys.updatedAt).getTime()
+                )
+            })
     }
 })
 </script>
