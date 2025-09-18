@@ -25,7 +25,7 @@
                     :ui="{
                         root: 'flex',
                         container: 'items-stretch h-full',
-                        item: 'h-full flex '
+                        item: 'h-full flex md:basis-96'
                     }"
                 >
                     <u-card

@@ -2,8 +2,8 @@
     <div
         class="dark:from-primary-600 dark:to-primary-500 from-secondary-100 to-secondary-50 fixed bottom-0 left-0 z-10 flex w-full items-center justify-between bg-gradient-to-b p-1 pt-2 pb-3"
     >
-        <div class="flex items-center gap-4">
-            <nuxt-link to="/">
+        <div class="flex items-center gap-3">
+            <nuxt-link class="flex items-center" to="/">
                 <u-icon size="20" name="i-bx-home" />
             </nuxt-link>
             <colour-mode />
