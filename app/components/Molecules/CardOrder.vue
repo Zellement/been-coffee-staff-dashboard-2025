@@ -9,7 +9,7 @@
     >
         <u-card
             variant="subtle"
-            class="relative cursor-pointer"
+            class="relative flex cursor-pointer flex-col"
             :title="item.fields.supplier.fields.title"
             :description="fullDateConverter(item.fields.orderDate)"
         >
@@ -35,11 +35,13 @@
                     {{ inXDays(item.fields.expectedDeliveryDate) }}
                 </u-badge>
             </template>
-            <nuxt-img
-                class="mt-2 h-5 w-auto max-w-full rounded bg-white p-0.5"
-                :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
-                :alt="item.fields.supplier.fields.title"
-            />
+            <div class="mt-2 h-6 w-auto max-w-full">
+                <nuxt-img
+                    class="w=full h-full bg-white object-contain p-px"
+                    :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
+                    :alt="item.fields.supplier.fields.title"
+                />
+            </div>
         </u-card>
         <template #body>
             <div class="flex flex-col items-start gap-8">
