@@ -22,7 +22,7 @@
             :ui="{
                 root: 'flex',
                 container: 'items-center h-full',
-                item: 'ps-2 basis-80'
+                item: 'basis-80'
             }"
         >
             <u-card
