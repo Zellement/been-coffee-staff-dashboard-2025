@@ -1,6 +1,6 @@
 <template>
     <div class="shift-leads flex flex-col">
-        <div v-if="hasTeam" class="flex flex-wrap gap-4">
+        <div v-if="hasTeam" class="flex flex-wrap gap-5">
             <label
                 v-for="member in team"
                 :key="member.sys.id"
@@ -10,7 +10,7 @@
                     type="radio"
                     name="Team member"
                     :value="member.name"
-                    class="ml-2 opacity-0"
+                    class="opacity-0"
                     required
                     @click="toggleIsOtherSelected(false)"
                 />
@@ -36,7 +36,7 @@
                     name="Team member"
                     required
                     value="Other"
-                    class="ml-2 opacity-0"
+                    class="opacity-0"
                     @click="toggleIsOtherSelected(true)"
                 />
 
