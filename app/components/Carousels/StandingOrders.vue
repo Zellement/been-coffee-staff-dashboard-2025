@@ -1,5 +1,5 @@
 <template>
-    <div class="p-default">
+    <div class="p-default mb-8">
         <carousel-title-and-action title="Standing Orders">
             <u-button
                 size="2xs"

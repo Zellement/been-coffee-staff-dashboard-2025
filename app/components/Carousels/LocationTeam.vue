@@ -60,13 +60,27 @@
                         />
                     </u-button-group>
 
-                    <img
-                        class="mt-4 w-full rounded shadow-xl"
-                        :src="`${
-                            item.fields.photo?.[0]?.fields?.file?.url
-                        }?w=300&h=370&fit=fill&f=face&fm=webp`"
-                        :alt="item.fields.name"
-                    />
+                    <u-drawer
+                        :title="`${item.fields.name} ${item.fields.surname}`"
+                    >
+                        <button>
+                            <img
+                                class="mt-4 w-full rounded shadow-xl"
+                                :src="`${
+                                    item.fields.photo?.[0]?.fields?.file?.url
+                                }?w=300&h=370&fit=fill&f=face&fm=webp`"
+                                :alt="item.fields.name"
+                            />
+                        </button>
+
+                        <template #body>
+                            <u-timeline
+                                :items="fullHistoryData(item)"
+                                size="md"
+                            />
+                            <Placeholder class="m-4 h-48" />
+                        </template>
+                    </u-drawer>
                 </div>
             </u-card>
         </u-carousel>
@@ -74,9 +88,28 @@
 </template>
 
 <script lang="ts" setup>
+import type { TimelineItem } from '@nuxt/ui'
+
 const locationsStore = useLocationsStore()
 
 const allLocationTeam: ComputedRef<TypeBeenAwesomeWinner[]> = computed(() => {
     return locationsStore.getAllTeamMembers || []
 })
+
+const { shortDateConverter } = useDateUtils()
+
+const fullHistoryData = (employee: TypeEmployee): TimelineItem[] => {
+    return [
+        {
+            title: 'Joined Been Coffee',
+            date: shortDateConverter(new Date(employee.fields.startDate)),
+            icon: 'i-lucide-milestone'
+        },
+        ...employee.fields.history.map((item: any) => ({
+            title: item.key,
+            date: item.value,
+            icon: 'i-lucide-milestone'
+        }))
+    ]
+}
 </script>
