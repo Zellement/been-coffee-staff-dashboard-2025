@@ -55,7 +55,7 @@
                         class="mt-8 rounded shadow-xl"
                         :src="`${
                             item.fields.photo?.fields?.file?.url
-                        }?w=230&h=320&fit=fill&f=face&fm=webp`"
+                        }?w=460&h=640&fit=fill&f=face&fm=webp`"
                         :alt="item.fields.name"
                     />
                 </div>

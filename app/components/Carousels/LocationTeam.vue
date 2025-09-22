@@ -68,7 +68,7 @@
                                 class="mt-4 w-full rounded shadow-xl"
                                 :src="`${
                                     item.fields.photo?.[0]?.fields?.file?.url
-                                }?w=300&h=370&fit=fill&f=face&fm=webp`"
+                                }?w=600&h=740&fit=fill&f=face&fm=webp`"
                                 :alt="item.fields.name"
                             />
                         </button>
