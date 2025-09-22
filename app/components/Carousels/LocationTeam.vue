@@ -78,7 +78,6 @@
                                 :items="fullHistoryData(item)"
                                 size="md"
                             />
-                            <Placeholder class="m-4 h-48" />
                         </template>
                     </u-drawer>
                 </div>
