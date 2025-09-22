@@ -20,8 +20,41 @@ export default defineNuxtConfig({
         'nuxt-viewport',
         '@nuxt/icon',
         '@nuxt/ui',
-        '@nuxtjs/supabase'
+        '@nuxtjs/supabase',
+        '@vite-pwa/nuxt'
     ],
+
+    pwa: {
+        registerType: 'autoUpdate',
+        manifest: {
+            name: 'Been Coffee Dashboard',
+            description: 'Staff dashboard for Been Coffee',
+            short_name: 'Been Dash',
+            theme_color: '#FAB944',
+            background_color: '#1B1D3C',
+            icons: [
+                {
+                    src: '/icons/android-chrome-192x192.png',
+                    sizes: '192x192',
+                    type: 'image/png',
+                    purpose: 'any'
+                },
+                {
+                    src: '/icons/android-chrome-192x192.png',
+                    sizes: '180x180',
+                    type: 'image/png',
+                    purpose: 'any'
+                },
+                {
+                    src: '/icons/android-chrome-512x512.png',
+                    sizes: '512x512',
+                    type: 'image/png',
+                    purpose: 'any maskable'
+                }
+            ],
+            display: 'standalone'
+        }
+    },
 
     ui: {
         theme: {
