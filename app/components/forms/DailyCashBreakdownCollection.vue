@@ -65,102 +65,109 @@
                 class="grid grid-cols-12 items-center"
             >
                 <span class="col-span-2">{{ denomination.denomination }}</span>
-                <input
-                    class="pointer-events-none col-span-5"
-                    readonly
-                    tabindex="-1"
-                    :value="getValue(denomination)"
-                    :name="`${collection} ${denomination.denomination} value`"
-                />
+
+                <div class="relative col-span-5 flex items-center gap-1">
+                    <div>£</div>
+                    <u-input
+                        v-model.number="denomination.value"
+                        type="number"
+                        step="0.01"
+                        class="w-full pr-4"
+                        :name="`${collection} ${denomination.denomination} value`"
+                        @input="syncFromValue(denomination)"
+                    />
+                </div>
                 <u-input
-                    v-model="denomination.value"
+                    v-model.number="denomination.count"
                     class="col-span-5"
-                    :name="`${collection} ${denomination.denomination} count`"
                     type="number"
+                    step="1"
+                    :name="`${collection} ${denomination.denomination} count`"
+                    @input="syncFromCount(denomination)"
                 />
             </div>
         </div>
     </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
+import { computed, reactive } from 'vue'
+
 interface Props {
-    collection?: string
+    collection: string
     collectionBrow?: string | null
-    collectionStyle?: string
+    collectionStyle: string
 }
 
 const props = defineProps<Props>()
 
-const title = computed(() => {
-    return props.collection
-})
-
-const titleBrow = computed(() => {
-    return props.collectionBrow
-})
-
-const style = computed(() => {
-    return props.collectionStyle
-})
-const state = reactive({
-    denominations: [
-        { denomination: '£20', value: 0, multiple: 20 },
-        { denomination: '£10', value: 0, multiple: 10 },
-        { denomination: '£5', value: 0, multiple: 5 },
-        { denomination: '£2', value: 0, multiple: 2 },
-        { denomination: '£1', value: 0, multiple: 1 },
-        { denomination: '50p', value: 0, multiple: 0.5 },
-        { denomination: '20p', value: 0, multiple: 0.2 },
-        { denomination: '10p', value: 0, multiple: 0.1 },
-        { denomination: '5p', value: 0, multiple: 0.05 },
-        { denomination: '2p', value: 0, multiple: 0.02 },
-        { denomination: '1p', value: 0, multiple: 0.01 }
-    ]
-})
+const title = computed(() => props.collection)
+const titleBrow = computed(() => props.collectionBrow)
+const style = computed(() => props.collectionStyle)
 
 const formatter = new Intl.NumberFormat('en-UK', {
     style: 'currency',
     currency: 'GBP'
 })
 
-const getValue = (denomination: { value: number; multiple: number }) => {
-    return formatter.format(denomination.value * denomination.multiple)
+interface Denomination {
+    denomination: string
+    multiple: number
+    count: number
+    value: number
 }
 
-const totalValue = computed(() => {
-    let value = 0
-    state.denominations.forEach((element) => {
-        value = value + element.value * element.multiple
-    })
-    return value
+const state = reactive<{
+    denominations: Denomination[]
+}>({
+    denominations: [
+        { denomination: '£20', multiple: 20, count: 0, value: 0 },
+        { denomination: '£10', multiple: 10, count: 0, value: 0 },
+        { denomination: '£5', multiple: 5, count: 0, value: 0 },
+        { denomination: '£2', multiple: 2, count: 0, value: 0 },
+        { denomination: '£1', multiple: 1, count: 0, value: 0 },
+        { denomination: '50p', multiple: 0.5, count: 0, value: 0 },
+        { denomination: '20p', multiple: 0.2, count: 0, value: 0 },
+        { denomination: '10p', multiple: 0.1, count: 0, value: 0 },
+        { denomination: '5p', multiple: 0.05, count: 0, value: 0 },
+        { denomination: '2p', multiple: 0.02, count: 0, value: 0 },
+        { denomination: '1p', multiple: 0.01, count: 0, value: 0 }
+    ]
 })
 
-const totalValueFormatted = computed(() => {
-    return totalValue.value === 0
-        ? '£--.--'
-        : formatter.format(totalValue.value)
-})
+const syncFromCount = (denom: Denomination) => {
+    denom.value = denom.count * denom.multiple
+}
 
-const totalColor = computed(() => {
-    return totalValue.value === 0 ? 'opacity-20' : null
-})
+const syncFromValue = (denom: Denomination) => {
+    denom.count = denom.multiple > 0 ? denom.value / denom.multiple : 0
+}
 
-const difference = computed(() => {
-    return totalValue.value - 100
-})
+const formatCurrency = (val: number): string => {
+    return val === 0 ? '£--.--' : formatter.format(val)
+}
 
-const differenceFormatted = computed(() => {
-    return totalValue.value === 0
-        ? '£--.--'
-        : formatter.format(difference.value)
-})
+const totalValue = computed<number>(() =>
+    state.denominations.reduce((acc, d) => acc + d.value, 0)
+)
 
-const differenceColor = computed(() => {
-    return totalValue.value === 0
-        ? 'opacity-20'
-        : difference.value === 0
-          ? 'text-green-500'
-          : 'text-red-500'
+const totalValueFormatted = computed<string>(() =>
+    formatCurrency(totalValue.value)
+)
+
+const difference = computed<number>(() => totalValue.value - 100)
+
+const differenceFormatted = computed<string>(() =>
+    formatCurrency(totalValue.value === 0 ? 0 : difference.value)
+)
+
+const totalColor = computed<string | null>(() =>
+    totalValue.value === 0 ? 'opacity-20' : null
+)
+
+const differenceColor = computed<string>(() => {
+    if (totalValue.value === 0) return 'opacity-20'
+    if (difference.value === 0) return 'text-green-500'
+    return 'text-red-500'
 })
 </script>
