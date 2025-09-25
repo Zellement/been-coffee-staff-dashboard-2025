@@ -1,5 +1,6 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
+        <div class="fixed inset-0 z-10 bg-red-900">{{ data }}</div>
         <daily-tasks class="col-span-full md:col-span-6" />
         <routine-tasks class="col-span-full md:col-span-6" />
         <upcoming-deliveries class="col-span-full" />
@@ -16,6 +17,8 @@
 useHead({
     title: 'Been Coffee Staff Dashboard'
 })
+
+const { data } = await useFetch('/api/rotaready/get-staff')
 
 const tableBookingsStore = useTableBookingsStore()
 
