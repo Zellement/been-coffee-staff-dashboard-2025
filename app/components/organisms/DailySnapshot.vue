@@ -8,7 +8,7 @@
             >
                 <h2 class="uc-text flex flex-col items-center">
                     <span class="text-[0.7em]">Outstanding</span>
-                    Dailys tasks
+                    Daily tasks
                 </h2>
                 <p class="text-3xl" :class="getColour(outstandingDailyTasks)">
                     {{ outstandingDailyTasks }}
