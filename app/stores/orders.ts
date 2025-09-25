@@ -69,11 +69,18 @@ export const useOrdersStore = defineStore('orders', () => {
     const completedOrders: ComputedRef<TypeOrder[]> = computed(() => {
         if (!allOrders.value) return []
         // All orders that are left that are not in todaysOrders nor overdueOrders
-        return allOrders.value.filter((task: TypeOrder) => {
+        const orders = allOrders.value.filter((task: TypeOrder) => {
             return (
                 task.fields.deliveryCheckedBy && task.fields.deliveryCheckedAt
             )
         })
+        // Sort by latest deliveryCheckedAt by both date and then time
+        orders.sort((a, b) => {
+            const dateA = new Date(a.fields.deliveryCheckedAt || '')
+            const dateB = new Date(b.fields.deliveryCheckedAt || '')
+            return dateB.getTime() - dateA.getTime()
+        })
+        return orders
     })
 
     /**

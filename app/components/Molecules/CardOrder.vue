@@ -35,9 +35,9 @@
                     {{ inXDays(item.fields.expectedDeliveryDate) }}
                 </u-badge>
             </template>
-            <div class="mt-2 h-6 w-auto max-w-full">
+            <div class="mt-2 h-7 w-auto max-w-full">
                 <nuxt-img
-                    class="w=full h-full bg-white object-contain p-px"
+                    class="w=full h-full overflow-clip rounded bg-white object-contain p-1"
                     :src="`${item.fields.supplier.fields.logo?.fields?.file?.url}?h=12&fm=webp`"
                     :alt="item.fields.supplier.fields.title"
                 />
