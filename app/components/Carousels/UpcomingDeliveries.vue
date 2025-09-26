@@ -64,7 +64,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     lazy: true,
     server: false,
     watch: [shouldFetch],
-    immediate: true,
+    immediate: false,
     params: computed(() => ({
         content_type: 'order',
         'fields.location.sys.id': activeLocationId.value,

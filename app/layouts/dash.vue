@@ -26,6 +26,10 @@
 </template>
 
 <script setup lang="ts">
+const userStore = useUserStore()
+
+userStore.setUserData()
+
 const REFRESH_TIMER = 600 // seconds
 const timer: Ref<number> = ref(0)
 
@@ -38,7 +42,7 @@ const refreshData = async () => {
 
 // Active window: 06:30 <= now < 20:30
 const ACTIVE_START_MIN = 6 * 60 + 30
-const ACTIVE_END_MIN = 20 * 60 + 0
+const ACTIVE_END_MIN = 20 * 60 + 30
 
 const inActiveWindow = () => {
     const now = new Date()
