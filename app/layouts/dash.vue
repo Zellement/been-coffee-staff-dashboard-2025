@@ -3,7 +3,13 @@
         <div
             class="p-default bg-seashell-50 dark:bg-primary-800 sticky top-0 z-10 flex w-full items-center justify-end gap-4"
         >
-            <u-progress v-model="timer" class="max-w-80" :max="REFRESH_TIMER" />
+            <u-progress
+                v-if="inActiveWindow()"
+                v-model="timer"
+                class="max-w-80"
+                :max="REFRESH_TIMER"
+            />
+            <u-badge v-else label="Auto-refresh paused" variant="outline" />
             <u-button
                 label="Refresh"
                 variant="outline"
@@ -32,7 +38,7 @@ const refreshData = async () => {
 
 // Active window: 06:30 <= now < 20:30
 const ACTIVE_START_MIN = 6 * 60 + 30
-const ACTIVE_END_MIN = 20 * 60 + 30
+const ACTIVE_END_MIN = 20 * 60 + 0
 
 const inActiveWindow = () => {
     const now = new Date()
