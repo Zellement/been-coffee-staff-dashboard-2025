@@ -23,7 +23,7 @@ definePageMeta({
     layout: 'dash'
 })
 
-useContentfulLive(5_000) // 10s (use 30s if you’re on a tunnel to avoid rate limits)
+useContentfulLiveSelective(5_000) // 10s (use 30s if you’re on a tunnel to avoid rate limits)
 
 useHead({
     title: 'Been Coffee Staff Dashboard'
