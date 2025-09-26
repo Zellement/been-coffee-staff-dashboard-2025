@@ -40,7 +40,7 @@
                     <u-skeleton
                         v-for="i in 6"
                         :key="i"
-                        class="h-17 shrink-0 basis-48"
+                        class="h-20 shrink-0 basis-48"
                     />
                 </div>
             </transition>
