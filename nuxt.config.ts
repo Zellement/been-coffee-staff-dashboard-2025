@@ -79,8 +79,7 @@ export default defineNuxtConfig({
                 '/login',
                 '/register',
                 '/forgot-password',
-                '/update-password',
-                '/locations/**'
+                '/update-password'
             ]
         }
     },

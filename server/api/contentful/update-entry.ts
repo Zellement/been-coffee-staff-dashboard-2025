@@ -2,6 +2,7 @@
 import { readBody } from 'h3'
 import contentfulManagement from 'contentful-management'
 import type { Entry } from 'contentful-management'
+import { requireUser } from '../../utils/require-user'
 
 type UpdateBody = {
     // Simple shape: { fields: { title: 'New title', slug: 'new-slug', ... }, locale?: 'en-GB', publish?: boolean }
@@ -12,6 +13,7 @@ type UpdateBody = {
 }
 
 export default defineEventHandler(async (event) => {
+    await requireUser(event) // 🔒 only logged-in staff can call this
     const config = useRuntimeConfig()
 
     const token = config.CONTENTFUL_CMA_ACCESS_TOKEN as string
