@@ -6,12 +6,8 @@
             <div class="col-span-3 flex flex-row gap-3 self-end md:col-span-4">
                 <div class="flex w-4 self-stretch" :class="style" />
                 <div class="flex flex-col">
-                    <p class="">
-                        {{ titleBrow }}
-                    </p>
-                    <h3 class="uc-text !m-0">
-                        {{ title }}
-                    </h3>
+                    <p>{{ titleBrow }}</p>
+                    <h3 class="uc-text !m-0">{{ title }}</h3>
                 </div>
             </div>
             <div
@@ -59,29 +55,41 @@
                 <span class="col-span-5 font-bold">Value</span>
                 <span class="col-span-5 font-bold">Count</span>
             </div>
+
             <div
                 v-for="denomination in state.denominations"
-                :key="`black-tin__${denomination}`"
+                :key="`black-tin__${denomination.denomination}`"
                 class="grid grid-cols-12 items-center"
             >
                 <span class="col-span-2">{{ denomination.denomination }}</span>
 
+                <!-- VALUE input -->
                 <div class="relative col-span-5 flex items-center gap-1">
                     <div>£</div>
                     <u-input
-                        v-model.number="denomination.value"
+                        :model-value="toPounds(denomination.valueP)"
                         type="number"
-                        step="0.01"
+                        :step="toPounds(denomination.multipleP)"
+                        :min="0"
                         class="w-full pr-4"
                         :name="`${collection} ${denomination.denomination} value`"
-                        @input="syncFromValue(denomination)"
+                        @update:model-value="
+                            (val) =>
+                                syncFromValuePounds(
+                                    denomination,
+                                    Number(val) || 0
+                                )
+                        "
                     />
                 </div>
+
+                <!-- COUNT input -->
                 <u-input
                     v-model.number="denomination.count"
-                    class="col-span-5"
                     type="number"
-                    step="1"
+                    :step="1"
+                    :min="0"
+                    class="col-span-5"
                     :name="`${collection} ${denomination.denomination} count`"
                     @input="syncFromCount(denomination)"
                 />
@@ -98,76 +106,84 @@ interface Props {
     collectionBrow?: string | null
     collectionStyle: string
 }
-
 const props = defineProps<Props>()
 
 const title = computed(() => props.collection)
 const titleBrow = computed(() => props.collectionBrow)
 const style = computed(() => props.collectionStyle)
 
-const formatter = new Intl.NumberFormat('en-UK', {
-    style: 'currency',
-    currency: 'GBP'
-})
-
-interface Denomination {
-    denomination: string
-    multiple: number
-    count: number
-    value: number
+// helpers
+const toPence = (pounds: number) => Math.round(pounds * 100)
+const toPounds = (pence: number) => +(pence / 100).toFixed(2)
+const formatCurrency = (val: number): string => {
+    return val === 0
+        ? '£--.--'
+        : new Intl.NumberFormat('en-GB', {
+              style: 'currency',
+              currency: 'GBP'
+          }).format(toPounds(val))
 }
 
-const state = reactive<{
-    denominations: Denomination[]
-}>({
+// types
+interface Denomination {
+    denomination: string
+    multipleP: number // in pence
+    count: number
+    valueP: number // total value in pence
+}
+
+// data
+const state = reactive<{ denominations: Denomination[] }>({
     denominations: [
-        { denomination: '£20', multiple: 20, count: 0, value: 0 },
-        { denomination: '£10', multiple: 10, count: 0, value: 0 },
-        { denomination: '£5', multiple: 5, count: 0, value: 0 },
-        { denomination: '£2', multiple: 2, count: 0, value: 0 },
-        { denomination: '£1', multiple: 1, count: 0, value: 0 },
-        { denomination: '50p', multiple: 0.5, count: 0, value: 0 },
-        { denomination: '20p', multiple: 0.2, count: 0, value: 0 },
-        { denomination: '10p', multiple: 0.1, count: 0, value: 0 },
-        { denomination: '5p', multiple: 0.05, count: 0, value: 0 },
-        { denomination: '2p', multiple: 0.02, count: 0, value: 0 },
-        { denomination: '1p', multiple: 0.01, count: 0, value: 0 }
+        { denomination: '£20', multipleP: 2000, count: 0, valueP: 0 },
+        { denomination: '£10', multipleP: 1000, count: 0, valueP: 0 },
+        { denomination: '£5', multipleP: 500, count: 0, valueP: 0 },
+        { denomination: '£2', multipleP: 200, count: 0, valueP: 0 },
+        { denomination: '£1', multipleP: 100, count: 0, valueP: 0 },
+        { denomination: '50p', multipleP: 50, count: 0, valueP: 0 },
+        { denomination: '20p', multipleP: 20, count: 0, valueP: 0 },
+        { denomination: '10p', multipleP: 10, count: 0, valueP: 0 },
+        { denomination: '5p', multipleP: 5, count: 0, valueP: 0 },
+        { denomination: '2p', multipleP: 2, count: 0, valueP: 0 },
+        { denomination: '1p', multipleP: 1, count: 0, valueP: 0 }
     ]
 })
 
+// sync functions
 const syncFromCount = (denom: Denomination) => {
-    denom.value = denom.count * denom.multiple
+    denom.count = Math.max(0, Math.round(denom.count))
+    denom.valueP = denom.count * denom.multipleP
 }
 
-const syncFromValue = (denom: Denomination) => {
-    denom.count = denom.multiple > 0 ? denom.value / denom.multiple : 0
+const syncFromValuePounds = (denom: Denomination, pounds: number) => {
+    const p = Math.max(0, toPence(pounds))
+    const count = Math.round(p / denom.multipleP)
+    denom.count = count
+    denom.valueP = count * denom.multipleP
 }
 
-const formatCurrency = (val: number): string => {
-    return val === 0 ? '£--.--' : formatter.format(val)
-}
+// totals
+const totalP = computed(() =>
+    state.denominations.reduce((a, d) => a + d.valueP, 0)
+)
+const totalValueFormatted = computed(() => formatCurrency(totalP.value))
 
-const totalValue = computed<number>(() =>
-    state.denominations.reduce((acc, d) => acc + d.value, 0)
+// ⬇️ Restore your original difference = total - 100 (which means £100.00)
+const FLOAT_TARGET_P = 100 * 100 // 100 pounds = 10,000 pence
+
+const differenceP = computed(() => totalP.value - FLOAT_TARGET_P)
+const differenceFormatted = computed(() =>
+    formatCurrency(totalP.value === 0 ? 0 : differenceP.value)
 )
 
-const totalValueFormatted = computed<string>(() =>
-    formatCurrency(totalValue.value)
-)
-
-const difference = computed<number>(() => totalValue.value - 100)
-
-const differenceFormatted = computed<string>(() =>
-    formatCurrency(totalValue.value === 0 ? 0 : difference.value)
-)
-
+// colors
 const totalColor = computed<string | null>(() =>
-    totalValue.value === 0 ? 'opacity-20' : null
+    totalP.value === 0 ? 'opacity-20' : null
 )
 
 const differenceColor = computed<string>(() => {
-    if (totalValue.value === 0) return 'opacity-20'
-    if (difference.value === 0) return 'text-green-500'
+    if (totalP.value === 0) return 'opacity-20'
+    if (differenceP.value === 0) return 'text-green-500'
     return 'text-red-500'
 })
 </script>

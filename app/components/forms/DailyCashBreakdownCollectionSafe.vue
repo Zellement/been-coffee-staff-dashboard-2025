@@ -73,6 +73,7 @@
                 <u-input
                     v-model="denomination.value"
                     class="col-span-5"
+                    :min="0"
                     :name="`${collection} ${denomination.denomination} count`"
                     type="number"
                 />

@@ -115,7 +115,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     lazy: true,
     server: false,
     watch: [shouldFetch],
-    immediate: false,
+    immediate: shouldFetch.value,
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
