@@ -82,7 +82,6 @@ export function useContentfulLiveSelective(intervalMs = 10_000) {
             })
 
             if (keys.size) {
-                console.log('refreshing')
                 await refreshNuxtData(Array.from(keys))
                 local.value = rev
             } else {
