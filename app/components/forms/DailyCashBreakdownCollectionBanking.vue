@@ -105,7 +105,7 @@ const toPence = (pounds: number) => Math.round(pounds * 100)
 const toPounds = (pence: number) => +(pence / 100).toFixed(2)
 const formatCurrency = (valP: number): string => {
     return valP === 0
-        ? '£0.00'
+        ? '£--.--'
         : new Intl.NumberFormat('en-GB', {
               style: 'currency',
               currency: 'GBP'

@@ -41,7 +41,7 @@
 
                 <URadioGroup v-model="value" variant="table" :items="items" />
             </div>
-            <daily-cash-breakdown-collection
+            <daily-cash-breakdown-collection-banking
                 collection-brow="(Black tin)"
                 collection="Banking"
                 collection-style="bg-black"
