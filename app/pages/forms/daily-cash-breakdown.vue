@@ -46,7 +46,7 @@
                 collection="Banking"
                 collection-style="bg-black"
             />
-            <daily-cash-breakdown-collection
+            <daily-cash-breakdown-collection-till-float
                 collection="Till float"
                 collection-style="bg-butterscotch-500"
             />
