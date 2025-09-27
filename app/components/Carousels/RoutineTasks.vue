@@ -96,11 +96,13 @@ const shouldFetch: ComputedRef<boolean> = computed(
 const allRoutineTasksForAccordions: ComputedRef<AccordionItem[]> = computed(
     () => {
         return (
-            allRoutineTaskInstances.value?.map((task) => ({
-                id: task.sys.id,
-                label: task.fields.task.fields.title,
-                description: task.fields.task.fields.description
-            })) || []
+            allRoutineTaskInstances.value
+                ?.map((task) => ({
+                    id: task.sys.id,
+                    label: task.fields.task.fields.title,
+                    description: task.fields.task.fields.description
+                }))
+                .sort((a, b) => a.label.localeCompare(b.label)) || []
         )
     }
 )

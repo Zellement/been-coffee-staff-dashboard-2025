@@ -8,7 +8,7 @@
         <table-bookings v-show="hasTableBookings" class="col-span-6" />
         <notice-board class="col-span-full" />
         <reviews-listings class="col-span-full" />
-        <div class="col-span-full flex gap-4">
+        <div class="p-default col-span-full flex justify-around gap-4">
             <single-day-dot :days-plus="2" title="+ 3 Days" />
             <single-day-dot :days-plus="4" title="+ 5 Days" />
             <single-day-dot :days-plus="6" title="+ 7 Days" />
