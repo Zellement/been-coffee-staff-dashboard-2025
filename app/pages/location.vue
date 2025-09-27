@@ -8,13 +8,13 @@
         <table-bookings v-show="hasTableBookings" class="col-span-6" />
         <notice-board class="col-span-full" />
         <reviews-listings class="col-span-full" />
-        <standing-orders class="col-span-6" />
-        <div class="col-span-6 flex gap-4">
+        <div class="col-span-full flex gap-4">
             <single-day-dot :days-plus="2" title="+ 3 Days" />
             <single-day-dot :days-plus="4" title="+ 5 Days" />
             <single-day-dot :days-plus="6" title="+ 7 Days" />
             <single-day-dot :days-plus="13" title="+ 14 Days" />
         </div>
+        <standing-orders class="col-span-full" />
     </div>
 </template>
 
