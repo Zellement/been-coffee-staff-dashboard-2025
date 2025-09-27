@@ -36,7 +36,7 @@
                     <span class="text-[0.7em]">Unchecked</span>
                     Deliveries Today
                 </h2>
-                <p class="text-3xl" :class="getColour(todaysOrders)">
+                <p class="text-3xl" :class="getColourUrgent(todaysOrders)">
                     {{ todaysOrders }}
                 </p>
             </u-card>
@@ -49,7 +49,10 @@
                     <span class="text-[0.7em]">Today's</span>
                     Table Bookings
                 </h2>
-                <p class="text-3xl" :class="getColour(totalBookingsToday)">
+                <p
+                    class="text-3xl"
+                    :class="getColourUrgent(totalBookingsToday)"
+                >
                     {{ totalBookingsToday }}
                 </p>
             </u-card>
@@ -88,6 +91,11 @@ const totalBookingsToday = computed(() => {
 const getColour = (value: number) => {
     if (value === 0) return 'text-green-600 dark:text-green-400'
     if (value < 5) return 'text-yellow-600 dark:text-yellow-400'
+    return 'text-red-600 dark:text-red-400'
+}
+
+const getColourUrgent = (value: number) => {
+    if (value === 0) return 'text-green-600 dark:text-green-400'
     return 'text-red-600 dark:text-red-400'
 }
 </script>
