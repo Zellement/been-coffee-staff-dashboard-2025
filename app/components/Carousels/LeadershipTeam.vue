@@ -60,19 +60,13 @@
                         />
                     </u-button-group>
 
-                    <u-drawer
-                        :title="`${item.fields.name} ${item.fields.surname}`"
-                    >
-                        <button>
-                            <img
-                                class="mt-4 w-full rounded shadow-xl"
-                                :src="`${
-                                    item.fields.photo?.[0]?.fields?.file?.url
-                                }?w=600&h=840&fit=fill&f=face&fm=webp`"
-                                :alt="item.fields.name"
-                            />
-                        </button>
-                    </u-drawer>
+                    <img
+                        class="mt-4 w-full rounded shadow-xl"
+                        :src="`${
+                            item.fields.photo?.[0]?.fields?.file?.url
+                        }?w=600&h=840&fit=fill&f=face&fm=webp`"
+                        :alt="item.fields.name"
+                    />
                 </div>
             </u-card>
         </u-carousel>
