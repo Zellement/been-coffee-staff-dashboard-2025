@@ -15,6 +15,7 @@
         <keep-alive><standing-orders class="col-span-full" /></keep-alive>
         <keep-alive><been-awesome-winners class="col-span-full" /></keep-alive>
         <keep-alive><location-team class="col-span-full" /></keep-alive>
+        <keep-alive><leadership-team class="col-span-full" /></keep-alive>
     </div>
 </template>
 

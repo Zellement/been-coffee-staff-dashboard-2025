@@ -5,6 +5,7 @@ export type { TypeDailyTask, TypeDailyTaskFields, TypeDailyTaskSkeleton } from "
 export type { TypeEmployee, TypeEmployeeFields, TypeEmployeeSkeleton } from "./TypeEmployee";
 export type { TypeLocation, TypeLocationFields, TypeLocationSkeleton } from "./TypeLocation";
 export type { TypeNoticeBoard, TypeNoticeBoardFields, TypeNoticeBoardSkeleton } from "./TypeNoticeBoard";
+export type { TypeOperations, TypeOperationsFields, TypeOperationsSkeleton } from "./TypeOperations";
 export type { TypeOrder, TypeOrderFields, TypeOrderSkeleton } from "./TypeOrder";
 export type { TypeRoutineTask, TypeRoutineTaskFields, TypeRoutineTaskSkeleton } from "./TypeRoutineTask";
 export type { TypeStandingOrder, TypeStandingOrderFields, TypeStandingOrderSkeleton } from "./TypeStandingOrder";

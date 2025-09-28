@@ -39,4 +39,18 @@ export default defineNuxtRouteMiddleware(async (to) => {
         if (e?.status === 401) return // session edge-case; avoid crashing navigation
         throw e
     }
+
+    const operationsStore = useOperationsStore()
+    if (operationsStore.operationsData) return
+    // Fetch once (handles 401 gracefully just in case)
+    try {
+        const operationsData = await $fetch('/api/contentful/fetch-entries', {
+            params: { content_type: 'operations', include: 2 },
+            headers: { 'cache-control': 'no-cache' }
+        })
+        operationsStore.operationsData = operationsData.items[0]
+    } catch (e: any) {
+        if (e?.status === 401) return // session edge-case; avoid crashing navigation
+        throw e
+    }
 })
