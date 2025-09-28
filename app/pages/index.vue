@@ -1,11 +1,7 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
-        <keep-alive
-            ><daily-tasks class="col-span-full md:col-span-6"
-        /></keep-alive>
-        <keep-alive
-            ><routine-tasks class="col-span-full md:col-span-6"
-        /></keep-alive>
+        <keep-alive><daily-tasks class="col-span-full" /></keep-alive>
+        <keep-alive><routine-tasks class="col-span-full" /></keep-alive>
         <keep-alive><upcoming-deliveries class="col-span-full" /></keep-alive>
         <keep-alive
             ><table-bookings v-show="hasTableBookings" class="col-span-full"
