@@ -18,4 +18,16 @@ definePageMeta({
 useHead({
     title: 'Update your password | Been Coffee Staff Dashboard'
 })
+
+const supabase = useSupabaseClient()
+const route = useRoute()
+
+onMounted(async () => {
+    if (route.query.type === 'recovery' && route.query.code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(
+            String(route.query.code)
+        )
+        if (error) console.error('Session exchange failed:', error.message)
+    }
+})
 </script>

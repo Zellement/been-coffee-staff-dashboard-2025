@@ -15,9 +15,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (
         to.path === '/login' ||
         to.path === '/forgot-password' ||
-        to.path === '/update-password' ||
-        to.fullPath === '/locations/willington' ||
-        to.fullPath === '/locations/de65'
+        to.path === '/update-password'
     )
         return
 
