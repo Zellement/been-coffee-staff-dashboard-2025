@@ -7,14 +7,14 @@
                     type="password"
                     required
                     placeholder="Enter your new password"
-                    :disabled="!ready"
+                    :disabled="!ready || loading"
                 />
                 <u-input
                     v-model="passwordagain"
                     type="password"
                     required
                     placeholder="Enter your new password again"
-                    :disabled="!ready"
+                    :disabled="!ready || loading"
                 />
                 <u-button
                     :ui="{ base: 'block text-center' }"
@@ -34,9 +34,9 @@
             color="neutral"
         />
         <u-alert
-            v-if="errorMsg"
+            v-if="errorToShow"
             class="mt-8"
-            :title="errorMsg"
+            :title="errorToShow"
             variant="solid"
             color="error"
         />
@@ -44,76 +44,49 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
-
 const supabase = useSupabaseClient()
-const route = useRoute()
-const router = useRouter()
+
+const props = defineProps<{
+    ready: boolean
+    errorMsg?: string | null
+}>()
+const emit = defineEmits<{ (e: 'done'): void }>()
 
 const password = ref('')
 const passwordagain = ref('')
 const loading = ref(false)
 const successMsg = ref('')
-const errorMsg = ref('')
-const ready = ref(false)
+const localError = ref<string | null>(null)
 
+const errorToShow = computed(() => localError.value ?? props.errorMsg ?? null)
 const label = computed(() => (loading.value ? 'Saving…' : 'Update password'))
 const icon = computed(() =>
     loading.value ? 'i-svg-spinners-blocks-shuffle-3' : 'i-jam-padlock-open-f'
 )
 const passwordsMatch = computed(() => password.value === passwordagain.value)
 
-onMounted(async () => {
-    try {
-        // v2 PKCE recovery: ?type=recovery&code=...
-        if (route.query.type === 'recovery' && route.query.code) {
-            const code = String(route.query.code)
-            const { error } = await supabase.auth.exchangeCodeForSession(code)
-            if (error) throw error
-            // Optional: strip query so refresh doesn't retry exchange
-            await router.replace({ path: '/update-password' })
-        }
-
-        // Verify we actually have a session before enabling the form
-        const {
-            data: { session }
-        } = await supabase.auth.getSession()
-        if (!session) {
-            throw new Error(
-                'Session not found. Please open the password reset link from your email again.'
-            )
-        }
-
-        ready.value = true
-    } catch (e: any) {
-        errorMsg.value =
-            e?.message ?? 'Could not validate the password reset link.'
-        ready.value = false
-    }
-})
-
 const handleReset = async () => {
-    if (!ready.value) {
-        errorMsg.value =
+    if (!props.ready) {
+        localError.value =
             'Your reset link isn’t active. Please click the email link again.'
         return
     }
     if (!passwordsMatch.value) {
-        errorMsg.value = 'Passwords do not match'
+        localError.value = 'Passwords do not match'
         return
     }
-    errorMsg.value = ''
+    localError.value = null
     loading.value = true
     try {
         const { error } = await supabase.auth.updateUser({
             password: password.value
         })
         if (error) throw error
-        successMsg.value = 'Password updated! You can now log in.'
+        successMsg.value = 'Password updated! Redirecting to login…'
         await supabase.auth.signOut()
-        await navigateTo('/login?passwordReset=1', { replace: true })
+        emit('done')
     } catch (e: any) {
-        errorMsg.value = e?.message ?? 'Failed to update password.'
+        localError.value = e?.message ?? 'Failed to update password.'
     } finally {
         loading.value = false
     }
