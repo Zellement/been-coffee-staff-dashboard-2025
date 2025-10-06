@@ -4,12 +4,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     if (user?.value?.aud === 'authenticated') return
 
-    if (
-        to.path === '/login' ||
-        to.path === '/forgot-password' ||
-        to.path === '/update-password'
-    ) {
-        console.log('[MIDDLEWARE] allowed public route:', to.path)
+    const PUBLIC = ['/login', '/forgot-password', '/update-password']
+
+    if (PUBLIC.some((p) => to.path.startsWith(p))) {
+        console.log('[MIDDLEWARE] allowed public route:', to.fullPath)
         return
     }
 
