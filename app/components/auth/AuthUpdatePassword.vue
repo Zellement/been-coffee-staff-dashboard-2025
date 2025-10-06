@@ -17,6 +17,7 @@
                 <u-button
                     :ui="{ base: 'block text-center' }"
                     :label="label"
+                    color="tertiary"
                     :icon="icon"
                     type="submit"
                 />
@@ -74,6 +75,7 @@ const handleReset = async () => {
         })
         if (error) throw error
         successMsg.value = 'Sorted!'
+        navigateTo('/login')
     } catch (error) {
         alert(error)
     }
