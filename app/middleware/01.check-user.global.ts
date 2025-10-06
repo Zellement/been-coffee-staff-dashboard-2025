@@ -1,36 +1,23 @@
-import { useUiStore } from '@/stores/ui'
-
 export default defineNuxtRouteMiddleware((to, from) => {
-    const uiStore = useUiStore()
-    const config = useRuntimeConfig()
-
-    uiStore.currentUrl = `${config.public.WEBSITE_URL}${to.path}`
-
     const user = useSupabaseUser()
+    console.log('[MIDDLEWARE]', to.path, 'user:', user.value?.aud)
 
-    if (user?.value?.aud === 'authenticated') {
-        return
-    }
+    if (user?.value?.aud === 'authenticated') return
 
     if (
         to.path === '/login' ||
         to.path === '/forgot-password' ||
         to.path === '/update-password'
-    )
+    ) {
+        console.log('[MIDDLEWARE] allowed public route:', to.path)
         return
-
-    // Prevent adding QS to index
-    if (to.path === '/') {
-        return navigateTo({
-            path: '/login'
-        })
     }
 
-    // Add QS from originating URL to forward on to
-    return navigateTo({
-        path: '/login',
-        query: {
-            url: from.path
-        }
-    })
+    if (to.path === '/') {
+        console.log('[MIDDLEWARE] redirecting from index')
+        return navigateTo({ path: '/login' })
+    }
+
+    console.log('[MIDDLEWARE] redirecting to login from', to.path)
+    return navigateTo({ path: '/login', query: { url: from.path } })
 })

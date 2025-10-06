@@ -23,11 +23,18 @@ const supabase = useSupabaseClient()
 const route = useRoute()
 
 onMounted(async () => {
+    console.log('[UPDATE-PASSWORD] mounted', route.query)
+
     if (route.query.type === 'recovery' && route.query.code) {
-        const { error } = await supabase.auth.exchangeCodeForSession(
+        console.log('[UPDATE-PASSWORD] exchanging code...')
+        const { data, error } = await supabase.auth.exchangeCodeForSession(
             String(route.query.code)
         )
-        if (error) console.error('Session exchange failed:', error.message)
+        if (error) {
+            console.error('[UPDATE-PASSWORD] exchange error:', error.message)
+        } else {
+            console.log('[UPDATE-PASSWORD] session established', data)
+        }
     }
 })
 </script>
