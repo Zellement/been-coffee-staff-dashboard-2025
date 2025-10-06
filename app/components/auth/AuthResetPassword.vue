@@ -58,7 +58,7 @@ const handleReset = async () => {
         const { error } = await supabase.auth.resetPasswordForEmail(
             email.value,
             {
-                redirectTo: `${config.public.SITE_URL}/update-password`
+                redirectTo: `${config.public.WEBSITE_URL}/update-password`
             }
         )
         if (error) throw error
