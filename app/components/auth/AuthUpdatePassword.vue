@@ -74,10 +74,15 @@ const handleReset = async () => {
             password: password.value
         })
         if (error) throw error
-        successMsg.value = 'Sorted!'
-        navigateTo('/login')
+        successMsg.value =
+            'Password updated successfully! Redirecting to login...'
+        setTimeout(async () => {
+            await navigateTo('/login')
+        }, 2000)
     } catch (error) {
         alert(error)
+    } finally {
+        loading.value = false
     }
 }
 </script>
