@@ -49,7 +49,7 @@ const successMsg: Ref<string> = ref('')
 const errorMsg: Ref<string> = ref('')
 
 const label: ComputedRef<string> = computed(() =>
-    loading.value ? 'Sending...' : 'Send reset link'
+    loading.value ? 'Saving...' : 'Update password'
 )
 
 const icon: ComputedRef<string> = computed(() =>
