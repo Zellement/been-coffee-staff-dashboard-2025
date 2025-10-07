@@ -68,7 +68,6 @@ const icon: ComputedRef<string> = computed(() =>
 const errorMsg: Ref<string | null> = ref(null)
 
 const handleLogin = async () => {
-    console.log('Logging in...')
     try {
         loading.value = true
         errorMsg.value = null
