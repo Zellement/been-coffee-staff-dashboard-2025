@@ -26,29 +26,27 @@ const DEFAULT_LOCAL: Revision = {
         assets: 0
     }
 }
-
-export function useContentfulLiveSelective(intervalMs = 10_000) {
+// composables/useContentfulLiveSelective.ts
+export function useContentfulLiveSelective(
+    intervalMs = 60_000,
+    opts: { enabled?: Ref<boolean> | ComputedRef<boolean> } = {}
+) {
     const vis = useDocumentVisibility()
+    const enabled = opts.enabled ?? ref(true)
+
     const local = useState<Revision>('contentful:localRevs', () =>
         structuredClone(DEFAULT_LOCAL)
     )
     const checking = ref(false)
 
-    // Map buckets -> your useFetch asyncData keys
-    // composables/useContentfulLiveSelective.ts
     const bucketToKeys: Record<keyof Revision['buckets'], string[]> = {
         noticeBoard: ['noticeBoard'],
-        // when the Task model changes, re-fetch the corresponding instances
         dailyTasks: ['dailyTasks'],
         routineTasks: ['routineTasks'],
-        // if an actual taskInstance is published directly, refresh both (safe)
         taskInstances: ['dailyTasks', 'routineTasks'],
-
         beenAwesomeWinners: ['beenAwesomeWinners'],
         tableBookings: ['tableBookings'],
         orders: ['orders'],
-
-        // trim if asset updates only affect certain widgets
         assets: [
             'noticeBoard',
             'dailyTasks',
@@ -61,6 +59,7 @@ export function useContentfulLiveSelective(intervalMs = 10_000) {
 
     const check = async () => {
         if (!import.meta.client) return
+        if (!enabled.value) return // ⟵ respect enabled flag
         if (checking.value) return
         if (vis.value === 'hidden') return
 
@@ -72,7 +71,6 @@ export function useContentfulLiveSelective(intervalMs = 10_000) {
             })
             if (!rev) return
             const keys = new Set<string>()
-            // compare per bucket
             ;(
                 Object.keys(rev.buckets) as (keyof Revision['buckets'])[]
             ).forEach((b) => {
@@ -80,16 +78,10 @@ export function useContentfulLiveSelective(intervalMs = 10_000) {
                     bucketToKeys[b].forEach((k) => keys.add(k))
                 }
             })
-
-            if (keys.size) {
-                await refreshNuxtData(Array.from(keys))
-                local.value = rev
-            } else {
-                // no matching bucket — skip (don’t call refreshNuxtData())
-                local.value = rev
-            }
+            if (keys.size) await refreshNuxtData(Array.from(keys))
+            local.value = rev
         } catch {
-            // 401 if logged out, etc. — ignore or handle
+            // ignore (e.g., 401 when logged out)
         } finally {
             checking.value = false
         }
@@ -97,10 +89,20 @@ export function useContentfulLiveSelective(intervalMs = 10_000) {
 
     if (import.meta.client) {
         onMounted(() => {
-            check()
-            const { pause } = useIntervalFn(check, intervalMs)
+            // create a controllable interval we can pause/resume
+            const { pause, resume } = useIntervalFn(check, intervalMs)
+
+            // boot once if enabled & visible
+            if (enabled.value && vis.value === 'visible') check()
+
+            // auto pause/resume on visibility and enabled changes
+            const sync = () =>
+                enabled.value && vis.value === 'visible' ? resume() : pause()
+            watch([enabled, vis], sync, { immediate: true })
+
             onBeforeUnmount(pause)
         })
     }
+
     return { check, local }
 }

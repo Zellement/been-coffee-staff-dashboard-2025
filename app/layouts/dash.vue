@@ -20,23 +20,21 @@
 
 <script setup lang="ts">
 const userStore = useUserStore()
-
 userStore.setUserData()
 
 const uiStore = useUiStore()
-const refreshData = async () => {
+
+const refreshData = async (): Promise<void> => {
     uiStore.refreshing = true
     await refreshNuxtData()
     uiStore.refreshing = false
 }
 
-// Refresh every hour
 const REFRESH_TIMER = 3600 // seconds
 const timer: Ref<number> = ref(0)
 
-// Active window: 06:30 <= now < 20:30
-const ACTIVE_START_MIN = 6 * 60 + 30
-const ACTIVE_END_MIN = 20 * 60 + 30
+const ACTIVE_START_MIN = 6 * 60 + 45 // 06:45
+const ACTIVE_END_MIN = 19 * 60 + 30 // 19:30
 
 const inActiveWindow = () => {
     const now = new Date()
@@ -44,14 +42,16 @@ const inActiveWindow = () => {
     return mins >= ACTIVE_START_MIN && mins < ACTIVE_END_MIN
 }
 
-let intervalId: number | null = null
+// derive a reactive flag the composable can follow
+const pollingEnabled = ref(inActiveWindow())
 
+let intervalId: number | null = null
 onMounted(() => {
     intervalId = window.setInterval(() => {
-        if (!inActiveWindow()) {
-            // freeze during 20:30–06:29 — no increments, no refresh
-            return
-        }
+        const active = inActiveWindow()
+        pollingEnabled.value = active // ⟵ drives composable pause/resume
+
+        if (!active) return // freeze hourly refresh too when out of hours
 
         if (timer.value >= REFRESH_TIMER) {
             refreshData()
@@ -66,5 +66,6 @@ onBeforeUnmount(() => {
     if (intervalId) clearInterval(intervalId)
 })
 
-useContentfulLiveSelective(10_000) // 10s (use 30s if you’re on a tunnel to avoid rate limits)
+// Now pass the enabled flag into the composable
+useContentfulLiveSelective(60_000, { enabled: pollingEnabled })
 </script>
