@@ -1,4 +1,4 @@
-import { useIntervalFn, useDocumentVisibility } from '@vueuse/core'
+import { useIntervalFn } from '@vueuse/core'
 
 type Revision = {
     global: number
@@ -31,7 +31,6 @@ export function useContentfulLiveSelective(
     intervalMs = 60_000,
     opts: { enabled?: Ref<boolean> | ComputedRef<boolean> } = {}
 ) {
-    const vis = useDocumentVisibility()
     const enabled = opts.enabled ?? ref(true)
 
     const local = useState<Revision>('contentful:localRevs', () =>
@@ -58,22 +57,9 @@ export function useContentfulLiveSelective(
     }
 
     const check = async () => {
-        if (!import.meta.client) {
-            // console.debug('[live] skip: ssr')
-            return
-        }
-        if (!enabled.value) {
-            // console.debug('[live] skip: disabled')
-            return
-        }
-        if (checking.value) {
-            // console.debug('[live] skip: busy')
-            return
-        }
-        if (vis.value === 'hidden') {
-            // console.debug('[live] skip: hidden')
-            return
-        }
+        if (!import.meta.client) return
+        if (!enabled.value) return
+        if (checking.value) return
 
         checking.value = true
         try {
@@ -82,13 +68,10 @@ export function useContentfulLiveSelective(
                 headers: { 'cache-control': 'no-cache' }
             })
 
-            // console.debug('[live] rev:', rev)
             if (!rev) {
                 console.debug('[live] no rev returned')
                 return
             }
-
-            // console.debug('[live] local before:', local.value)
 
             const keys = new Set<string>()
             ;(
@@ -97,9 +80,6 @@ export function useContentfulLiveSelective(
                 const remote = rev.buckets[b] ?? 0
                 const localBucket = local.value.buckets[b] ?? 0
                 if (remote > localBucket) {
-                    // console.debug(
-                    // `[live] bucket "${b}" changed: ${localBucket} -> ${remote}`
-                    // )
                     bucketToKeys[b].forEach((k) => keys.add(k))
                 }
             })
@@ -113,9 +93,8 @@ export function useContentfulLiveSelective(
             }
 
             local.value = rev
-            // console.debug('[live] local after:', local.value)
         } catch (e) {
-            // console.warn('[live] revision fetch failed', e)
+            console.warn('[live] revision fetch failed', e)
         } finally {
             checking.value = false
         }
@@ -126,23 +105,15 @@ export function useContentfulLiveSelective(
             const { pause, resume } = useIntervalFn(check, intervalMs)
             console.debug('[live] interval started @', intervalMs, 'ms')
 
-            // boot once if enabled & visible
-            if (enabled.value && vis.value === 'visible') {
-                console.debug('[live] initial check()')
+            // kick once if enabled
+            if (enabled.value) {
+                // console.debug('[live] initial check()')
                 check()
             }
 
-            // auto pause/resume on visibility and enabled changes
-            const sync = () => {
-                const on = enabled.value && vis.value === 'visible'
-                // console.debug('[live] sync ->', {
-                //     enabled: enabled.value,
-                //     vis: vis.value,
-                //     running: on
-                // })
-                return on ? resume() : pause()
-            }
-            watch([enabled, vis], sync, { immediate: true })
+            // pause/resume based ONLY on `enabled`
+            const sync = () => (enabled.value ? resume() : pause())
+            watch(enabled, sync, { immediate: true })
 
             onBeforeUnmount(() => {
                 console.debug('[live] interval paused (unmount)')
