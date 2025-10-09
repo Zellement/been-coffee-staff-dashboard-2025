@@ -59,19 +59,19 @@ export function useContentfulLiveSelective(
 
     const check = async () => {
         if (!import.meta.client) {
-            console.debug('[live] skip: ssr')
+            // console.debug('[live] skip: ssr')
             return
         }
         if (!enabled.value) {
-            console.debug('[live] skip: disabled')
+            // console.debug('[live] skip: disabled')
             return
         }
         if (checking.value) {
-            console.debug('[live] skip: busy')
+            // console.debug('[live] skip: busy')
             return
         }
         if (vis.value === 'hidden') {
-            console.debug('[live] skip: hidden')
+            // console.debug('[live] skip: hidden')
             return
         }
 
@@ -82,13 +82,13 @@ export function useContentfulLiveSelective(
                 headers: { 'cache-control': 'no-cache' }
             })
 
-            console.debug('[live] rev:', rev)
+            // console.debug('[live] rev:', rev)
             if (!rev) {
                 console.debug('[live] no rev returned')
                 return
             }
 
-            console.debug('[live] local before:', local.value)
+            // console.debug('[live] local before:', local.value)
 
             const keys = new Set<string>()
             ;(
@@ -97,25 +97,25 @@ export function useContentfulLiveSelective(
                 const remote = rev.buckets[b] ?? 0
                 const localBucket = local.value.buckets[b] ?? 0
                 if (remote > localBucket) {
-                    console.debug(
-                        `[live] bucket "${b}" changed: ${localBucket} -> ${remote}`
-                    )
+                    // console.debug(
+                    // `[live] bucket "${b}" changed: ${localBucket} -> ${remote}`
+                    // )
                     bucketToKeys[b].forEach((k) => keys.add(k))
                 }
             })
 
             if (keys.size) {
                 const arr = Array.from(keys)
-                console.debug('[live] refreshing keys:', arr)
+                // console.debug('[live] refreshing keys:', arr)
                 await refreshNuxtData(arr)
             } else {
-                console.debug('[live] no refresh — buckets unchanged')
+                // console.debug('[live] no refresh — buckets unchanged')
             }
 
             local.value = rev
-            console.debug('[live] local after:', local.value)
+            // console.debug('[live] local after:', local.value)
         } catch (e) {
-            console.warn('[live] revision fetch failed', e)
+            // console.warn('[live] revision fetch failed', e)
         } finally {
             checking.value = false
         }
@@ -135,11 +135,11 @@ export function useContentfulLiveSelective(
             // auto pause/resume on visibility and enabled changes
             const sync = () => {
                 const on = enabled.value && vis.value === 'visible'
-                console.debug('[live] sync ->', {
-                    enabled: enabled.value,
-                    vis: vis.value,
-                    running: on
-                })
+                // console.debug('[live] sync ->', {
+                //     enabled: enabled.value,
+                //     vis: vis.value,
+                //     running: on
+                // })
                 return on ? resume() : pause()
             }
             watch([enabled, vis], sync, { immediate: true })
