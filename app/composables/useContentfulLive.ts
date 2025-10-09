@@ -69,6 +69,7 @@ export function useContentfulLiveSelective(
                 query: { t: Date.now() },
                 headers: { 'cache-control': 'no-cache' }
             })
+            console.log('Contentful live check got rev', rev)
             if (!rev) return
             const keys = new Set<string>()
             ;(

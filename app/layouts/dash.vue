@@ -67,5 +67,5 @@ onBeforeUnmount(() => {
 })
 
 // Now pass the enabled flag into the composable
-useContentfulLiveSelective(60_000, { enabled: pollingEnabled })
+useContentfulLiveSelective(10_000, { enabled: pollingEnabled })
 </script>

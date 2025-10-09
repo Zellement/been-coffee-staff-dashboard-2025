@@ -27,6 +27,20 @@ declare global {
     interface UtmParameters {
         [key: `utm_${string}`]: string
     }
+
+    interface Revision {
+        global: number
+        buckets: {
+            noticeBoard: number
+            taskInstances: number
+            beenAwesomeWinners: number
+            tableBookings: number
+            dailyTasks: number
+            routineTasks: number
+            orders: number
+            assets: number
+        }
+    }
 }
 
 export {}
