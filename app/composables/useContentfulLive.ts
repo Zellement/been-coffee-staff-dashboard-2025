@@ -26,7 +26,7 @@ const DEFAULT_LOCAL: Revision = {
         assets: 0
     }
 }
-// composables/useContentfulLiveSelective.ts
+
 export function useContentfulLiveSelective(
     intervalMs = 60_000,
     opts: { enabled?: Ref<boolean> | ComputedRef<boolean> } = {}
@@ -58,10 +58,22 @@ export function useContentfulLiveSelective(
     }
 
     const check = async () => {
-        if (!import.meta.client) return
-        if (!enabled.value) return // ⟵ respect enabled flag
-        if (checking.value) return
-        if (vis.value === 'hidden') return
+        if (!import.meta.client) {
+            console.debug('[live] skip: ssr')
+            return
+        }
+        if (!enabled.value) {
+            console.debug('[live] skip: disabled')
+            return
+        }
+        if (checking.value) {
+            console.debug('[live] skip: busy')
+            return
+        }
+        if (vis.value === 'hidden') {
+            console.debug('[live] skip: hidden')
+            return
+        }
 
         checking.value = true
         try {
@@ -69,20 +81,41 @@ export function useContentfulLiveSelective(
                 query: { t: Date.now() },
                 headers: { 'cache-control': 'no-cache' }
             })
-            console.log('Contentful live check got rev', rev)
-            if (!rev) return
+
+            console.debug('[live] rev:', rev)
+            if (!rev) {
+                console.debug('[live] no rev returned')
+                return
+            }
+
+            console.debug('[live] local before:', local.value)
+
             const keys = new Set<string>()
             ;(
                 Object.keys(rev.buckets) as (keyof Revision['buckets'])[]
             ).forEach((b) => {
-                if ((rev.buckets[b] ?? 0) > (local.value.buckets[b] ?? 0)) {
+                const remote = rev.buckets[b] ?? 0
+                const localBucket = local.value.buckets[b] ?? 0
+                if (remote > localBucket) {
+                    console.debug(
+                        `[live] bucket "${b}" changed: ${localBucket} -> ${remote}`
+                    )
                     bucketToKeys[b].forEach((k) => keys.add(k))
                 }
             })
-            if (keys.size) await refreshNuxtData(Array.from(keys))
+
+            if (keys.size) {
+                const arr = Array.from(keys)
+                console.debug('[live] refreshing keys:', arr)
+                await refreshNuxtData(arr)
+            } else {
+                console.debug('[live] no refresh — buckets unchanged')
+            }
+
             local.value = rev
-        } catch {
-            // ignore (e.g., 401 when logged out)
+            console.debug('[live] local after:', local.value)
+        } catch (e) {
+            console.warn('[live] revision fetch failed', e)
         } finally {
             checking.value = false
         }
@@ -90,18 +123,31 @@ export function useContentfulLiveSelective(
 
     if (import.meta.client) {
         onMounted(() => {
-            // create a controllable interval we can pause/resume
             const { pause, resume } = useIntervalFn(check, intervalMs)
+            console.debug('[live] interval started @', intervalMs, 'ms')
 
             // boot once if enabled & visible
-            if (enabled.value && vis.value === 'visible') check()
+            if (enabled.value && vis.value === 'visible') {
+                console.debug('[live] initial check()')
+                check()
+            }
 
             // auto pause/resume on visibility and enabled changes
-            const sync = () =>
-                enabled.value && vis.value === 'visible' ? resume() : pause()
+            const sync = () => {
+                const on = enabled.value && vis.value === 'visible'
+                console.debug('[live] sync ->', {
+                    enabled: enabled.value,
+                    vis: vis.value,
+                    running: on
+                })
+                return on ? resume() : pause()
+            }
             watch([enabled, vis], sync, { immediate: true })
 
-            onBeforeUnmount(pause)
+            onBeforeUnmount(() => {
+                console.debug('[live] interval paused (unmount)')
+                pause()
+            })
         })
     }
 

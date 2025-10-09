@@ -34,7 +34,7 @@ const REFRESH_TIMER = 3600 // seconds
 const timer: Ref<number> = ref(0)
 
 const ACTIVE_START_MIN = 6 * 60 + 45 // 06:45
-const ACTIVE_END_MIN = 19 * 60 + 30 // 19:30
+const ACTIVE_END_MIN = 20 * 60 + 30 // 19:30
 
 const inActiveWindow = () => {
     const now = new Date()
