@@ -30,6 +30,24 @@ export const useTasksStore = defineStore('tasks', () => {
         )
     })
 
+    const tasksOverdueToday: ComputedRef<number> = computed(() => {
+        // From all tasks, return IDs of those not done today and past their dueByHour
+        const today = new Date()
+        const instances = allDailyTaskInstances.value?.filter((task) => {
+            const lastCompleted = task.fields.lastCompleted
+            if (!lastCompleted) return true // never completed
+            const lastCompletedDate = new Date(lastCompleted)
+            if (lastCompletedDate.toDateString() === today.toDateString())
+                return false // done today
+            const dueByHour = task.fields.task.fields.dueByHour
+            if (dueByHour == null) return false
+            const dueDate = new Date(today)
+            dueDate.setHours(dueByHour, 0, 0, 0)
+            return today > dueDate
+        })
+        return instances?.length || 0
+    })
+
     const newTasks: ComputedRef<(TypeTaskInstance & { type: 'new' })[]> =
         computed(() => {
             if (!allRoutineTaskInstances.value) return []
@@ -102,6 +120,7 @@ export const useTasksStore = defineStore('tasks', () => {
         newTasks,
         overdueTasks,
         upcomingTasks,
-        taskCountCompletedToday
+        taskCountCompletedToday,
+        tasksOverdueToday
     }
 })
