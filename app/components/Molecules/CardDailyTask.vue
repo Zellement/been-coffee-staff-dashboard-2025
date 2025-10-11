@@ -5,7 +5,7 @@
     <u-slideover
         v-model:open="open"
         :title="item.fields.task.fields.title"
-        :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
+        :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'} ${item.fields.completedBy ? `by ${item.fields.completedBy}` : ''}`"
     >
         <u-card
             class="cursor-pointer"
