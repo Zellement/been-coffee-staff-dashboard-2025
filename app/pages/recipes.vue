@@ -1,21 +1,34 @@
 <template>
     <div class="page p-default gap-4">
+        <u-card>
+            <u-select
+                v-model="selectedCategory"
+                label="Filter by category"
+                :items="categoryOptions"
+                clearable
+                class="z-50 max-w-xs"
+            />
+        </u-card>
         <masonry-wall
             v-slot="{ item }"
             :items="recipes || []"
-            :column-width="300"
+            :column-width="200"
             :gap="16"
         >
             <u-card
                 :key="item.sys.id"
-                class="col-span-full flex md:col-span-4 xl:col-span-3"
+                :ui="{ body: 'w-full' }"
+                class="flex w-full"
             >
                 <u-drawer
                     :title="item.fields.title"
                     :description="item.fields.subtitle ?? ''"
                     direction="left"
+                    class="w-full"
                 >
-                    <button class="flex h-full flex-col items-start gap-2">
+                    <button
+                        class="flex h-full w-full flex-col items-start gap-2"
+                    >
                         <img
                             v-if="item.fields.media?.fields?.file?.url"
                             class="w-full"
@@ -74,9 +87,12 @@
 </template>
 
 <script setup lang="ts">
+import type { SelectItem } from '@nuxt/ui'
 useHead({
     title: 'Recipes - Been Coffee Staff Dashboard'
 })
+
+const selectedCategory = ref<string | null>('all')
 
 /* Functions & lifecycle */
 
@@ -84,12 +100,40 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     key: 'recipe',
     lazy: true,
     server: false,
+    watch: [selectedCategory],
+    immediate: true,
     params: computed(() => ({
         content_type: 'recipe',
         order: '-sys.createdAt',
         include: 1,
+        'fields.category.sys.id':
+            selectedCategory.value && selectedCategory.value !== 'all'
+                ? selectedCategory.value
+                : undefined,
         limit: 100
     }))
+})
+
+const { data: cats } = useFetch('/api/contentful/fetch-entries', {
+    key: 'recipeCategories',
+    lazy: true,
+    server: false,
+    params: computed(() => ({
+        content_type: 'recipeCategories',
+        order: '-sys.createdAt',
+        include: 1,
+        limit: 100
+    }))
+})
+
+// assuming cats: Ref<{ items: TypeRecipeCategory[] } | null>
+const categoryOptions = computed<SelectItem[]>(() => {
+    return cats.value?.items
+        .map((cat: TypeRecipeCategory) => ({
+            label: cat.fields.title,
+            value: cat.sys.id
+        }))
+        .concat([{ label: 'All', value: 'all' }])
 })
 
 const recipes: ComputedRef<TypeRecipe[] | null> = computed(() => {

@@ -17,4 +17,5 @@ declare global {
     type TypeTableBooking = ContentfulTypes.TypeTableBooking
     type TypeTaskInstance = ContentfulTypes.TypeTaskInstance
     type TypeRecipe = ContentfulTypes.TypeRecipe
+    type TypeRecipeCategory = ContentfulTypes.TypeRecipeCategory
 }
