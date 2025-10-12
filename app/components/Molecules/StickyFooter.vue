@@ -14,13 +14,20 @@
             >
                 <u-icon size="20" name="i-tdesign-tools-filled" />
             </nuxt-link>
-            <nuxt-link
+            <nuxt-link class="flex items-center" target="_blank" to="/recipe">
+                <u-icon
+                    size="20"
+                    name="streamline-plump:chef-toque-hat-solid"
+                />
+            </nuxt-link>
+
+            <!-- <nuxt-link
                 class="flex items-center"
                 target="_blank"
                 to="https://forms.gle/X1kpEXwjHdm7tFRx8"
             >
                 <u-icon size="20" name="i-majesticons-bug-2-line" />
-            </nuxt-link>
+            </nuxt-link> -->
         </div>
         <span class="uc-text uc-text--xs">
             {{ shortDateConverter(today) }}
