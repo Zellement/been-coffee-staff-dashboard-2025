@@ -7,7 +7,10 @@
                 }"
                 variant="solid"
             >
-                <h2 class="uc-text flex flex-col items-center">
+                <h2
+                    :class="getTextColourUrgent(tasksOverdueToday)"
+                    class="uc-text flex flex-col items-center"
+                >
                     <span class="text-[0.7em]">Overdue</span>
                     Daily tasks
                 </h2>
@@ -20,7 +23,10 @@
                     root: `text-center ${getColour(outstandingRoutineTasks)}`
                 }"
             >
-                <h2 class="uc-text flex flex-col items-center">
+                <h2
+                    :class="getTextColour(outstandingRoutineTasks)"
+                    class="uc-text flex flex-col items-center"
+                >
                     <span class="text-[0.7em]">Outstanding</span>
                     Routine tasks
                 </h2>
@@ -33,7 +39,10 @@
                     root: `text-center ${getColour(todaysOrders)}`
                 }"
             >
-                <h2 class="uc-text flex flex-col items-center">
+                <h2
+                    :class="getTextColour(todaysOrders)"
+                    class="uc-text flex flex-col items-center"
+                >
                     <span class="text-[0.7em]">Unchecked</span>
                     Deliveries Today
                 </h2>
@@ -46,7 +55,10 @@
                     root: `text-center ${getColourUrgent(totalBookingsToday)}`
                 }"
             >
-                <h2 class="uc-text flex flex-col items-center">
+                <h2
+                    :class="getTextColourUrgent(totalBookingsToday)"
+                    class="uc-text flex flex-col items-center"
+                >
                     <span class="text-[0.7em]">Today's</span>
                     Table Bookings
                 </h2>
@@ -89,17 +101,36 @@ const totalBookingsToday = computed(() => {
     return tableBookingsStore.tableBookingsForToday?.length || 0
 })
 
+const greenClasses =
+    'text-green-600 dark:text-green-400 bg-gradient-to-br from-green-50 to-green-100 !border-green-200 dark:from-green-600 dark:to-green-800 dark:!border-green-700 dark:!text-green-400'
+const yellowClasses =
+    'text-yellow-600 dark:text-yellow-400 bg-gradient-to-br from-yellow-50 to-yellow-100 !border-yellow-200 dark:from-yellow-600 dark:to-yellow-500 dark:!border-yellow-700 dark:!text-yellow-200'
+const redClasses =
+    'text-red-600 dark:text-red-400 bg-gradient-to-br from-red-50 to-red-100 !border-red-200 dark:from-red-800 dark:to-red-900 dark:!border-red-700'
+
+const greenTextClasses = 'text-green-800 dark:!text-green-400'
+const yellowTextClasses = 'text-yellow-800 dark:!text-yellow-200'
+const redTextClasses = '!text-red-800 dark:!text-red-400'
+
 const getColour = (value: number) => {
-    if (value === 0)
-        return 'text-green-600 dark:text-green-400 bg-gradient-to-br from-green-50 to-green-100 !border-green-200'
-    if (value < 5)
-        return 'text-yellow-600 dark:text-yellow-400 bg-gradient-to-br from-yellow-50 to-yellow-100 !border-yellow-200'
-    return 'text-red-600 dark:text-red-400 bg-gradient-to-br from-red-50 to-red-100 !border-red-200'
+    if (value === 0) return greenClasses
+    if (value < 5) return yellowClasses
+    return redClasses
 }
 
 const getColourUrgent = (value: number) => {
-    if (value === 0)
-        return 'text-green-600 dark:text-green-400 bg-gradient-to-br from-green-50 to-green-100 !border-green-200'
-    return 'text-red-600 dark:text-red-400 bg-gradient-to-br from-red-100 to-red-200 !border-red-200'
+    if (value === 0) return greenClasses
+    return redClasses
+}
+
+const getTextColour = (value: number) => {
+    if (value === 0) return greenTextClasses
+    if (value < 5) return yellowTextClasses
+    return redTextClasses
+}
+
+const getTextColourUrgent = (value: number) => {
+    if (value === 0) return greenTextClasses
+    return redTextClasses
 }
 </script>
