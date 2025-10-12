@@ -14,7 +14,7 @@
             >
                 <u-icon size="20" name="i-tdesign-tools-filled" />
             </nuxt-link>
-            <nuxt-link class="flex items-center" target="_blank" to="/recipe">
+            <nuxt-link class="flex items-center" to="/recipes">
                 <u-icon
                     size="20"
                     name="streamline-plump:chef-toque-hat-solid"
