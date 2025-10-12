@@ -7,6 +7,8 @@ export type { TypeLocation, TypeLocationFields, TypeLocationSkeleton } from "./T
 export type { TypeNoticeBoard, TypeNoticeBoardFields, TypeNoticeBoardSkeleton } from "./TypeNoticeBoard";
 export type { TypeOperations, TypeOperationsFields, TypeOperationsSkeleton } from "./TypeOperations";
 export type { TypeOrder, TypeOrderFields, TypeOrderSkeleton } from "./TypeOrder";
+export type { TypeRecipe, TypeRecipeFields, TypeRecipeSkeleton } from "./TypeRecipe";
+export type { TypeRecipeCategories, TypeRecipeCategoriesFields, TypeRecipeCategoriesSkeleton } from "./TypeRecipeCategories";
 export type { TypeRoutineTask, TypeRoutineTaskFields, TypeRoutineTaskSkeleton } from "./TypeRoutineTask";
 export type { TypeStandingOrder, TypeStandingOrderFields, TypeStandingOrderSkeleton } from "./TypeStandingOrder";
 export type { TypeSupplier, TypeSupplierFields, TypeSupplierSkeleton } from "./TypeSupplier";
