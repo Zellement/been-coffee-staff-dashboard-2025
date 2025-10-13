@@ -90,3 +90,6 @@ button:not(:disabled) {
     border-right: 1px solid var(--card-b-right);
     border-bottom: 1px solid var(--card-b-bottom);
 }
+video {
+    max-height: 70svh;
+}
