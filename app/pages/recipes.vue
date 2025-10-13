@@ -30,12 +30,26 @@
                         class="flex h-full w-full flex-col items-start gap-2"
                     >
                         <img
-                            v-if="item.fields.media?.fields?.file?.url"
+                            v-if="
+                                item.fields.media?.fields?.file?.url &&
+                                item.fields.media?.fields?.file?.contentType?.startsWith(
+                                    'image/'
+                                )
+                            "
                             class="w-full"
                             :src="`${
                                 item.fields.media?.fields?.file?.url
                             }?w=300&fit=fill&f=center&fm=webp`"
                             :alt="item.fields.name"
+                        />
+                        <video
+                            v-else-if="
+                                item.fields.media?.fields?.file?.url &&
+                                item.fields.media?.fields?.file?.contentType?.startsWith(
+                                    'video/'
+                                )
+                            "
+                            :src="item.fields.media?.fields?.file?.url"
                         />
                         <div
                             v-else
@@ -53,7 +67,34 @@
                     </button>
                     <template #body>
                         <div class="flex flex-col gap-8">
-                            <div class="flex flex-col gap-2">
+                            <img
+                                v-if="
+                                    item.fields.media?.fields?.file?.url &&
+                                    item.fields.media?.fields?.file?.contentType?.startsWith(
+                                        'image/'
+                                    )
+                                "
+                                class="w-full"
+                                :src="`${
+                                    item.fields.media?.fields?.file?.url
+                                }?w=300&fit=fill&f=center&fm=webp`"
+                                :alt="item.fields.name"
+                            />
+                            <video
+                                v-else-if="
+                                    item.fields.media?.fields?.file?.url &&
+                                    item.fields.media?.fields?.file?.contentType?.startsWith(
+                                        'video/'
+                                    )
+                                "
+                                class="w-full"
+                                controls
+                                :src="item.fields.media?.fields?.file?.url"
+                            />
+                            <div
+                                v-if="item.fields.ingredients?.length"
+                                class="flex flex-col gap-2"
+                            >
                                 <h2 class="uc-text">Ingredients</h2>
                                 <div>
                                     <div
@@ -69,7 +110,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-col gap-2">
+                            <div
+                                v-if="item.fields.instructions"
+                                class="flex flex-col gap-2"
+                            >
                                 <h2 class="uc-text">Instructions</h2>
                                 <div>
                                     <rich-text
