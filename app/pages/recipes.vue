@@ -40,10 +40,14 @@
                         class="card-enter flex w-full"
                     >
                         <u-drawer
+                            :open="openSlug === item.fields.slug"
                             :title="item.fields.title"
                             :description="item.fields.subtitle ?? ''"
                             direction="left"
                             class="w-full"
+                            @update:open="
+                                (v) => handleDrawerToggle(v, item.fields.slug)
+                            "
                         >
                             <button
                                 class="flex h-full w-full flex-col items-start gap-2"
@@ -157,11 +161,18 @@
 
 <script setup lang="ts">
 import type { SelectItem } from '@nuxt/ui'
+// If you have global types declared, these imports may be unnecessary:
+// import type { TypeRecipe, TypeRecipeCategory } from '~/types/contentful'
+
+const route = useRoute()
+const router = useRouter()
 
 useHead({ title: 'Recipes - Been Coffee Staff Dashboard' })
 
+/** Filters */
 const selectedCategory = ref<string | null>('all')
 
+/** Data fetching */
 const { data, pending } = useFetch('/api/contentful/fetch-entries', {
     key: 'recipe',
     lazy: true,
@@ -193,6 +204,7 @@ const { data: cats } = useFetch('/api/contentful/fetch-entries', {
     }
 })
 
+/** Derived state */
 const loading = computed(() => pending.value)
 
 const categoryOptions = computed<SelectItem[]>(() => {
@@ -206,6 +218,62 @@ const categoryOptions = computed<SelectItem[]>(() => {
 const recipes: ComputedRef<TypeRecipe[] | null> = computed(
     () => data.value?.items ?? null
 )
+
+/** Drawer <-> URL sync (use slug; query param ?r=slug) */
+const openSlug = ref<string | null>(null)
+
+/** Called by <u-drawer @update:open> */
+function handleDrawerToggle(open: boolean, slug?: string) {
+    if (!slug) return
+    openSlug.value = open
+        ? slug
+        : openSlug.value === slug
+          ? null
+          : openSlug.value
+}
+
+/** Keep query string in sync with the open drawer slug */
+watch(openSlug, async (slug) => {
+    const q = { ...route.query }
+    if (slug) q.r = slug
+    else delete q.r
+
+    const current = typeof route.query.r === 'string' ? route.query.r : null
+    if ((current ?? null) !== (slug ?? null)) {
+        await router.replace({ query: q })
+    }
+})
+
+/** On mount: read ?r=, migrate legacy ?recipe= to ?r=, and open */
+onMounted(async () => {
+    const legacy =
+        typeof route.query.recipe === 'string' ? route.query.recipe : null
+    const initial = typeof route.query.r === 'string' ? route.query.r : null
+
+    if (legacy && !initial) {
+        const q = { ...route.query }
+        q.r = legacy
+        delete q.recipe
+        await router.replace({ query: q })
+        openSlug.value = legacy
+    } else if (initial) {
+        openSlug.value = initial
+    }
+})
+
+/** If filters/data change and the open slug isn't present anymore, close it */
+watch([recipes, selectedCategory], () => {
+    if (!openSlug.value) return
+    const list = recipes.value ?? []
+    const exists = list.some((r) => r.fields.slug === openSlug.value)
+    if (!exists) openSlug.value = null
+})
+
+/** Expose for template usage (optional if using <script setup>) */
+defineExpose({
+    handleDrawerToggle,
+    openSlug
+})
 </script>
 
 <style scoped>
