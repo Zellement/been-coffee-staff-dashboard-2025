@@ -1,11 +1,14 @@
 <template>
     <div class="page p-default gap-4">
-        <u-select
-            v-model="selectedCategory"
-            label="Filter by category"
-            :items="categoryOptions"
-            class="mb-2 w-full max-w-40"
-        />
+        <div class="mb-2 flex items-center gap-4">
+            <h1 class="uc-text">Recipes</h1>
+            <u-select
+                v-model="selectedCategory"
+                label="Filter by category"
+                :items="categoryOptions"
+                class="w-full max-w-40"
+            />
+        </div>
 
         <!-- Cross-fade the whole grid when the category changes -->
         <Transition name="fade-scale" mode="out-in">
