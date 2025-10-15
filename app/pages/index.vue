@@ -1,6 +1,6 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
-        <div class="fixed inset-0 z-10 bg-red-900">{{ data }}</div>
+        <pre class="fixed inset-0 z-10 bg-red-900 text-white">{{ data }}</pre>
         <keep-alive><daily-tasks class="col-span-full" /></keep-alive>
         <keep-alive><routine-tasks class="col-span-full" /></keep-alive>
         <keep-alive><upcoming-deliveries class="col-span-full" /></keep-alive>
@@ -21,7 +21,9 @@ useHead({
     title: 'Been Coffee Staff Dashboard'
 })
 
-const { data } = await useFetch('/api/rotaready/get-staff')
+const { data } = await useFetch('/api/rotaready/get-shifts', {
+    params: { startDate: '2025-10-21' }
+})
 
 const tableBookingsStore = useTableBookingsStore()
 
