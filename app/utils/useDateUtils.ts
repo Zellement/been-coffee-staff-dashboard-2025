@@ -217,6 +217,20 @@ export const useDateUtils = () => {
         }
     }
 
+    const wasXHoursAgo = (pastDate: Date): string => {
+        const now = new Date()
+        const past = new Date(pastDate)
+        const diffTime = now.getTime() - past.getTime()
+        const diffHours = Math.floor(diffTime / (1000 * 60 * 60))
+        if (diffHours === 1) {
+            return `1 hour ago`
+        } else if (diffHours < 1) {
+            return `less than an hour ago`
+        } else {
+            return `${diffHours} hours ago`
+        }
+    }
+
     return {
         extractHourAndMinute,
         getTodaysDateInUrlEncodedFormat,
@@ -226,6 +240,7 @@ export const useDateUtils = () => {
         convertNumberTo24HrTime,
         getMonthAndDayOnly,
         backwardsDate,
-        inXDays
+        inXDays,
+        wasXHoursAgo
     }
 }

@@ -40,7 +40,7 @@
                     <u-skeleton
                         v-for="i in 6"
                         :key="i"
-                        class="h-17 shrink-0 basis-48"
+                        class="h-20 shrink-0 basis-48"
                     />
                 </div>
             </transition>
@@ -115,11 +115,12 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     lazy: true,
     server: false,
     watch: [shouldFetch],
-    immediate: true,
+    immediate: shouldFetch.value,
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,
-        'fields.task.sys.contentType.sys.id': 'dailyTask'
+        'fields.task.sys.contentType.sys.id': 'dailyTask',
+        include: 3
     }))
 })
 

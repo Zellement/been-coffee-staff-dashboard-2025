@@ -68,18 +68,20 @@ const icon: ComputedRef<string> = computed(() =>
 const errorMsg: Ref<string | null> = ref(null)
 
 const handleLogin = async () => {
-    console.log('Logging in...')
     try {
         loading.value = true
+        errorMsg.value = null
+
         const { error } = await supabase.auth.signInWithPassword({
             email: email.value,
             password: password.value
         })
         if (error) throw error
-        router.push(`${route.query?.url ?? '/'}`)
-    } catch (error) {
-        errorMsg.value = (error as { message: string }).message
-    } finally {
+
+        // Wait for navigation to finish before resetting loading
+        await router.push(route.query?.url ? String(route.query.url) : '/')
+    } catch (error: any) {
+        errorMsg.value = error.message
         loading.value = false
     }
 }

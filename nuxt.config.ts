@@ -79,10 +79,14 @@ export default defineNuxtConfig({
                 '/login',
                 '/register',
                 '/forgot-password',
-                '/update-password',
-                '/locations/**'
+                '/update-password'
             ]
-        }
+        },
+        cookieOptions: {
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production'
+        },
+        useSsrCookies: true
     },
 
     // Contentful image provider

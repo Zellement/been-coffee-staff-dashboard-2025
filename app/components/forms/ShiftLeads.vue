@@ -9,7 +9,7 @@
                 <input
                     type="radio"
                     name="Team member"
-                    :value="member.name"
+                    :value="member.fields.name"
                     class="opacity-0"
                     required
                     @click="toggleIsOtherSelected(false)"

@@ -58,12 +58,15 @@ const handleReset = async () => {
         const { error } = await supabase.auth.resetPasswordForEmail(
             email.value,
             {
-                redirectTo: `${config.public.SITE_URL}/update-password`
+                redirectTo: `${config.public.WEBSITE_URL}/update-password`
             }
         )
         if (error) throw error
         successMsg.value =
-            'If this email exists, we will send you a password reset link. Check your inbox AND your junk/spam folders.'
+            'If this email exists, we will send you a password reset link. Check your inbox AND your junk/spam folders. Redirecting to login...'
+        setTimeout(async () => {
+            await navigateTo('/login')
+        }, 2000)
     } catch (error) {
         console.log(error)
         errorMsg.value = (error as { message: string }).message

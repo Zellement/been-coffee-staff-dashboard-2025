@@ -5,7 +5,7 @@
     <u-slideover
         v-model:open="open"
         :title="item.fields.task.fields.title"
-        :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'}`"
+        :description="`Last completed: ${item.fields.lastCompleted ? fullDateConverter(item.fields.lastCompleted, true) : 'Never'} ${item.fields.completedBy ? `by ${item.fields.completedBy}` : ''}`"
     >
         <u-card
             class="cursor-pointer"
@@ -34,6 +34,18 @@
                 </u-badge>
             </template>
             <p>{{ item.fields.task.fields.title }}</p>
+            <u-badge
+                :color="over24HoursAgo ? 'error' : 'primary'"
+                size="xs"
+                variant="outline"
+                icon="i-prime-history"
+            >
+                {{
+                    item.fields.lastCompleted
+                        ? wasXHoursAgo(item.fields.lastCompleted)
+                        : 'Never'
+                }}
+            </u-badge>
         </u-card>
         <template #body>
             <div class="flex flex-col items-start">
@@ -93,7 +105,8 @@ const loading: Ref<boolean> = ref(false)
 const props = defineProps<Props>()
 
 const { completeTask } = useContentfulUtils()
-const { fullDateConverter, convertNumberTo24HrTime } = useDateUtils()
+const { fullDateConverter, convertNumberTo24HrTime, wasXHoursAgo } =
+    useDateUtils()
 
 const today = new Date()
 const currentHour = Number(today.getHours())
@@ -115,4 +128,13 @@ const handleCompleteTask = async (task: TypeDailyTask) => {
     loading.value = false
     open.value = false
 }
+
+const over24HoursAgo = computed(() => {
+    if (!props.item.fields.lastCompleted) return false
+    const lastCompletedDate = new Date(props.item.fields.lastCompleted)
+    const now = new Date()
+    const diffInMs = now.getTime() - lastCompletedDate.getTime()
+    const diffInHours = diffInMs / (1000 * 60 * 60)
+    return diffInHours > 24
+})
 </script>

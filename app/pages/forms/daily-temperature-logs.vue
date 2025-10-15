@@ -118,7 +118,7 @@ onMounted(async () => {
             content_type: 'taskInstance',
             'fields.location.sys.id': activeLocation.value?.sys?.id,
             'fields.task.sys.contentType.sys.id': 'dailyTask',
-            'fields.task.fields.title': 'Temperature Logs'
+            'fields.task.sys.id': '4WsjOPDE3XSqUFUlLmF7PD'
         }
         const data = await $fetch('/api/contentful/fetch-entries', { params })
         if (data?.items?.length) {

@@ -110,7 +110,7 @@ const profileData: ComputedRef<{ key: string; value: string | undefined }[]> =
                 value: userStore.userContentfulData?.fields?.jobRole
             },
             {
-                key: 'Date of Birth',
+                key: 'Birthday',
                 value: getMonthAndDayOnly(
                     new Date(userStore.userContentfulData?.fields?.dateOfBirth)
                 )

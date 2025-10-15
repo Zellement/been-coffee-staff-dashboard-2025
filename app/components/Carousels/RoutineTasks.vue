@@ -96,11 +96,13 @@ const shouldFetch: ComputedRef<boolean> = computed(
 const allRoutineTasksForAccordions: ComputedRef<AccordionItem[]> = computed(
     () => {
         return (
-            allRoutineTaskInstances.value?.map((task) => ({
-                id: task.sys.id,
-                label: task.fields.task.fields.title,
-                description: task.fields.task.fields.description
-            })) || []
+            allRoutineTaskInstances.value
+                ?.map((task) => ({
+                    id: task.sys.id,
+                    label: task.fields.task.fields.title,
+                    description: task.fields.task.fields.description
+                }))
+                .sort((a, b) => a.label.localeCompare(b.label)) || []
         )
     }
 )
@@ -141,7 +143,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     lazy: true,
     server: false,
     watch: [shouldFetch],
-    immediate: true,
+    immediate: shouldFetch.value,
     params: computed(() => ({
         content_type: 'taskInstance',
         'fields.location.sys.id': activeLocationId.value,

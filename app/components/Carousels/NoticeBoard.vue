@@ -87,10 +87,10 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     lazy: true,
     server: false,
     watch: [shouldFetch],
-    immediate: true,
+    immediate: shouldFetch.value,
     params: computed(() => ({
         content_type: 'noticeBoard',
-        order: 'sys.createdAt',
+        order: '-sys.createdAt',
         'fields.locations.sys.id[in]': activeLocationId.value,
         include: 1,
         limit: 100
@@ -103,20 +103,19 @@ watch(data, (newData) => {
         // Also filter out notices older than 14 days
         const fourteenDaysAgo = new Date()
         fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14)
-        notices.value = newData.items
-            .filter((item: TypeNoticeBoard) => {
-                const updatedAt = new Date(item.sys.createdAt)
-                return item.fields.sticky || updatedAt >= fourteenDaysAgo
-            })
-            .sort((a: TypeNoticeBoard, b: TypeNoticeBoard) => {
-                // Sort by sticky first, then by updatedAt date (newest first)
-                if (a.fields.sticky && !b.fields.sticky) return -1
-                if (!a.fields.sticky && b.fields.sticky) return 1
-                return (
-                    new Date(b.sys.updatedAt).getTime() -
-                    new Date(a.sys.updatedAt).getTime()
-                )
-            })
+        notices.value = newData.items.filter((item: TypeNoticeBoard) => {
+            const updatedAt = new Date(item.sys.createdAt)
+            return item.fields.sticky || updatedAt >= fourteenDaysAgo
+        })
+        // .sort((a: TypeNoticeBoard, b: TypeNoticeBoard) => {
+        //     // Sort by sticky first, then by updatedAt date (newest first)
+        //     if (a.fields.sticky && !b.fields.sticky) return -1
+        //     if (!a.fields.sticky && b.fields.sticky) return 1
+        //     return (
+        //         new Date(b.sys.updatedAt).getTime() -
+        //         new Date(a.sys.updatedAt).getTime()
+        //     )
+        // })
     }
 })
 </script>

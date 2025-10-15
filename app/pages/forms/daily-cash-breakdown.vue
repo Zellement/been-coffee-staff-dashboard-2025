@@ -41,12 +41,12 @@
 
                 <URadioGroup v-model="value" variant="table" :items="items" />
             </div>
-            <daily-cash-breakdown-collection
+            <daily-cash-breakdown-collection-banking
                 collection-brow="(Black tin)"
                 collection="Banking"
                 collection-style="bg-black"
             />
-            <daily-cash-breakdown-collection
+            <daily-cash-breakdown-collection-till-float
                 collection="Till float"
                 collection-style="bg-butterscotch-500"
             />
@@ -106,7 +106,7 @@ onMounted(async () => {
             content_type: 'taskInstance',
             'fields.location.sys.id': activeLocation.value?.sys?.id,
             'fields.task.sys.contentType.sys.id': 'dailyTask',
-            'fields.task.fields.title': 'Cash Breakdown'
+            'fields.task.sys.id': '1DfoZhwRNo3Q64VMD2UL4R'
         }
         const data = await $fetch('/api/contentful/fetch-entries', { params })
         if (data?.items?.length) {

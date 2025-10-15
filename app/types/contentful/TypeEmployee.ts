@@ -10,7 +10,6 @@ export interface TypeEmployeeFields {
     photo?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
     dateOfBirth?: EntryFieldTypes.Date;
     startDate?: EntryFieldTypes.Date;
-    homebaseUserId: EntryFieldTypes.Symbol;
     tillPin?: EntryFieldTypes.Symbol;
     history?: EntryFieldTypes.Object;
 }

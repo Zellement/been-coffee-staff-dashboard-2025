@@ -17,6 +17,7 @@
                 <u-button
                     :ui="{ base: 'block text-center' }"
                     :label="label"
+                    color="tertiary"
                     :icon="icon"
                     type="submit"
                 />
@@ -49,7 +50,7 @@ const successMsg: Ref<string> = ref('')
 const errorMsg: Ref<string> = ref('')
 
 const label: ComputedRef<string> = computed(() =>
-    loading.value ? 'Sending...' : 'Send reset link'
+    loading.value ? 'Saving...' : 'Update password'
 )
 
 const icon: ComputedRef<string> = computed(() =>
@@ -73,9 +74,15 @@ const handleReset = async () => {
             password: password.value
         })
         if (error) throw error
-        successMsg.value = 'Sorted!'
+        successMsg.value =
+            'Password updated successfully! Redirecting to login...'
+        setTimeout(async () => {
+            await navigateTo('/login')
+        }, 2000)
     } catch (error) {
         alert(error)
+    } finally {
+        loading.value = false
     }
 }
 </script>
