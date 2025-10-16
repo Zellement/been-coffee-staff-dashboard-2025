@@ -1,6 +1,6 @@
 <template>
     <div class="p-default">
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col">
             <div v-for="item in shiftsToday?.shifts" :key="item.id">
                 <single-shift :shift="item" />
             </div>
