@@ -8,11 +8,16 @@
                     </u-badge>
                 </span>
             </carousel-title-and-action>
-            <div class="flex flex-col">
+            <div class="flex flex-col gap-1">
                 <div v-for="item in shiftsInLocation" :key="item.id">
                     <single-shift :shift="item" />
                 </div>
             </div>
+        </div>
+        <div v-else>
+            <p class="uc-text uc-text--xs py-4 text-center">
+                No shifts scheduled in Rotaready for today.
+            </p>
         </div>
     </transition>
 </template>

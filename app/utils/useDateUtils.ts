@@ -1,3 +1,5 @@
+import { useDateFormat } from '@vueuse/core'
+
 export const useDateUtils = () => {
     /**
      * Returns the ordinal suffix for a given date (e.g., 1st, 2nd, 3rd).
@@ -216,6 +218,19 @@ export const useDateUtils = () => {
         }
     }
 
+    /**
+     * Returns the time in HH:mm format from a date string.
+     * @param dateString - The date string to format.
+     * @returns The formatted time string.
+     */
+    const getTime = (dateString: string): string => {
+        return useDateFormat(dateString, 'HH:mm', { locales: 'en-GB' }).value
+    }
+
+    const getHour = (dateString: string): string => {
+        return useDateFormat(dateString, 'HH', { locales: 'en-GB' }).value
+    }
+
     return {
         extractHourAndMinute,
         getTodaysDateInUrlEncodedFormat,
@@ -226,6 +241,8 @@ export const useDateUtils = () => {
         getMonthAndDayOnly,
         backwardsDate,
         inXDays,
-        wasXHoursAgo
+        wasXHoursAgo,
+        getTime,
+        getHour
     }
 }

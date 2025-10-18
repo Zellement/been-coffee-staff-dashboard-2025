@@ -30,6 +30,7 @@
                 </span>
             </div>
         </transition>
+
         <div class="w-full grow">
             <UStepper
                 v-model="active"
@@ -37,7 +38,8 @@
                 size="sm"
                 color="success"
                 :ui="{
-                    trigger: 'size-5 translate-y-2'
+                    trigger: 'size-5 m-0',
+                    wrapper: 'm-0'
                 }"
             />
         </div>
@@ -46,19 +48,15 @@
 
 <script lang="ts" setup>
 import type { StepperItem } from '@nuxt/ui'
-import { useDateFormat } from '@vueuse/core'
 
 const { getTeamMember } = useRotareadyUtils()
+const { getTime } = useDateUtils()
 
 interface Props {
     shift: RotareadyShift
 }
 
 const props = defineProps<Props>()
-
-const getTime = (dateString: string): string => {
-    return useDateFormat(dateString, 'HH:mm', { locales: 'en-GB' }).value
-}
 
 const active: Ref<number> = ref(-1)
 
@@ -83,7 +81,7 @@ const generateStepper: ComputedRef<StepperItem[]> = computed(() => {
               }
             : {
                   title: '',
-                  icon: '-'
+                  icon: 'material-symbols-light:play-arrow-outline'
               },
         {
             title: getTime(props.shift.end),
