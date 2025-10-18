@@ -1,5 +1,10 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
+        <shifts-carousel
+            class="col-span-full"
+            item-classes="basis-1/2"
+            hide-dots
+        />
         <daily-tasks hide-progress-circle class="col-span-full" />
         <routine-tasks hide-progress-circle class="col-span-full" />
         <upcoming-deliveries

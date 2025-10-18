@@ -1,6 +1,13 @@
 <template>
     <div class="p-c-default">
-        <UCarousel v-slot="{ item }" :items="slides" dots>
+        <UCarousel
+            v-slot="{ item }"
+            :items="slides"
+            :dots="!hideDots"
+            :ui="{
+                item: itemClasses ?? 'basis-full'
+            }"
+        >
             <component :is="item.component" v-bind="item.props" />
         </UCarousel>
     </div>
@@ -14,4 +21,11 @@ const slides: any[] = [
     { component: ShiftsToday },
     { component: ShiftsTomorrow }
 ]
+
+interface Props {
+    itemClasses?: string
+    hideDots?: boolean
+}
+
+defineProps<Props>()
 </script>

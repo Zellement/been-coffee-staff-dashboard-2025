@@ -1,27 +1,24 @@
 <template>
-    <transition name="fade">
-        <div v-if="shiftsInLocation.length" class="">
-            <carousel-title-and-action title="Tomorrow's Team">
-                <span class="pr-2">
-                    <u-badge size="xs" variant="outline">
-                        {{
-                            dateConverterWithDayNoYear(tomorrowDate.toString())
-                        }}
-                    </u-badge>
-                </span>
-            </carousel-title-and-action>
-            <div class="flex flex-col gap-1">
-                <div v-for="item in shiftsInLocation" :key="item.id">
-                    <single-shift :shift="item" />
-                </div>
+    <div v-if="shiftsInLocation.length" class="">
+        <carousel-title-and-action title="Tomorrow's Team">
+            <span class="pr-2">
+                <u-badge size="xs" variant="outline">
+                    {{ dateConverterWithDayNoYear(tomorrowDate.toString()) }}
+                </u-badge>
+            </span>
+        </carousel-title-and-action>
+        <div class="flex flex-col gap-1">
+            <div v-for="item in shiftsInLocation" :key="item.id">
+                <single-shift :shift="item" />
             </div>
         </div>
-        <div v-else>
-            <p class="uc-text uc-text--xs py-4 text-center">
-                No shifts scheduled in Rotaready for tomorrow.
-            </p>
-        </div>
-    </transition>
+    </div>
+    <div v-else class="">
+        <p class="uc-text uc-text--xs pt-24 text-center">
+            No shifts scheduled in Rotaready for
+            {{ dateConverterWithDayNoYear(tomorrowDate.toString()) }}.
+        </p>
+    </div>
 </template>
 
 <script lang="ts" setup>
