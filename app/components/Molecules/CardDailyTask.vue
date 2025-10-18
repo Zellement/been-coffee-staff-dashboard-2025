@@ -33,7 +33,7 @@
                     }}
                 </u-badge>
             </template>
-            <p>{{ item.fields.task.fields.title }}</p>
+            <p class="truncate">{{ item.fields.task.fields.title }}</p>
             <u-badge
                 :color="over24HoursAgo ? 'error' : 'primary'"
                 size="xs"

@@ -23,7 +23,6 @@
                             v-slot="{ item }"
                             drag-free
                             :items="sortedDailyTasks"
-                            auto-height
                             :ui="{ item: 'basis-48' }"
                         >
                             <card-daily-task :item="item" />
