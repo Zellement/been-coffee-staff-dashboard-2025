@@ -1,9 +1,6 @@
 export const useDateUtils = () => {
     /**
      * Returns the ordinal suffix for a given date (e.g., 1st, 2nd, 3rd).
-     */
-    /**
-     * Returns the ordinal suffix for a given date (e.g., 1st, 2nd, 3rd).
      * @param d - The day of the month.
      * @returns The ordinal suffix as a string.
      */
@@ -21,11 +18,6 @@ export const useDateUtils = () => {
         }
     }
 
-    /**
-     * Return a long user-friendly date.
-     * @param date - The date.
-     * @returns Thursday, 04 January 2024
-     */
     /**
      * Returns a long user-friendly date string.
      * @param passedDate - The date to format (Date or string).
@@ -92,7 +84,6 @@ export const useDateUtils = () => {
         return `${formattedHours}:${formattedMinutes}`
     }
 
-    // Returns a date like 'Thu, 4 Jan' - without the year
     /**
      * Converts a date to a short format without the year (e.g., "Thu, 4 Jan").
      * @param value - The date to convert (Date or string).
@@ -120,11 +111,6 @@ export const useDateUtils = () => {
         return `${mm}%2F${dd}%2F${yyyy}`
     }
 
-    /**
-     * Return a short user-friendly date.
-     * @param date - The date.
-     * @returns 04/01/2024
-     */
     /**
      * Returns a short user-friendly date string (DD/MM/YYYY).
      * @param date - The date to format (Date or string).
@@ -175,11 +161,6 @@ export const useDateUtils = () => {
     }
 
     /**
-     * Return a backwards date (YYYY-MM-DD).
-     * @param date - The date.
-     * @returns 2024-01-04
-     */
-    /**
      * Returns a date string in backwards format (YYYY-MM-DD).
      * @param date - The date to format (Date or string).
      * @returns The formatted backwards date string.
@@ -192,7 +173,6 @@ export const useDateUtils = () => {
         return `${y}-${m <= 8 ? '0' + (m + 1) : m + 1}-${d <= 9 ? '0' + d : d}`
     }
 
-    // Returns a string like 'in 3 days' or 'in 1 week'
     /**
      * Returns a string like 'in 3 days' or 'in tomorrow' for a future date.
      * @param futureDate - The future date to compare to today.
@@ -217,6 +197,11 @@ export const useDateUtils = () => {
         }
     }
 
+    /**
+     * Returns a string like '3 hours ago' or 'less than an hour ago' for a past date.
+     * @param pastDate - The past date to compare to now.
+     * @returns A string describing how many hours ago the date was.
+     */
     const wasXHoursAgo = (pastDate: Date): string => {
         const now = new Date()
         const past = new Date(pastDate)

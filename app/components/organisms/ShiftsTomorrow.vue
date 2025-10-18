@@ -1,11 +1,18 @@
 <template>
     <transition name="fade">
-        <div v-if="shiftsInLocation.length" class="p-default">
-            <carousel-title-and-action title="Tomorrow's Team" />
+        <div v-if="shiftsInLocation.length" class="">
+            <carousel-title-and-action title="Tomorrow's Team">
+                <span class="pr-2">
+                    <u-badge size="xs" variant="outline">
+                        {{
+                            dateConverterWithDayNoYear(tomorrowDate.toString())
+                        }}
+                    </u-badge>
+                </span>
+            </carousel-title-and-action>
             <div class="flex flex-col">
-                <div v-for="shift in shiftsInLocation" :key="shift.id">
-                    {{ getTeamMember(shift)?.fields?.name }}
-                    {{ shift.start }} - {{ shift.end }}
+                <div v-for="item in shiftsInLocation" :key="item.id">
+                    <single-shift :shift="item" />
                 </div>
             </div>
         </div>
@@ -15,8 +22,7 @@
 <script lang="ts" setup>
 const locationsStore = useLocationsStore()
 
-const { backwardsDate } = useDateUtils()
-const { getTeamMember } = useRotareadyUtils()
+const { backwardsDate, dateConverterWithDayNoYear } = useDateUtils()
 
 function getMockedToday(): Date {
     const param = useRoute().query.mockDate as string | undefined
