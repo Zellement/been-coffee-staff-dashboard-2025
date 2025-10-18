@@ -1,6 +1,7 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
         <keep-alive><shifts-today class="col-span-full" /></keep-alive>
+        <keep-alive><shifts-tomorrow class="col-span-full" /></keep-alive>
         <keep-alive><daily-tasks class="col-span-full" /></keep-alive>
         <keep-alive><routine-tasks class="col-span-full" /></keep-alive>
         <keep-alive><upcoming-deliveries class="col-span-full" /></keep-alive>

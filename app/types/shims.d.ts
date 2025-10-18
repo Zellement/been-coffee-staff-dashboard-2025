@@ -41,6 +41,64 @@ declare global {
             assets: number
         }
     }
+
+    export interface RotareadyShift {
+        id: number
+        eventType: number
+        start: string
+        end: string
+        typeId: number
+        typeName: string
+        originEntityId: string
+        originEntityName: string
+        workEntityId: string
+        workEntityName: string
+        isCover: boolean
+        isPublished: boolean
+        rotaId: number
+        broadcasting: boolean
+        broadcastState: string | null
+        details: string
+        paid: boolean
+        breakType: number
+        breakValue: string
+        userId: number
+        userName: string
+        typeColourId: number
+
+        user: {
+            id: number
+            firstName: string
+            lastName: string
+            picture: string | null
+        }
+
+        endRest: string
+        rest: string
+        accountingEntityId: string
+        accountingEntityName: string
+        windowId: number
+        payRateType: number
+        payRateValue: number | null
+        tagsType: number
+        tagsValue: unknown[] // adjust if you know what’s inside
+        lastEdited: {
+            userId: number
+            userName: string
+            date: string
+        }
+
+        payRuleId: number
+
+        shiftType: {
+            id: number
+            entityId: string | null
+            name: string
+            colourId: number
+            suffix: string | null
+            concatenatedName: string
+        }
+    }
 }
 
 export {}

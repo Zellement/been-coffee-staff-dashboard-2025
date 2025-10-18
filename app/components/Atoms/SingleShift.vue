@@ -7,17 +7,27 @@
                 "
                 class="flex w-32 items-center gap-2"
             >
-                <img
-                    class="rounded-full"
-                    :src="`${
-                        getTeamMember(shift)?.fields?.photo?.[0]?.fields?.file
-                            ?.url
-                    }?w=30&h=30&fit=fill&f=face&fm=webp`"
-                    :alt="getTeamMember(shift)?.fields?.name"
-                />
-                <span class="w-12 truncate">{{
-                    getTeamMember(shift)?.fields?.name
-                }}</span>
+                <u-avatar-group>
+                    <img
+                        v-if="
+                            getTeamMember(shift)?.fields?.photo?.[0]?.fields
+                                ?.file?.url
+                        "
+                        class="bg-tertiary size-8 rounded-full p-px"
+                        :src="`${
+                            getTeamMember(shift)?.fields?.photo?.[0]?.fields
+                                ?.file?.url
+                        }?w=30&h=30&fit=fill&f=face&fm=webp`"
+                        :alt="getTeamMember(shift)?.fields?.name"
+                    />
+                    <div
+                        v-else
+                        class="from-tertiary-400 to-tertiary-600 size-8 rounded-full bg-gradient-to-br"
+                    />
+                </u-avatar-group>
+                <span class="w-16 truncate">
+                    {{ getTeamMember(shift)?.fields?.name }}
+                </span>
             </div>
         </transition>
         <div class="w-full grow">
@@ -38,32 +48,10 @@
 import type { StepperItem } from '@nuxt/ui'
 import { useDateFormat } from '@vueuse/core'
 
+const { getTeamMember } = useRotareadyUtils()
+
 interface Props {
-    shift: ShiftItem
-}
-
-interface ShiftItem {
-    id: string | number
-    userName?: string
-    start: string
-    end: string
-    user?: {
-        firstName: string
-        lastName: string
-        id: string | number
-    }
-}
-
-const locationsStore = useLocationsStore()
-
-const allTeam: ComputedRef<TypeEmployee[]> = computed(() => {
-    return locationsStore.getAllTeamMembers || []
-})
-
-const getTeamMember = (shift: ShiftItem) => {
-    return allTeam.value.find(
-        (member) => member.fields.rotareadyId === shift.user?.id
-    )
+    shift: RotareadyShift
 }
 
 const props = defineProps<Props>()

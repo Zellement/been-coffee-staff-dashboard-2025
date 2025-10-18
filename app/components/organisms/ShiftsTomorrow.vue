@@ -1,10 +1,11 @@
 <template>
     <transition name="fade">
         <div v-if="shiftsInLocation.length" class="p-default">
-            <carousel-title-and-action title="Today's Team" />
+            <carousel-title-and-action title="Tomorrow's Team" />
             <div class="flex flex-col">
-                <div v-for="item in shiftsInLocation" :key="item.id">
-                    <single-shift :shift="item" />
+                <div v-for="shift in shiftsInLocation" :key="shift.id">
+                    {{ getTeamMember(shift)?.fields?.name }}
+                    {{ shift.start }} - {{ shift.end }}
                 </div>
             </div>
         </div>
@@ -15,6 +16,7 @@
 const locationsStore = useLocationsStore()
 
 const { backwardsDate } = useDateUtils()
+const { getTeamMember } = useRotareadyUtils()
 
 function getMockedToday(): Date {
     const param = useRoute().query.mockDate as string | undefined
@@ -23,19 +25,21 @@ function getMockedToday(): Date {
 
 const todayDate = getMockedToday()
 todayDate.setHours(0, 0, 0, 0)
-const todayStr = backwardsDate(todayDate)
 
-// Example for tomorrow:
 const tomorrowDate = new Date(todayDate)
 tomorrowDate.setDate(tomorrowDate.getDate() + 1)
 const tomorrowStr = backwardsDate(tomorrowDate)
 
+const dayAfterTomorrowDate = new Date(tomorrowDate)
+dayAfterTomorrowDate.setDate(dayAfterTomorrowDate.getDate() + 1)
+const dayAfterTomorrowStr = backwardsDate(dayAfterTomorrowDate)
+
 const { data: shiftsToday } = await useFetch('/api/rotaready/get-shifts', {
     params: {
-        startDateMin: todayStr,
-        startDateMax: tomorrowStr,
-        endDateMin: todayStr,
-        endDateMax: tomorrowStr
+        startDateMin: tomorrowStr,
+        startDateMax: dayAfterTomorrowStr,
+        endDateMin: tomorrowStr,
+        endDateMax: dayAfterTomorrowStr
     }
 })
 
