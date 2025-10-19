@@ -1,6 +1,8 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
-        <keep-alive><shifts-carousel class="col-span-full" /></keep-alive>
+        <keep-alive
+            ><shifts-carousel class="col-span-full" item-classes="xl:basis-1/2"
+        /></keep-alive>
         <keep-alive><daily-tasks class="col-span-full" /></keep-alive>
         <keep-alive><routine-tasks class="col-span-full" /></keep-alive>
         <keep-alive><upcoming-deliveries class="col-span-full" /></keep-alive>
