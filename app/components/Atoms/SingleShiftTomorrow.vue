@@ -34,9 +34,9 @@
         <div class="w-full grow">
             <UStepper
                 v-model="active"
+                disabled
                 :items="generateStepper(shift)"
                 size="sm"
-                color="success"
                 :ui="{
                     trigger: 'size-5 m-0',
                     wrapper: 'm-0'
