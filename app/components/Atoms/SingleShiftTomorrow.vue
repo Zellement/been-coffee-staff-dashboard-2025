@@ -33,7 +33,6 @@
 
         <div class="w-full grow">
             <UStepper
-                v-if="isTomorrow"
                 v-model="active"
                 :items="generateStepperShift"
                 size="sm"
@@ -43,20 +42,6 @@
                     wrapper: 'm-0'
                 }"
             />
-            <UStepper
-                v-else-if="!attendance?.events?.length"
-                v-model="active"
-                :items="generateStepperShift"
-                size="sm"
-                color="success"
-                :ui="{
-                    trigger: 'size-5 m-0',
-                    wrapper: 'm-0'
-                }"
-            />
-            <div v-else>
-                {{ generateStepperEvent }}
-            </div>
         </div>
     </div>
 </template>
@@ -69,7 +54,6 @@ const { getTime } = useDateUtils()
 
 interface Props {
     shift: RotareadyShift
-    isTomorrow?: boolean
 }
 
 const props = defineProps<Props>()
@@ -104,54 +88,5 @@ const generateStepperShift: ComputedRef<StepperItem[]> = computed(() => {
     ]
 })
 
-const generateStepperEvent: ComputedRef<StepperItem[]> = computed(() => {
-    if (!attendance.value?.events?.length) {
-        return []
-    }
-    return (
-        attendance.value?.events?.map((event: any) => {
-            const eventType = eventTypes.find(
-                (et) => et.eventType === event.eventType
-            )
-            return {
-                title: getTime(event.eventTime),
-                icon: eventType
-                    ? `iconamoon:${eventType.eventName
-                          .toLowerCase()
-                          .replace('-', '')}-fill`
-                    : 'iconamoon:question-fill'
-            }
-        }) || []
-    )
-})
-
-const { data: attendance } = await useFetch<RotareadyAttendance | null>(
-    '/api/rotaready/get-event',
-    {
-        params: { userId: props.shift.user.id, date: '2025-10-20' }
-    }
-)
-
-const active: Ref<number> = ref(attendance?.value?.events?.length ? 0 : -1)
-
-const eventTypes = [
-    {
-        eventType: 1,
-        eventName: 'Clock-In'
-    },
-    {
-        eventType: 2,
-        eventName: 'Clock-Out'
-    },
-    {
-        eventType: 3,
-        eventName: 'Break-On'
-    },
-    {
-        eventType: 4,
-        eventName: 'Break-Off'
-    }
-]
-
-console.log('EVENT TYPES:', eventTypes)
+const active: Ref<number> = ref(-1)
 </script>

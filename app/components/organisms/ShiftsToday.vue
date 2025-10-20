@@ -9,7 +9,7 @@
         </carousel-title-and-action>
         <div class="flex flex-col gap-1">
             <div v-for="item in shiftsInLocation" :key="item.id">
-                <single-shift :shift="item" />
+                <single-shift-today :shift="item" />
             </div>
         </div>
     </div>
