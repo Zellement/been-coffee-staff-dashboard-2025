@@ -33,9 +33,16 @@
 
         <div class="w-full grow">
             <UStepper
-                v-if="!attendance?.events?.length"
                 v-model="active"
-                :items="generateStepper(shift)"
+                :items="
+                    generateStepper(
+                        shift,
+                        clockedInAt,
+                        breakInAt,
+                        breakOffAt,
+                        clockedOutAt
+                    )
+                "
                 size="sm"
                 color="success"
                 :ui="{
@@ -43,21 +50,6 @@
                     wrapper: 'm-0'
                 }"
             />
-            <UStepper
-                v-else
-                v-model="active"
-                :items="generateStepper(shift)"
-                size="sm"
-                color="success"
-                :ui="{
-                    trigger: 'size-5 m-0',
-                    wrapper: 'm-0'
-                }"
-            />
-            <!-- 
-            <pre>
-            {{ attendance }}
-            </pre> -->
         </div>
     </div>
 </template>
@@ -77,25 +69,6 @@ const { data: attendance } = await useFetch<RotareadyAttendance | null>(
         params: { userId: props.shift.user.id, date: '2025-10-20' }
     }
 )
-
-const eventTypes = [
-    {
-        eventType: 1,
-        eventName: 'Clock-In'
-    },
-    {
-        eventType: 2,
-        eventName: 'Clock-Out'
-    },
-    {
-        eventType: 3,
-        eventName: 'Break-On'
-    },
-    {
-        eventType: 4,
-        eventName: 'Break-Off'
-    }
-]
 
 const clockedInAt: ComputedRef<string | undefined> = computed(() => {
     return attendance?.value?.events.find((event) => event.eventType === 1)
@@ -131,5 +104,22 @@ const active: ComputedRef<number> = computed(() => {
     }
 })
 
-console.log('EVENT TYPES:', eventTypes)
+// const eventTypes = [
+//     {
+//         eventType: 1,
+//         eventName: 'Clock-In'
+//     },
+//     {
+//         eventType: 2,
+//         eventName: 'Clock-Out'
+//     },
+//     {
+//         eventType: 3,
+//         eventName: 'Break-On'
+//     },
+//     {
+//         eventType: 4,
+//         eventName: 'Break-Off'
+//     }
+// ]
 </script>

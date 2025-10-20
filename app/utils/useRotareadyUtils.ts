@@ -26,8 +26,36 @@ export const useRotareadyUtils = () => {
     const generateStepper = (
         shift: RotareadyShift,
         clockedInAt?: string,
+        breakInAt?: string,
+        breakOffAt?: string,
         clockedOutAt?: string
     ): StepperItem[] => {
+        const breakIsSuggested: ComputedRef<boolean> = computed(() => {
+            return getShiftLength(shift.start, shift.end) > 6
+        })
+
+        const breakText: ComputedRef<string> = computed(() => {
+            if (breakInAt && breakOffAt) {
+                return `${getTime(breakInAt)} - ${getTime(breakOffAt)}`
+            }
+            if (breakInAt) {
+                return `${getTime(breakInAt)}`
+            }
+            if (breakIsSuggested.value) {
+                return 'Break'
+            }
+            return 'Optional'
+        })
+
+        const breakIcon: ComputedRef<string> = computed(() => {
+            if (breakInAt && !breakOffAt) {
+                return 'i-line-md-loading-twotone-loop'
+            }
+            return breakIsSuggested.value
+                ? 'ph:armchair-fill'
+                : 'ph:armchair-thin'
+        })
+
         return [
             {
                 title: clockedInAt
@@ -35,24 +63,10 @@ export const useRotareadyUtils = () => {
                     : getTime(shift.start),
                 icon: 'iconamoon:enter-fill'
             },
-            getShiftLength(shift.start, shift.end) > 6
-                ? {
-                      title: 'Suggested',
-                      icon: 'ph:armchair-fill'
-                  }
-                : {
-                      title: 'Optional',
-                      icon: 'ph:armchair-light'
-                  },
-            getShiftLength(shift.start, shift.end) > 6
-                ? {
-                      title: 'End',
-                      icon: 'ph:armchair-fill'
-                  }
-                : {
-                      title: 'End',
-                      icon: 'ph:armchair-light'
-                  },
+            {
+                title: breakText.value,
+                icon: breakIcon.value
+            },
             {
                 title: clockedOutAt
                     ? getTime(clockedOutAt)
