@@ -36,7 +36,7 @@
             <UStepper
                 v-if="!attendance?.events?.length"
                 v-model="active"
-                :items="generateStepper"
+                :items="generateStepperShift"
                 size="sm"
                 color="success"
                 :ui="{
@@ -44,6 +44,9 @@
                     wrapper: 'm-0'
                 }"
             />
+            <div v-else>
+                {{ generateStepperEvent }}
+            </div>
         </div>
     </div>
 </template>
@@ -70,7 +73,7 @@ const getShiftLength = (start: string, end: string): number => {
     return Math.round(diffInHours * 2) / 2 // Round to nearest half hour
 }
 
-const generateStepper: ComputedRef<StepperItem[]> = computed(() => {
+const generateStepperShift: ComputedRef<StepperItem[]> = computed(() => {
     return [
         {
             title: getTime(props.shift.start),
@@ -92,10 +95,36 @@ const generateStepper: ComputedRef<StepperItem[]> = computed(() => {
     ]
 })
 
-// attendance timeline for a user (to show what they did)
-const { data: attendance } = await useFetch('/api/rotaready/get-event', {
-    params: { userId: props.shift.user.id, date: '2025-10-20' }
+const generateStepperEvent: ComputedRef<StepperItem[]> = computed(() => {
+    if (!attendance.value?.events?.length) {
+        return []
+    }
+    return (
+        attendance.value?.events?.map((event: any) => {
+            const eventType = eventTypes.find(
+                (et) => et.eventType === event.eventType
+            )
+            return {
+                title: getTime(event.eventTime),
+                icon: eventType
+                    ? `iconamoon:${eventType.eventName
+                          .toLowerCase()
+                          .replace('-', '')}-fill`
+                    : 'iconamoon:question-fill'
+            }
+        }) || []
+    )
 })
+
+// attendance timeline for a user (to show what they did)
+const { data: attendance } = await useFetch<RotareadyAttendance | null>(
+    '/api/rotaready/get-event',
+    {
+        params: { userId: props.shift.user.id, date: '2025-10-20' }
+    }
+)
+
+console.log('ATTENDANCE DATA:', attendance)
 
 const eventTypes = [
     {

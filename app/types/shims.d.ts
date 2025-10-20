@@ -99,6 +99,30 @@ declare global {
             concatenatedName: string
         }
     }
+
+    export type RotareadyAttendance = {
+        events: RotareadyEvent[]
+    }
+
+    export type RotareadyEvent = {
+        id: number
+        userId: number
+        userEntity: any | null
+        entityId: any | null
+        entityName: string | null
+        date: string // ISO date string
+        dateUtc: string // ISO date string
+        eventType: number
+        deviceId: any | null
+        deviceName: string | null
+        photoType: number
+        gpsLatitude: number
+        gpsLongitude: number
+        trustState: number
+        overtimeApprovalState: number
+        editCount: number
+        notes: string | null
+    }
 }
 
 export {}
