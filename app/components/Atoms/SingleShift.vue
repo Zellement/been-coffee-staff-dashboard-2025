@@ -1,5 +1,6 @@
 <template>
     <div class="flex w-full flex-row items-center justify-between">
+        <pre>{{ attendance }}</pre>
         <transition name="fade">
             <div
                 v-if="
@@ -33,6 +34,7 @@
 
         <div class="w-full grow">
             <UStepper
+                v-if="!attendance?.events?.length"
                 v-model="active"
                 :items="generateStepper"
                 size="sm"
@@ -89,4 +91,30 @@ const generateStepper: ComputedRef<StepperItem[]> = computed(() => {
         }
     ]
 })
+
+// attendance timeline for a user (to show what they did)
+const { data: attendance } = await useFetch('/api/rotaready/get-event', {
+    params: { userId: props.shift.user.id, date: '2025-10-20' }
+})
+
+const eventTypes = [
+    {
+        eventType: 1,
+        eventName: 'Clock-In'
+    },
+    {
+        eventType: 2,
+        eventName: 'Clock-Out'
+    },
+    {
+        eventType: 3,
+        eventName: 'Break-On'
+    },
+    {
+        eventType: 4,
+        eventName: 'Break-Off'
+    }
+]
+
+console.log('EVENT TYPES:', eventTypes)
 </script>
