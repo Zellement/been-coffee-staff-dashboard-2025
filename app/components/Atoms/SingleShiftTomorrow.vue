@@ -34,7 +34,7 @@
         <div class="w-full grow">
             <UStepper
                 v-model="active"
-                :items="generateStepperShift"
+                :items="generateStepper(shift)"
                 size="sm"
                 color="success"
                 :ui="{
@@ -47,46 +47,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { StepperItem } from '@nuxt/ui'
-
-const { getTeamMember } = useRotareadyUtils()
-const { getTime } = useDateUtils()
+const { getTeamMember, generateStepper } = useRotareadyUtils()
 
 interface Props {
     shift: RotareadyShift
 }
 
-const props = defineProps<Props>()
-
-const getShiftLength = (start: string, end: string): number => {
-    const startDate = new Date(start)
-    const endDate = new Date(end)
-    const diffInMs = endDate.getTime() - startDate.getTime()
-    const diffInHours = diffInMs / (1000 * 60 * 60)
-    return Math.round(diffInHours * 2) / 2 // Round to nearest half hour
-}
-
-const generateStepperShift: ComputedRef<StepperItem[]> = computed(() => {
-    return [
-        {
-            title: getTime(props.shift.start),
-            icon: 'iconamoon:enter-fill'
-        },
-        getShiftLength(props.shift.start, props.shift.end) > 6
-            ? {
-                  title: 'Suggested',
-                  icon: 'solar:armchair-2-bold'
-              }
-            : {
-                  title: 'Optional',
-                  icon: 'material-symbols-light:play-arrow-outline'
-              },
-        {
-            title: getTime(props.shift.end),
-            icon: 'iconamoon:exit-fill'
-        }
-    ]
-})
+defineProps<Props>()
 
 const active: Ref<number> = ref(-1)
 </script>
