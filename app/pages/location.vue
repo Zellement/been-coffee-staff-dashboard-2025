@@ -1,6 +1,6 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
-        <lazy-shifts-carousel
+        <shifts-carousel
             class="col-span-full"
             item-classes="md:basis-1/2"
             hide-dots
