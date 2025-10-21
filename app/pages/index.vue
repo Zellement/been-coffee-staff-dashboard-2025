@@ -1,20 +1,27 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
         <keep-alive
-            ><shifts-carousel class="col-span-full" item-classes="xl:basis-1/2"
-        /></keep-alive>
-        <keep-alive><daily-tasks class="col-span-full" /></keep-alive>
-        <keep-alive><routine-tasks class="col-span-full" /></keep-alive>
-        <keep-alive><upcoming-deliveries class="col-span-full" /></keep-alive>
-        <keep-alive
-            ><table-bookings v-show="hasTableBookings" class="col-span-full"
-        /></keep-alive>
-        <keep-alive><notice-board class="col-span-full" /></keep-alive>
-        <keep-alive><reviews-listings class="col-span-full" /></keep-alive>
-        <keep-alive><standing-orders class="col-span-full" /></keep-alive>
-        <keep-alive><been-awesome-winners class="col-span-full" /></keep-alive>
-        <keep-alive><location-team class="col-span-full" /></keep-alive>
-        <keep-alive><leadership-team class="col-span-full" /></keep-alive>
+            ><lazy-shifts-carousel
+                class="col-span-full"
+                item-classes="xl:basis-1/2"
+            />
+        </keep-alive>
+        <keep-alive><lazy-daily-tasks class="col-span-full" /></keep-alive>
+        <keep-alive><lazy-routine-tasks class="col-span-full" /></keep-alive>
+        <keep-alive>
+            <lazy-upcoming-deliveries class="col-span-full" />
+        </keep-alive>
+        <keep-alive>
+            <table-bookings v-show="hasTableBookings" class="col-span-full" />
+        </keep-alive>
+        <keep-alive><lazy-notice-board class="col-span-full" /></keep-alive>
+        <keep-alive><lazy-reviews-listings class="col-span-full" /></keep-alive>
+        <keep-alive><lazy-standing-orders class="col-span-full" /></keep-alive>
+        <keep-alive>
+            <lazy-been-awesome-winners class="col-span-full" />
+        </keep-alive>
+        <keep-alive><lazy-location-team class="col-span-full" /></keep-alive>
+        <keep-alive><lazy-leadership-team class="col-span-full" /></keep-alive>
     </div>
 </template>
 
