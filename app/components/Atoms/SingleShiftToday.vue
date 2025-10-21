@@ -64,10 +64,15 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const date = new Date()
+
 const { data: attendance } = await useFetch<RotareadyAttendance | null>(
     '/api/rotaready/get-event',
     {
-        params: { userId: props.shift.user.id, date: '2025-10-20' }
+        params: {
+            userId: props.shift.user.id,
+            date: date.toISOString().split('T')[0]
+        }
     }
 )
 
