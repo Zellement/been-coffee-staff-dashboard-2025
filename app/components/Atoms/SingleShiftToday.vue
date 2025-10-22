@@ -44,12 +44,8 @@
                         clockedOutAt
                     )
                 "
-                size="sm"
+                size="xs"
                 color="success"
-                :ui="{
-                    trigger: 'size-4.5 m-0',
-                    wrapper: 'm-0'
-                }"
             />
         </div>
     </div>

@@ -30,6 +30,19 @@ export default defineAppConfig({
                     '2xs': 'px-1 gap-1 py-px text-2xs'
                 }
             }
+        },
+        stepper: {
+            slots: {
+                trigger: 'size-4.5 m-0',
+                wrapper: 'm-0'
+            },
+            variants: {
+                size: {
+                    xs: {
+                        wrapper: '!m-0'
+                    }
+                }
+            }
         }
     }
 })
