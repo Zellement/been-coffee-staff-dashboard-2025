@@ -68,7 +68,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'order',
         'fields.location.sys.id': activeLocationId.value,
-        order: 'fields.expectedDeliveryDate',
+        order: '-fields.expectedDeliveryDate',
         limit: 20
     }))
 })
