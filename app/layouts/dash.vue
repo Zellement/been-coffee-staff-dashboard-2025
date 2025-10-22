@@ -1,15 +1,18 @@
 <template>
     <div class="layout">
         <div
-            class="p-default bg-seashell-50 dark:bg-primary-800 sticky top-0 z-10 flex w-full items-center justify-end gap-4"
+            class="p-default bg-seashell-50 dark:bg-primary-800 sticky top-0 z-10 flex w-full items-center justify-between gap-4"
         >
-            <u-button
-                label="Refresh"
-                variant="outline"
-                size="sm"
-                @click="refreshData"
-            />
-            <colour-mode />
+            <u-badge variant="outline">{{ formatted }}</u-badge>
+            <div class="flex items-center gap-4">
+                <u-button
+                    label="Refresh"
+                    variant="outline"
+                    size="sm"
+                    @click="refreshData"
+                />
+                <colour-mode />
+            </div>
         </div>
         <daily-snapshot />
         <main class="pb-10">
@@ -19,6 +22,10 @@
 </template>
 
 <script setup lang="ts">
+import { useDateFormat, useNow } from '@vueuse/core'
+
+const formatted = useDateFormat(useNow(), 'ddd DD MMM HH:mm:ss')
+
 const userStore = useUserStore()
 userStore.setUserData()
 
