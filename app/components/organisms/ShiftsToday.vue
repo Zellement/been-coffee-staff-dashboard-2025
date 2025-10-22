@@ -31,7 +31,7 @@
         <transition name="fade">
             <div
                 v-if="isRefreshing"
-                class="bg-seashell-50/50 dark:bg-primary-900/80 absolute inset-0 flex backdrop-blur dark:text-white"
+                class="bg-seashell-50/50 dark:bg-primary-900/80 absolute inset-0 flex backdrop-blur-sm dark:text-white"
             >
                 <u-icon
                     name="i-svg-spinners-blocks-shuffle-3"

@@ -39,8 +39,8 @@
                     generateStepper(
                         shift,
                         clockedInAt,
-                        breakInAt,
-                        breakOffAt,
+                        allBreakIns,
+                        allBreakOffs,
                         clockedOutAt
                     )
                 "
@@ -98,9 +98,25 @@ const breakInAt: ComputedRef<string | undefined> = computed(() => {
         ?.date
 })
 
+const allBreakIns: ComputedRef<string[]> = computed(() => {
+    return (
+        attendance.value?.events
+            .filter((event) => event.eventType === 3)
+            .map((event) => event.date) ?? []
+    )
+})
+
 const breakOffAt: ComputedRef<string | undefined> = computed(() => {
     return attendance?.value?.events.find((event) => event.eventType === 4)
         ?.date
+})
+
+const allBreakOffs: ComputedRef<string[]> = computed(() => {
+    return (
+        attendance.value?.events
+            .filter((event) => event.eventType === 4)
+            .map((event) => event.date) ?? []
+    )
 })
 
 const active: ComputedRef<number> = computed(() => {

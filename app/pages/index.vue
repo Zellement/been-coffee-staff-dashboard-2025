@@ -3,7 +3,7 @@
         <keep-alive>
             <lazy-shifts-carousel
                 class="col-span-full"
-                item-classes="xl:basis-1/2"
+                item-classes="md:basis-1/2"
             />
         </keep-alive>
         <keep-alive><lazy-daily-tasks class="col-span-full" /></keep-alive>

@@ -5,10 +5,9 @@ export const useRotareadyUtils = () => {
     const { getTime } = useDateUtils()
 
     const getTeamMember = (shift: RotareadyShift) => {
-        const allTeam: ComputedRef<TypeEmployee[]> = computed(() => {
-            return locationsStore.getAllTeamMembers || []
-        })
-
+        const allTeam: ComputedRef<TypeEmployee[]> = computed(
+            () => locationsStore.getAllTeamMembers || []
+        )
         return allTeam.value.find(
             (member: TypeEmployee) =>
                 member.fields.rotareadyId === shift.user?.id
@@ -20,44 +19,82 @@ export const useRotareadyUtils = () => {
         const endDate = new Date(end)
         const diffInMs = endDate.getTime() - startDate.getTime()
         const diffInHours = diffInMs / (1000 * 60 * 60)
-        return Math.round(diffInHours * 2) / 2 // Round to nearest half hour
+        return Math.round(diffInHours * 2) / 2 // nearest 0.5h
     }
 
+    // --- helpers ---
+    const sortIso = (arr?: string[]) =>
+        (arr ?? []).slice().sort((a, b) => +new Date(a) - +new Date(b))
+
+    function pairBreaks(breakIns?: string[], breakOuts?: string[]) {
+        const ins = sortIso(breakIns)
+        const outs = sortIso(breakOuts)
+        const pairs: Array<{ start: string; end?: string }> = []
+
+        for (let i = 0; i < ins.length; i++) {
+            const start = ins[i]
+            const end = outs[i] // if missing, it's an ongoing break
+            if (start) pairs.push({ start, end })
+        }
+        return pairs
+    }
+
+    function formatBreaksLabel(
+        shift: RotareadyShift,
+        clockedOutAt?: string,
+        breakIns?: string[],
+        breakOuts?: string[]
+    ): { label: string; icon: string; hasOngoing: boolean } {
+        const suggested = getShiftLength(shift.start, shift.end) > 6
+        const pairs = pairBreaks(breakIns, breakOuts)
+        const hasOngoing = pairs.some((p) => !p.end)
+
+        if (pairs.length === 0) {
+            // no breaks logged
+            if (clockedOutAt)
+                return {
+                    label: '--',
+                    icon: suggested ? 'ph:armchair-fill' : 'ph:armchair-thin',
+                    hasOngoing: false
+                }
+            return {
+                label: suggested ? 'Break' : 'Optional',
+                icon: suggested ? 'ph:armchair-fill' : 'ph:armchair-thin',
+                hasOngoing: false
+            }
+        }
+
+        const parts = pairs.map((p) =>
+            p.end
+                ? `${getTime(p.start)} - ${getTime(p.end)}`
+                : `Break since ${getTime(p.start)}`
+        )
+
+        return {
+            label: parts.join(', '),
+            icon: hasOngoing
+                ? 'i-line-md-loading-twotone-loop'
+                : suggested
+                  ? 'ph:armchair-fill'
+                  : 'ph:armchair-thin',
+            hasOngoing
+        }
+    }
+
+    // --- updated API: accepts arrays for breaks ---
     const generateStepper = (
         shift: RotareadyShift,
         clockedInAt?: string,
-        breakInAt?: string,
-        breakOffAt?: string,
+        allBreakIns?: string[],
+        allBreakOuts?: string[],
         clockedOutAt?: string
     ): StepperItem[] => {
-        const breakIsSuggested: ComputedRef<boolean> = computed(() => {
-            return getShiftLength(shift.start, shift.end) > 6
-        })
-
-        const breakText: ComputedRef<string> = computed(() => {
-            if (breakInAt && breakOffAt) {
-                return `${getTime(breakInAt)} - ${getTime(breakOffAt)}`
-            }
-            if (breakInAt) {
-                return `Break since ${getTime(breakInAt)}`
-            }
-            if (breakIsSuggested.value) {
-                return 'Break'
-            }
-            if (clockedOutAt && !breakInAt && !breakOffAt) {
-                return '--'
-            }
-            return 'Optional'
-        })
-
-        const breakIcon: ComputedRef<string> = computed(() => {
-            if (breakInAt && !breakOffAt) {
-                return 'i-line-md-loading-twotone-loop'
-            }
-            return breakIsSuggested.value
-                ? 'ph:armchair-fill'
-                : 'ph:armchair-thin'
-        })
+        const { label: breakText, icon: breakIcon } = formatBreaksLabel(
+            shift,
+            clockedOutAt,
+            allBreakIns,
+            allBreakOuts
+        )
 
         return [
             {
@@ -67,8 +104,8 @@ export const useRotareadyUtils = () => {
                 icon: 'iconamoon:enter-fill'
             },
             {
-                title: breakText.value,
-                icon: breakIcon.value
+                title: breakText,
+                icon: breakIcon
             },
             {
                 title: clockedOutAt

@@ -8,9 +8,9 @@
         <lazy-daily-tasks hide-progress-circle class="col-span-full" />
         <lazy-routine-tasks hide-progress-circle class="col-span-full" />
         <lazy-upcoming-deliveries
-            :class="hasTableBookings ? 'col-span-6' : 'col-span-full'"
+            :class="hasTableBookings ? 'col-span-8' : 'col-span-full'"
         />
-        <lazy-table-bookings v-show="hasTableBookings" class="col-span-6" />
+        <lazy-table-bookings v-show="hasTableBookings" class="col-span-4" />
         <lazy-notice-board class="col-span-full" />
         <lazy-reviews-listings class="col-span-full" />
         <div class="p-default col-span-full flex justify-around gap-4">
