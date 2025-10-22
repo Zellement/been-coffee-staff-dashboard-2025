@@ -5,6 +5,7 @@
                 <u-badge size="xs" variant="outline">
                     {{ dateConverterWithDayNoYear(todayDate.toString()) }}
                 </u-badge>
+                <u-button @click="refreshAllAttendance"> Refresh </u-button>
             </span>
         </carousel-title-and-action>
         <div class="flex flex-col gap-1">
@@ -42,6 +43,7 @@ const tomorrowStr = backwardsDate(tomorrowDate)
 
 const { data: shiftsToday } = await useFetch('/api/rotaready/get-shifts', {
     params: {
+        key: `shiftsToday:${todayStr}`,
         startDateMin: todayStr,
         startDateMax: tomorrowStr,
         endDateMin: todayStr,
@@ -58,4 +60,10 @@ const shiftsInLocation: ComputedRef<RotareadyShift[]> = computed(() => {
         ) || []
     )
 })
+
+const attendanceKeys = useState<Set<string>>('attendance:keys', () => new Set())
+async function refreshAllAttendance() {
+    const keys = [...attendanceKeys.value, `shiftsToday:${todayStr}`]
+    if (keys.length) await refreshNuxtData(keys) // ✅ string[]
+}
 </script>

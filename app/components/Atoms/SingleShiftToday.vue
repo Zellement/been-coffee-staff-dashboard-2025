@@ -61,13 +61,24 @@ interface Props {
 const props = defineProps<Props>()
 
 const date = new Date()
+const dateStr = date.toISOString().split('T')[0]
+
+const fetchKey = `attendance:${dateStr}:${props.shift.user.id}`
+
+// keep a global registry of keys
+const attendanceKeys = useState<Set<string>>(
+    'attendance:keys',
+    () => new Set<string>()
+)
+attendanceKeys.value.add(fetchKey)
 
 const { data: attendance } = await useFetch<RotareadyAttendance | null>(
     '/api/rotaready/get-event',
     {
+        key: fetchKey,
         params: {
             userId: props.shift.user.id,
-            date: date.toISOString().split('T')[0]
+            date: dateStr
         }
     }
 )
@@ -94,9 +105,9 @@ const breakOffAt: ComputedRef<string | undefined> = computed(() => {
 
 const active: ComputedRef<number> = computed(() => {
     if (clockedOutAt.value) {
-        return 3
-    } else if (breakOffAt.value) {
         return 2
+    } else if (breakOffAt.value) {
+        return 1
     } else if (breakInAt.value) {
         return 1
     } else if (clockedInAt.value) {

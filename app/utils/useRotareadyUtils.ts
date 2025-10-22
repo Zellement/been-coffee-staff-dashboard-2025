@@ -39,7 +39,7 @@ export const useRotareadyUtils = () => {
                 return `${getTime(breakInAt)} - ${getTime(breakOffAt)}`
             }
             if (breakInAt) {
-                return `${getTime(breakInAt)}`
+                return `Break since ${getTime(breakInAt)}`
             }
             if (breakIsSuggested.value) {
                 return 'Break'
