@@ -1,5 +1,6 @@
 <template>
     <div class="p-default mb-8">
+        <pre>{{ data?.items?.fields?.author }}</pre>
         <carousel-title-and-action title="Notice Board" />
         <div class="relative">
             <transition name="fade">
@@ -24,26 +25,46 @@
                         variant="subtle"
                     >
                         <div
-                            class="mb-4 flex items-start justify-between gap-4"
+                            class="mb-4 flex items-start justify-between gap-8"
                         >
-                            <div class="flex flex-col items-start gap-1">
-                                <h3 class="h5 uc-text uc-text--sm">
-                                    {{ item.fields.title }}
-                                </h3>
-                                <u-badge
-                                    variant="outline"
-                                    :label="
-                                        fullDateConverter(item.sys.updatedAt)
-                                    "
-                                />
+                            <div class="flex w-full justify-between">
+                                <div class="flex flex-col items-start gap-1">
+                                    <h3 class="h5 uc-text uc-text--sm">
+                                        {{ item.fields.title }}
+                                    </h3>
+
+                                    <u-badge
+                                        variant="outline"
+                                        :label="
+                                            fullDateConverter(
+                                                item.sys.updatedAt
+                                            )
+                                        "
+                                    />
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <img
+                                        v-if="
+                                            item?.fields?.author?.fields
+                                                ?.photo?.[0]?.fields?.file?.url
+                                        "
+                                        class="bg-tertiary size-8 rounded-full p-px"
+                                        :src="`${
+                                            item.fields.author.fields
+                                                ?.photo?.[0]?.fields?.file?.url
+                                        }?w=30&h=30&fit=fill&f=face&fm=webp`"
+                                        :alt="item.fields.author?.fields?.name"
+                                    />
+                                    <u-badge
+                                        v-if="item.fields.sticky"
+                                        variant="outline"
+                                        color="neutral"
+                                        label="Pinned"
+                                        icon="i-ic-baseline-push-pin"
+                                    />
+                                </div>
                             </div>
-                            <u-badge
-                                v-if="item.fields.sticky"
-                                variant="outline"
-                                color="neutral"
-                                label="Pinned"
-                                icon="i-ic-baseline-push-pin"
-                            />
                         </div>
                         <rich-text :content="item.fields.content" />
                     </u-card>

@@ -1,4 +1,5 @@
 import type { ChainModifiers, Entry, EntryFieldTypes, EntrySkeletonType, LocaleCode } from "contentful";
+import type { TypeEmployeeSkeleton } from "./TypeEmployee";
 import type { TypeLocationSkeleton } from "./TypeLocation";
 
 export interface TypeNoticeBoardFields {
@@ -6,6 +7,7 @@ export interface TypeNoticeBoardFields {
     sticky: EntryFieldTypes.Boolean;
     content: EntryFieldTypes.RichText;
     locations: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeLocationSkeleton>>;
+    author: EntryFieldTypes.EntryLink<TypeEmployeeSkeleton>;
 }
 
 export type TypeNoticeBoardSkeleton = EntrySkeletonType<TypeNoticeBoardFields, "noticeBoard">;

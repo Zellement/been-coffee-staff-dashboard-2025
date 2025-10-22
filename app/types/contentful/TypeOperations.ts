@@ -4,6 +4,7 @@ import type { TypeEmployeeSkeleton } from "./TypeEmployee";
 export interface TypeOperationsFields {
     entryTitle: EntryFieldTypes.Symbol;
     leadership: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<TypeEmployeeSkeleton>>;
+    dashboardLastUpdated?: EntryFieldTypes.Date;
 }
 
 export type TypeOperationsSkeleton = EntrySkeletonType<TypeOperationsFields, "operations">;

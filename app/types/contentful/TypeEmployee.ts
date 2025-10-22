@@ -11,6 +11,7 @@ export interface TypeEmployeeFields {
     dateOfBirth?: EntryFieldTypes.Date;
     startDate?: EntryFieldTypes.Date;
     tillPin?: EntryFieldTypes.Symbol;
+    rotareadyId: EntryFieldTypes.Integer;
     history?: EntryFieldTypes.Object;
 }
 
