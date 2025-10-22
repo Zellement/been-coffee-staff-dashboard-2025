@@ -44,6 +44,9 @@ export const useRotareadyUtils = () => {
             if (breakIsSuggested.value) {
                 return 'Break'
             }
+            if (clockedOutAt && !breakInAt && !breakOffAt) {
+                return '--'
+            }
             return 'Optional'
         })
 
