@@ -89,6 +89,32 @@ const shiftsInLocation: ComputedRef<RotareadyShift[]> = computed(() => {
 
 const attendanceKeys = useState<Set<string>>('attendance:keys', () => new Set())
 
+const SHIFT_REFRESH_TIMER = 900 // 15 minutes in seconds
+const shiftTimer: Ref<number> = ref(0)
+
+const { inActiveWindow } = useDateUtils()
+
+let shiftIntervalId: number | null = null
+
+onMounted(() => {
+    shiftIntervalId = window.setInterval(() => {
+        const active = inActiveWindow()
+
+        if (!active) return // freeze timer when out of hours
+
+        if (shiftTimer.value >= SHIFT_REFRESH_TIMER) {
+            refreshAllAttendance()
+            shiftTimer.value = 0
+        } else {
+            shiftTimer.value++
+        }
+    }, 1000)
+})
+
+onBeforeUnmount(() => {
+    if (shiftIntervalId) clearInterval(shiftIntervalId)
+})
+
 async function refreshAllAttendance() {
     isRefreshing.value = true
     const keys = [...attendanceKeys.value, `shiftsToday:${todayStr}`]

@@ -231,6 +231,14 @@ export const useDateUtils = () => {
         return useDateFormat(dateString, 'HH', { locales: 'en-GB' }).value
     }
 
+    const inActiveWindow = () => {
+        const ACTIVE_START_MIN = 6 * 60 + 45 // 06:45
+        const ACTIVE_END_MIN = 19 * 60 + 30 // 19:30
+        const now = new Date()
+        const mins = now.getHours() * 60 + now.getMinutes()
+        return mins >= ACTIVE_START_MIN && mins < ACTIVE_END_MIN
+    }
+
     return {
         extractHourAndMinute,
         getTodaysDateInUrlEncodedFormat,
@@ -243,6 +251,7 @@ export const useDateUtils = () => {
         inXDays,
         wasXHoursAgo,
         getTime,
-        getHour
+        getHour,
+        inActiveWindow
     }
 }

@@ -24,6 +24,8 @@
 <script setup lang="ts">
 import { useDateFormat, useNow } from '@vueuse/core'
 
+const { inActiveWindow } = useDateUtils()
+
 const formatted = useDateFormat(useNow(), 'ddd DD MMM HH:mm:ss')
 
 const userStore = useUserStore()
@@ -39,15 +41,6 @@ const refreshData = async (): Promise<void> => {
 
 const REFRESH_TIMER = 3600 // seconds
 const timer: Ref<number> = ref(0)
-
-const ACTIVE_START_MIN = 6 * 60 + 45 // 06:45
-const ACTIVE_END_MIN = 19 * 60 + 30 // 19:30
-
-const inActiveWindow = () => {
-    const now = new Date()
-    const mins = now.getHours() * 60 + now.getMinutes()
-    return mins >= ACTIVE_START_MIN && mins < ACTIVE_END_MIN
-}
 
 // derive a reactive flag the composable can follow
 const pollingEnabled = ref(inActiveWindow())
