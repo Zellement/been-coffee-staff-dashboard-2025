@@ -13,11 +13,13 @@
             </div>
         </div>
     </div>
-    <div v-else class="">
-        <p class="uc-text uc-text--xs pt-24 text-center">
-            No shifts scheduled in Rotaready for
-            {{ dateConverterWithDayNoYear(tomorrowDate.toString()) }}.
-        </p>
+    <div v-else class="flex flex-col gap-2">
+        <u-skeleton class="h-6 w-48" />
+        <div v-for="i in 4" :key="i" class="flex gap-4">
+            <u-skeleton class="size-10 rounded-full" />
+            <u-skeleton class="h-10 w-20 rounded" />
+            <u-skeleton class="h-10 w-full rounded" />
+        </div>
     </div>
 </template>
 
