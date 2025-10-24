@@ -6,11 +6,20 @@
                     <u-button
                         size="2xs"
                         color="tertiary"
+                        :ui="{
+                            base: 'p-1.5 leading-none'
+                        }"
                         @click="refreshAllAttendance"
                     >
                         Refresh
                     </u-button>
-                    <u-badge size="xs" variant="outline">
+                    <u-badge
+                        size="xs"
+                        :ui="{
+                            base: 'p-1.5 leading-none'
+                        }"
+                        variant="outline"
+                    >
                         Last updated:
                         {{ useDateFormat(lastUpdated, 'ddd DD MMM HH:mm:ss') }}
                     </u-badge>

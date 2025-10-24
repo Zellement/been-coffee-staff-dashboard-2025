@@ -86,7 +86,8 @@ export const useRotareadyUtils = () => {
         clockedInAt?: string,
         allBreakIns?: string[],
         allBreakOuts?: string[],
-        clockedOutAt?: string
+        clockedOutAt?: string,
+        options?: { disableLateChecking?: boolean }
     ): StepperItem[] => {
         const { label: breakText, icon: breakIcon } = formatBreaksLabel(
             shift,
@@ -100,8 +101,12 @@ export const useRotareadyUtils = () => {
         const shiftStartTime = getTime(shift.start)
         const shiftEndTime = getTime(shift.end)
 
-        const isLateToClockIn = currentTime > shiftStartTime && !clockedInAt
-        const isLateToClockOut = currentTime > shiftEndTime && !clockedOutAt
+        // Disable late checking for future shifts (e.g., tomorrow's shifts)
+        const disableLateChecking = options?.disableLateChecking ?? false
+        const isLateToClockIn =
+            !disableLateChecking && currentTime > shiftStartTime && !clockedInAt
+        const isLateToClockOut =
+            !disableLateChecking && currentTime > shiftEndTime && !clockedOutAt
 
         const clockInStep: StepperItem = {
             title: clockedInAt

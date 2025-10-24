@@ -35,7 +35,11 @@
             <UStepper
                 v-model="active"
                 disabled
-                :items="generateStepper(shift)"
+                :items="
+                    generateStepper(shift, undefined, [], [], undefined, {
+                        disableLateChecking: true
+                    })
+                "
                 size="xs"
             />
         </div>
