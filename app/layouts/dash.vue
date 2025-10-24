@@ -33,7 +33,7 @@ const uiStore = useUiStore()
 
 const refreshData = async (): Promise<void> => {
     uiStore.refreshing = true
-    await refreshNuxtData()
+    await reloadNuxtApp()
     uiStore.refreshing = false
 }
 
