@@ -22,7 +22,6 @@ export const useRotareadyUtils = () => {
         return Math.round(diffInHours * 2) / 2 // nearest 0.5h
     }
 
-    // --- helpers ---
     const sortIso = (arr?: string[]) =>
         (arr ?? []).slice().sort((a, b) => +new Date(a) - +new Date(b))
 
@@ -96,23 +95,36 @@ export const useRotareadyUtils = () => {
             allBreakOuts
         )
 
+        const now = new Date()
+        const currentTime = getTime(now.toISOString())
+        const shiftStartTime = getTime(shift.start)
+        const shiftEndTime = getTime(shift.end)
+
+        const isLateToClockIn = currentTime > shiftStartTime && !clockedInAt
+        const isLateToClockOut = currentTime > shiftEndTime && !clockedOutAt
+
+        const clockInStep: StepperItem = {
+            title: clockedInAt
+                ? getTime(clockedInAt)
+                : isLateToClockIn
+                  ? 'Please clock in'
+                  : shiftStartTime,
+            icon: isLateToClockIn ? 'i-noto-warning' : 'iconamoon:enter-fill'
+        }
+
+        const clockOutStep: StepperItem = {
+            title: clockedOutAt
+                ? getTime(clockedOutAt)
+                : isLateToClockOut
+                  ? 'Please clock out'
+                  : shiftEndTime,
+            icon: isLateToClockOut ? 'i-noto-warning' : 'iconamoon:exit-fill'
+        }
+
         return [
-            {
-                title: clockedInAt
-                    ? getTime(clockedInAt)
-                    : getTime(shift.start),
-                icon: 'iconamoon:enter-fill'
-            },
-            {
-                title: breakText,
-                icon: breakIcon
-            },
-            {
-                title: clockedOutAt
-                    ? getTime(clockedOutAt)
-                    : getTime(shift.end),
-                icon: 'iconamoon:exit-fill'
-            }
+            clockInStep,
+            { title: breakText, icon: breakIcon },
+            clockOutStep
         ]
     }
 
