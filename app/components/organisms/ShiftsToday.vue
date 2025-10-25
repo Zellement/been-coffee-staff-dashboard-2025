@@ -114,6 +114,7 @@ onMounted(() => {
         if (!active) return // freeze timer when out of hours
 
         if (shiftTimer.value >= SHIFT_REFRESH_TIMER) {
+            console.log('Refreshing shifts today data...', new Date())
             refreshAllAttendance()
             shiftTimer.value = 0
         } else {
