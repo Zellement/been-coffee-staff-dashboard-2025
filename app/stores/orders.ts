@@ -64,6 +64,11 @@ export const useOrdersStore = defineStore('orders', () => {
             .map((task: TypeOrder) => ({
                 ...task
             }))
+            .sort((a, b) => {
+                const dateA = new Date(a.fields.expectedDeliveryDate)
+                const dateB = new Date(b.fields.expectedDeliveryDate)
+                return dateA.getTime() - dateB.getTime()
+            })
     })
 
     const completedOrders: ComputedRef<TypeOrder[]> = computed(() => {
