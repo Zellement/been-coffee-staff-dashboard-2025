@@ -55,7 +55,6 @@
             </div>
         </transition>
     </div>
-    <!-- <pre>{{ transformedEvents }}</pre> -->
 </template>
 
 <script lang="ts" setup>
@@ -141,7 +140,8 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
                 ?.url as string | null,
             events:
                 userEvents.map((event) => ({
-                    title: `${getTime(event.date)} - ${getEventType(event.eventType)}`,
+                    title: `${getTime(event.date)}`,
+                    description: getEventType(event.eventType),
                     icon: getIcon(event.eventType)
                 })) || []
         }

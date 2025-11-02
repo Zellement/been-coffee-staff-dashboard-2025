@@ -1,6 +1,6 @@
 <template>
     <div class="p-c-default">
-        <UCarousel
+        <u-carousel
             v-slot="{ item }"
             :items="slides"
             :dots="!hideDots"
@@ -13,7 +13,7 @@
                 v-bind="item.props"
                 :title="item.props?.title"
             />
-        </UCarousel>
+        </u-carousel>
     </div>
 </template>
 

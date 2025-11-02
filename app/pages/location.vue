@@ -3,7 +3,6 @@
         <lazy-shifts-carousel
             class="col-span-full"
             item-classes="md:basis-1/2"
-            hide-dots
         />
         <lazy-daily-tasks hide-progress-circle class="col-span-full" />
         <lazy-routine-tasks hide-progress-circle class="col-span-full" />

@@ -28,7 +28,8 @@
                 size="xs"
                 :ui="{
                     root: 'w-full',
-                    title: '-mt-3 text-xs'
+                    title: '-mt-3 text-xs',
+                    description: 'text-xs -mt-2'
                 }"
             />
         </div>
