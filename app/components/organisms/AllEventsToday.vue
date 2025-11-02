@@ -1,6 +1,5 @@
 <template>
     <div class="relative">
-        <pre>{{ shiftsInLocation }}</pre>
         <div v-if="shiftsInLocation.length">
             <carousel-title-and-action title="Today's Team">
                 <span class="flex items-center gap-2 pr-2">
@@ -28,7 +27,7 @@
             </carousel-title-and-action>
             <div class="flex flex-col gap-1">
                 <div v-for="item in shiftsInLocation" :key="item.id">
-                    <single-shift-today :shift="item" />
+                    <single-shift :shift="item" />
                 </div>
             </div>
         </div>

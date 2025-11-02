@@ -1,15 +1,15 @@
 <template>
     <div v-if="shiftsInLocation.length" class="">
-        <carousel-title-and-action title="Tomorrow's Team">
+        <carousel-title-and-action :title="title">
             <span class="pr-2">
                 <u-badge size="xs" variant="outline">
-                    {{ dateConverterWithDayNoYear(tomorrowDate.toString()) }}
+                    {{ dateConverterWithDayNoYear(minDate) }}
                 </u-badge>
             </span>
         </carousel-title-and-action>
         <div class="flex flex-col gap-1">
             <div v-for="item in shiftsInLocation" :key="item.id">
-                <single-shift-tomorrow :shift="item" />
+                <single-shift :shift="item" />
             </div>
         </div>
     </div>
@@ -24,32 +24,23 @@
 </template>
 
 <script lang="ts" setup>
-const locationsStore = useLocationsStore()
-
-const { backwardsDate, dateConverterWithDayNoYear } = useDateUtils()
-
-function getMockedToday(): Date {
-    const param = useRoute().query.mockDate as string | undefined
-    return param ? new Date(param) : new Date()
+interface Props {
+    title: string
+    minDate: string
+    maxDate: string
 }
 
-const todayDate = getMockedToday()
-todayDate.setHours(0, 0, 0, 0)
+const props = defineProps<Props>()
+const locationsStore = useLocationsStore()
 
-const tomorrowDate = new Date(todayDate)
-tomorrowDate.setDate(tomorrowDate.getDate() + 1)
-const tomorrowStr = backwardsDate(tomorrowDate)
-
-const dayAfterTomorrowDate = new Date(tomorrowDate)
-dayAfterTomorrowDate.setDate(dayAfterTomorrowDate.getDate() + 1)
-const dayAfterTomorrowStr = backwardsDate(dayAfterTomorrowDate)
+const { dateConverterWithDayNoYear } = useDateUtils()
 
 const { data: shiftsToday } = await useFetch('/api/rotaready/get-shifts', {
     params: {
-        startDateMin: tomorrowStr,
-        startDateMax: dayAfterTomorrowStr,
-        endDateMin: tomorrowStr,
-        endDateMax: dayAfterTomorrowStr
+        startDateMin: props.minDate,
+        startDateMax: props.maxDate,
+        endDateMin: props.minDate,
+        endDateMax: props.maxDate
     }
 })
 
