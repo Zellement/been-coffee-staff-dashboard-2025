@@ -1,5 +1,6 @@
 <template>
     <div class="relative">
+        <pre>{{ shiftsInLocation }}</pre>
         <div v-if="shiftsInLocation.length">
             <carousel-title-and-action title="Today's Team">
                 <span class="flex items-center gap-2 pr-2">

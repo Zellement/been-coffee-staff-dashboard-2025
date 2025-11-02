@@ -2,13 +2,9 @@
 import { getRotareadyToken } from '../../utils/rotaready/get-token'
 
 export default defineEventHandler(async (event) => {
-    const { userId, date } = getQuery(event) as {
-        userId: string
+    const { date } = getQuery(event) as {
         date?: string
     }
-
-    if (!userId)
-        throw createError({ statusCode: 400, statusMessage: 'userId required' })
 
     const d = new Date(date || new Date().toISOString().slice(0, 10))
 
@@ -30,7 +26,6 @@ export default defineEventHandler(async (event) => {
     const token = await getRotareadyToken()
 
     const qs = new URLSearchParams({
-        userId: String(userId),
         start,
         end,
         limit: '100'
@@ -42,10 +37,13 @@ export default defineEventHandler(async (event) => {
             headers: { Authorization: `Bearer ${token}` }
         }
     )
+
     if (!res.ok)
         throw createError({
             statusCode: res.status,
             statusMessage: 'Rotaready attendance failed'
         })
+
+    console.log('res', await res.clone().json())
     return res.json() // events: [{eventType: 1|2|3|4, dateUtc: ...}, ...]
 })

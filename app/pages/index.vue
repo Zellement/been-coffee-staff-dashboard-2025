@@ -1,5 +1,6 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
+        <pre class="col-span-full">{{ asd }}</pre>
         <keep-alive>
             <lazy-shifts-carousel
                 class="col-span-full"
@@ -29,6 +30,17 @@
 useHead({
     title: 'Been Coffee Staff Dashboard'
 })
+const date = new Date()
+const dateStr = date.toISOString().split('T')[0]
+
+const { data: asd } = await useFetch<RotareadyAttendance | null>(
+    '/api/rotaready/get-event',
+    {
+        params: {
+            date: dateStr
+        }
+    }
+)
 
 const tableBookingsStore = useTableBookingsStore()
 
