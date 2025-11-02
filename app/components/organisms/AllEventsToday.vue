@@ -147,7 +147,6 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
         }
     })
 
-    console.log(transformed)
     return transformed.filter(
         (user) => user !== null
     ) as unknown as TransformedUser[]

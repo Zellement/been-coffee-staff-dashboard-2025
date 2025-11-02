@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
     }
 
     const url = `https://api.rotaready.com/rota/shift/paginated?${params.toString()}&limit=100`
-    // console.log('Fetching Rotaready shifts:', url)
 
     const res = await fetch(url, {
         headers: {

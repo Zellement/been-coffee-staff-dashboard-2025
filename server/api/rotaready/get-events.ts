@@ -44,6 +44,5 @@ export default defineEventHandler(async (event) => {
             statusMessage: 'Rotaready attendance failed'
         })
 
-    console.log('res', await res.clone().json())
     return res.json() // events: [{eventType: 1|2|3|4, dateUtc: ...}, ...]
 })
