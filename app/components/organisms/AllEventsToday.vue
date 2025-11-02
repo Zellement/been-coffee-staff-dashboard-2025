@@ -1,7 +1,8 @@
 <template>
     <div class="relative">
-        <div v-if="shiftsInLocation.length">
-            <carousel-title-and-action title="Today's Team">
+        <pre>{{ transformedEvents }}</pre>
+        <div v-if="events?.events">
+            <carousel-title-and-action title="Today's Events">
                 <span class="flex items-center gap-2 pr-2">
                     <u-button
                         size="2xs"
@@ -26,9 +27,9 @@
                 </span>
             </carousel-title-and-action>
             <div class="flex flex-col gap-1">
-                <div v-for="item in shiftsInLocation" :key="item.id">
-                    <single-shift :shift="item" />
-                </div>
+                <pre v-for="item in events.events" :key="item?.id">
+                    {{ item }}
+                </pre>
             </div>
         </div>
         <div v-else class="flex flex-col gap-2">
@@ -57,48 +58,62 @@
 <script lang="ts" setup>
 import { useDateFormat } from '@vueuse/core'
 
-const locationsStore = useLocationsStore()
-
-const { backwardsDate } = useDateUtils()
-
-function getMockedToday(): Date {
-    const param = useRoute().query.mockDate as string | undefined
-    return param ? new Date(param) : new Date()
-}
-
 const isRefreshing: Ref<boolean> = ref(false)
 const lastUpdated: Ref<string> = ref(new Date().toString())
 
-const todayDate = getMockedToday()
-todayDate.setHours(0, 0, 0, 0)
-const todayStr = backwardsDate(todayDate)
+const date = new Date()
+const dateStr = date.toISOString().split('T')[0]
 
-// Example for tomorrow:
-const tomorrowDate = new Date(todayDate)
-tomorrowDate.setDate(tomorrowDate.getDate() + 1)
-const tomorrowStr = backwardsDate(tomorrowDate)
-
-const { data: shiftsToday } = await useFetch('/api/rotaready/get-shifts', {
-    params: {
-        key: `shiftsToday:${todayStr}`,
-        startDateMin: todayStr,
-        startDateMax: tomorrowStr,
-        endDateMin: todayStr,
-        endDateMax: tomorrowStr
+const { data: events } = await useFetch<RotareadyAttendance | null>(
+    '/api/rotaready/get-events',
+    {
+        key: 'events',
+        params: {
+            date: dateStr
+        }
     }
-})
+)
 
-const shiftsInLocation: ComputedRef<RotareadyShift[]> = computed(() => {
-    return (
-        shiftsToday.value?.shifts.filter((shift: RotareadyShift) =>
-            shift.originEntityName.includes(
-                locationsStore?.activeLocation?.fields.postcode
-            )
-        ) || []
-    )
-})
+interface TransformedEvent {
+    eventType: number
+    eventDate: string
+}
 
-const attendanceKeys = useState<Set<string>>('attendance:keys', () => new Set())
+interface TransformedUser {
+    userId: number
+    userName: string
+    events: TransformedEvent[]
+}
+
+const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
+    if (!events.value?.events) return []
+
+    // Loop over each event, and add the userId and userName to each event object
+    // Make sure no duplicates
+
+    const users = new Set(events.value.events.map((event) => event.userId))
+
+    const userArray = Array.from(users)
+
+    const transformed = userArray.map((userId) => {
+        const userEvents = events.value!.events.filter(
+            (event) => event.userId === userId
+        )
+
+        return {
+            userId,
+            userName: 'tbc',
+            events:
+                userEvents.map((event) => ({
+                    eventType: event.eventType,
+                    eventDate: event.date
+                })) || []
+        }
+    })
+
+    console.log(transformed)
+    return transformed
+})
 
 const SHIFT_REFRESH_TIMER = 900 // 15 minutes in seconds
 const shiftTimer: Ref<number> = ref(0)
@@ -129,11 +144,7 @@ onBeforeUnmount(() => {
 
 async function refreshAllAttendance() {
     isRefreshing.value = true
-    const keys = [...attendanceKeys.value, `shiftsToday:${todayStr}`]
-    if (keys.length) await refreshNuxtData(keys) // ✅ string[]
-    setTimeout(() => {
-        isRefreshing.value = false
-        lastUpdated.value = new Date().toString()
-    }, 1000)
+    await refreshNuxtData('events')
+    isRefreshing.value = false
 }
 </script>
