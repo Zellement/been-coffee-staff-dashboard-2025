@@ -1,3 +1,5 @@
+import type { StepperItem } from '@nuxt/ui'
+
 declare global {
     type ImageTypes = {
         url?: string
@@ -122,6 +124,13 @@ declare global {
         overtimeApprovalState: number
         editCount: number
         notes: string | null
+    }
+
+    interface TransformedUser {
+        userId: number
+        userName: string
+        userPhoto: string | null
+        events: StepperItem[]
     }
 }
 

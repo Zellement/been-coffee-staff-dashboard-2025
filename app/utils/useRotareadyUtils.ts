@@ -80,7 +80,6 @@ export const useRotareadyUtils = () => {
         }
     }
 
-    // --- updated API: accepts arrays for breaks ---
     const generateStepper = (
         shift: RotareadyShift,
         clockedInAt?: string,

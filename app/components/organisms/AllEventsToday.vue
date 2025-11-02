@@ -1,6 +1,5 @@
 <template>
     <div class="relative">
-        <pre>{{ transformedEvents }}</pre>
         <div v-if="events?.events">
             <carousel-title-and-action title="Today's Events">
                 <span class="flex items-center gap-2 pr-2">
@@ -27,9 +26,12 @@
                 </span>
             </carousel-title-and-action>
             <div class="flex flex-col gap-1">
-                <pre v-for="item in events.events" :key="item?.id">
-                    {{ item }}
-                </pre>
+                <single-event
+                    v-for="item in transformedEvents"
+                    :key="item?.userId"
+                    :event="item"
+                >
+                </single-event>
             </div>
         </div>
         <div v-else class="flex flex-col gap-2">
@@ -53,6 +55,7 @@
             </div>
         </transition>
     </div>
+    <!-- <pre>{{ transformedEvents }}</pre> -->
 </template>
 
 <script lang="ts" setup>
@@ -60,6 +63,10 @@ import { useDateFormat } from '@vueuse/core'
 
 const isRefreshing: Ref<boolean> = ref(false)
 const lastUpdated: Ref<string> = ref(new Date().toString())
+
+const { getTime } = useDateUtils()
+
+const locationsStore = useLocationsStore()
 
 const date = new Date()
 const dateStr = date.toISOString().split('T')[0]
@@ -74,18 +81,37 @@ const { data: events } = await useFetch<RotareadyAttendance | null>(
     }
 )
 
-interface TransformedEvent {
-    eventType: number
-    eventDate: string
-}
-
-interface TransformedUser {
-    userId: number
-    userName: string
-    events: TransformedEvent[]
-}
-
 const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
+    const findTeamMember = (userId: number) => {
+        return locationsStore.getAllTeamMembers?.find(
+            (member) => member.fields.rotareadyId === userId
+        )
+    }
+
+    const getEventType = (eventCode: number) => {
+        const eventTypes: string[] = [
+            '_Blank',
+            'Clocked in',
+            'Clocked out',
+            'Break on',
+            'Break off'
+        ]
+
+        return eventTypes[eventCode] || 'Unknown Event'
+    }
+
+    const getIcon = (eventCode: number) => {
+        const eventIcons: string[] = [
+            'i-material-symbols-help-outline',
+            'i-material-symbols-login',
+            'i-material-symbols-logout',
+            'ph:armchair-thin',
+            'ph:armchair-fill'
+        ]
+
+        return eventIcons[eventCode] || 'i-material-symbols-help-outline'
+    }
+
     if (!events.value?.events) return []
 
     // Loop over each event, and add the userId and userName to each event object
@@ -100,19 +126,31 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
             (event) => event.userId === userId
         )
 
+        // If this userId does not exist in team members for the current location, skip it
+        if (!findTeamMember(userId)) {
+            console.warn(
+                `User with ID ${userId} not found in this location's team members.`
+            )
+            return null
+        }
+
         return {
             userId,
-            userName: 'tbc',
+            userName: findTeamMember(userId)?.fields.name,
+            userPhoto: findTeamMember(userId)?.fields.photo?.[0]?.fields?.file
+                ?.url as string | null,
             events:
                 userEvents.map((event) => ({
-                    eventType: event.eventType,
-                    eventDate: event.date
+                    title: `${getTime(event.date)} - ${getEventType(event.eventType)}`,
+                    icon: getIcon(event.eventType)
                 })) || []
         }
     })
 
     console.log(transformed)
-    return transformed
+    return transformed.filter(
+        (user) => user !== null
+    ) as unknown as TransformedUser[]
 })
 
 const SHIFT_REFRESH_TIMER = 900 // 15 minutes in seconds
