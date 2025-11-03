@@ -1,6 +1,6 @@
 <template>
     <div class="p-default">
-        <div class="grid grid-cols-5 gap-4">
+        <div class="grid grid-cols-5 gap-2">
             <u-card
                 :ui="{
                     root: `text-center ${getColour(singleTasksTotal)}`
@@ -9,7 +9,7 @@
             >
                 <h2
                     :class="getTextColour(singleTasksTotal)"
-                    class="uc-text flex flex-col items-center"
+                    class="uc-text flex flex-col items-center text-xs! leading-tight!"
                 >
                     <span class="text-[0.7em]">To do</span>
                     Single tasks
@@ -26,7 +26,7 @@
             >
                 <h2
                     :class="getTextColourUrgent(tasksOverdueToday)"
-                    class="uc-text flex flex-col items-center"
+                    class="uc-text flex flex-col items-center text-xs! leading-tight!"
                 >
                     <span class="text-[0.7em]">Overdue</span>
                     Daily tasks
@@ -42,7 +42,7 @@
             >
                 <h2
                     :class="getTextColour(outstandingRoutineTasks)"
-                    class="uc-text flex flex-col items-center"
+                    class="uc-text flex flex-col items-center text-xs! leading-tight!"
                 >
                     <span class="text-[0.7em]">Outstanding</span>
                     Routine tasks
@@ -58,7 +58,7 @@
             >
                 <h2
                     :class="getTextColour(todaysOrders)"
-                    class="uc-text flex flex-col items-center"
+                    class="uc-text flex flex-col items-center text-xs! leading-tight!"
                 >
                     <span class="text-[0.7em]">Unchecked</span>
                     Deliveries Today
@@ -74,7 +74,7 @@
             >
                 <h2
                     :class="getTextColourUrgent(totalBookingsToday)"
-                    class="uc-text flex flex-col items-center"
+                    class="uc-text flex flex-col items-center text-xs! leading-tight!"
                 >
                     <span class="text-[0.7em]">Today's</span>
                     Table Bookings
