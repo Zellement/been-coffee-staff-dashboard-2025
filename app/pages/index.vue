@@ -6,6 +6,7 @@
                 item-classes="md:basis-1/2"
             />
         </keep-alive>
+        <keep-alive><lazy-single-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-daily-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-routine-tasks class="col-span-full" /></keep-alive>
         <keep-alive>
