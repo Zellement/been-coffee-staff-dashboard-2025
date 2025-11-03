@@ -1,6 +1,23 @@
 <template>
     <div class="p-default">
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-5 gap-4">
+            <u-card
+                :ui="{
+                    root: `text-center ${getColour(singleTasksTotal)}`
+                }"
+                variant="solid"
+            >
+                <h2
+                    :class="getTextColour(singleTasksTotal)"
+                    class="uc-text flex flex-col items-center"
+                >
+                    <span class="text-[0.7em]">To do</span>
+                    Single tasks
+                </h2>
+                <p class="mt-1 text-3xl leading-none">
+                    {{ singleTasksTotal }}
+                </p>
+            </u-card>
             <u-card
                 :ui="{
                     root: `text-center ${getColourUrgent(tasksOverdueToday)}`
@@ -78,16 +95,9 @@ const tasksOverdueToday = computed(() => {
     return tasksStore.tasksOverdueToday
 })
 
-// const outstandingDailyTasks = computed(() => {
-//     if (tasksStore?.totalDailyTaskInstances) {
-//         return (
-//             tasksStore?.totalDailyTaskInstances -
-//             tasksStore.taskCountCompletedToday
-//         )
-//     } else {
-//         return 0
-//     }
-// })
+const singleTasksTotal: ComputedRef<number> = computed(() => {
+    return tasksStore?.totalSingleTasks || 0
+})
 
 const outstandingRoutineTasks = computed(() => {
     return tasksStore?.overdueTasks.length + tasksStore?.newTasks.length
