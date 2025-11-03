@@ -43,6 +43,7 @@ export const useContentfulUtils = () => {
                 color: 'error'
             })
             console.error('Error completing task', error)
+            uiStore.refreshing = false
         }
     }
 

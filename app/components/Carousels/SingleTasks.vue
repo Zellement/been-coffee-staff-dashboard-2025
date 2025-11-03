@@ -1,18 +1,19 @@
 <template>
-    <div v-if="hasSingleTasks" class="p-c-default">
-        <!-- <pre>{{ allSingleTasks }}</pre> -->
-        <carousel-title-and-action title="Single tasks" />
-        <div class="relative">
-            <u-carousel
-                v-slot="{ item }"
-                drag-free
-                :items="allSingleTasks"
-                :ui="{ item: 'basis-80' }"
-            >
-                <card-single-task :item="item" />
-            </u-carousel>
+    <transition name="fade">
+        <div v-if="hasSingleTasks" class="p-c-default">
+            <carousel-title-and-action title="Single tasks" />
+            <div class="relative">
+                <u-carousel
+                    v-slot="{ item }"
+                    drag-free
+                    :items="allSingleTasks"
+                    :ui="{ item: 'basis-80' }"
+                >
+                    <card-single-task :item="item" />
+                </u-carousel>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script setup lang="ts">
@@ -56,6 +57,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'singleTask',
         'fields.location.sys.id': activeLocationId.value,
+        'fields.lastCompleted[exists]': false,
         include: 1
     }))
 })

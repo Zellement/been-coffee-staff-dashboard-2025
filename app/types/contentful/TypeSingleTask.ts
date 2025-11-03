@@ -4,9 +4,10 @@ import type { TypeLocationSkeleton } from "./TypeLocation";
 export interface TypeSingleTaskFields {
     title: EntryFieldTypes.Symbol;
     description: EntryFieldTypes.RichText;
+    whoCanComplete: EntryFieldTypes.Symbol;
     location: EntryFieldTypes.EntryLink<TypeLocationSkeleton>;
     completedBy?: EntryFieldTypes.Symbol;
-    completedOn?: EntryFieldTypes.Date;
+    lastCompleted?: EntryFieldTypes.Date;
 }
 
 export type TypeSingleTaskSkeleton = EntrySkeletonType<TypeSingleTaskFields, "singleTask">;
