@@ -39,7 +39,7 @@ export const useContentfulUtils = () => {
         } catch (error) {
             toast.add({
                 title: 'Error completing task',
-                description: `Task "${task.fields.task.fields.title}" could not be completed.`,
+                description: `Task could not be completed.`,
                 color: 'error'
             })
             console.error('Error completing task', error)

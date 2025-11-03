@@ -10,6 +10,9 @@ export const useTasksStore = defineStore('tasks', () => {
 
     const allRoutineTaskInstances: Ref<TypeTaskInstance[] | null> = ref(null)
 
+    const allSingleTasks: Ref<TypeSingleTask[] | null> = ref(null)
+    const totalSingleTasks: Ref<number | null> = ref(null)
+
     const today = new Date()
     const futureDate = new Date(today)
     futureDate.setDate(futureDate.getDate() + 7)
@@ -117,6 +120,8 @@ export const useTasksStore = defineStore('tasks', () => {
         allDailyTaskInstances,
         totalDailyTaskInstances,
         allRoutineTaskInstances,
+        allSingleTasks,
+        totalSingleTasks,
         newTasks,
         overdueTasks,
         upcomingTasks,

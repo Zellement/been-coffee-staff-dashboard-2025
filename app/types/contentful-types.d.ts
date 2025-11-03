@@ -12,6 +12,7 @@ declare global {
     type TypeOrder = ContentfulTypes.TypeOrder
     type TypeRole = ContentfulTypes.TypeRole
     type TypeRoutineTask = ContentfulTypes.TypeRoutineTask
+    type TypeSingleTask = ContentfulTypes.TypeSingleTask
     type TypeStandingOrder = ContentfulTypes.TypeStandingOrder
     type TypeSupplier = ContentfulTypes.TypeSupplier
     type TypeTableBooking = ContentfulTypes.TypeTableBooking

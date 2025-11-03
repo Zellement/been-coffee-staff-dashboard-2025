@@ -1,5 +1,6 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
+        <lazy-single-tasks class="col-span-full" />
         <lazy-shifts-carousel
             class="col-span-full"
             item-classes="md:basis-1/2"

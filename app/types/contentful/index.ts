@@ -10,6 +10,7 @@ export type { TypeOrder, TypeOrderFields, TypeOrderSkeleton } from "./TypeOrder"
 export type { TypeRecipe, TypeRecipeFields, TypeRecipeSkeleton } from "./TypeRecipe";
 export type { TypeRecipeCategories, TypeRecipeCategoriesFields, TypeRecipeCategoriesSkeleton } from "./TypeRecipeCategories";
 export type { TypeRoutineTask, TypeRoutineTaskFields, TypeRoutineTaskSkeleton } from "./TypeRoutineTask";
+export type { TypeSingleTask, TypeSingleTaskFields, TypeSingleTaskSkeleton } from "./TypeSingleTask";
 export type { TypeStandingOrder, TypeStandingOrderFields, TypeStandingOrderSkeleton } from "./TypeStandingOrder";
 export type { TypeSupplier, TypeSupplierFields, TypeSupplierSkeleton } from "./TypeSupplier";
 export type { TypeTableBooking, TypeTableBookingFields, TypeTableBookingSkeleton } from "./TypeTableBooking";
