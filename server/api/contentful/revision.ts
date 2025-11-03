@@ -18,7 +18,8 @@ export default defineEventHandler(async (event) => {
             routineTasks: 0,
             tableBookings: 0,
             orders: 0,
-            assets: 0
+            assets: 0,
+            singleTask: 0
         }
     }
 

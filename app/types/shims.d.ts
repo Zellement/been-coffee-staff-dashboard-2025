@@ -41,6 +41,7 @@ declare global {
             routineTasks: number
             orders: number
             assets: number
+            singleTask?: number
         }
     }
 

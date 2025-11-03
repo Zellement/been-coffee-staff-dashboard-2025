@@ -15,7 +15,7 @@ type Revision = {
         tableBookings: number
         orders: number
         assets: number
-        operations: number
+        singleTask?: number
     }
     lastEvent?: { id?: string; contentType?: string | null; at: string }
 }
@@ -31,7 +31,7 @@ const emptyRev = (): Revision => ({
         tableBookings: 0,
         orders: 0,
         assets: 0,
-        operations: 0
+        singleTask: 0
     }
 })
 
@@ -49,7 +49,7 @@ const CONTENT_TYPE_TO_BUCKET: Record<string, keyof Revision['buckets']> = {
     // assets
     asset: 'assets',
     // operations
-    operation: 'operations'
+    singleTask: 'singleTask'
 }
 
 export default defineEventHandler(async (event) => {

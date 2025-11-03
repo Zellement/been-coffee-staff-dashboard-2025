@@ -11,6 +11,7 @@ type Revision = {
         routineTasks: number
         orders: number
         assets: number
+        singleTask: number
     }
 }
 const DEFAULT_LOCAL: Revision = {
@@ -23,7 +24,8 @@ const DEFAULT_LOCAL: Revision = {
         routineTasks: 0,
         tableBookings: 0,
         orders: 0,
-        assets: 0
+        assets: 0,
+        singleTask: 0
     }
 }
 
@@ -46,6 +48,7 @@ export function useContentfulLiveSelective(
         beenAwesomeWinners: ['beenAwesomeWinners'],
         tableBookings: ['tableBookings'],
         orders: ['orders'],
+        singleTask: ['singleTask'],
         assets: [
             'noticeBoard',
             'dailyTasks',
@@ -86,10 +89,8 @@ export function useContentfulLiveSelective(
 
             if (keys.size) {
                 const arr = Array.from(keys)
-                // console.debug('[live] refreshing keys:', arr)
                 await refreshNuxtData(arr)
             } else {
-                // console.debug('[live] no refresh — buckets unchanged')
             }
 
             local.value = rev
@@ -105,13 +106,10 @@ export function useContentfulLiveSelective(
             const { pause, resume } = useIntervalFn(check, intervalMs)
             console.debug('[live] interval started @', intervalMs, 'ms')
 
-            // kick once if enabled
             if (enabled.value) {
-                // console.debug('[live] initial check()')
                 check()
             }
 
-            // pause/resume based ONLY on `enabled`
             const sync = () => (enabled.value ? resume() : pause())
             watch(enabled, sync, { immediate: true })
 
