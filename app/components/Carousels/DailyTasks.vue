@@ -14,7 +14,7 @@
                         <progress-bar-circular
                             v-if="totalDailyTaskInstances"
                             class="my-auto"
-                            :total-items="totalDailyTaskInstances"
+                            :total-items="totalTasks"
                             :completed-items="
                                 tasksStore.taskCountCompletedToday
                             "
@@ -129,7 +129,17 @@ const allIncomplete = computed(() => {
     return [
         ...(incompleteToday.value ?? []),
         ...(incompleteSetDayTasks.value ?? [])
-    ]
+    ].sort((a, b) => {
+        const timeA =
+            a.sys.contentType.sys.id === 'taskInstance'
+                ? a.fields.task.fields.dueByHour
+                : a.fields.time
+        const timeB =
+            b.sys.contentType.sys.id === 'taskInstance'
+                ? b.fields.task.fields.dueByHour
+                : b.fields.time
+        return timeA - timeB
+    })
 })
 
 const completeToday = computed(() => {
@@ -155,7 +165,17 @@ const allCompleteToday = computed(() => {
     return [
         ...(completeToday.value ?? []),
         ...(completeSetDayTasks.value ?? [])
-    ]
+    ].sort((a, b) => {
+        const timeA =
+            a.sys.contentType.sys.id === 'taskInstance'
+                ? a.fields.task.fields.dueByHour
+                : a.fields.time
+        const timeB =
+            b.sys.contentType.sys.id === 'taskInstance'
+                ? b.fields.task.fields.dueByHour
+                : b.fields.time
+        return timeA - timeB
+    })
 })
 
 const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
@@ -166,8 +186,16 @@ const hasSortedDailyTasks: ComputedRef<boolean> = computed(() => {
     return !!sortedDailyTasks.value && sortedDailyTasks.value.length > 0
 })
 
-const totalDailyTaskInstances: ComputedRef<number | null> = computed(() => {
-    return tasksStore.totalDailyTaskInstances
+const totalDailyTaskInstances: ComputedRef<number> = computed(() => {
+    return tasksStore.totalDailyTaskInstances || 0
+})
+
+const totalTodaySetDayTasks: ComputedRef<number> = computed(() => {
+    return tasksStore.totalTodaySetDayTasks || 0
+})
+
+const totalTasks: ComputedRef<number> = computed(() => {
+    return totalDailyTaskInstances.value + totalTodaySetDayTasks.value || 0
 })
 
 /* Functions & lifecycle */
@@ -222,6 +250,7 @@ watch(data, (newData) => {
 watch(setDayTasks, (newData) => {
     if (newData) {
         tasksStore.allTodaySetDayTasks = newData.items
+        tasksStore.totalTodaySetDayTasks = newData.total
     }
 })
 </script>

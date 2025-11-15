@@ -1,8 +1,8 @@
 <template>
-    <div class="relative">
+    <div class="relative pr-2">
         <div v-if="events?.events">
             <carousel-title-and-action title="Today's Events">
-                <span class="flex items-center gap-2 pr-2">
+                <span class="flex items-center gap-2">
                     <u-button
                         size="2xs"
                         color="tertiary"

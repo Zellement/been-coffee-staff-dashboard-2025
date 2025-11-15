@@ -39,11 +39,16 @@
                 >
                     {{
                         item.fields.lastCompleted
-                            ? wasXHoursAgo(item.fields.lastCompleted)
+                            ? getMonthAndDayOnly(item.fields.lastCompleted)
                             : 'Never'
                     }}
                 </u-badge>
-                <u-badge color="secondary" :label="item.fields.day" size="xs" />
+                <u-badge
+                    color="info"
+                    :label="item.fields.day"
+                    variant="outline"
+                    size="xs"
+                />
             </div>
         </u-card>
         <template #body>
@@ -89,7 +94,7 @@ const loading: Ref<boolean> = ref(false)
 const props = defineProps<Props>()
 
 const { completeTask } = useContentfulUtils()
-const { fullDateConverter, wasXHoursAgo, convertNumberTo24HrTime } =
+const { fullDateConverter, getMonthAndDayOnly, convertNumberTo24HrTime } =
     useDateUtils()
 
 const today = new Date()
@@ -108,7 +113,7 @@ const pastDueTime: ComputedRef<boolean> = computed(() => {
 
 const handleCompleteTask = async (task: TypeDailyTask) => {
     loading.value = true
-    await completeTask(task, 'dailyTasks')
+    await completeTask(task, 'setDayTask')
     loading.value = false
     open.value = false
 }

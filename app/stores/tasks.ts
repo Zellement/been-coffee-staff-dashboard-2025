@@ -14,6 +14,7 @@ export const useTasksStore = defineStore('tasks', () => {
     const totalSingleTasks: Ref<number | null> = ref(null)
 
     const allTodaySetDayTasks: Ref<TypeSetDayTask[] | null> = ref(null)
+    const totalTodaySetDayTasks: Ref<number | null> = ref(null)
 
     const today = new Date()
     const futureDate = new Date(today)
@@ -25,14 +26,21 @@ export const useTasksStore = defineStore('tasks', () => {
 
     const taskCountCompletedToday: ComputedRef<number> = computed(() => {
         const today = new Date()
-        return (
+        const dailyTasks =
             allDailyTaskInstances.value?.filter((task) => {
                 const lastCompleted = task.fields.lastCompleted
                 if (!lastCompleted) return false
                 const lastCompletedDate = new Date(lastCompleted)
                 return lastCompletedDate.toDateString() === today.toDateString()
             }).length || 0
-        )
+        const setDayTasks =
+            allTodaySetDayTasks.value?.filter((task) => {
+                const lastCompleted = task.fields.lastCompleted
+                if (!lastCompleted) return false
+                const lastCompletedDate = new Date(lastCompleted)
+                return lastCompletedDate.toDateString() === today.toDateString()
+            }).length || 0
+        return dailyTasks + setDayTasks
     })
 
     const tasksOverdueToday: ComputedRef<number> = computed(() => {
@@ -128,6 +136,7 @@ export const useTasksStore = defineStore('tasks', () => {
         overdueTasks,
         upcomingTasks,
         allTodaySetDayTasks,
+        totalTodaySetDayTasks,
         taskCountCompletedToday,
         tasksOverdueToday
     }
