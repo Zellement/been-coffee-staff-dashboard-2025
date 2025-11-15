@@ -18,8 +18,16 @@
             </span>
         </div>
 
-        <div class="w-full grow">
-            <u-timeline
+        <div class="flex w-full grow items-start gap-2">
+            <div v-for="e in event.events" :key="`${e.title}-${e.description}`">
+                <u-badge
+                    :variant="e.variant"
+                    :color="e.color"
+                    :icon="e.icon"
+                    :label="e.title"
+                />
+            </div>
+            <!-- <u-timeline
                 v-model="active"
                 color="secondary"
                 disabled
@@ -31,7 +39,7 @@
                     title: '-mt-3 text-xs',
                     description: 'text-xs -mt-2'
                 }"
-            />
+            /> -->
         </div>
     </div>
 </template>
@@ -43,5 +51,17 @@ interface Props {
 
 defineProps<Props>()
 
-const active: Ref<number> = ref(-1)
+// const active: Ref<number> = ref(-1)
+
+// const getIcon = (description: string): string => {
+//     if (description.includes('Clocked in')) {
+//         return 'plus'
+//     } else if (description.includes('deleted')) {
+//         return 'trash'
+//     } else if (description.includes('updated')) {
+//         return 'pencil'
+//     } else {
+//         return 'info-circle'
+//     }
+// }
 </script>

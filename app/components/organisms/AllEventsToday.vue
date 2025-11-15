@@ -111,6 +111,30 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
         return eventIcons[eventCode] || 'i-material-symbols-help-outline'
     }
 
+    const getColor = (eventCode: number) => {
+        const eventColors: string[] = [
+            'gray',
+            'success',
+            'info',
+            'info',
+            'error'
+        ]
+
+        return eventColors[eventCode] || 'gray'
+    }
+
+    const getVariant = (eventCode: number) => {
+        const eventVariants: string[] = [
+            'solid',
+            'solid',
+            'outline',
+            'solid',
+            'solid'
+        ]
+
+        return eventVariants[eventCode] || 'solid'
+    }
+
     if (!events.value?.events) return []
 
     // Loop over each event, and add the userId and userName to each event object
@@ -142,7 +166,9 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
                 userEvents.map((event) => ({
                     title: `${getTime(event.date)}`,
                     description: getEventType(event.eventType),
-                    icon: getIcon(event.eventType)
+                    icon: getIcon(event.eventType),
+                    color: getColor(event.eventType),
+                    variant: getVariant(event.eventType)
                 })) || []
         }
     })
