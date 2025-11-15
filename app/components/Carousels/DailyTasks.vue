@@ -1,5 +1,7 @@
 <template>
     <div class="p-c-default">
+        <!-- {{ todaysDayAsString }} -->
+        <!-- <pre> {{ setDayTasks }}</pre> -->
         <carousel-title-and-action title="Daily tasks" />
         <div class="relative">
             <transition name="fade">
@@ -25,7 +27,8 @@
                             :items="sortedDailyTasks"
                             :ui="{ item: 'basis-48' }"
                         >
-                            <card-daily-task :item="item" />
+                            <pre>{{ item.sys.contentType }}</pre>
+                            <!-- <card-daily-task :item="item" /> -->
                         </u-carousel>
                     </div>
                 </div>
@@ -69,11 +72,14 @@ const shouldFetch: ComputedRef<boolean> = computed(
     () => locationsStore.safeToFetchAllData
 )
 
-const allDailyTaskInstances: ComputedRef<TypeDailyTask[] | null> = computed(
-    () => {
-        return tasksStore.allDailyTaskInstances
-    }
-)
+const allDailyTaskInstances: ComputedRef<
+    (TypeDailyTask | TypeSetDayTask)[] | null
+> = computed(() => {
+    return [
+        ...(tasksStore.allDailyTaskInstances || []),
+        ...(tasksStore.allTodaySetDayTasks || [])
+    ]
+})
 
 const hasDailyTaskInstances: ComputedRef<boolean> = computed(() => {
     return (
@@ -81,22 +87,70 @@ const hasDailyTaskInstances: ComputedRef<boolean> = computed(() => {
     )
 })
 
-const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
-    if (!allDailyTaskInstances.value) return null
-    const incompleteToday = allDailyTaskInstances.value.filter(
+const incompleteSetDayTasks = computed(() => {
+    return allDailyTaskInstances.value
+        ?.filter(
+            (task) =>
+                task.sys.contentType.sys.id === 'setDayTask' &&
+                (!task.fields.lastCompleted ||
+                    new Date(task.fields.lastCompleted).toDateString() !==
+                        today.toDateString())
+        )
+        .sort((a, b) => {
+            return a.fields.time - b.fields.time
+        })
+})
+
+const incompleteToday = computed(() => {
+    return allDailyTaskInstances.value
+        ?.filter(
+            (task) =>
+                task.sys.contentType.sys.id === 'taskInstance' &&
+                new Date(task.fields.lastCompleted).toDateString() !==
+                    today.toDateString()
+        )
+        .sort((a, b) => {
+            return (
+                a.fields.task.fields.dueByHour - b.fields.task.fields.dueByHour
+            )
+        })
+})
+
+const allIncomplete = computed(() => {
+    return [
+        ...(incompleteToday.value ?? []),
+        ...(incompleteSetDayTasks.value ?? [])
+    ]
+})
+
+const completeToday = computed(() => {
+    return allDailyTaskInstances.value?.filter(
         (task) =>
-            new Date(task.fields.lastCompleted).toDateString() !==
-            today.toDateString()
-    )
-    incompleteToday.sort((a, b) => {
-        return a.fields.task.fields.dueByHour - b.fields.task.fields.dueByHour
-    })
-    const completeToday = allDailyTaskInstances.value.filter(
-        (task) =>
+            task.sys.contentType.sys.id === 'taskInstance' &&
             new Date(task.fields.lastCompleted).toDateString() ===
-            today.toDateString()
+                today.toDateString()
     )
-    return [...incompleteToday, ...completeToday]
+})
+
+const completeSetDayTasks = computed(() => {
+    return allDailyTaskInstances.value?.filter(
+        (task) =>
+            task.sys.contentType.sys.id === 'setDayTask' &&
+            task.fields.lastCompleted &&
+            new Date(task.fields.lastCompleted).toDateString() ===
+                today.toDateString()
+    )
+})
+
+const allCompleteToday = computed(() => {
+    return [
+        ...(completeToday.value ?? []),
+        ...(completeSetDayTasks.value ?? [])
+    ]
+})
+
+const sortedDailyTasks: ComputedRef<TypeDailyTask[] | null> = computed(() => {
+    return [...allIncomplete.value, ...allCompleteToday.value]
 })
 
 const hasSortedDailyTasks: ComputedRef<boolean> = computed(() => {
@@ -123,7 +177,34 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     }))
 })
 
+const todaysDay = today.getDay()
+
+const todaysDayAsString = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
+    todaysDay
+]
+
+const { data: setDayTasks } = useFetch('/api/contentful/fetch-entries', {
+    key: 'setDayTask',
+    lazy: true,
+    server: false,
+    watch: [shouldFetch],
+    immediate: shouldFetch.value,
+    params: computed(() => ({
+        content_type: 'setDayTask',
+        'fields.location.sys.id': activeLocationId.value,
+        'fields.day': todaysDayAsString,
+        include: 0
+    }))
+})
+
 watch(data, (newData) => {
+    if (newData) {
+        tasksStore.allDailyTaskInstances = newData.items
+        tasksStore.totalDailyTaskInstances = newData.total
+    }
+})
+
+watch(setDayTasks, (newData) => {
     if (newData) {
         tasksStore.allDailyTaskInstances = newData.items
         tasksStore.totalDailyTaskInstances = newData.total

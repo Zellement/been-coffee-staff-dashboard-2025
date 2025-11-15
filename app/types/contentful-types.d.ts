@@ -5,6 +5,7 @@ declare global {
     type TypeArticleCategories = ContentfulTypes.TypeArticleCategories
     type TypeBeenAwesomeWinner = ContentfulTypes.TypeBeenAwesomeWinner
     type TypeDailyTask = ContentfulTypes.TypeDailyTask
+    type TypeSetDayTask = ContentfulTypes.TypeSetDayTask
     type TypeEmployee = ContentfulTypes.TypeEmployee
     type TypeImageWithFocalPoint = ContentfulTypes.TypeImageWithFocalPoint
     type TypeLocation = ContentfulTypes.TypeLocation
