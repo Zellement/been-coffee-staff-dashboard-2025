@@ -25,7 +25,7 @@
                     </u-badge>
                 </span>
             </carousel-title-and-action>
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col gap-4.5">
                 <single-event
                     v-for="item in transformedEvents"
                     :key="item?.userId"
@@ -68,6 +68,7 @@ const { getTime } = useDateUtils()
 const locationsStore = useLocationsStore()
 
 const date = new Date()
+// const date = new Date('2025-11-13')
 const dateStr = date.toISOString().split('T')[0]
 
 const { data: events } = await useFetch<RotareadyAttendance | null>(
@@ -115,8 +116,8 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
         const eventColors: string[] = [
             'gray',
             'success',
-            'info',
-            'info',
+            'error',
+            'success',
             'error'
         ]
 
@@ -127,9 +128,9 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
         const eventVariants: string[] = [
             'solid',
             'solid',
-            'outline',
             'solid',
-            'solid'
+            'subtle',
+            'subtle'
         ]
 
         return eventVariants[eventCode] || 'solid'

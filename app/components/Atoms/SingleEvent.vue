@@ -18,17 +18,49 @@
             </span>
         </div>
 
-        <div class="flex w-full grow items-start gap-2">
-            <div v-for="e in event.events" :key="`${e.title}-${e.description}`">
-                <u-badge
-                    :variant="e.variant"
-                    :color="e.color"
-                    :icon="e.icon"
-                    :label="e.title"
+        <div class="relative flex w-full grow items-center gap-4">
+            <div
+                class="dark:from-navy-400 dark:to-navy-600 from-tuscany-500 to-seashell-300 absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-linear-to-r"
+            />
+            <template
+                v-for="e in event.events"
+                :key="`${e.title}-${e.description}`"
+            >
+                <div
+                    v-if="e.description !== 'Clocked out'"
+                    class="dark:bg-navy-500 relative rounded bg-white"
+                    :class="[e.description === 'Clocked in' ? 'mr-auto' : '']"
+                >
+                    <u-badge
+                        :variant="e.variant"
+                        :color="e.color"
+                        :icon="e.icon"
+                        :label="e.title"
+                    />
+                </div>
+            </template>
+
+            <u-badge
+                v-if="hasClockedOut"
+                class="relative ml-auto"
+                variant="solid"
+                color="error"
+                icon="i-material-symbols-logout"
+                :label="clockedOutTime"
+            />
+            <div v-else class="relative ml-auto flex w-14.5">
+                <u-icon
+                    class="ml-auto"
+                    :variant="'outline'"
+                    :color="'warning'"
+                    :name="'i-svg-spinners-clock'"
+                    :ui="{
+                        base: 'w-40! bg-orange-300'
+                    }"
                 />
             </div>
-            <!-- <u-timeline
-                v-model="active"
+            <!--
+                <u-timeline
                 color="secondary"
                 disabled
                 orientation="horizontal"
@@ -49,7 +81,18 @@ interface Props {
     event: TransformedUser
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const hasClockedOut = computed(() => {
+    return props.event.events.some((e) => e.description === 'Clocked out')
+})
+
+const clockedOutTime: ComputedRef<string> = computed(() => {
+    const clockOutEvent = props.event.events.find(
+        (e) => e.description === 'Clocked out'
+    )
+    return clockOutEvent?.title ? clockOutEvent?.title : ''
+})
 
 // const active: Ref<number> = ref(-1)
 
