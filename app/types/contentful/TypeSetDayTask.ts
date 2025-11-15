@@ -3,7 +3,7 @@ import type { TypeLocationSkeleton } from "./TypeLocation";
 
 export interface TypeSetDayTaskFields {
     title: EntryFieldTypes.Symbol;
-    day: EntryFieldTypes.Symbol<"Fri" | "Mon" | "Sat" | "Sun" | "Thu" | "Tue" | "Wed">;
+    day: EntryFieldTypes.Symbol<"Friday" | "Monday" | "Saturday" | "Sunday" | "Thursday" | "Tuesday" | "Wednesday">;
     time: EntryFieldTypes.Integer;
     description: EntryFieldTypes.RichText;
     whoCanComplete: EntryFieldTypes.Symbol;

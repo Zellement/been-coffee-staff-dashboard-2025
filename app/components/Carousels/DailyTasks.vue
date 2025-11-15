@@ -1,11 +1,12 @@
 <template>
     <div class="p-c-default">
+        <!-- <pre>{{ allTodaysTasks }}</pre> -->
         <!-- {{ todaysDayAsString }} -->
         <!-- <pre> {{ setDayTasks }}</pre> -->
         <carousel-title-and-action title="Daily tasks" />
         <div class="relative">
             <transition name="fade">
-                <div v-if="hasDailyTaskInstances" class="flex gap-4">
+                <div v-if="hasTodayTasks" class="flex gap-4">
                     <div
                         v-if="!hideProgressCircle"
                         class="relative flex w-16 flex-col"
@@ -27,15 +28,26 @@
                             :items="sortedDailyTasks"
                             :ui="{ item: 'basis-48' }"
                         >
-                            <pre>{{ item.sys.contentType }}</pre>
-                            <!-- <card-daily-task :item="item" /> -->
+                            <card-daily-task
+                                v-if="
+                                    item.sys.contentType.sys.id ===
+                                    'taskInstance'
+                                "
+                                :item="item"
+                            />
+                            <card-set-day-task
+                                v-if="
+                                    item.sys.contentType.sys.id === 'setDayTask'
+                                "
+                                :item="item"
+                            />
                         </u-carousel>
                     </div>
                 </div>
             </transition>
             <transition name="fade-absolute">
                 <div
-                    v-if="!hasDailyTaskInstances"
+                    v-if="!hasTodayTasks"
                     class="flex w-full gap-4 overflow-hidden"
                 >
                     <u-skeleton class="h-17 w-17 shrink-0 rounded-full" />
@@ -72,23 +84,20 @@ const shouldFetch: ComputedRef<boolean> = computed(
     () => locationsStore.safeToFetchAllData
 )
 
-const allDailyTaskInstances: ComputedRef<
-    (TypeDailyTask | TypeSetDayTask)[] | null
-> = computed(() => {
-    return [
-        ...(tasksStore.allDailyTaskInstances || []),
-        ...(tasksStore.allTodaySetDayTasks || [])
-    ]
-})
+const allTodaysTasks: ComputedRef<(TypeDailyTask | TypeSetDayTask)[] | null> =
+    computed(() => {
+        return [
+            ...(tasksStore.allDailyTaskInstances || []),
+            ...(tasksStore.allTodaySetDayTasks || [])
+        ]
+    })
 
-const hasDailyTaskInstances: ComputedRef<boolean> = computed(() => {
-    return (
-        !!allDailyTaskInstances.value && allDailyTaskInstances.value.length > 0
-    )
+const hasTodayTasks: ComputedRef<boolean> = computed(() => {
+    return !!allTodaysTasks.value && allTodaysTasks.value.length > 0
 })
 
 const incompleteSetDayTasks = computed(() => {
-    return allDailyTaskInstances.value
+    return allTodaysTasks.value
         ?.filter(
             (task) =>
                 task.sys.contentType.sys.id === 'setDayTask' &&
@@ -102,7 +111,7 @@ const incompleteSetDayTasks = computed(() => {
 })
 
 const incompleteToday = computed(() => {
-    return allDailyTaskInstances.value
+    return allTodaysTasks.value
         ?.filter(
             (task) =>
                 task.sys.contentType.sys.id === 'taskInstance' &&
@@ -124,7 +133,7 @@ const allIncomplete = computed(() => {
 })
 
 const completeToday = computed(() => {
-    return allDailyTaskInstances.value?.filter(
+    return allTodaysTasks.value?.filter(
         (task) =>
             task.sys.contentType.sys.id === 'taskInstance' &&
             new Date(task.fields.lastCompleted).toDateString() ===
@@ -133,7 +142,7 @@ const completeToday = computed(() => {
 })
 
 const completeSetDayTasks = computed(() => {
-    return allDailyTaskInstances.value?.filter(
+    return allTodaysTasks.value?.filter(
         (task) =>
             task.sys.contentType.sys.id === 'setDayTask' &&
             task.fields.lastCompleted &&
@@ -179,9 +188,15 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
 
 const todaysDay = today.getDay()
 
-const todaysDayAsString = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
-    todaysDay
-]
+const todaysDayAsString = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+][todaysDay]
 
 const { data: setDayTasks } = useFetch('/api/contentful/fetch-entries', {
     key: 'setDayTask',
@@ -206,8 +221,7 @@ watch(data, (newData) => {
 
 watch(setDayTasks, (newData) => {
     if (newData) {
-        tasksStore.allDailyTaskInstances = newData.items
-        tasksStore.totalDailyTaskInstances = newData.total
+        tasksStore.allTodaySetDayTasks = newData.items
     }
 })
 </script>
