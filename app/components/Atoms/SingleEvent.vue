@@ -39,7 +39,6 @@
                     />
                 </div>
             </template>
-
             <u-badge
                 v-if="hasClockedOut"
                 class="relative ml-auto"
@@ -51,12 +50,14 @@
             <div v-else class="relative ml-auto flex w-14.5">
                 <u-icon
                     class="ml-auto"
-                    :variant="'outline'"
-                    :color="'warning'"
-                    :name="'i-svg-spinners-clock'"
-                    :ui="{
-                        base: 'w-40! bg-orange-300'
-                    }"
+                    :class="
+                        isOnBreak
+                            ? 'text-tuscany-500 dark:text-butterscotch-200 size-4! animate-pulse'
+                            : 'text-primary opacity-20 dark:opacity-60'
+                    "
+                    :name="
+                        isOnBreak ? 'ph:armchair-fill' : 'i-svg-spinners-clock'
+                    "
                 />
             </div>
             <!--
@@ -92,6 +93,11 @@ const clockedOutTime: ComputedRef<string> = computed(() => {
         (e) => e.description === 'Clocked out'
     )
     return clockOutEvent?.title ? clockOutEvent?.title : ''
+})
+
+const isOnBreak = computed(() => {
+    const lastEvent = props.event.events[props.event.events.length - 1] || null
+    return lastEvent?.description === 'Break on'
 })
 
 // const active: Ref<number> = ref(-1)
