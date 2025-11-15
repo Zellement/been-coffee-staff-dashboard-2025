@@ -17,7 +17,7 @@
                         :src="`${
                             getTeamMember(shift)?.fields?.photo?.[0]?.fields
                                 ?.file?.url
-                        }?w=30&h=30&fit=fill&f=face&fm=webp`"
+                        }?w=90&h=90&fit=fill&f=face&fm=webp`"
                         :alt="getTeamMember(shift)?.fields?.name"
                     />
                     <div

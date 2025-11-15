@@ -5,7 +5,7 @@
                 <img
                     v-if="event.userPhoto"
                     class="bg-tertiary size-8 rounded-full p-px"
-                    :src="`${event.userPhoto}?w=30&h=30&fit=fill&f=face&fm=webp`"
+                    :src="`${event.userPhoto}?w=90&h=90&fit=fill&f=face&fm=webp`"
                     :alt="event.userName"
                 />
                 <div
