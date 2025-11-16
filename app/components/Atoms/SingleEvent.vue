@@ -4,7 +4,7 @@
             <u-avatar-group>
                 <img
                     v-if="event.userPhoto"
-                    class="bg-tertiary size-8 rounded-full p-px"
+                    class="bg-tertiary size-8 shrink-0 rounded-full p-px"
                     :src="`${event.userPhoto}?w=90&h=90&fit=fill&f=face&fm=webp`"
                     :alt="event.userName"
                 />
@@ -18,7 +18,9 @@
             </span>
         </div>
 
-        <div class="relative flex w-full grow items-center gap-4">
+        <div
+            class="relative flex w-full grow items-center gap-4 overflow-x-auto"
+        >
             <div
                 class="dark:from-navy-400 dark:to-navy-600 from-tuscany-500 to-seashell-300 absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-linear-to-r"
             />
