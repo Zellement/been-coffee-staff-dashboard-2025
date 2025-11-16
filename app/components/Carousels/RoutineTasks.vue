@@ -7,10 +7,11 @@
         >
             <carousel-title-and-action title="Routine tasks">
                 <u-button
-                    size="xs"
+                    size="2xs"
                     icon="i-bxs-show"
-                    variant="outline"
+                    variant="soft"
                     class="mr-2"
+                    label="See all"
                 />
             </carousel-title-and-action>
             <template #body>
@@ -32,12 +33,45 @@
                             >
                                 <rich-text :content="item.description" />
                             </div>
-                            <div class="flex flex-col items-start gap-2">
+                            <div class="mb-4 flex gap-1">
                                 <u-badge
+                                    size="sm"
+                                    color="neutral"
+                                    variant="outline"
+                                    icon="i-bx-hourglass"
+                                >
+                                    <span
+                                        >{{
+                                            item.fullTask.fields.task.fields
+                                                .minutesToComplete
+                                        }}
+                                        mins
+                                    </span>
+                                </u-badge>
+                                <u-badge
+                                    size="sm"
+                                    color="neutral"
+                                    variant="outline"
+                                    icon="i-akar-icons-arrow-cycle"
+                                >
+                                    <span>
+                                        Every
+                                        {{
+                                            item.fullTask.fields.task.fields
+                                                .frequencyInDays
+                                        }}
+                                        days
+                                    </span>
+                                </u-badge>
+                                <u-badge
+                                    size="sm"
+                                    color="neutral"
                                     variant="outline"
                                     icon="i-prime-history"
                                     :label="`${shortDateConverter(item.lastCompleted)} at ${getTime(item.lastCompleted)} ${item.completedBy ? `by ${item.completedBy}` : ''}`"
                                 />
+                            </div>
+                            <div class="flex flex-col items-start gap-2">
                                 <u-button
                                     color="tertiary"
                                     :icon="
