@@ -19,25 +19,30 @@
         </div>
 
         <div
-            class="relative flex w-full grow items-center gap-4 overflow-x-auto"
+            class="relative flex w-full grow items-center"
+            :class="hasMoreThanFourEvents ? 'gap-2' : 'gap-1 lg:gap-4'"
         >
             <div
                 class="dark:from-navy-400 dark:to-navy-600 from-tuscany-500 to-seashell-300 absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-linear-to-r"
             />
             <template
-                v-for="e in event.events"
+                v-for="(e, index) in event.events"
                 :key="`${e.title}-${e.description}`"
             >
                 <div
                     v-if="e.description !== 'Clocked out'"
                     class="dark:bg-navy-500 relative rounded bg-white"
-                    :class="[e.description === 'Clocked in' ? 'mr-auto' : '']"
+                    :class="[
+                        e.description === 'Clocked in' ? 'mr-auto' : '',
+                        multipleEvents(index) ? '' : 'ml-0'
+                    ]"
                 >
                     <u-badge
                         :variant="e.variant"
                         :color="e.color"
                         :icon="e.icon"
-                        :label="e.title"
+                        :size="multipleEvents(index) ? 'sm' : 'md'"
+                        :label="multipleEvents(index) ? undefined : e.title"
                     />
                 </div>
             </template>
@@ -101,6 +106,14 @@ const isOnBreak = computed(() => {
     const lastEvent = props.event.events[props.event.events.length - 1] || null
     return lastEvent?.description === 'Break on'
 })
+
+const hasMoreThanFourEvents = computed(() => {
+    return props.event.events.length > 4
+})
+
+const multipleEvents = (index: number) => {
+    return hasMoreThanFourEvents.value && index !== 0
+}
 
 // const active: Ref<number> = ref(-1)
 

@@ -54,7 +54,7 @@
             <p class="">{{ item.fields.task.fields.title }}</p>
 
             <div class="mt-auto self-start">
-                <u-button-group orientation="vertical" class="mt-auto pt-2">
+                <u-field-group orientation="vertical" class="mt-auto pt-2">
                     <u-badge
                         v-if="item.fields.task?.fields?.staffLevel"
                         size="xs"
@@ -69,7 +69,7 @@
                         class="font-semibold"
                         :label="`Estimated ${item.fields.task.fields.minutesToComplete} mins`"
                     />
-                </u-button-group>
+                </u-field-group>
             </div>
         </u-card>
         <template #body>

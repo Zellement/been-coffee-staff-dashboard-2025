@@ -13,7 +13,7 @@
                             getTeamMember(shift)?.fields?.photo?.[0]?.fields
                                 ?.file?.url
                         "
-                        class="bg-tertiary size-8 rounded-full p-px"
+                        class="bg-tertiary size-8 shrink-0 rounded-full p-px"
                         :src="`${
                             getTeamMember(shift)?.fields?.photo?.[0]?.fields
                                 ?.file?.url

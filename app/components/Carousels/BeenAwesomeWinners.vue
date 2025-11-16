@@ -65,7 +65,7 @@
                     <h2 class="uc-text mb-2">
                         {{ item.fields.name }}
                     </h2>
-                    <u-button-group>
+                    <u-field-group>
                         <u-badge
                             variant="outline"
                             size="sm"
@@ -97,7 +97,7 @@
                                 )
                             "
                         />
-                    </u-button-group>
+                    </u-field-group>
 
                     <p class="mt-2">
                         {{

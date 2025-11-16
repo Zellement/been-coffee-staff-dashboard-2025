@@ -24,7 +24,7 @@
                                 : ''
                         }}
                     </h3>
-                    <u-button-group class="mt-2">
+                    <u-field-group class="mt-2">
                         <u-badge
                             variant="outline"
                             size="sm"
@@ -58,7 +58,7 @@
                                     : 'Birthday unknown'
                             "
                         />
-                    </u-button-group>
+                    </u-field-group>
 
                     <u-drawer
                         :title="`${item.fields.name} ${item.fields.surname}`"
