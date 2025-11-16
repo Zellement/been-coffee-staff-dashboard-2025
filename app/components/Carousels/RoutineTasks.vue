@@ -12,9 +12,10 @@
             <template #body>
                 <u-accordion :items="allRoutineTasksForAccordions">
                     <template #body="{ item }">
-                        <div class="ml-4 border-l border-zinc-200 pl-4">
+                        <div class="mb-4 ml-4 border-l border-zinc-200 pl-4">
                             <rich-text :content="item.description" />
                         </div>
+                        <u-button label="Complete now" />
                     </template>
                 </u-accordion>
             </template>
