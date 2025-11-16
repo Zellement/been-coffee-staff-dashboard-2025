@@ -48,7 +48,12 @@ dayAfterTomorrowDate.setDate(dayAfterTomorrowDate.getDate() + 1)
 const dayAfterTomorrowStr = backwardsDate(dayAfterTomorrowDate)
 
 const slides: any[] = [
-    { component: AllEventsToday },
+    {
+        component: AllEventsToday,
+        props: {
+            date: todayStr
+        }
+    },
     {
         component: AllShifts,
         props: {

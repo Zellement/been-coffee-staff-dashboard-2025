@@ -65,11 +65,15 @@ const lastUpdated: Ref<string> = ref(new Date().toString())
 
 const { getTime } = useDateUtils()
 
+interface Props {
+    date: string
+}
+
+const props = defineProps<Props>()
+
 const locationsStore = useLocationsStore()
 
-const date = new Date()
-// const date = new Date('2025-11-13')
-const dateStr = date.toISOString().split('T')[0]
+const dateStr = props.date
 
 const { data: events } = await useFetch<RotareadyAttendance | null>(
     '/api/rotaready/get-events',
