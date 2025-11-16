@@ -14,18 +14,18 @@
                 />
             </carousel-title-and-action>
             <template #body>
-                <div
-                    class="relative"
-                    :class="loading ? 'h-screen overflow-hidden' : ''"
-                >
+                <div class="relative">
                     <transition name="fade">
                         <loading-overlay
                             v-if="loading"
-                            class="backdrop-blur-xs"
+                            class="fixed backdrop-blur-xs"
                         />
                     </transition>
 
-                    <u-accordion :items="allRoutineTasksForAccordions">
+                    <u-accordion
+                        type="multiple"
+                        :items="allRoutineTasksForAccordions"
+                    >
                         <template #body="{ item }">
                             <div
                                 class="mb-4 ml-4 border-l border-zinc-200 pl-4"
@@ -33,13 +33,18 @@
                                 <rich-text :content="item.description" />
                             </div>
                             <div class="flex flex-col items-start gap-2">
-                                {{ item.lastCompleted }}
                                 <u-badge
                                     variant="outline"
                                     icon="i-prime-history"
-                                    :label="`${shortDateConverter(item.lastCompleted)}  ${item.completedBy ? `by ${item.completedBy}` : ''}`"
+                                    :label="`${shortDateConverter(item.lastCompleted)} at ${getTime(item.lastCompleted)} ${item.completedBy ? `by ${item.completedBy}` : ''}`"
                                 />
                                 <u-button
+                                    color="tertiary"
+                                    :icon="
+                                        loading
+                                            ? 'i-svg-spinners-blocks-shuffle-3'
+                                            : 'i-bx-check'
+                                    "
                                     label="Complete now"
                                     @click="handleCompleteTask(item.fullTask)"
                                 />
@@ -113,7 +118,7 @@ import type { AccordionItem } from '@nuxt/ui'
 const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
 
-const { shortDateConverter } = useDateUtils()
+const { shortDateConverter, getTime } = useDateUtils()
 
 /* Computed */
 
