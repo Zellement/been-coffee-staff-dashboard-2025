@@ -1,6 +1,10 @@
 <template>
-    <div class="p-c-default">
-        <u-slideover title="All Routine Tasks" aria-label="All Routine Tasks">
+    <div class="p-c-default relative">
+        <u-slideover
+            title="All Routine Tasks"
+            class="relative"
+            aria-label="All Routine Tasks"
+        >
             <carousel-title-and-action title="Routine tasks">
                 <u-button
                     size="xs"
@@ -10,24 +14,39 @@
                 />
             </carousel-title-and-action>
             <template #body>
-                <u-accordion :items="allRoutineTasksForAccordions">
-                    <template #body="{ item }">
-                        <div class="mb-4 ml-4 border-l border-zinc-200 pl-4">
-                            <rich-text :content="item.description" />
-                        </div>
-                        <div class="flex flex-col items-start gap-2">
-                            <u-badge
-                                variant="outline"
-                                icon="i-prime-history"
-                                :label="`${shortDateConverter(item.lastCompleted)}  ${item.completedBy ? `by ${item.completedBy}` : ''}`"
-                            />
-                            <u-button
-                                label="Complete now"
-                                @click="handleCompleteTask(item.fullTask)"
-                            />
-                        </div>
-                    </template>
-                </u-accordion>
+                <div
+                    class="relative"
+                    :class="loading ? 'h-screen overflow-hidden' : ''"
+                >
+                    <transition name="fade">
+                        <loading-overlay
+                            v-if="loading"
+                            class="backdrop-blur-xs"
+                        />
+                    </transition>
+
+                    <u-accordion :items="allRoutineTasksForAccordions">
+                        <template #body="{ item }">
+                            <div
+                                class="mb-4 ml-4 border-l border-zinc-200 pl-4"
+                            >
+                                <rich-text :content="item.description" />
+                            </div>
+                            <div class="flex flex-col items-start gap-2">
+                                {{ item.lastCompleted }}
+                                <u-badge
+                                    variant="outline"
+                                    icon="i-prime-history"
+                                    :label="`${shortDateConverter(item.lastCompleted)}  ${item.completedBy ? `by ${item.completedBy}` : ''}`"
+                                />
+                                <u-button
+                                    label="Complete now"
+                                    @click="handleCompleteTask(item.fullTask)"
+                                />
+                            </div>
+                        </template>
+                    </u-accordion>
+                </div>
             </template>
         </u-slideover>
         <div class="relative">
