@@ -15,7 +15,17 @@
                         <div class="mb-4 ml-4 border-l border-zinc-200 pl-4">
                             <rich-text :content="item.description" />
                         </div>
-                        <u-button label="Complete now" />
+                        <div class="flex flex-col items-start gap-2">
+                            <u-badge
+                                variant="outline"
+                                icon="i-prime-history"
+                                :label="`${shortDateConverter(item.lastCompleted)}  ${item.completedBy ? `by ${item.completedBy}` : ''}`"
+                            />
+                            <u-button
+                                label="Complete now"
+                                @click="handleCompleteTask(item.fullTask)"
+                            />
+                        </div>
                     </template>
                 </u-accordion>
             </template>
@@ -84,6 +94,8 @@ import type { AccordionItem } from '@nuxt/ui'
 const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
 
+const { shortDateConverter } = useDateUtils()
+
 /* Computed */
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
@@ -101,7 +113,12 @@ const allRoutineTasksForAccordions: ComputedRef<AccordionItem[]> = computed(
                 ?.map((task) => ({
                     id: task.sys.id,
                     label: task.fields.task.fields.title,
-                    description: task.fields.task.fields.description
+                    description: task.fields.task.fields.description,
+                    lastCompleted:
+                        task.fields.lastCompleted &&
+                        new Date(task.fields.lastCompleted),
+                    completedBy: task.fields.completedBy,
+                    fullTask: task
                 }))
                 .sort((a, b) => a.label.localeCompare(b.label)) || []
         )
@@ -185,4 +202,14 @@ watch(data, (newData) => {
         tasksStore.allRoutineTaskInstances = finalData
     }
 })
+
+const loading: Ref<boolean> = ref(false)
+
+const { completeTask } = useContentfulUtils()
+
+const handleCompleteTask = async (task: TypeDailyTask) => {
+    loading.value = true
+    await completeTask(task, 'routineTasks')
+    loading.value = false
+}
 </script>
