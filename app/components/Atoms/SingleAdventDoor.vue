@@ -4,7 +4,10 @@
             class="door relative z-20"
             :class="[
                 doorIsOpen ? 'doorOpen' : '',
-                hasWinners ? 'overflow-clip rounded-br-3xl' : ''
+                isShaking ? 'shake' : '',
+                hasWinners
+                    ? 'overflow-clip rounded-br-3xl'
+                    : 'border-tuscany-900 border-2 border-dotted'
             ]"
         >
             <span
@@ -46,6 +49,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const doorIsOpen: Ref<boolean> = ref(props.isOpen ?? false)
+const isShaking: Ref<boolean> = ref(false)
 
 const getTeamMember = (id: string) => {
     const member = locationsStore?.getAllTeamMembers?.find(
@@ -69,6 +73,14 @@ watch(
 )
 
 const toggleDoor = () => {
+    // If no winners, just add an animation and shake the door
+    if (!hasWinners.value) {
+        isShaking.value = true
+        setTimeout(() => {
+            isShaking.value = false
+        }, 500)
+        return
+    }
     doorIsOpen.value = !doorIsOpen.value
 }
 </script>
@@ -156,12 +168,33 @@ const toggleDoor = () => {
     transition: all 0.5s ease-in-out;
 }
 
-.dark .door {
-}
-
 .doorOpen {
     /*prespectiv creates the door open effect*/
     transform: perspective(600px) translateZ(0px) translateX(0px)
         translateY(0px) rotateY(-105deg);
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-2px) rotate(-1deg);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(2px) rotate(1deg);
+    }
 }
 </style>
