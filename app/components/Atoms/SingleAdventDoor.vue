@@ -17,23 +17,30 @@
             </span>
         </div>
 
-        <div
-            v-for="employee in winners"
-            :key="employee?.sys?.id"
-            class="flex flex-col items-center gap-2 text-center text-white"
+        <u-carousel
+            v-slot="{ item }"
+            :items="winners"
+            :dots="hasMultipleWinners"
+            :ui="{ dots: '-translate-y-8' }"
         >
-            <img
-                v-if="getTeamMember(employee?.sys?.id).photo"
-                class="h-full w-full object-cover"
-                :src="`${getTeamMember(employee?.sys?.id).photo}?w=150&h=150&fit=fill&f=face&fm=webp`"
-                :alt="getTeamMember(employee?.sys?.id).name"
-            />
-            <u-badge
-                class="absolute bottom-1 left-1/2 -translate-x-1/2 px-1.5 py-0"
+            <div
+                :key="item?.sys?.id"
+                class="relative flex flex-col items-center gap-2 text-center text-white"
             >
-                {{ getTeamMember(employee?.sys?.id).name }}
-            </u-badge>
-        </div>
+                <img
+                    v-if="getTeamMember(item?.sys?.id).photo"
+                    class="h-full w-full object-cover"
+                    :src="`${getTeamMember(item?.sys?.id).photo}?w=150&h=150&fit=fill&f=face&fm=webp`"
+                    :alt="getTeamMember(item?.sys?.id).name"
+                />
+                <u-badge
+                    class="absolute left-1/2 -translate-x-1/2 px-1.5 py-0"
+                    :class="hasMultipleWinners ? 'bottom-5' : 'bottom-2'"
+                >
+                    {{ getTeamMember(item?.sys?.id).name }}
+                </u-badge>
+            </div>
+        </u-carousel>
     </button>
 </template>
 
@@ -63,6 +70,10 @@ const getTeamMember = (id: string) => {
 
 const hasWinners: ComputedRef<boolean> = computed(() => {
     return !!props.winners && props.winners.length > 0
+})
+
+const hasMultipleWinners: ComputedRef<boolean> = computed(() => {
+    return !!props.winners && props.winners.length > 1
 })
 
 watch(
