@@ -20,4 +20,5 @@ declare global {
     type TypeTaskInstance = ContentfulTypes.TypeTaskInstance
     type TypeRecipe = ContentfulTypes.TypeRecipe
     type TypeRecipeCategory = ContentfulTypes.TypeRecipeCategory
+    type TypeAdventCalendar = ContentfulTypes.TypeAdventCalendar
 }

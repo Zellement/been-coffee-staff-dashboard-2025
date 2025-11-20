@@ -1,30 +1,23 @@
 <template>
-    <div class="p-default col-span-full">
-        <u-switch v-model="openAll" class="mb-4" label="Open all" />
+    <div class="p-default col-span-full flex flex-col">
+        <carousel-title-and-action title="Advent Calendar">
+            <u-switch
+                v-model="openAll"
+                size="sm"
+                class="ml-auto"
+                label="Open all"
+            />
+        </carousel-title-and-action>
         <div
             class="calendar grid grid-cols-4 gap-1 lg:grid-cols-6 2xl:grid-cols-12"
         >
             <single-advent-door
                 v-for="(day, index) in days"
                 :key="index"
-                :day="day"
+                :day="day.writtenFormat"
                 :is-open="openAll"
+                :winners="data?.items?.[0]?.fields[day.contentfulFieldName]"
             />
-
-            <div
-                v-for="employee in data?.items?.[0]?.fields.winner1st"
-                :key="employee?.sys?.id"
-            >
-                <u-avatar-group>
-                    <img
-                        v-if="getTeamMember(employee?.sys?.id).photo"
-                        class="bg-tertiary size-8 shrink-0 rounded-full p-px"
-                        :src="`${getTeamMember(employee?.sys?.id).photo}?w=90&h=90&fit=fill&f=face&fm=webp`"
-                        :alt="getTeamMember(employee?.sys?.id).name"
-                    />
-                </u-avatar-group>
-                {{ getTeamMember(employee?.sys?.id).name }}
-            </div>
         </div>
     </div>
 </template>
@@ -43,7 +36,7 @@ const shouldFetch: ComputedRef<boolean> = computed(
 const openAll = ref(false)
 
 const { data } = useFetch('/api/contentful/fetch-entries', {
-    key: 'beenAwesomeWinners',
+    key: 'adventCalendar',
     lazy: true,
     server: false,
     watch: [shouldFetch],
@@ -55,40 +48,126 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     }))
 })
 
-const getTeamMember = (id: string) => {
-    const member = locationsStore?.getAllTeamMembers?.find(
-        (member) => member?.sys?.id === id
-    )
-    return {
-        name: member?.fields?.name || 'Unknown',
-        photo: member?.fields?.photo?.[0]?.fields?.file?.url || []
-    }
-}
-
 const days = [
-    '1st',
-    '2nd',
-    '3rd',
-    '4th',
-    '5th',
-    '6th',
-    '7th',
-    '8th',
-    '9th',
-    '10th',
-    '11th',
-    '12th',
-    '13th',
-    '14th',
-    '15th',
-    '16th',
-    '17th',
-    '18th',
-    '19th',
-    '20th',
-    '21st',
-    '22nd',
-    '23rd',
-    '24th'
+    {
+        dayNumber: 1,
+        writtenFormat: '1st',
+        contentfulFieldName: 'winner1st'
+    },
+    {
+        dayNumber: 2,
+        writtenFormat: '2nd',
+        contentfulFieldName: 'winner2nd'
+    },
+    {
+        dayNumber: 3,
+        writtenFormat: '3rd',
+        contentfulFieldName: 'winner3rd'
+    },
+    {
+        dayNumber: 4,
+        writtenFormat: '4th',
+        contentfulFieldName: 'winner4th'
+    },
+    {
+        dayNumber: 5,
+        writtenFormat: '5th',
+        contentfulFieldName: 'winner5th'
+    },
+    {
+        dayNumber: 6,
+        writtenFormat: '6th',
+        contentfulFieldName: 'winner6th'
+    },
+    {
+        dayNumber: 7,
+        writtenFormat: '7th',
+        contentfulFieldName: 'winner7th'
+    },
+    {
+        dayNumber: 8,
+        writtenFormat: '8th',
+        contentfulFieldName: 'winner8th'
+    },
+    {
+        dayNumber: 9,
+        writtenFormat: '9th',
+        contentfulFieldName: 'winner9th'
+    },
+    {
+        dayNumber: 10,
+        writtenFormat: '10th',
+        contentfulFieldName: 'winner10th'
+    },
+    {
+        dayNumber: 11,
+        writtenFormat: '11th',
+        contentfulFieldName: 'winner11th'
+    },
+    {
+        dayNumber: 12,
+        writtenFormat: '12th',
+        contentfulFieldName: 'winner12th'
+    },
+    {
+        dayNumber: 13,
+        writtenFormat: '13th',
+        contentfulFieldName: 'winner13th'
+    },
+    {
+        dayNumber: 14,
+        writtenFormat: '14th',
+        contentfulFieldName: 'winner14th'
+    },
+    {
+        dayNumber: 15,
+        writtenFormat: '15th',
+        contentfulFieldName: 'winner15th'
+    },
+    {
+        dayNumber: 16,
+        writtenFormat: '16th',
+        contentfulFieldName: 'winner16th'
+    },
+    {
+        dayNumber: 17,
+        writtenFormat: '17th',
+        contentfulFieldName: 'winner17th'
+    },
+    {
+        dayNumber: 18,
+        writtenFormat: '18th',
+        contentfulFieldName: 'winner18th'
+    },
+    {
+        dayNumber: 19,
+        writtenFormat: '19th',
+        contentfulFieldName: 'winner19th'
+    },
+    {
+        dayNumber: 20,
+        writtenFormat: '20th',
+        contentfulFieldName: 'winner20th'
+    },
+    {
+        dayNumber: 21,
+        writtenFormat: '21st',
+        contentfulFieldName: 'winner21st'
+    },
+    {
+        dayNumber: 22,
+        writtenFormat: '22nd',
+        contentfulFieldName: 'winner22nd'
+    },
+    {
+        dayNumber: 23,
+        writtenFormat: '23rd',
+        contentfulFieldName: 'winner23rd'
+    },
+    {
+        dayNumber: 24,
+        writtenFormat: '24th',
+        contentfulFieldName: 'winner24th'
+    }
 ]
 </script>

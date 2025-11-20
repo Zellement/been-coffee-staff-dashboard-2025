@@ -1,24 +1,65 @@
 <template>
-    <button :class="['calendar__box aspect-square p-2']" @click="toggleDoor">
-        <div class="door relative z-20" :class="doorIsOpen ? 'doorOpen' : ''">
+    <button :class="['calendar__box aspect-square']" @click="toggleDoor">
+        <div
+            class="door relative z-20"
+            :class="[
+                doorIsOpen ? 'doorOpen' : '',
+                hasWinners ? 'overflow-clip rounded-br-3xl' : ''
+            ]"
+        >
             <span
                 class="absolute top-1 left-1 z-10 p-0 px-1 py-0.5 text-xs text-white opacity-70"
             >
                 {{ day }}
             </span>
         </div>
+
+        <div
+            v-for="employee in winners"
+            :key="employee?.sys?.id"
+            class="flex flex-col items-center gap-2 text-center text-white"
+        >
+            <img
+                v-if="getTeamMember(employee?.sys?.id).photo"
+                class="h-full w-full object-cover"
+                :src="`${getTeamMember(employee?.sys?.id).photo}?w=150&h=150&fit=fill&f=face&fm=webp`"
+                :alt="getTeamMember(employee?.sys?.id).name"
+            />
+            <u-badge
+                class="absolute bottom-1 left-1/2 -translate-x-1/2 px-1.5 py-0"
+            >
+                {{ getTeamMember(employee?.sys?.id).name }}
+            </u-badge>
+        </div>
     </button>
 </template>
 
 <script lang="ts" setup>
+const locationsStore = useLocationsStore()
+
 interface Props {
     day: string
     isOpen?: boolean
+    winners?: TypeEmployee[]
 }
 
 const props = defineProps<Props>()
 
 const doorIsOpen: Ref<boolean> = ref(props.isOpen ?? false)
+
+const getTeamMember = (id: string) => {
+    const member = locationsStore?.getAllTeamMembers?.find(
+        (member) => member?.sys?.id === id
+    )
+    return {
+        name: member?.fields?.name || 'Unknown',
+        photo: member?.fields?.photo?.[0]?.fields?.file?.url || []
+    }
+}
+
+const hasWinners: ComputedRef<boolean> = computed(() => {
+    return !!props.winners && props.winners.length > 0
+})
 
 watch(
     () => props.isOpen,
@@ -35,7 +76,7 @@ const toggleDoor = () => {
 <style scoped>
 .calendar__box {
     position: relative;
-    background: var(--color-tuscany-300);
+    background: var(--color-tuscany-700);
 }
 
 .calendar__box {
@@ -43,7 +84,7 @@ const toggleDoor = () => {
     &:nth-of-type(8n + 3),
     &:nth-of-type(8n + 6),
     &:nth-of-type(8n + 8) {
-        background: var(--color-tuscany-500);
+        background: var(--color-tuscany-800);
     }
 }
 
@@ -109,7 +150,6 @@ const toggleDoor = () => {
     left: 0px;
     width: 100%;
     height: 100%;
-    box-shadow: 2px 2px 2px;
 
     transform-origin: left;
     /*Speed of the Door animation*/
@@ -117,7 +157,6 @@ const toggleDoor = () => {
 }
 
 .dark .door {
-    box-shadow: 1px 0 0 0 black;
 }
 
 .doorOpen {

@@ -1,3 +1,4 @@
+export type { TypeAdventCalendar, TypeAdventCalendarFields, TypeAdventCalendarSkeleton } from "./TypeAdventCalendar";
 export type { TypeArticle, TypeArticleFields, TypeArticleSkeleton } from "./TypeArticle";
 export type { TypeArticleCategories, TypeArticleCategoriesFields, TypeArticleCategoriesSkeleton } from "./TypeArticleCategories";
 export type { TypeBeenAwesomeWinner, TypeBeenAwesomeWinnerFields, TypeBeenAwesomeWinnerSkeleton } from "./TypeBeenAwesomeWinner";
