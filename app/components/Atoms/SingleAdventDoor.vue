@@ -79,7 +79,9 @@ const hasMultipleWinners: ComputedRef<boolean> = computed(() => {
 watch(
     () => props.isOpen,
     (newVal) => {
-        doorIsOpen.value = newVal ?? false
+        if (hasWinners.value) {
+            doorIsOpen.value = newVal ?? false
+        }
     }
 )
 
