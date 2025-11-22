@@ -44,8 +44,7 @@ const hasTableBookings = computed(() => {
 })
 
 const date = new Date()
-
-const isDecember = computed(() => {
+const isDecember: ComputedRef<boolean> = computed(() => {
     return date.getMonth() === 11
 })
 </script>

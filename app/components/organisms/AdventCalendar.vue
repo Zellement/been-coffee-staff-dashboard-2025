@@ -9,7 +9,7 @@
             />
         </carousel-title-and-action>
         <div
-            class="calendar grid grid-cols-4 gap-1 lg:grid-cols-6 2xl:grid-cols-12"
+            class="calendar grid grid-cols-4 gap-1 md:grid-cols-6 2xl:grid-cols-12"
         >
             <single-advent-door
                 v-for="(day, index) in days"

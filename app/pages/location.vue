@@ -10,6 +10,7 @@
         <lazy-upcoming-deliveries
             :class="hasTableBookings ? 'col-span-8' : 'col-span-full'"
         />
+        {{ isDecember }}
         <lazy-advent-calendar v-if="isDecember" class="col-span-full" />
         <lazy-table-bookings v-show="hasTableBookings" class="col-span-4" />
         <lazy-notice-board class="col-span-full" />
@@ -42,7 +43,7 @@ const hasTableBookings = computed(() => {
     )
 })
 const date = new Date()
-const isDecember = computed(() => {
+const isDecember: ComputedRef<boolean> = computed(() => {
     return date.getMonth() === 11
 })
 </script>
