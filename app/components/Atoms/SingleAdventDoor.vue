@@ -1,5 +1,5 @@
 <template>
-    <button :class="['calendar__box aspect-square']" @click="toggleDoor">
+    <button :class="['relative aspect-square']" @click="toggleDoor">
         <div
             class="door relative z-20"
             :class="[
@@ -7,7 +7,7 @@
                 isShaking ? 'shake' : '',
                 hasWinners
                     ? 'overflow-clip rounded-br-3xl'
-                    : 'border-tuscany-900 border-2 border-dotted'
+                    : 'dark:border-navy-400 border-butterscotch-500 border-2 border-dotted'
             ]"
         >
             <span
@@ -99,76 +99,12 @@ const toggleDoor = () => {
 </script>
 
 <style scoped>
-.calendar__box {
-    position: relative;
-    background: var(--color-tuscany-700);
-}
-
-.calendar__box {
-    &:nth-of-type(8n + 1),
-    &:nth-of-type(8n + 3),
-    &:nth-of-type(8n + 6),
-    &:nth-of-type(8n + 8) {
-        background: var(--color-tuscany-800);
-    }
-}
-
-@media (min-width: 878px) {
-    .calendar__box {
-        &:nth-of-type(8n + 1),
-        &:nth-of-type(8n + 3),
-        &:nth-of-type(8n + 6),
-        &:nth-of-type(8n + 8) {
-            background: transparent;
-        }
-    }
-    .calendar__box {
-        &:nth-of-type(12n + 1),
-        &:nth-of-type(12n + 3),
-        &:nth-of-type(12n + 5),
-        &:nth-of-type(12n + 8),
-        &:nth-of-type(12n + 10),
-        &:nth-of-type(12n + 12) {
-            background: var(--color-tuscany-500);
-        }
-    }
-}
-
-@media (min-width: 1268px) {
-    .calendar__box {
-        &:nth-of-type(12n + 1),
-        &:nth-of-type(12n + 3),
-        &:nth-of-type(12n + 5),
-        &:nth-of-type(12n + 8),
-        &:nth-of-type(12n + 10),
-        &:nth-of-type(12n + 12) {
-            background: transparent;
-        }
-    }
-    .calendar__box {
-        &:nth-of-type(1),
-        &:nth-of-type(3),
-        &:nth-of-type(5),
-        &:nth-of-type(7),
-        &:nth-of-type(9),
-        &:nth-of-type(11),
-        &:nth-of-type(14),
-        &:nth-of-type(16),
-        &:nth-of-type(18),
-        &:nth-of-type(20),
-        &:nth-of-type(22),
-        &:nth-of-type(24) {
-            background: var(--color-tuscany-500);
-        }
-    }
-}
-
 .door {
     background: linear-gradient(
         135deg,
-        var(--color-tuscany-700) 0%,
-        var(--color-tuscany-600) 50%,
-        var(--color-tuscany-500) 100%
+        var(--color-butterscotch-700) 0%,
+        var(--color-butterscotch-500) 50%,
+        var(--color-butterscotch-300) 100%
     );
     position: absolute;
     top: 0px;
@@ -178,7 +114,16 @@ const toggleDoor = () => {
 
     transform-origin: left;
     /*Speed of the Door animation*/
-    transition: all 0.5s ease-in-out;
+    transition: all 0.7s ease-in-out;
+}
+
+.dark .door {
+    background: linear-gradient(
+        135deg,
+        var(--color-navy-900) 0%,
+        var(--color-navy-800) 50%,
+        var(--color-navy-500) 100%
+    );
 }
 
 .doorOpen {
