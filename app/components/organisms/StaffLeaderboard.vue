@@ -1,7 +1,7 @@
 <template>
     <div class="">
         {{ lastFriday }}{{ periodStart }}
-        <pre>{{ data?.items }}</pre>
+        <pre>{{ allEmployees }}</pre>
     </div>
 </template>
 
@@ -15,9 +15,9 @@ const staffLeaderboardStore = useStaffLeaderboardStore()
 
 // const { fullDateConverter, shortDateConverter } = useDateUtils()
 
-// const allEmployees: ComputedRef<TypeEmployee[]> = computed(() => {
-//     return staffLeaderboardStore.cachedEmployees || []
-// })
+const allEmployees: ComputedRef<TypeEmployee[]> = computed(() => {
+    return staffLeaderboardStore.cachedEmployees || []
+})
 
 /* Computed */
 
@@ -35,7 +35,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     immediate: shouldFetch.value,
     params: computed(() => ({
         content_type: 'employee',
-        select: 'fields.name,fields.surname,fields.jobRole,fields.taskHistory',
+        select: 'fields.name,fields.surname,fields.taskHistory',
         order: 'fields.name',
         'fields.jobRole[nin]': '_ShopLogin,_DashLogin',
         include: 0
