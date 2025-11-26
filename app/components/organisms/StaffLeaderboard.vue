@@ -1,7 +1,7 @@
 <template>
     <div class="">
         {{ lastFriday }}{{ periodStart }}
-        <!-- <pre>{{ allEmployees }}</pre> -->
+        <pre>{{ employeeLeaderboard }}</pre>
     </div>
 </template>
 
@@ -15,11 +15,10 @@ const staffLeaderboardStore = useStaffLeaderboardStore()
 
 // const { fullDateConverter, shortDateConverter } = useDateUtils()
 
-const allEmployees: ComputedRef<TypeEmployee[]> = computed(() => {
-    return staffLeaderboardStore.cachedEmployees || []
+const employeeLeaderboard: ComputedRef<TypeEmployee[]> = computed(() => {
+    return staffLeaderboardStore.employeeLeaderboard || []
 })
 
-console.log(allEmployees.value)
 /* Computed */
 
 const shouldFetch: ComputedRef<boolean> = computed(

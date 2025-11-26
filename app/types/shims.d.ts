@@ -45,7 +45,27 @@ declare global {
         }
     }
 
-    export interface RotareadyShift {
+    interface TaskWithMinutes {
+        date: string // ISO date string
+        taskName: string
+        timeInMinutes: number
+        location: string
+    }
+
+    interface EmployeeLeaderboardEntry {
+        fields: {
+            name: string
+            surname: string
+            taskHistory: TaskHistory
+        }
+    }
+
+    interface TaskHistory {
+        tasksWithMinutes: TaskWithMinutes[]
+        totalOAllTimeInMinutes: number
+    }
+
+    interface RotareadyShift {
         id: number
         eventType: number
         start: string
@@ -103,11 +123,11 @@ declare global {
         }
     }
 
-    export type RotareadyAttendance = {
+    type RotareadyAttendance = {
         events: RotareadyEvent[]
     }
 
-    export type RotareadyEvent = {
+    type RotareadyEvent = {
         id: number
         userId: number
         userEntity: any | null
