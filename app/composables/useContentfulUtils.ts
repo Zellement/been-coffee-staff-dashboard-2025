@@ -30,7 +30,9 @@ export const useContentfulUtils = () => {
                         data: {
                             timeInMinutes:
                                 task.fields.task.fields?.minutesToComplete || 0,
-                            taskName: task.fields.task.fields?.title || ''
+                            taskName: task.fields.task.fields?.title || '',
+                            location:
+                                task.fields.location?.fields?.postcode || ''
                         }
                     }
                 })

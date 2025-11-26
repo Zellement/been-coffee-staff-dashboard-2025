@@ -239,6 +239,38 @@ export const useDateUtils = () => {
         return mins >= ACTIVE_START_MIN && mins < ACTIVE_END_MIN
     }
 
+    const getLastFriday = (year: number, month: number): Date => {
+        const lastDay = new Date(year, month + 1, 0)
+        const dow = lastDay.getDay() // Friday = 5
+        const diff = dow >= 5 ? dow - 5 : dow + 2
+        return new Date(year, month, lastDay.getDate() - diff)
+    }
+
+    const getPreviousMonday = (date: Date): Date => {
+        const dow = date.getDay() // Monday = 1
+        const diff = (dow + 6) % 7
+        return new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate() - diff
+        )
+    }
+
+    const getPayPeriodStartFrom = (
+        date: Date
+    ): { periodStart: Date; lastFriday: Date } => {
+        const year = date.getFullYear()
+        const month = date.getMonth()
+
+        const prevMonth = month === 0 ? 11 : month - 1
+        const prevMonthYear = month === 0 ? year - 1 : year
+
+        const lastFriday = getLastFriday(prevMonthYear, prevMonth)
+        const periodStart = getPreviousMonday(lastFriday)
+
+        return { periodStart, lastFriday }
+    }
+
     return {
         extractHourAndMinute,
         getTodaysDateInUrlEncodedFormat,
@@ -252,6 +284,7 @@ export const useDateUtils = () => {
         wasXHoursAgo,
         getTime,
         getHour,
-        inActiveWindow
+        inActiveWindow,
+        getPayPeriodStartFrom
     }
 }

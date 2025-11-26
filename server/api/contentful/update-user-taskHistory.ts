@@ -59,12 +59,14 @@ export default defineEventHandler(async (event) => {
         // Update the taskHistory field by adding new timeInMinutes and taskName
         const newTimeInMinutes = updates.timeInMinutes || 0
         const newTaskName = updates.taskName || 'Unknown Task'
+        const newLocation = updates.location || ''
 
         // Create a new entry for the task history
         const newTaskEntry = {
             date: new Date().toISOString(),
             taskName: newTaskName,
-            timeInMinutes: newTimeInMinutes
+            timeInMinutes: newTimeInMinutes,
+            location: newLocation
         }
 
         // Append the new entry to the existing taskHistory array
