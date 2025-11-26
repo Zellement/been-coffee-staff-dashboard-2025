@@ -13,6 +13,7 @@ export interface TypeEmployeeFields {
     tillPin?: EntryFieldTypes.Symbol;
     rotareadyId: EntryFieldTypes.Integer;
     history?: EntryFieldTypes.Object;
+    taskHistory?: EntryFieldTypes.Object;
 }
 
 export type TypeEmployeeSkeleton = EntrySkeletonType<TypeEmployeeFields, "employee">;

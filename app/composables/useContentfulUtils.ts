@@ -21,6 +21,20 @@ export const useContentfulUtils = () => {
                     }
                 }
             })
+            // If we have minutes to log, log them against the user
+            if (task.fields?.task?.fields?.minutesToComplete) {
+                await $fetch(`/api/contentful/update-user-taskHistory`, {
+                    method: 'POST',
+                    body: {
+                        id: userStore.userContentfulData.sys.id,
+                        data: {
+                            timeInMinutes:
+                                task.fields.task.fields?.minutesToComplete || 0,
+                            taskName: task.fields.task.fields?.title || ''
+                        }
+                    }
+                })
+            }
             toast.add({
                 title: 'Task completed',
                 color: 'success',
