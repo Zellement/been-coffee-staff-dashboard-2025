@@ -9,10 +9,13 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const accessKey = config.CONTENTFUL_CDA_ACCESS_TOKEN as string
     const spaceId = config.CONTENTFUL_SPACE_ID as string
+    const environmentId =
+        (config.CONTENTFUL_ENVIRONMENT_ID as string) || 'master'
 
     const client = contentful.createClient({
         space: spaceId,
-        accessToken: accessKey
+        accessToken: accessKey,
+        environment: environmentId
     })
 
     const params = getQuery(event)
