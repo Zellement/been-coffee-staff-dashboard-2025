@@ -53,12 +53,39 @@ export default defineEventHandler(async (event) => {
         // 3) Fetch entry
         let entry: Entry = await env.getEntry(id)
 
-        // 4) Merge updates into entry.fields
-        // Contentful CMA expects: entry.fields[fieldId][locale] = value
-        // for (const [fieldId, value] of Object.entries(updates)) {
-        //     if (!entry.fields[fieldId]) entry.fields[fieldId] = {}
-        //     entry.fields[fieldId][locale] = value
-        // }
+        // Get the existing JSON field of taskHistory, which may be empty
+        const existingTaskHistory = entry.fields.taskHistory?.[locale] || {}
+
+        // Update the taskHistory field by adding new timeInMinutes and taskName
+        const newTimeInMinutes = updates.timeInMinutes || 0
+        const newTaskName = updates.taskName || 'Unknown Task'
+
+        // Create a new entry for the task history
+        const newTaskEntry = {
+            date: new Date().toISOString(),
+            taskName: newTaskName,
+            timeInMinutes: newTimeInMinutes
+        }
+
+        // Append the new entry to the existing taskHistory array
+        const updatedTaskHistory = [
+            ...(existingTaskHistory.tasksWithMinutes || []),
+            newTaskEntry
+        ]
+
+        // Prepare the updated taskHistory object
+        const updatedTaskHistoryObject = {
+            tasksWithMinutes: updatedTaskHistory,
+            totalOfAllTimeInMinutes:
+                (existingTaskHistory.totalOfAllTimeInMinutes || 0) +
+                newTimeInMinutes
+        }
+
+        // Set the updated taskHistory back to the entry fields
+        entry.fields.taskHistory = {
+            ...entry.fields.taskHistory,
+            [locale]: updatedTaskHistoryObject
+        }
 
         // 5) Update
         entry = await entry.update()
