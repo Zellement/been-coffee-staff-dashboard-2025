@@ -1,6 +1,5 @@
 <template>
     <div class="p-default mb-8">
-        <pre>{{ data?.items?.fields?.author }}</pre>
         <carousel-title-and-action title="Notice Board" />
         <div class="relative">
             <transition name="fade">
@@ -112,6 +111,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     params: computed(() => ({
         content_type: 'noticeBoard',
         order: '-sys.createdAt',
+        select: 'fields.title,fields.sticky,fields.content,fields.author,sys.updatedAt,sys.createdAt',
         'fields.locations.sys.id[in]': activeLocationId.value,
         include: 1,
         limit: 100
@@ -120,23 +120,12 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
 
 watch(data, (newData) => {
     if (newData) {
-        // Check if the boolean for 'sticky' is enabled and filter accordingly
-        // Also filter out notices older than 14 days
         const fourteenDaysAgo = new Date()
         fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14)
-        notices.value = newData.items.filter((item: TypeNoticeBoard) => {
+        notices.value = newData?.items?.filter((item: TypeNoticeBoard) => {
             const updatedAt = new Date(item.sys.createdAt)
             return item.fields.sticky || updatedAt >= fourteenDaysAgo
         })
-        // .sort((a: TypeNoticeBoard, b: TypeNoticeBoard) => {
-        //     // Sort by sticky first, then by updatedAt date (newest first)
-        //     if (a.fields.sticky && !b.fields.sticky) return -1
-        //     if (!a.fields.sticky && b.fields.sticky) return 1
-        //     return (
-        //         new Date(b.sys.updatedAt).getTime() -
-        //         new Date(a.sys.updatedAt).getTime()
-        //     )
-        // })
     }
 })
 </script>

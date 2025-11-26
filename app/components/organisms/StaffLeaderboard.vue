@@ -1,7 +1,7 @@
 <template>
     <div class="">
         {{ lastFriday }}{{ periodStart }}
-        <pre>{{ allEmployees }}</pre>
+        <!-- <pre>{{ allEmployees }}</pre> -->
     </div>
 </template>
 
@@ -19,6 +19,7 @@ const allEmployees: ComputedRef<TypeEmployee[]> = computed(() => {
     return staffLeaderboardStore.cachedEmployees || []
 })
 
+console.log(allEmployees.value)
 /* Computed */
 
 const shouldFetch: ComputedRef<boolean> = computed(
