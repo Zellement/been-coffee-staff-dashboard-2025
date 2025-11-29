@@ -74,21 +74,3 @@ watch(data, (newData) => {
     }
 })
 </script>
-
-<style scoped>
-@keyframes swing {
-    0% {
-        transform: rotate3d(0, 0, 1, -10deg);
-    }
-    50% {
-        transform: rotate3d(0, 0, 1, 10deg);
-    }
-    100% {
-        transform: rotate3d(0, 0, 1, -10deg);
-    }
-}
-
-.animate-swing {
-    animation: swing 3s ease-in-out infinite;
-}
-</style>
