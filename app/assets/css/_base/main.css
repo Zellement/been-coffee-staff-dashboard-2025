@@ -25,6 +25,10 @@ body {
     }
 }
 
+.hexagon-clip {
+    clip-path: polygon(15% 11%, 69% 0, 100% 38%, 89% 85%, 36% 98%, 0 57%);
+}
+
 picture img {
     width: 100%;
     height: 100%;
