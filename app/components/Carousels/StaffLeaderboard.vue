@@ -1,9 +1,11 @@
 <template>
     <div class="p-default">
-        <carousel-title-and-action :title="`Task Leaderboard`" />
-        <h3 class="uc-text uc-text--2xs">
-            From {{ periodStartString }} until the end of this month
-        </h3>
+        <carousel-title-and-action :title="`Task Leaderboard`">
+            <p class="uc-text uc-text--2xs">
+                {{ periodStartString }} - end of this month
+            </p>
+        </carousel-title-and-action>
+
         <staff-leaderboard-top3 :employees="topThreeEmployees" />
         <!-- <u-carousel
             v-slot="{ item }"
@@ -25,15 +27,15 @@ interface Props {
 
 defineProps<Props>()
 
-const { getPayPeriodStartFrom, fullDateConverter } = useDateUtils()
+const { getPayPeriodStartFrom, shortDateConverter } = useDateUtils()
 
 const today = new Date()
 const { periodStart } = getPayPeriodStartFrom(today)
-const periodStartString = fullDateConverter(new Date(periodStart))
+const periodStartString = shortDateConverter(new Date(periodStart))
 
 const staffLeaderboardStore = useStaffLeaderboardStore()
 
-// const { fullDateConverter, shortDateConverter } = useDateUtils()
+// const { shortDateConverter, shortDateConverter } = useDateUtils()
 
 const employeeLeaderboard: ComputedRef<TypeEmployee[]> = computed(() => {
     return staffLeaderboardStore.employeeLeaderboard || []

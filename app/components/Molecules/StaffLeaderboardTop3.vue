@@ -56,26 +56,26 @@ const getColumnData = (index: number): ColumnData => {
         case 0:
             return {
                 classes:
-                    'col-start-2 row-span-full row-start-1 from-yellow-600 to-yellow-500 text-white',
+                    'col-start-2 row-span-full row-start-1 from-butterscotch-500 to-butterscotch-600 text-white',
                 icon: 'i-hugeicons-medal-first-place',
                 iconSize: '48',
-                iconClasses: 'text-yellow-300'
+                iconClasses: 'text-butterscotch-200'
             }
         case 1:
             return {
                 classes:
-                    'col-start-1 row-span-8 row-start-3 from-gray-300 to-gray-500 text-white',
+                    'col-start-1 row-span-8 row-start-3 from-navy-500 to-navy-600 text-white',
                 icon: 'i-hugeicons-medal-second-place',
                 iconSize: '40',
-                iconClasses: 'text-slate-400'
+                iconClasses: 'text-navy-400'
             }
         case 2:
             return {
                 classes:
-                    'col-start-3 row-span-6 row-start-5 from-yellow-800 to-yellow-900 text-white',
+                    'col-start-3 row-span-6 row-start-5 from-tuscany-500 to-tuscany-600 text-white',
                 icon: 'i-hugeicons-medal-third-place',
                 iconSize: '32',
-                iconClasses: 'text-yellow-700'
+                iconClasses: 'text-tuscany-300'
             }
         default:
             return { classes: '', icon: 'i-hugeicons-medal-third-place' }
