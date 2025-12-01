@@ -1,6 +1,6 @@
 <template>
     <div
-        class="dark:from-primary-600 dark:to-primary-500 from-secondary-100 p-default to-secondary-50 fixed bottom-0 left-0 z-10 flex w-full items-center justify-between bg-gradient-to-b !pb-3"
+        class="dark:from-primary-600 dark:to-primary-500 from-secondary-100 p-default to-secondary-50 fixed bottom-0 left-0 z-40 flex w-full items-center justify-between bg-linear-to-b pb-3!"
     >
         <div class="flex items-center gap-3">
             <nuxt-link class="flex items-center" to="/">
