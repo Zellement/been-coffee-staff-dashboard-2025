@@ -1,6 +1,9 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
-        <lazy-staff-leaderboard class="col-span-full" />
+        <lazy-staff-leaderboard
+            class="col-span-full"
+            item-classes="lg:basis-1/2"
+        />
         <keep-alive>
             <lazy-shifts-carousel
                 class="col-span-full"

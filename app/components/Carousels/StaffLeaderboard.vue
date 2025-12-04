@@ -6,21 +6,26 @@
             </p>
         </carousel-title-and-action>
 
-        <staff-leaderboard-top3 :employees="topThreeEmployees" />
-        <!-- <u-carousel
+        <u-carousel
             v-slot="{ item }"
-            :items="topThreeEmployees"
+            :items="slides"
             :ui="{
                 item: itemClasses ?? 'basis-full'
             }"
         >
-            {{ item.fields.name }} {{ item.fields.surname }}
-        </u-carousel> -->
-        <!-- <pre>{{ employeeLeaderboard }}</pre> -->
+            <component
+                :is="item.component"
+                v-bind="item.props"
+                :title="item.props?.title"
+            />
+        </u-carousel>
     </div>
 </template>
 
 <script lang="ts" setup>
+import StaffLeaderboardTop3 from '~/components/molecules/StaffLeaderboardTop3.vue'
+import StaffLeaderboardRemaining from '~/components/molecules/StaffLeaderboardRemaining.vue'
+
 interface Props {
     itemClasses?: string
 }
@@ -35,15 +40,14 @@ const periodStartString = shortDateConverter(new Date(periodStart))
 
 const staffLeaderboardStore = useStaffLeaderboardStore()
 
-// const { shortDateConverter, shortDateConverter } = useDateUtils()
-
-const employeeLeaderboard: ComputedRef<TypeEmployee[]> = computed(() => {
-    return staffLeaderboardStore.employeeLeaderboard || []
-})
-
-const topThreeEmployees: ComputedRef<TypeEmployee[]> = computed(() => {
-    return employeeLeaderboard.value.slice(0, 3)
-})
+const slides: any[] = [
+    {
+        component: StaffLeaderboardTop3
+    },
+    {
+        component: StaffLeaderboardRemaining
+    }
+]
 
 /* Computed */
 
