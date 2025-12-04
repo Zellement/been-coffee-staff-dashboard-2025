@@ -1,9 +1,5 @@
 <template>
     <div class="page grid grid-cols-12 gap-4">
-        <lazy-staff-leaderboard
-            class="col-span-full"
-            item-classes="lg:basis-1/2"
-        />
         <keep-alive>
             <lazy-shifts-carousel
                 class="col-span-full"
@@ -16,6 +12,12 @@
         <keep-alive><lazy-single-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-daily-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-routine-tasks class="col-span-full" /></keep-alive>
+        <keep-alive>
+            <lazy-staff-leaderboard
+                class="col-span-full"
+                item-classes="lg:basis-1/2"
+            />
+        </keep-alive>
         <keep-alive>
             <lazy-upcoming-deliveries class="col-span-full" />
         </keep-alive>

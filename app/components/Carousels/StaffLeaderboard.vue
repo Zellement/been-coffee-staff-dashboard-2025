@@ -2,7 +2,7 @@
     <div class="p-default">
         <carousel-title-and-action :title="`Task Leaderboard`">
             <p class="uc-text uc-text--2xs">
-                {{ periodStartString }} - end of this month
+                Pay period starting {{ periodStartString }}
             </p>
         </carousel-title-and-action>
 
