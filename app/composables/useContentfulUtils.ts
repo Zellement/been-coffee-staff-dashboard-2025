@@ -36,8 +36,6 @@ export const useContentfulUtils = () => {
             `${userStore.userContentfulData.fields.name} ${userStore.userContentfulData.fields.surname}`
         )
 
-        console.log('Completing task', formData)
-
         try {
             uiStore.refreshing = true
             await $fetch(`/api/contentful/update-entry`, {
