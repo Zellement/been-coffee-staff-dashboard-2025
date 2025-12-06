@@ -42,6 +42,7 @@ declare global {
             orders: number
             assets: number
             singleTask?: number
+            employee?: number
         }
     }
 

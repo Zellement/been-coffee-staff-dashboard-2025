@@ -8,6 +8,33 @@ export const useContentfulUtils = () => {
         const userStore = useUserStore()
         const toast = useToast()
         const uiStore = useUiStore()
+        const locationsStore = useLocationsStore()
+
+        const activeLocation: ComputedRef<TypeLocation | undefined> = computed(
+            () => {
+                return locationsStore.activeLocation
+            }
+        )
+
+        const scriptURL: ComputedRef<string> = computed(() => {
+            return (
+                activeLocation.value.fields.googleSheetsScriptRoutineTasks || ''
+            )
+        })
+
+        const now = new Date()
+
+        const formData = new FormData()
+        formData.append('timestamp', now.toISOString())
+        formData.append('Task', task.fields.task.fields.title)
+        formData.append(
+            'Location',
+            activeLocation.value.fields.postcode || 'Unknown Location'
+        )
+        formData.append(
+            'Team member',
+            `${userStore.userContentfulData.fields.name} ${userStore.userContentfulData.fields.surname}`
+        )
 
         try {
             uiStore.refreshing = true
@@ -37,6 +64,12 @@ export const useContentfulUtils = () => {
                     }
                 })
             }
+            fetch(scriptURL.value, { method: 'POST', body: formData })
+                .then(() =>
+                    console.log('successfully submitted to Google Sheets')
+                )
+                .catch((error) => console.error('Error!', error.message))
+
             toast.add({
                 title: 'Task completed',
                 color: 'success',
