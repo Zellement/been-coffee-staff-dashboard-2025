@@ -1,9 +1,27 @@
 <template>
     <div class="p-default">
         <carousel-title-and-action :title="`Task Leaderboard`">
-            <p class="uc-text uc-text--2xs">
-                Pay period starting {{ periodStartString }}
-            </p>
+            <div class="flex items-center gap-4">
+                <u-popover>
+                    <u-button
+                        icon="material-symbols:info-outline"
+                        label="Whats this?"
+                        size="2xs"
+                        variant="soft"
+                    />
+                    <template #content>
+                        <div class="max-w-40 p-1 text-xs">
+                            This leaderboard showcases the top-performing staff
+                            members based on the number of routine task minutes
+                            they have 'collected'. It counts from the start of
+                            every pay period.
+                        </div>
+                    </template>
+                </u-popover>
+                <p class="uc-text uc-text--2xs">
+                    Since {{ periodStartString }}
+                </p>
+            </div>
         </carousel-title-and-action>
 
         <u-carousel
@@ -23,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import StaffLeaderboardTop3 from '~/components/molecules/StaffLeaderboardTop3.vue'
+import StaffLeaderboardTopThree from '~/components/molecules/StaffLeaderboardTopThree.vue'
 import StaffLeaderboardRemaining from '~/components/molecules/StaffLeaderboardRemaining.vue'
 
 interface Props {
@@ -42,7 +60,7 @@ const staffLeaderboardStore = useStaffLeaderboardStore()
 
 const slides: any[] = [
     {
-        component: StaffLeaderboardTop3
+        component: StaffLeaderboardTopThree
     },
     {
         component: StaffLeaderboardRemaining
@@ -58,7 +76,7 @@ const shouldFetch: ComputedRef<boolean> = computed(
 /* Functions & lifecycle */
 
 const { data } = useFetch('/api/contentful/fetch-entries', {
-    key: 'staffLeaderboard',
+    key: 'employee',
     lazy: true,
     server: false,
     watch: [shouldFetch],
