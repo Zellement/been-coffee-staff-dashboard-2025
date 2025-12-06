@@ -150,6 +150,7 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
     const userArray = Array.from(users)
 
     const transformed = userArray.map((userId) => {
+        if (!locationsStore.getAllTeamMembers) return null
         const userEvents = events.value!.events.filter(
             (event) => event.userId === userId
         )
