@@ -26,7 +26,10 @@ export const useContentfulUtils = () => {
 
         const formData = new FormData()
         formData.append('timestamp', now.toISOString())
-        formData.append('Task', task.fields.task.fields.title)
+        formData.append(
+            'Task',
+            task.fields?.task?.fields?.title || task.fields?.title || ''
+        )
         formData.append(
             'Location',
             activeLocation.value.fields.postcode || 'Unknown Location'
@@ -34,6 +37,12 @@ export const useContentfulUtils = () => {
         formData.append(
             'Team member',
             `${userStore.userContentfulData.fields.name} ${userStore.userContentfulData.fields.surname}`
+        )
+        formData.append(
+            'Type',
+            task.fields?.task?.sys.contentType.sys.id ||
+                task.sys.contentType.sys.id ||
+                ''
         )
 
         try {
