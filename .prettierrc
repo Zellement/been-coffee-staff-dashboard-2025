@@ -6,5 +6,5 @@
     "trailingComma": "none",
     "useTabs": false,
     "plugins": ["prettier-plugin-tailwindcss"],
-    "tailwindConfig": "./tailwind.config.ts"
+    "tailwindStylesheet": "./app/assets/css/app.css"
 }
