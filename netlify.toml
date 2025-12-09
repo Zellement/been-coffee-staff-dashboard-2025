@@ -1,5 +1,5 @@
 [build]
-  command = "npx nuxi build"
+  command = "npm install && npx nuxi build"
 
 [functions]
   directory = ".netlify/functions" # Nitro outputs server routes here
