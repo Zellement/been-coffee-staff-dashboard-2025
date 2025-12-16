@@ -72,6 +72,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const locationsStore = useLocationsStore()
+const operationsStore = useOperationsStore()
 
 const dateStr = props.date
 
@@ -86,9 +87,14 @@ const { data: events } = await useFetch<RotareadyAttendance | null>(
 )
 
 const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
-    const findTeamMember = (userId: number) => {
-        return locationsStore.getAllTeamMembers?.find(
-            (member) => member.fields.rotareadyId === userId
+    const findTeamMember = (userId: number): TypeEmployee | null => {
+        return (
+            locationsStore.getAllTeamMembers?.find(
+                (member) => member.fields.rotareadyId === userId
+            ) ??
+            operationsStore.getLeadershipTeam?.find(
+                (member) => member.fields.rotareadyId === userId
+            )
         )
     }
 
@@ -155,7 +161,8 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
             (event) => event.userId === userId
         )
 
-        // If this userId does not exist in team members for the current location, skip it
+        // If this userId does not exist in team members for the current location,
+        // or operations leadership team, skip it
         if (!findTeamMember(userId)) {
             console.warn(
                 `User with ID ${userId} not found in this location's team members.`
