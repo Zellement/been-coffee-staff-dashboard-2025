@@ -2,7 +2,7 @@
     <div class="layout p-default">
         <div class="flex flex-col gap-4 pt-8">
             <brand-logo class="mx-auto max-w-16" />
-            <h1 class="font-riverside text-center text-lg">
+            <h1 class="text-center font-riverside text-lg">
                 <span class="hidden">Been Coffee</span>Dashboard
             </h1>
         </div>

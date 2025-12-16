@@ -22,7 +22,7 @@
                     <div
                         v-for="n in 8"
                         :key="n"
-                        class="dark:bg-navy-600 h-[220px] w-full animate-pulse rounded-xl bg-gray-200"
+                        class="h-[220px] w-full animate-pulse rounded-xl bg-gray-200 dark:bg-navy-600"
                     />
                 </div>
 
@@ -74,7 +74,7 @@
                                 />
                                 <div
                                     v-else
-                                    class="dark:bg-navy-500 h-[200px] w-[300px] bg-gray-200"
+                                    class="h-[200px] w-[300px] bg-gray-200 dark:bg-navy-500"
                                 />
                                 <div class="flex flex-col items-start">
                                     <h2 class="uc-text">

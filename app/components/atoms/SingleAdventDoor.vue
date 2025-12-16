@@ -7,7 +7,7 @@
                 isShaking ? 'shake' : '',
                 hasWinners
                     ? 'overflow-clip rounded-br-3xl'
-                    : 'dark:border-navy-400 border-butterscotch-500 border-2 border-dotted'
+                    : 'border-2 border-dotted border-butterscotch-500 dark:border-navy-400'
             ]"
         >
             <span

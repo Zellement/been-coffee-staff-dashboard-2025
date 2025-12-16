@@ -1,5 +1,5 @@
 <template>
-    <h2 class="font-riverside-outline mb-16 text-center text-2xl">
+    <h2 class="mb-16 text-center font-riverside-outline text-2xl">
         Update your password
     </h2>
 

@@ -17,12 +17,12 @@
                     body: 'h-full flex w-full flex-col items-start'
                 }"
             >
-                <h2 class="text-primary dark:text-secondary font-bold">
+                <h2 class="font-bold text-primary dark:text-secondary">
                     {{ article.fields.title }}
                 </h2>
                 <p
                     v-if="article.fields.subtitle"
-                    class="text-primary-300 dark:text-primary-300 mb-4"
+                    class="mb-4 text-primary-300 dark:text-primary-300"
                 >
                     {{ article.fields.subtitle }}
                 </p>
