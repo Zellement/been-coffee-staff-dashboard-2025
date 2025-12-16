@@ -1,5 +1,5 @@
 <template>
-    <h2 class="font-riverside-outline mb-16 text-center text-2xl">Login</h2>
+    <h2 class="mb-16 text-center font-riverside-outline text-2xl">Login</h2>
     <div class="flex flex-col">
         <auth-login class="mx-auto w-full max-w-60" />
         <nuxt-link

@@ -23,7 +23,7 @@
             :class="hasMoreThanFourEvents ? 'gap-2' : 'gap-1 lg:gap-4'"
         >
             <div
-                class="dark:from-navy-400 dark:to-navy-600 from-tuscany-500 to-seashell-300 absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-linear-to-r"
+                class="absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-linear-to-r from-tuscany-500 to-seashell-300 dark:from-navy-400 dark:to-navy-600"
             />
             <template
                 v-for="(e, index) in event.events"
@@ -31,7 +31,7 @@
             >
                 <div
                     v-if="e.description !== 'Clocked out'"
-                    class="dark:bg-navy-500 relative rounded bg-white"
+                    class="relative rounded bg-white dark:bg-navy-500"
                     :class="[
                         e.description === 'Clocked in' ? 'mr-auto' : '',
                         multipleEvents(index) ? '' : 'ml-0'
@@ -59,7 +59,7 @@
                     class="ml-auto"
                     :class="
                         isOnBreak
-                            ? 'text-tuscany-500 dark:text-butterscotch-200 size-4! animate-pulse'
+                            ? 'size-4! animate-pulse text-tuscany-500 dark:text-butterscotch-200'
                             : 'text-primary opacity-20 dark:opacity-60'
                     "
                     :name="

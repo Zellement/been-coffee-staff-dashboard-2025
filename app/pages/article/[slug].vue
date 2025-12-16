@@ -14,7 +14,7 @@
                         </h2>
                     </div>
                     <div
-                        class="border-primary/10 dark:border-primary w-full border-t pt-4 xl:pt-8"
+                        class="w-full border-t border-primary/10 pt-4 xl:pt-8 dark:border-primary"
                     >
                         <h3 class="uc-text uc-text--xs mb-2">Category</h3>
                         <u-button
@@ -26,7 +26,7 @@
                     </div>
                     <div
                         v-if="hasFiles"
-                        class="border-primary/10 dark:border-primary w-full border-t pt-4 xl:pt-8"
+                        class="w-full border-t border-primary/10 pt-4 xl:pt-8 dark:border-primary"
                     >
                         <h3 class="uc-text uc-text--xs mb-2">Related files</h3>
                         <ul class="flex flex-col gap-2">
@@ -45,7 +45,7 @@
                         </ul>
                     </div>
                     <div
-                        class="border-primary/10 dark:border-primary w-full border-t pt-4 xl:pt-8"
+                        class="w-full border-t border-primary/10 pt-4 xl:pt-8 dark:border-primary"
                     >
                         <u-badge
                             v-if="currentArticle.sys.updatedAt"

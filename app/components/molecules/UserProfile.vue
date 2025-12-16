@@ -1,7 +1,7 @@
 <template>
     <div class="sticky top-0 z-30 m-2 mt-0 flex flex-col">
         <div
-            class="p-default bg-secondary-100 dark:bg-primary-600 card-border mt-0 flex items-center justify-between rounded-br rounded-bl dark:!border-t-0"
+            class="p-default card-border mt-0 flex items-center justify-between rounded-br rounded-bl bg-secondary-100 dark:!border-t-0 dark:bg-primary-600"
         >
             <u-drawer
                 direction="top"
@@ -15,7 +15,7 @@
                         class="w-10"
                     >
                         <img
-                            class="border-butterscotch-500 rounded-full border-2 object-cover"
+                            class="rounded-full border-2 border-butterscotch-500 object-cover"
                             :src="`${
                                 userStore.userContentfulData?.fields?.photo?.[0]
                                     ?.fields?.file?.url

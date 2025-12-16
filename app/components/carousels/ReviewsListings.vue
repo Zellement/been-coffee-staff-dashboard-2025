@@ -32,7 +32,7 @@
                                     v-if="item.authorPhoto"
                                     :src="item.authorPhoto ?? ''"
                                     :alt="item.author ?? ''"
-                                    class="bg-tuscany-500 size-9"
+                                    class="size-9 bg-tuscany-500"
                                 />
                                 <u-avatar
                                     :icon="

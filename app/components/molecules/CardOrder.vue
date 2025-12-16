@@ -79,7 +79,7 @@
                                 v-if="
                                     item.fields?.orderedBy?.fields?.photo?.[0]
                                 "
-                                class="border-butterscotch-500 mx-auto rounded-full border-2 object-cover"
+                                class="mx-auto rounded-full border-2 border-butterscotch-500 object-cover"
                                 :src="`${
                                     item.fields?.orderedBy?.fields?.photo?.[0]
                                         ?.fields?.file?.url
