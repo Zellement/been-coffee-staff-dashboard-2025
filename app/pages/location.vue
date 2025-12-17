@@ -11,10 +11,10 @@
             :class="hasTableBookings ? 'col-span-8' : 'col-span-full'"
         />
         <lazy-advent-calendar v-if="isDecember" class="col-span-full" />
-        <!-- <lazy-staff-leaderboard
+        <lazy-staff-leaderboard
             class="col-span-full"
             item-classes="md:basis-1/2"
-        /> -->
+        />
         <lazy-table-bookings v-show="hasTableBookings" class="col-span-4" />
         <lazy-notice-board class="col-span-full" />
         <lazy-reviews-listings class="col-span-full" />
