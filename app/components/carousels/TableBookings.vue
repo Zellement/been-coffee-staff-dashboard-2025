@@ -3,7 +3,7 @@
         <carousel-title-and-action title="Table bookings" />
         <div class="relative">
             <transition name="fade">
-                <div v-if="hasTableBookings" class="flex gap-4">
+                <div v-if="hasTableBookings" class="min-w-0 flex-1 flex gap-4">
                     <u-carousel
                         v-if="allTableBookings"
                         v-slot="{ item }"
