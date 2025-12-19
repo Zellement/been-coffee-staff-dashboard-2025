@@ -1,8 +1,18 @@
 <template>
     <div class="p-default">
         <carousel-title-and-action :title="`Task Leaderboard`">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
                 <u-popover>
+                    <u-button
+                        size="2xs"
+                        color="tertiary"
+                        :ui="{
+                            base: 'p-1.5 leading-none'
+                        }"
+                        @click="refreshLeaderboard"
+                    >
+                        Refresh
+                    </u-button>
                     <u-button
                         icon="material-symbols:info-outline"
                         label="Whats this?"
@@ -88,6 +98,10 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
         'fields.jobRole[nin]': '_ShopLogin,_DashLogin'
     }))
 })
+
+async function refreshLeaderboard() {
+    staffLeaderboardStore.cachedEmployees = null
+}
 
 watch(data, (newData) => {
     if (newData) {
