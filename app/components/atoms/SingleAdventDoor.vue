@@ -21,11 +21,11 @@
             v-slot="{ item }"
             :items="winners"
             :dots="hasMultipleWinners"
-            :ui="{ dots: '-translate-y-8' }"
+            :ui="{ dots: '-translate-y-8 ' }"
         >
             <div
                 :key="item?.sys?.id"
-                class="relative flex flex-col items-center gap-2 text-center text-white"
+                class="relative flex aspect-square h-full w-full flex-col items-center gap-2 text-center text-white"
             >
                 <img
                     v-if="getTeamMember(item?.sys?.id).photo"
@@ -63,8 +63,8 @@ const getTeamMember = (id: string) => {
         (member) => member?.sys?.id === id
     )
     return {
-        name: member?.fields?.name || 'Unknown',
-        photo: member?.fields?.photo?.[0]?.fields?.file?.url || []
+        name: member?.fields?.name || 'Former Team Member',
+        photo: member?.fields?.photo?.[0]?.fields?.file?.url || null
     }
 }
 
