@@ -271,6 +271,20 @@ export const useDateUtils = () => {
         return { periodStart, lastFriday }
     }
 
+    const getFollowingWinnersStartDate = (
+        index: number,
+        allWinners: TypeBeenAwesomeWinner[]
+    ) => {
+        return allWinners?.[index - 1]?.fields.from
+    }
+
+    const duration = (to: string, from: string) => {
+        const startDate = new Date(from)
+        const endDate = new Date(to)
+        const months = (endDate.getTime() - startDate.getTime()) / 1000 / 86400
+        return months
+    }
+
     return {
         extractHourAndMinute,
         getTodaysDateInUrlEncodedFormat,
@@ -285,6 +299,8 @@ export const useDateUtils = () => {
         getTime,
         getHour,
         inActiveWindow,
-        getPayPeriodStartFrom
+        getPayPeriodStartFrom,
+        getFollowingWinnersStartDate,
+        duration
     }
 }

@@ -35,7 +35,7 @@
                         }"
                         :label="
                             fullDateConverter(
-                                getFollowingWinnersStartDate(index)
+                                getFollowingWinnersStartDate(index, allWinners)
                             )
                         "
                     />
@@ -44,7 +44,7 @@
                 <p class="mt-2">
                     {{
                         duration(
-                            getFollowingWinnersStartDate(index),
+                            getFollowingWinnersStartDate(index, allWinners),
                             winner.fields.from
                         )
                     }}
@@ -75,20 +75,21 @@ interface Props {
     index: number
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
-const { fullDateConverter } = useDateUtils()
+const { fullDateConverter, getFollowingWinnersStartDate, duration } =
+    useDateUtils()
 
 /* Functions & lifecycle */
 
-const getFollowingWinnersStartDate = (index: number) => {
-    return props.allWinners?.[index - 1]?.fields.from
-}
+// const getFollowingWinnersStartDate = (index: number) => {
+//     return props.allWinners?.[index - 1]?.fields.from
+// }
 
-const duration = (to: string, from: string) => {
-    const startDate = new Date(from)
-    const endDate = new Date(to)
-    const months = (endDate.getTime() - startDate.getTime()) / 1000 / 86400
-    return months
-}
+// const duration = (to: string, from: string) => {
+//     const startDate = new Date(from)
+//     const endDate = new Date(to)
+//     const months = (endDate.getTime() - startDate.getTime()) / 1000 / 86400
+//     return months
+// }
 </script>

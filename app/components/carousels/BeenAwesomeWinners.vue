@@ -18,18 +18,16 @@
         <u-carousel
             v-slot="{ item, index }"
             dots
-            :items="allWinners"
+            :items="slides"
             :ui="{
                 root: 'flex',
                 container: 'items-center h-full',
                 item: 'basis-80'
             }"
         >
-            <been-awesome-current-winner v-if="index === 0" :winner="item" />
-            <been-awesome-previous-winner
-                v-else
-                :winner="item"
-                :all-winners="allWinners"
+            <component
+                :is="item.component"
+                v-bind="item.props"
                 :index="index"
             />
         </u-carousel>
@@ -37,13 +35,19 @@
 </template>
 
 <script lang="ts" setup>
+import {
+    BeenAwsesomeRemainingList,
+    BeenAwesomeCurrentWinner,
+    BeenAwesomePreviousWinner
+} from '#components'
+
 const locationsStore = useLocationsStore()
 const beenAwesomeStore = useBeenAwesomeStore()
 
 const { shortDateConverter } = useDateUtils()
 
 const allWinners: ComputedRef<TypeBeenAwesomeWinner[]> = computed(() => {
-    return beenAwesomeStore.beenAwesomeWinnersLastFive || []
+    return beenAwesomeStore.cachedBeenAwesomeWinners || []
 })
 
 const hasWinners: ComputedRef<boolean> = computed(() => {
@@ -61,6 +65,65 @@ const shouldFetch: ComputedRef<boolean> = computed(
         locationsStore.safeToFetchAllData &&
         beenAwesomeStore.cachedBeenAwesomeWinners === null
 )
+
+const slides: any[] = [
+    {
+        component: BeenAwesomeCurrentWinner,
+        props: {
+            winner: allWinners.value[0]
+        }
+    },
+    {
+        component: BeenAwesomePreviousWinner,
+        props: {
+            winner: allWinners.value[1],
+            allWinners: allWinners.value
+        }
+    },
+    {
+        component: BeenAwesomePreviousWinner,
+        props: {
+            winner: allWinners.value[2],
+            allWinners: allWinners.value
+        }
+    },
+    {
+        component: BeenAwesomePreviousWinner,
+        props: {
+            winner: allWinners.value[3],
+            allWinners: allWinners.value
+        }
+    },
+    {
+        component: BeenAwesomePreviousWinner,
+        props: {
+            winner: allWinners.value[4],
+            allWinners: allWinners.value
+        }
+    },
+
+    {
+        component: BeenAwesomePreviousWinner,
+        props: {
+            winner: allWinners.value[5],
+            allWinners: allWinners.value
+        }
+    },
+    {
+        component: BeenAwesomePreviousWinner,
+        props: {
+            winner: allWinners.value[6],
+            allWinners: allWinners.value
+        }
+    },
+
+    {
+        component: BeenAwsesomeRemainingList,
+        props: {
+            allWinners: allWinners.value
+        }
+    }
+]
 
 const { data } = useFetch('/api/contentful/fetch-entries', {
     key: 'beenAwesomeWinners',
