@@ -25,122 +25,13 @@
                 item: 'basis-80'
             }"
         >
-            <u-card
-                v-if="index === 0"
-                variant="solid"
-                :ui="{
-                    root: 'bg-black dark:bg-white'
-                }"
-            >
-                <u-slideover
-                    :title="`${item.fields.name} - Winner from ${fullDateConverter(item.fields.from)}`"
-                >
-                    <div class="flex flex-col items-center p-8">
-                        <img
-                            src="@/assets/images/beenawesome.png"
-                            class="mb-8 w-full max-w-[180px]"
-                            :class="
-                                colorMode.value === 'dark'
-                                    ? ''
-                                    : 'brightness-50 invert'
-                            "
-                        />
-                        <h2
-                            class="uc-text text-lg !text-white dark:!text-black"
-                        >
-                            {{ item.fields.name }}
-                        </h2>
-
-                        <p class="flex items-center gap-1">
-                            <u-icon name="i-bx-log-in" />
-                            {{ fullDateConverter(item.fields.from) }}
-                        </p>
-
-                        <img
-                            class="mt-8 rounded shadow-xl"
-                            :src="`${
-                                item.fields.photo?.fields?.file?.url
-                            }?w=460&h=640&fit=fill&f=face&fm=webp`"
-                            :alt="item.fields.name"
-                        />
-                    </div>
-
-                    <template #body>
-                        <div class="whitespace-pre-line">
-                            {{ item.fields.details }}
-                        </div>
-                    </template>
-                </u-slideover>
-            </u-card>
-            <u-card v-else variant="subtle">
-                <u-slideover
-                    :title="`${item.fields.name} - ${fullDateConverter(item.fields.from)}`"
-                >
-                    <div
-                        class="flex w-full flex-col items-center p-5 text-center"
-                    >
-                        <h2 class="uc-text mb-2">
-                            {{ item.fields.name }}
-                        </h2>
-                        <u-field-group>
-                            <u-badge
-                                variant="outline"
-                                size="sm"
-                                color="tertiary"
-                                icon="i-bx-log-in"
-                                :label="
-                                    item.fields.from
-                                        ? `${new Date(
-                                              item.fields.from
-                                          ).toLocaleDateString(undefined, {
-                                              year: 'numeric',
-                                              month: 'short',
-                                              day: 'numeric'
-                                          })}`
-                                        : 'Start date unknown'
-                                "
-                            />
-                            <u-badge
-                                variant="outline"
-                                size="sm"
-                                color="tertiary"
-                                trailing-icon="i-bx-log-out"
-                                :ui="{
-                                    trailingIcon: 'rotate-180'
-                                }"
-                                :label="
-                                    fullDateConverter(
-                                        getFollowingWinnersStartDate(index)
-                                    )
-                                "
-                            />
-                        </u-field-group>
-
-                        <p class="mt-2">
-                            {{
-                                duration(
-                                    getFollowingWinnersStartDate(index),
-                                    item.fields.from
-                                )
-                            }}
-                            days
-                        </p>
-
-                        <img
-                            class="mt-4 w-full rounded shadow-xl"
-                            :src="`${
-                                item.fields.photo?.fields?.file?.url
-                            }?w=300&h=370&fit=fill&f=face&fm=webp`"
-                            :alt="item.fields.name"
-                        />
-                    </div>
-                    <template #body>
-                        <div class="whitespace-pre-line">
-                            {{ item.fields.details }}
-                        </div>
-                    </template>
-                </u-slideover>
-            </u-card>
+            <been-awesome-current-winner v-if="index === 0" :winner="item" />
+            <been-awesome-previous-winner
+                v-else
+                :winner="item"
+                :all-winners="allWinners"
+                :index="index"
+            />
         </u-carousel>
     </div>
 </template>
@@ -149,12 +40,10 @@
 const locationsStore = useLocationsStore()
 const beenAwesomeStore = useBeenAwesomeStore()
 
-const colorMode = useColorMode()
-
-const { fullDateConverter, shortDateConverter } = useDateUtils()
+const { shortDateConverter } = useDateUtils()
 
 const allWinners: ComputedRef<TypeBeenAwesomeWinner[]> = computed(() => {
-    return beenAwesomeStore.cachedBeenAwesomeWinners || []
+    return beenAwesomeStore.beenAwesomeWinnersLastFive || []
 })
 
 const hasWinners: ComputedRef<boolean> = computed(() => {
@@ -173,19 +62,6 @@ const shouldFetch: ComputedRef<boolean> = computed(
         beenAwesomeStore.cachedBeenAwesomeWinners === null
 )
 
-/* Functions & lifecycle */
-
-const getFollowingWinnersStartDate = (index: number) => {
-    return allWinners.value[index - 1]?.fields.from
-}
-
-const duration = (to: string, from: string) => {
-    const startDate = new Date(from)
-    const endDate = new Date(to)
-    const months = (endDate.getTime() - startDate.getTime()) / 1000 / 86400
-    return months
-}
-
 const { data } = useFetch('/api/contentful/fetch-entries', {
     key: 'beenAwesomeWinners',
     lazy: true,
@@ -196,7 +72,8 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
         content_type: 'beenAwesomeWinner',
         select: 'fields.details,fields.from,fields.name,fields.photo',
         'fields.location.sys.id': activeLocationId.value,
-        order: '-fields.from'
+        order: '-fields.from',
+        limit: 100
     }))
 })
 

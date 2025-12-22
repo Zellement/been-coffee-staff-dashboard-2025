@@ -8,6 +8,19 @@ export const useBeenAwesomeStore = defineStore(
         )
         const lastFetched: Ref<Date | null> = ref(null)
 
+        const beenAwesomeWinnersLastFive: ComputedRef<TypeBeenAwesomeWinner[]> =
+            computed(() => {
+                if (!cachedBeenAwesomeWinners.value) return []
+                return cachedBeenAwesomeWinners.value.slice(0, 5)
+            })
+
+        const beenAwesomeWinnersRemaining: ComputedRef<
+            TypeBeenAwesomeWinner[]
+        > = computed(() => {
+            if (!cachedBeenAwesomeWinners.value) return []
+            return cachedBeenAwesomeWinners.value.slice(5)
+        })
+
         const clearCache = () => {
             cachedBeenAwesomeWinners.value = null
             lastFetched.value = null
@@ -16,6 +29,8 @@ export const useBeenAwesomeStore = defineStore(
 
         return {
             cachedBeenAwesomeWinners,
+            beenAwesomeWinnersLastFive,
+            beenAwesomeWinnersRemaining,
             lastFetched,
             clearCache
         }
