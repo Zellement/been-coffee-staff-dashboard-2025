@@ -101,7 +101,6 @@ const slides: any[] = [
             allWinners: allWinners.value
         }
     },
-
     {
         component: BeenAwesomePreviousWinner,
         props: {
@@ -136,7 +135,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
         select: 'fields.details,fields.from,fields.name,fields.photo',
         'fields.location.sys.id': activeLocationId.value,
         order: '-fields.from',
-        limit: 100
+        limit: 50
     }))
 })
 
