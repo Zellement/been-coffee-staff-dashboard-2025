@@ -14,6 +14,7 @@ export const useStaffLeaderboardStore = defineStore(
 
         type TypeEmployeeWithLoggedMinutes = EmployeeLeaderboardEntry & {
             thisPeriodMinutes: number
+            thisPeriodTasks: TaskWithMinutes[]
         }
 
         const employeeLeaderboard: ComputedRef<
@@ -34,8 +35,13 @@ export const useStaffLeaderboardStore = defineStore(
                     .filter((task) => new Date(task.date) >= periodStart)
                     .reduce((sum, task) => sum + task.timeInMinutes, 0)
 
+                const thisPeriodTasks = tasks.filter(
+                    (task) => new Date(task.date) >= periodStart
+                )
+
                 return {
                     ...employee,
+                    thisPeriodTasks,
                     thisPeriodMinutes
                 }
             })

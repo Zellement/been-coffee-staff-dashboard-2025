@@ -5,14 +5,43 @@
                 :class="getColumnData(i).classes"
                 class="mt-8 flex flex-col items-center gap-2 rounded-tl-2xl rounded-tr-2xl bg-linear-to-b pb-4"
             >
-                <img
-                    v-if="item.fields.photo && item.fields.photo.length > 0"
-                    class="hexagon-clip relative z-10 -mb-8 size-16 shrink-0 -translate-y-1/2 rounded-full"
-                    :src="`${
-                        item.fields.photo[0].fields.file.url
-                    }?w=90&h=90&fit=fill&f=face&fm=webp`"
-                    :alt="`${item.fields.name} ${item.fields.surname}`"
-                />
+                <u-drawer>
+                    <button>
+                        <img
+                            v-if="
+                                item.fields.photo &&
+                                item.fields.photo.length > 0
+                            "
+                            class="hexagon-clip relative z-10 -mb-8 size-16 shrink-0 -translate-y-1/2 rounded-full"
+                            :src="`${
+                                item.fields.photo[0].fields.file.url
+                            }?w=90&h=90&fit=fill&f=face&fm=webp`"
+                            :alt="`${item.fields.name} ${item.fields.surname}`"
+                        />
+                    </button>
+
+                    <template #content>
+                        <ul class="flex flex-col gap-2 p-2">
+                            <li
+                                v-for="task in item?.thisPeriodTasks"
+                                :key="task.taskName"
+                                class="flex gap-1"
+                            >
+                                <u-badge>{{ task.taskName }}</u-badge>
+                                <u-field-group>
+                                    <u-badge
+                                        :label="fullDateConverter(task.date)"
+                                        color="tertiary"
+                                    />
+                                    <u-badge
+                                        :label="extractHourAndMinute(task.date)"
+                                        color="tertiary"
+                                    />
+                                </u-field-group>
+                            </li>
+                        </ul>
+                    </template>
+                </u-drawer>
                 <u-icon
                     v-if="getColumnData(i).icon"
                     :size="getColumnData(i).iconSize || '40'"
@@ -49,6 +78,8 @@ interface ColumnData {
     iconClasses?: string
     minutesClasses?: string
 }
+
+const { fullDateConverter, extractHourAndMinute } = useDateUtils()
 
 const staffLeaderboardStore = useStaffLeaderboardStore()
 
