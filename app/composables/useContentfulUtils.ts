@@ -10,6 +10,19 @@ export const useContentfulUtils = () => {
         const uiStore = useUiStore()
         const locationsStore = useLocationsStore()
 
+        const now = new Date()
+        if (
+            task.fields.lastCompleted &&
+            now.getTime() - new Date(task.fields.lastCompleted).getTime() <
+                6 * 60 * 60 * 1000
+        ) {
+            toast.add({
+                title: 'Sorry, task completion blocked',
+                description: `This task was completed in the last 6 hours`,
+                color: 'error'
+            })
+            return
+        }
         const activeLocation: ComputedRef<TypeLocation | undefined> = computed(
             () => {
                 return locationsStore.activeLocation
@@ -21,8 +34,6 @@ export const useContentfulUtils = () => {
                 activeLocation.value.fields.googleSheetsScriptRoutineTasks || ''
             )
         })
-
-        const now = new Date()
 
         const formData = new FormData()
         formData.append('timestamp', now.toISOString())
