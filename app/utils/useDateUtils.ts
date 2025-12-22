@@ -262,9 +262,23 @@ export const useDateUtils = () => {
         const year = date.getFullYear()
         const month = date.getMonth()
 
+        // Check if we're in the current month's pay period or previous
+        const currentMonthLastFriday = getLastFriday(year, month)
+        const currentMonthPeriodStart = getPreviousMonday(
+            currentMonthLastFriday
+        )
+
+        // If current date is on or after this month's period start, use current month
+        if (date >= currentMonthPeriodStart) {
+            return {
+                periodStart: currentMonthPeriodStart,
+                lastFriday: currentMonthLastFriday
+            }
+        }
+
+        // Otherwise, use previous month
         const prevMonth = month === 0 ? 11 : month - 1
         const prevMonthYear = month === 0 ? year - 1 : year
-
         const lastFriday = getLastFriday(prevMonthYear, prevMonth)
         const periodStart = getPreviousMonday(lastFriday)
 
