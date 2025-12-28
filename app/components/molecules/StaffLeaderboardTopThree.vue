@@ -21,25 +21,27 @@
                     </button>
 
                     <template #content>
-                        <ul class="flex flex-col gap-2 p-2">
-                            <li
-                                v-for="task in item?.thisPeriodTasks"
-                                :key="task.taskName"
-                                class="flex gap-1"
-                            >
-                                <u-badge>{{ task.taskName }}</u-badge>
-                                <u-field-group>
-                                    <u-badge
-                                        :label="fullDateConverter(task.date)"
-                                        color="tertiary"
-                                    />
-                                    <u-badge
-                                        :label="extractHourAndMinute(task.date)"
-                                        color="tertiary"
-                                    />
-                                </u-field-group>
-                            </li>
-                        </ul>
+                        <div class="h-full overflow-y-scroll">
+                            <ul class="flex flex-row flex-wrap gap-3 p-2">
+                                <li
+                                    v-for="task in item?.thisPeriodTasks"
+                                    :key="task.taskName"
+                                    class="flex"
+                                >
+                                    <u-avatar-group>
+                                        <u-badge color="neutral">{{
+                                            task.taskName
+                                        }}</u-badge>
+                                        <u-badge
+                                            :label="`${fullDateConverter(task.date)} @ ${extractHourAndMinute(
+                                                task.date
+                                            )}`"
+                                            color="tertiary"
+                                        />
+                                    </u-avatar-group>
+                                </li>
+                            </ul>
+                        </div>
                     </template>
                 </u-drawer>
                 <u-icon
