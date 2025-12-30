@@ -15,6 +15,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const supabase = useSupabaseClient()
     const user = useSupabaseUser()
     const locationsStore = useLocationsStore()
+    const uiStore = useUiStore()
 
     // Ensure Supabase session is hydrated on the client before doing anything
     if (import.meta.client) {
@@ -25,7 +26,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if (!user.value || user.value.aud !== 'authenticated') return
 
     // Already have locations? Done.
-    if (locationsStore.allLocations?.length) return
+    if (locationsStore.allLocations?.length) {
+        uiStore.siteIsLoading = false
+        return
+    }
 
     // Fetch once (handles 401 gracefully just in case)
     try {
@@ -41,7 +45,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
 
     const operationsStore = useOperationsStore()
-    if (operationsStore.operationsData) return
+    if (operationsStore.operationsData) {
+        uiStore.siteIsLoading = false
+        return
+    }
     // Fetch once (handles 401 gracefully just in case)
     try {
         const operationsData = await $fetch('/api/contentful/fetch-entries', {
@@ -53,4 +60,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
         if (e?.status === 401) return // session edge-case; avoid crashing navigation
         throw e
     }
+
+    uiStore.siteIsLoading = false
 })
