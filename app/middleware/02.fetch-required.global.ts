@@ -1,5 +1,7 @@
 // middleware/init-locations.global.ts
 export default defineNuxtRouteMiddleware(async (to) => {
+    const uiStore = useUiStore()
+
     // Skip on auth pages if you want
     if (
         [
@@ -9,13 +11,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
             '/forgot-password',
             '/update-password'
         ].includes(to.path)
-    )
+    ) {
+        uiStore.siteIsLoading = false
         return
+    }
 
     const supabase = useSupabaseClient()
     const user = useSupabaseUser()
     const locationsStore = useLocationsStore()
-    const uiStore = useUiStore()
 
     // Ensure Supabase session is hydrated on the client before doing anything
     if (import.meta.client) {
@@ -23,7 +26,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
 
     // Not logged in? Don't call protected APIs.
-    if (!user.value || user.value.aud !== 'authenticated') return
+    if (!user.value || user.value.aud !== 'authenticated') {
+        uiStore.siteIsLoading = false
+        return
+    }
 
     // Already have locations? Done.
     if (locationsStore.allLocations?.length) {
@@ -40,7 +46,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
         locationsStore.allLocations = locationData.items
         locationsStore.totalLocations = locationData.total
     } catch (e: any) {
-        if (e?.status === 401) return // session edge-case; avoid crashing navigation
+        if (e?.status === 401) {
+            uiStore.siteIsLoading = false
+            return
+        } // session edge-case; avoid crashing navigation
         throw e
     }
 
@@ -57,7 +66,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
         })
         operationsStore.operationsData = operationsData.items[0]
     } catch (e: any) {
-        if (e?.status === 401) return // session edge-case; avoid crashing navigation
+        if (e?.status === 401) {
+            uiStore.siteIsLoading = false
+            return
+        } // session edge-case; avoid crashing navigation
         throw e
     }
 

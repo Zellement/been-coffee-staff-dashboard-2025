@@ -1,5 +1,8 @@
 <template>
     <div class="layout">
+        <transition name="fade" mode="out-in">
+            <loading-overlay v-if="uiStore.siteIsLoading" class="z-9999" />
+        </transition>
         <div
             class="p-default sticky top-0 z-10 flex w-full items-center justify-between gap-4 bg-seashell-50 dark:bg-primary-800"
         >
