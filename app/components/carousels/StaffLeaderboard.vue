@@ -2,17 +2,17 @@
     <div class="p-default">
         <carousel-title-and-action :title="`Task Leaderboard`">
             <div class="flex items-center gap-2">
+                <u-button
+                    size="2xs"
+                    color="tertiary"
+                    :ui="{
+                        base: 'p-1.5 leading-none'
+                    }"
+                    @click="refreshLeaderboard"
+                >
+                    Refresh
+                </u-button>
                 <u-popover>
-                    <u-button
-                        size="2xs"
-                        color="tertiary"
-                        :ui="{
-                            base: 'p-1.5 leading-none'
-                        }"
-                        @click="refreshLeaderboard"
-                    >
-                        Refresh
-                    </u-button>
                     <u-button
                         icon="material-symbols:info-outline"
                         label="Whats this?"
