@@ -6,9 +6,9 @@
                 item-classes="md:basis-1/2"
             />
         </keep-alive>
-        <keep-alive v-if="isDecember">
+        <!-- <keep-alive v-if="isDecember">
             <lazy-advent-calendar class="col-span-full" />
-        </keep-alive>
+        </keep-alive> -->
         <keep-alive><lazy-single-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-daily-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-routine-tasks class="col-span-full" /></keep-alive>
@@ -49,8 +49,8 @@ const hasTableBookings = computed(() => {
     )
 })
 
-const date = new Date()
-const isDecember: ComputedRef<boolean> = computed(() => {
-    return date.getMonth() === 11
-})
+// const date = new Date()
+// const isDecember: ComputedRef<boolean> = computed(() => {
+//     return date.getMonth() === 11
+// })
 </script>
