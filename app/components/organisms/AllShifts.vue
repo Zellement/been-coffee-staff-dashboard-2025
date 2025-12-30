@@ -1,4 +1,5 @@
 <template>
+    <!-- <pre>{{ shiftsToday }}</pre> -->
     <div v-if="shiftsInLocation.length" class="">
         <carousel-title-and-action :title="title">
             <span class="pr-2">
@@ -56,7 +57,7 @@ const { data: shiftsToday } = await useFetch('/api/rotaready/get-shifts', {
 const shiftsInLocation: ComputedRef<RotareadyShift[]> = computed(() => {
     return (
         shiftsToday.value?.shifts.filter((shift: RotareadyShift) =>
-            shift.originEntityName.includes(
+            shift.workEntityName.includes(
                 locationsStore?.activeLocation?.fields.postcode
             )
         ) || []
@@ -66,7 +67,7 @@ const shiftsInLocation: ComputedRef<RotareadyShift[]> = computed(() => {
 const shiftsInHeadOffice: ComputedRef<RotareadyShift[]> = computed(() => {
     return (
         shiftsToday.value?.shifts.filter((shift: RotareadyShift) =>
-            shift.originEntityName.includes('Head Office')
+            shift.workEntityName.includes('Head Office')
         ) || []
     )
 })
