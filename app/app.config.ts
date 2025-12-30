@@ -34,7 +34,8 @@ export default defineAppConfig({
         stepper: {
             slots: {
                 trigger: 'size-4.5 m-0',
-                wrapper: 'm-0'
+                wrapper: 'm-0',
+                title: 'leading-tight!'
             },
             variants: {
                 size: {

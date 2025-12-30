@@ -11,6 +11,15 @@
             <div v-for="item in shiftsInLocation" :key="item.id">
                 <single-shift :shift="item" />
             </div>
+            <div v-if="shiftsInHeadOffice?.length > 0" class="mt-2">
+                <div
+                    v-for="item in shiftsInHeadOffice"
+                    :key="item.id"
+                    class="rounded-full border border-butterscotch-300 bg-butterscotch-100 p-1 dark:border-navy-200/20 dark:bg-navy-900"
+                >
+                    <single-shift :shift="item" />
+                </div>
+            </div>
         </div>
     </div>
     <div v-else class="flex flex-col gap-2">
@@ -50,6 +59,14 @@ const shiftsInLocation: ComputedRef<RotareadyShift[]> = computed(() => {
             shift.originEntityName.includes(
                 locationsStore?.activeLocation?.fields.postcode
             )
+        ) || []
+    )
+})
+
+const shiftsInHeadOffice: ComputedRef<RotareadyShift[]> = computed(() => {
+    return (
+        shiftsToday.value?.shifts.filter((shift: RotareadyShift) =>
+            shift.originEntityName.includes('Head Office')
         ) || []
     )
 })
