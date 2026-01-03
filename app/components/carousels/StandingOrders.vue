@@ -100,4 +100,13 @@ onMounted(async () => {
         await fetchData()
     }
 })
+
+watch(
+    () => activeLocationId.value,
+    async (newLocationId, oldLocationId) => {
+        if (newLocationId && newLocationId !== oldLocationId) {
+            await fetchData()
+        }
+    }
+)
 </script>
