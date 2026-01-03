@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full flex-row items-center justify-between">
+    <div class="relative flex w-full flex-row items-center justify-between">
         <transition name="fade">
             <div
                 v-if="
@@ -22,11 +22,20 @@
                     />
                     <div
                         v-else
-                        class="from-tertiary-400 to-tertiary-600 size-8 rounded-full bg-gradient-to-br"
+                        class="from-tertiary-400 to-tertiary-600 size-8 rounded-full bg-linear-to-br"
                     />
                 </u-avatar-group>
-                <span class="w-16 truncate">
-                    {{ getTeamMember(shift)?.fields?.name }}
+                <span class="flex w-16 flex-col items-start">
+                    <span class="flex truncate">
+                        {{ getTeamMember(shift)?.fields?.name }}
+                    </span>
+                    <u-badge
+                        :label="shift?.shiftType?.name"
+                        size="3xs"
+                        variant="subtle"
+                        :color="getBadgeColour(shift?.shiftType?.name)"
+                        class="truncate opacity-50"
+                    />
                 </span>
             </div>
         </transition>
@@ -43,6 +52,8 @@
                 size="xs"
             />
         </div>
+
+        <!-- class="absolute top-0 right-0" -->
     </div>
 </template>
 
@@ -56,4 +67,5 @@ interface Props {
 defineProps<Props>()
 
 const active: Ref<number> = ref(-1)
+const { getBadgeColour } = useRotareadyUtils()
 </script>

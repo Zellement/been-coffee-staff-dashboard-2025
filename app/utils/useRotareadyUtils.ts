@@ -38,6 +38,28 @@ export const useRotareadyUtils = () => {
         return pairs
     }
 
+    const getBadgeColour = (
+        shiftName: string
+    ): 'error' | 'neutral' | 'info' | 'warning' | 'success' | 'purple' => {
+        switch (shiftName) {
+            case 'Open':
+            case 'Open (SL)':
+                return 'success'
+            case 'Close':
+            case 'Close (SL)':
+                return 'error'
+            case 'Open & Close':
+            case 'Open & Close (SL)':
+                return 'purple'
+            case 'Admin':
+                return 'info'
+            case 'Barista':
+                return 'warning'
+            default:
+                return 'neutral'
+        }
+    }
+
     function formatBreaksLabel(
         shift: RotareadyShift,
         clockedOutAt?: string,
@@ -134,6 +156,7 @@ export const useRotareadyUtils = () => {
 
     return {
         getTeamMember,
-        generateStepper
+        generateStepper,
+        getBadgeColour
     }
 }

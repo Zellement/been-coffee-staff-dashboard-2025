@@ -3,10 +3,10 @@
         <div class="flex w-32 items-center gap-2">
             <u-avatar-group>
                 <img
-                    v-if="event.userPhoto"
+                    v-if="singleEvent.userPhoto"
                     class="bg-tertiary size-8 shrink-0 rounded-full p-px"
-                    :src="`${event.userPhoto}?w=90&h=90&fit=fill&f=face&fm=webp`"
-                    :alt="event.userName"
+                    :src="`${singleEvent.userPhoto}?w=90&h=90&fit=fill&f=face&fm=webp`"
+                    :alt="singleEvent.userName"
                 />
                 <div
                     v-else
@@ -14,7 +14,7 @@
                 />
             </u-avatar-group>
             <span class="w-16 truncate">
-                {{ event.userName }}
+                {{ singleEvent.userName }}
             </span>
         </div>
 
@@ -26,7 +26,7 @@
                 class="absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-linear-to-r from-tuscany-500 to-seashell-300 dark:from-navy-400 dark:to-navy-600"
             />
             <template
-                v-for="(e, index) in event.events"
+                v-for="(e, index) in singleEvent.events"
                 :key="`${e.title}-${e.description}`"
             >
                 <div
@@ -72,7 +72,7 @@
                 color="secondary"
                 disabled
                 orientation="horizontal"
-                :items="event.events"
+                :items="singleEvent.events"
                 size="xs"
                 :ui="{
                     root: 'w-full',
@@ -86,46 +86,35 @@
 
 <script lang="ts" setup>
 interface Props {
-    event: TransformedUser
+    singleEvent: TransformedUser
 }
 
 const props = defineProps<Props>()
 
 const hasClockedOut = computed(() => {
-    return props.event.events.some((e) => e.description === 'Clocked out')
+    return props.singleEvent.events.some((e) => e.description === 'Clocked out')
 })
 
 const clockedOutTime: ComputedRef<string> = computed(() => {
-    const clockOutEvent = props.event.events.find(
+    const clockOutEvent = props.singleEvent.events.find(
         (e) => e.description === 'Clocked out'
     )
     return clockOutEvent?.title ? clockOutEvent?.title : ''
 })
 
 const isOnBreak = computed(() => {
-    const lastEvent = props.event.events[props.event.events.length - 1] || null
+    const lastEvent =
+        props.singleEvent.events[props.singleEvent.events.length - 1] || null
     return lastEvent?.description === 'Break on'
 })
 
 const hasMoreThanFourEvents = computed(() => {
-    return props.event.events.length > 4
+    return props.singleEvent.events.length > 4
 })
 
 const multipleEvents = (index: number) => {
     return hasMoreThanFourEvents.value && index !== 0
 }
 
-// const active: Ref<number> = ref(-1)
-
-// const getIcon = (description: string): string => {
-//     if (description.includes('Clocked in')) {
-//         return 'plus'
-//     } else if (description.includes('deleted')) {
-//         return 'trash'
-//     } else if (description.includes('updated')) {
-//         return 'pencil'
-//     } else {
-//         return 'info-circle'
-//     }
-// }
+// const { getTeamMember } = useRotareadyUtils()
 </script>

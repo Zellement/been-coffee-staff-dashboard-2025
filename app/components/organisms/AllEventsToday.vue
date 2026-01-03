@@ -25,11 +25,11 @@
                     </u-badge>
                 </span>
             </carousel-title-and-action>
-            <div class="flex flex-col gap-4.5">
+            <div class="flex flex-col gap-2.5">
                 <single-event
                     v-for="item in transformedEvents"
                     :key="item?.userId"
-                    :event="item"
+                    :single-event="item"
                 >
                 </single-event>
             </div>
