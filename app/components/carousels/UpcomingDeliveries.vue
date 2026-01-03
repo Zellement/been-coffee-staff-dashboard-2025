@@ -1,5 +1,5 @@
 <template>
-    <div class="p-c-default">
+    <div v-if="hasOrders" class="p-c-default">
         <carousel-title-and-action title="Deliveries" />
         <div class="relative">
             <transition name="fade">

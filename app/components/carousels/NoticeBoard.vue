@@ -1,5 +1,5 @@
 <template>
-    <div class="p-default mb-8">
+    <div v-if="hasNotices" class="p-default mb-8">
         <carousel-title-and-action title="Notice Board" />
         <div class="relative">
             <transition name="fade">

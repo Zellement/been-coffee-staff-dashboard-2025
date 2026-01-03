@@ -1,5 +1,5 @@
 <template>
-    <div class="p-default relative mb-8">
+    <div v-if="hasReviews" class="p-default relative mb-8">
         <carousel-title-and-action title="Reviews">
             <u-switch
                 v-model="showDetails"
@@ -169,6 +169,8 @@ const locationsStore = useLocationsStore()
 const reviewData = ref<NormalisedReview[]>([])
 const dataFetched: Ref<boolean> = ref(false)
 const showDetails: Ref<boolean> = ref(false)
+
+const hasReviews = computed(() => reviewData.value.length > 0)
 
 const { uploadReviews } = useContentfulUtils()
 const { fullDateConverter } = useDateUtils()
