@@ -81,6 +81,24 @@
                     />
                 </div>
 
+                <div
+                    v-if="
+                        item.fields.task.fields.article &&
+                        item.fields.task.fields.article.length
+                    "
+                >
+                    <p class="uc-text mb-2 font-semibold">Related Articles:</p>
+
+                    <u-button
+                        v-for="article in item.fields.task.fields.article"
+                        :key="article.sys.id"
+                        :href="`/article/${article.fields.slug}`"
+                        trailing-icon="i-material-symbols-arrow-right-alt"
+                    >
+                        {{ article.fields.title }}
+                    </u-button>
+                </div>
+
                 <u-alert
                     v-if="item.fields.lastCompleted || item.fields.completedBy"
                     :title="`Due ${inXDays(item.nextDueDate)}`"
@@ -88,7 +106,7 @@
                         icon: '!size-5'
                     }"
                     variant="solid"
-                    color="neutral"
+                    color="tertiary"
                 />
 
                 <div class="flex w-full gap-2 text-center">
