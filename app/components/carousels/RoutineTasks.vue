@@ -33,7 +33,7 @@
                             >
                                 <rich-text :content="item.description" />
                             </div>
-                            <div class="mb-4 flex gap-1">
+                            <div class="flex gap-1">
                                 <u-badge
                                     size="sm"
                                     color="neutral"
@@ -71,7 +71,30 @@
                                     :label="`${shortDateConverter(item.lastCompleted)} at ${getTime(item.lastCompleted)} ${item.completedBy ? `by ${item.completedBy}` : ''}`"
                                 />
                             </div>
-                            <div class="flex flex-col items-start gap-2">
+                            <div
+                                v-if="
+                                    item.fullTask.fields.task.fields.article &&
+                                    item.fullTask.fields.task.fields.article
+                                "
+                                class="mt-8"
+                            >
+                                <p class="uc-text mb-1 font-semibold">
+                                    Related Articles:
+                                </p>
+
+                                <u-button
+                                    v-for="article in item.fullTask.fields.task
+                                        .fields.article"
+                                    :key="article.sys.id"
+                                    :href="`/article/${article.fields.slug}`"
+                                    trailing-icon="i-material-symbols-arrow-right-alt"
+                                    variant="outline"
+                                    color="neutral"
+                                >
+                                    {{ article.fields.title }}
+                                </u-button>
+                            </div>
+                            <div class="mt-8 flex flex-col items-start gap-2">
                                 <u-button
                                     color="tertiary"
                                     :icon="
