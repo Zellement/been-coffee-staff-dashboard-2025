@@ -19,7 +19,7 @@
                     class="shift-leads__img-wrapper absolute top-1/2 left-0 flex aspect-square h-12 w-12 -translate-y-1/2 overflow-hidden rounded-full p-1"
                 >
                     <img
-                        class="border-butterscotch-500 rounded-full border-2 object-cover"
+                        class="rounded-full border-2 border-butterscotch-500 object-cover"
                         :src="`${
                             member?.fields?.photo?.[0]?.fields?.file?.url
                         }?w=50&h=50&fit=fill&f=face&fm=webp`"

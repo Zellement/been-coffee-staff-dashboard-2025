@@ -1,5 +1,5 @@
 <template>
-    <div class="border-seashell-600 dark:border-navy-300 border-b pb-8">
+    <div class="border-b border-seashell-600 pb-8 dark:border-navy-300">
         <div
             class="sticky top-0 mb-6 grid grid-cols-6 justify-between gap-2 py-1.5"
         >
@@ -20,7 +20,7 @@
                 <p
                     class="transform-all flex flex-col justify-between self-end leading-none duration-300"
                 >
-                    <span class="text-2xs text-right">Total</span>
+                    <span class="text-right text-2xs">Total</span>
 
                     <input
                         tabindex="-1"
@@ -34,7 +34,7 @@
                 <p
                     class="denominations-end transform-all mt-auto flex flex-col justify-between self-end leading-none duration-300"
                 >
-                    <span class="text-2xs text-right">
+                    <span class="text-right text-2xs">
                         <Icon
                             name="mdi:plus-minus-variant"
                             class="mx-auto flex h-3 w-3"

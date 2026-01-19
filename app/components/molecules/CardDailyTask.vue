@@ -53,6 +53,24 @@
                     v-if="item.fields.task.fields.description"
                     :content="item.fields.task.fields.description"
                 />
+                <div
+                    v-if="
+                        item.fields.task.fields.article &&
+                        item.fields.task.fields.article.length
+                    "
+                    class="mt-4"
+                >
+                    <p class="uc-text mb-2 font-semibold">Related Articles:</p>
+
+                    <u-button
+                        v-for="article in item.fields.task.fields.article"
+                        :key="article.sys.id"
+                        :href="`/article/${article.fields.slug}`"
+                        trailing-icon="i-material-symbols-arrow-right-alt"
+                    >
+                        {{ article.fields.title }}
+                    </u-button>
+                </div>
             </div>
         </template>
         <template #footer>
