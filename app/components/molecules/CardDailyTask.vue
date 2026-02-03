@@ -34,18 +34,30 @@
                 </u-badge>
             </template>
             <p class="truncate">{{ item.fields.task.fields.title }}</p>
-            <u-badge
-                :color="over24HoursAgo ? 'error' : 'primary'"
-                size="xs"
-                variant="outline"
-                icon="i-prime-history"
-            >
-                {{
-                    item.fields.lastCompleted
-                        ? wasXHoursAgo(item.fields.lastCompleted)
-                        : 'Never'
-                }}
-            </u-badge>
+
+            <div class="mt-auto self-start">
+                <u-field-group orientation="horizontal" class="mt-auto pt-2">
+                    <u-badge
+                        :color="over24HoursAgo ? 'error' : 'primary'"
+                        size="xs"
+                        variant="outline"
+                        icon="i-prime-history"
+                    >
+                        {{
+                            item.fields.lastCompleted
+                                ? wasXHoursAgo(item.fields.lastCompleted)
+                                : 'Never'
+                        }}
+                    </u-badge>
+                    <u-badge
+                        v-if="item.fields.task.fields.minutesToComplete"
+                        size="xs"
+                        variant="outline"
+                        class="font-semibold"
+                        :label="`Estimated ${item.fields.task.fields.minutesToComplete} mins`"
+                    />
+                </u-field-group>
+            </div>
         </u-card>
         <template #body>
             <div class="flex flex-col items-start">

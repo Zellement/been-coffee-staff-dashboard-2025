@@ -30,7 +30,7 @@
                 </u-badge>
             </template>
             <p class="truncate">{{ item.fields.title }}</p>
-            <div class="flex items-center gap-2">
+            <u-field-group orientation="horizontal" class="mt-auto pt-2">
                 <u-badge
                     :color="over24HoursAgo ? 'error' : 'primary'"
                     size="xs"
@@ -49,7 +49,7 @@
                     variant="outline"
                     size="xs"
                 />
-            </div>
+            </u-field-group>
         </u-card>
         <template #body>
             <div class="flex flex-col items-start">
