@@ -159,14 +159,15 @@ export const useContentfulUtils = () => {
         }
     }
 
-    const uploadReviews = async (data: any, locationId: string) => {
+    const uploadReviews = async (data: any, locationId: string, meta?: any) => {
         await $fetch(`/api/contentful/update-entry`, {
             method: 'POST',
             body: {
                 id: locationId,
                 fields: {
                     reviewDataLastFetched: localISOTime,
-                    reviewData: data
+                    reviewData: data,
+                    reviewMeta: meta
                 }
             }
         })

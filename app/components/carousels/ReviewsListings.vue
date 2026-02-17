@@ -1,5 +1,6 @@
 <template>
     <div v-if="hasReviews" class="p-default relative mb-8">
+        {{ reviewMeta }}
         <carousel-title-and-action title="Reviews">
             <u-switch
                 v-model="showDetails"
@@ -133,6 +134,13 @@ interface NormalisedReview {
     } | null
 }
 
+interface ReviewMeta {
+    googleRating: number | null
+    googleCount: number | null
+    tripadvisorRating: number | null
+    tripadvisorCount: number | null
+}
+
 const getDetails = (item: NormalisedReview): TimelineItem[] => {
     const details: TimelineItem[] = []
     if (item.details?.food) {
@@ -167,6 +175,7 @@ const getRatingIcon = (rating: number): string => {
 const locationsStore = useLocationsStore()
 
 const reviewData = ref<NormalisedReview[]>([])
+const reviewMeta = ref<ReviewMeta | null>(null)
 const dataFetched: Ref<boolean> = ref(false)
 const showDetails: Ref<boolean> = ref(false)
 
@@ -311,10 +320,13 @@ function mergeAndSort(
 async function fetchGoogleReviews(): Promise<NormalisedReview[]> {
     if (!googlePlaceId.value) return []
     try {
-        const res = await $fetch('/api/reviews/serp-api-google-reviews', {
-            method: 'GET',
-            params: { place_id: googlePlaceId.value }
-        })
+        const res = await $fetch(
+            '/api/review-platforms/serp-api-google-reviews',
+            {
+                method: 'GET',
+                params: { place_id: googlePlaceId.value }
+            }
+        )
 
         return normalizeGoogle(res)
     } catch (e) {
@@ -326,13 +338,27 @@ async function fetchGoogleReviews(): Promise<NormalisedReview[]> {
 async function fetchTripadvisorReviews(): Promise<NormalisedReview[]> {
     if (!tripadvisorPlaceId.value) return []
     try {
-        const res = await $fetch('/api/reviews/tripadvisor', {
+        const res = await $fetch('/api/review-platforms/tripadvisor', {
             method: 'GET',
             params: { place_id: tripadvisorPlaceId.value }
         })
         return normalizeTripAdvisor(res)
     } catch (e) {
         console.warn('TripAdvisor reviews fetch failed:', e)
+        return []
+    }
+}
+
+async function fetchTripadvisorRating(): Promise<NormalisedReview[]> {
+    if (!tripadvisorPlaceId.value) return []
+    try {
+        const res = await $fetch('/api/review-platforms/tripadvisor-location', {
+            method: 'GET',
+            params: { place_id: tripadvisorPlaceId.value }
+        })
+        return res
+    } catch (e) {
+        console.warn('TripAdvisor rating fetch failed:', e)
         return []
     }
 }
@@ -371,13 +397,15 @@ watch(
             }
 
             dataFetched.value = false
-            const [g, t] = await Promise.all([
+            const [g, t, tr] = await Promise.all([
                 fetchGoogleReviews(),
-                fetchTripadvisorReviews()
+                fetchTripadvisorReviews(),
+                fetchTripadvisorRating()
             ])
 
             const final = mergeAndSort(g, t)
             reviewData.value = final
+            console.log(tr)
             dataFetched.value = true
 
             if (location.sys?.id) {
