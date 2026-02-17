@@ -331,7 +331,7 @@ async function fetchGoogleReviews(): Promise<{
     try {
         const res: {
             reviews?: any
-            place_info?: { rating?: number | null; num_reviews?: number | null }
+            place_info?: { rating?: number | null; reviews?: number | null }
         } = await $fetch('/api/review-platforms/serp-api-google-reviews', {
             method: 'GET',
             params: { place_id: googlePlaceId.value }
@@ -341,7 +341,7 @@ async function fetchGoogleReviews(): Promise<{
             reviews: normalizeGoogle(res),
             meta: {
                 rating: res?.place_info?.rating ?? null,
-                reviews: res?.place_info?.num_reviews ?? null
+                reviews: res?.place_info?.reviews ?? null
             }
         }
     } catch (e) {
