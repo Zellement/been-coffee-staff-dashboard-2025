@@ -141,6 +141,11 @@ interface ReviewMeta {
     tripadvisorCount: number | null
 }
 
+interface PlaceInfo {
+    rating: number | null
+    reviews: number | null
+}
+
 const getDetails = (item: NormalisedReview): TimelineItem[] => {
     const details: TimelineItem[] = []
     if (item.details?.food) {
@@ -317,21 +322,31 @@ function mergeAndSort(
 }
 
 /* --- Fetchers ----------------------------------------------------------- */
-async function fetchGoogleReviews(): Promise<NormalisedReview[]> {
-    if (!googlePlaceId.value) return []
+async function fetchGoogleReviews(): Promise<{
+    reviews: NormalisedReview[]
+    meta: PlaceInfo
+}> {
+    if (!googlePlaceId.value)
+        return { reviews: [], meta: { rating: null, reviews: null } }
     try {
-        const res = await $fetch(
-            '/api/review-platforms/serp-api-google-reviews',
-            {
-                method: 'GET',
-                params: { place_id: googlePlaceId.value }
-            }
-        )
+        const res: {
+            reviews?: any
+            place_info?: { rating?: number | null; num_reviews?: number | null }
+        } = await $fetch('/api/review-platforms/serp-api-google-reviews', {
+            method: 'GET',
+            params: { place_id: googlePlaceId.value }
+        })
 
-        return normalizeGoogle(res)
+        return {
+            reviews: normalizeGoogle(res),
+            meta: {
+                rating: res?.place_info?.rating ?? null,
+                reviews: res?.place_info?.num_reviews ?? null
+            }
+        }
     } catch (e) {
         console.warn('Google reviews fetch failed:', e)
-        return []
+        return { reviews: [], meta: { rating: null, reviews: null } }
     }
 }
 
@@ -403,11 +418,11 @@ watch(
                 fetchTripadvisorRating()
             ])
 
-            const final = mergeAndSort(g, t)
+            const final = mergeAndSort(g.reviews, t)
             reviewData.value = final
             const meta = {
-                googleRating: tr?.rating ?? null,
-                googleCount: tr?.num_reviews ?? null,
+                googleRating: g.meta.rating,
+                googleCount: g.meta.reviews,
                 tripadvisorRating: tr?.rating ?? null,
                 tripadvisorCount: tr?.num_reviews ?? null
             }
