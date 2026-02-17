@@ -12,31 +12,17 @@
                 />
                 <div class="ml-2 flex items-center gap-2">
                     <u-badge
+                        v-for="platform in reviewPlatforms"
+                        :key="platform.key"
                         color="secondary"
                         class="flex flex-1 items-center"
                         size="xs"
                     >
-                        <u-icon name="i-akar-icons-google-fill" />
-                        <div class="relative flex items-center">
-                            <u-icon name="ic:outline-star" />
-                        </div>
-                        <p v-if="reviewMeta?.googleCount">
-                            {{ reviewMeta.googleRating }}
-                            ({{ reviewMeta?.googleCount }})
-                        </p>
-                    </u-badge>
-                    <u-badge
-                        color="secondary"
-                        class="flex flex-1 items-center"
-                        size="xs"
-                    >
-                        <u-icon name="i-simple-icons-tripadvisor" />
-                        <div class="relative flex items-center">
-                            <u-icon name="ic:outline-star" />
-                        </div>
-                        <p v-if="reviewMeta?.tripadvisorCount">
-                            {{ reviewMeta.tripadvisorRating }}
-                            ({{ reviewMeta?.tripadvisorCount }})
+                        <u-icon :name="platform.icon" />
+                        <u-icon name="ic:outline-star" />
+                        <p v-if="reviewMeta?.[platform.countKey]">
+                            {{ reviewMeta?.[platform.ratingKey] }}
+                            ({{ reviewMeta?.[platform.countKey] }})
                         </p>
                     </u-badge>
                 </div>
@@ -175,6 +161,29 @@ interface PlaceInfo {
     rating: number | null
     reviews: number | null
 }
+
+type ReviewPlatformKey = 'google' | 'tripadvisor'
+interface ReviewPlatform {
+    key: ReviewPlatformKey
+    icon: string
+    ratingKey: keyof ReviewMeta
+    countKey: keyof ReviewMeta
+}
+
+const reviewPlatforms: ReviewPlatform[] = [
+    {
+        key: 'google',
+        icon: 'i-akar-icons-google-fill',
+        ratingKey: 'googleRating',
+        countKey: 'googleCount'
+    },
+    {
+        key: 'tripadvisor',
+        icon: 'i-simple-icons-tripadvisor',
+        ratingKey: 'tripadvisorRating',
+        countKey: 'tripadvisorCount'
+    }
+]
 
 const getDetails = (item: NormalisedReview): TimelineItem[] => {
     const details: TimelineItem[] = []
