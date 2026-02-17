@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        const url = `https://api.content.tripadvisor.com/api/v1/location/${place_id}/location?key=${process.env.TRIPADVISOR_KEY}&language=en`
+        const url = `https://api.content.tripadvisor.com/api/v1/location/${place_id}/details?key=${process.env.TRIPADVISOR_KEY}&language=en`
         const response = await fetch(url, options)
         const data = await response.json()
         return data

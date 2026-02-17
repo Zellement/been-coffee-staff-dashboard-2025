@@ -349,7 +349,7 @@ async function fetchTripadvisorReviews(): Promise<NormalisedReview[]> {
     }
 }
 
-async function fetchTripadvisorRating(): Promise<NormalisedReview[]> {
+async function fetchTripadvisorRating(): Promise<any> {
     if (!tripadvisorPlaceId.value) return []
     try {
         const res = await $fetch('/api/review-platforms/tripadvisor-location', {
@@ -405,12 +405,19 @@ watch(
 
             const final = mergeAndSort(g, t)
             reviewData.value = final
-            console.log(tr)
+            const meta = {
+                googleRating: tr?.rating ?? null,
+                googleCount: tr?.num_reviews ?? null,
+                tripadvisorRating: tr?.rating ?? null,
+                tripadvisorCount: tr?.num_reviews ?? null
+            }
+            reviewMeta.value = meta
+
             dataFetched.value = true
 
             if (location.sys?.id) {
                 try {
-                    await uploadReviews(final, location.sys.id)
+                    await uploadReviews(final, location.sys.id, meta)
                 } catch (e) {
                     console.warn('uploadReviews failed:', e)
                 }
