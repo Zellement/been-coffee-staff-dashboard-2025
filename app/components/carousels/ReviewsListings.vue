@@ -1,14 +1,46 @@
 <template>
     <div v-if="hasReviews" class="p-default relative mb-8">
-        {{ reviewMeta }}
         <carousel-title-and-action title="Reviews">
-            <u-switch
-                v-model="showDetails"
-                unchecked-icon="i-lucide-x"
-                checked-icon="i-lucide-check"
-                label="Details"
-                size="sm"
-            />
+            <div class="flex items-center">
+                <u-switch
+                    v-model="showDetails"
+                    unchecked-icon="i-lucide-x"
+                    checked-icon="i-lucide-check"
+                    label="Details"
+                    size="sm"
+                    class="ml-auto"
+                />
+                <div class="ml-2 flex items-center gap-2">
+                    <u-badge
+                        color="secondary"
+                        class="flex flex-1 items-center"
+                        size="xs"
+                    >
+                        <u-icon name="i-akar-icons-google-fill" />
+                        <div class="relative flex items-center">
+                            <u-icon name="ic:outline-star" />
+                        </div>
+                        <p v-if="reviewMeta?.googleCount">
+                            {{ reviewMeta.googleRating }}
+                            ({{ reviewMeta?.googleCount }})
+                        </p>
+                    </u-badge>
+                    <u-badge
+                        color="secondary"
+                        class="flex flex-1 items-center"
+                        size="xs"
+                    >
+                        <u-icon name="i-simple-icons-tripadvisor" />
+                        <div class="relative flex items-center">
+                            <u-icon name="ic:outline-star" />
+                        </div>
+                        <p v-if="reviewMeta?.tripadvisorCount">
+                            {{ reviewMeta.tripadvisorRating }}
+                            ({{ reviewMeta?.tripadvisorCount }})
+                        </p>
+                    </u-badge>
+                </div>
+            </div>
         </carousel-title-and-action>
         <div class="relative">
             <transition name="fade">
@@ -57,7 +89,6 @@
                             <u-icon
                                 v-for="i in 5"
                                 :key="i"
-                                size="18"
                                 name="ic:outline-star-outline"
                                 class="text-butterscotch-500 opacity-30"
                             />
@@ -65,7 +96,6 @@
                                 <u-icon
                                     v-for="i in item.rating"
                                     :key="i"
-                                    size="18"
                                     name="ic:outline-star"
                                     class="text-butterscotch-500"
                                 />
@@ -401,6 +431,7 @@ watch(
             if (!shouldFetchReviews.value) {
                 const cached = location.fields?.reviewData ?? []
                 reviewData.value = Array.isArray(cached) ? cached : []
+                reviewMeta.value = location.fields?.reviewMeta ?? null
                 dataFetched.value = true
                 return
             }
