@@ -1,43 +1,31 @@
-<div
-    style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #080912;
-    "
->
-    <div
-        class="spin"
-        style="
-            width: 32px;
-            height: 32px;
-            border: 3px solid #696fa5;
-            border-top-color: #fab944;
-            border-radius: 50%;
-        "
-    ></div>
+<div id="spa-loader">
+    <div class="spin"></div>
     <style>
-        @keyframes _spin {
-            to {
-                transform: rotate(360deg);
-            }
+        #spa-loader {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .spin {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             animation: _spin 0.75s linear infinite;
         }
-        @media (prefers-color-scheme: dark) {
-            div:first-child {
-                background: #1b1d3c !important;
-            }
-            .spin {
-                border-color: #374151 !important;
-                border-top-color: #fab944 !important;
-            }
+        @keyframes _spin {
+            to { transform: rotate(360deg); }
         }
+
+        html.light #spa-loader { background: #fefefe; }
+        html.light .spin { border: 3px solid #e5e7eb; border-top-color: #fab944; }
+
+        html.dark #spa-loader { background: #080912; }
+        html.dark .spin { border: 3px solid #696fa5; border-top-color: #fab944; }
+
+        /* Fallback if no class is set yet */
+        html:not(.light):not(.dark) #spa-loader { background: #fefefe; }
+        html:not(.light):not(.dark) .spin { border: 3px solid #e5e7eb; border-top-color: #fab944; }
     </style>
 </div>
