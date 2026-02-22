@@ -54,7 +54,7 @@
                         size="xs"
                         variant="outline"
                         class="font-semibold"
-                        :label="`Estimated ${item.fields.task.fields.minutesToComplete} mins`"
+                        :label="`~ ${item.fields.task.fields.minutesToComplete} mins`"
                     />
                 </u-field-group>
             </div>

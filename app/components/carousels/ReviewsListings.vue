@@ -11,20 +11,24 @@
                     class="ml-auto"
                 />
                 <div class="ml-2 flex items-center gap-2">
-                    <u-badge
+                    <template
                         v-for="platform in reviewPlatforms"
                         :key="platform.key"
-                        color="secondary"
-                        class="flex flex-1 items-center whitespace-nowrap"
-                        size="xs"
                     >
-                        <u-icon :name="platform.icon" />
-                        <u-icon name="ic:outline-star" />
-                        <p v-if="reviewMeta?.[platform.countKey]">
-                            {{ reviewMeta?.[platform.ratingKey] }}
-                            ({{ reviewMeta?.[platform.countKey] }})
-                        </p>
-                    </u-badge>
+                        <u-badge
+                            v-if="reviewMeta?.[platform.countKey]"
+                            color="secondary"
+                            class="flex flex-1 items-center whitespace-nowrap"
+                            size="xs"
+                        >
+                            <u-icon :name="platform.icon" />
+                            <u-icon name="ic:outline-star" />
+                            <p class="mt-px">
+                                {{ reviewMeta?.[platform.ratingKey] }}
+                                ({{ reviewMeta?.[platform.countKey] }})
+                            </p>
+                        </u-badge>
+                    </template>
                 </div>
             </div>
         </carousel-title-and-action>
