@@ -1,10 +1,7 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import eslintVitePlugin from 'vite-plugin-eslint'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
-    devServerHandlers: [],
-
     ssr: false,
 
     nitro: {
@@ -170,13 +167,8 @@ export default defineNuxtConfig({
     },
 
     vite: {
-        plugins: [
-            tailwindcss(),
-            eslintVitePlugin({
-                fix: true,
-                include: ['./**/*.vue', './**/*.ts', './**/*.js']
-            })
-        ]
+        // @ts-expect-error
+        plugins: [tailwindcss()]
     },
 
     typescript: {

@@ -1,11 +1,43 @@
-<div style="position:fixed;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:#fefefe;">
-    <div class="spin" style="width:32px;height:32px;border:3px solid #e5e7eb;border-top-color:#FAB944;border-radius:50%;"></div>
+<div
+    style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #080912;
+    "
+>
+    <div
+        class="spin"
+        style="
+            width: 32px;
+            height: 32px;
+            border: 3px solid #696fa5;
+            border-top-color: #fab944;
+            border-radius: 50%;
+        "
+    ></div>
     <style>
-        @keyframes _spin { to { transform: rotate(360deg); } }
-        .spin { animation: _spin 0.75s linear infinite; }
+        @keyframes _spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .spin {
+            animation: _spin 0.75s linear infinite;
+        }
         @media (prefers-color-scheme: dark) {
-            div:first-child { background: #1B1D3C !important; }
-            .spin { border-color: #374151 !important; border-top-color: #FAB944 !important; }
+            div:first-child {
+                background: #1b1d3c !important;
+            }
+            .spin {
+                border-color: #374151 !important;
+                border-top-color: #fab944 !important;
+            }
         }
     </style>
 </div>

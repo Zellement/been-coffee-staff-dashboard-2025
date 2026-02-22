@@ -14,7 +14,10 @@
                 </u-carousel>
             </transition>
             <transition name="fade-absolute">
-                <skeleton-loop v-if="!dataLoaded" skeleton-class="h-20 shrink-0 basis-80" />
+                <skeleton-loop
+                    v-if="!dataLoaded"
+                    skeleton-class="h-20 shrink-0 basis-80"
+                />
             </transition>
         </div>
     </div>
