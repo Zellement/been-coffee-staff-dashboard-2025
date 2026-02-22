@@ -1,9 +1,10 @@
 <template>
-    <transition name="fade">
-        <div v-if="hasSingleTasks" class="p-c-default">
-            <carousel-title-and-action title="Single tasks" />
-            <div class="relative">
+    <div v-if="!dataLoaded || hasSingleTasks" class="p-c-default">
+        <carousel-title-and-action title="Single tasks" />
+        <div class="relative">
+            <transition name="fade">
                 <u-carousel
+                    v-if="hasSingleTasks"
                     v-slot="{ item }"
                     drag-free
                     :items="allSingleTasks"
@@ -11,9 +12,12 @@
                 >
                     <card-single-task :item="item" />
                 </u-carousel>
-            </div>
+            </transition>
+            <transition name="fade-absolute">
+                <skeleton-loop v-if="!dataLoaded" skeleton-class="h-20 shrink-0 basis-80" />
+            </transition>
         </div>
-    </transition>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -25,6 +29,7 @@ defineProps<Props>()
 
 const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
+const dataLoaded: Ref<boolean> = ref(false)
 
 /* Computed */
 
@@ -62,10 +67,11 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     }))
 })
 
-watch(data, (newData) => {
+watch(data, (newData: any) => {
     if (newData) {
         tasksStore.allSingleTasks = newData.items
         tasksStore.totalSingleTasks = newData.total
+        dataLoaded.value = true
     }
 })
 </script>

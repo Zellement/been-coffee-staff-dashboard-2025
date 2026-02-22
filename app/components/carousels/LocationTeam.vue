@@ -1,7 +1,9 @@
 <template>
     <div class="p-default mb-8">
         <carousel-title-and-action title="Team" />
+        <skeleton-loop v-if="!allLocationTeam.length" skeleton-class="h-48 shrink-0 basis-62" />
         <u-carousel
+            v-else
             v-slot="{ item }"
             dots
             :items="allLocationTeam"

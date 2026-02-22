@@ -1,5 +1,5 @@
 <template>
-    <div v-if="hasWinners" class="p-default mb-8">
+    <div v-if="!dataLoaded || hasWinners" class="p-default mb-8">
         <carousel-title-and-action title="Been Awesome Winners">
             <u-button
                 size="2xs"
@@ -15,7 +15,9 @@
                 @click="beenAwesomeStore.clearCache"
             />
         </carousel-title-and-action>
+        <skeleton-loop v-if="!dataLoaded" skeleton-class="h-36 shrink-0 basis-80" />
         <u-carousel
+            v-else
             v-slot="{ item, index }"
             dots
             :items="slides"
@@ -43,6 +45,7 @@ import {
 
 const locationsStore = useLocationsStore()
 const beenAwesomeStore = useBeenAwesomeStore()
+const dataLoaded: Ref<boolean> = ref(false)
 
 const { shortDateConverter } = useDateUtils()
 
@@ -139,10 +142,11 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     }))
 })
 
-watch(data, (newData) => {
+watch(data, (newData: any) => {
     if (newData) {
         beenAwesomeStore.cachedBeenAwesomeWinners = newData.items || []
         beenAwesomeStore.lastFetched = new Date()
+        dataLoaded.value = true
     }
 })
 </script>
