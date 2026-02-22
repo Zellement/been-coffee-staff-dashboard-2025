@@ -34,7 +34,12 @@
             </div>
         </carousel-title-and-action>
 
+        <skeleton-loop
+            v-if="!staffLeaderboardStore.cachedEmployees"
+            skeleton-class="h-64 shrink-0 basis-full"
+        />
         <u-carousel
+            v-else
             v-slot="{ item }"
             :items="slides"
             :ui="{
@@ -103,7 +108,7 @@ async function refreshLeaderboard() {
     staffLeaderboardStore.cachedEmployees = null
 }
 
-watch(data, (newData) => {
+watch(data, (newData: any) => {
     if (newData) {
         staffLeaderboardStore.cachedEmployees = newData.items || []
         staffLeaderboardStore.lastFetched = new Date()

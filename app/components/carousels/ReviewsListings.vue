@@ -15,7 +15,7 @@
                         v-for="platform in reviewPlatforms"
                         :key="platform.key"
                         color="secondary"
-                        class="flex flex-1 items-center"
+                        class="flex flex-1 items-center whitespace-nowrap"
                         size="xs"
                     >
                         <u-icon :name="platform.icon" />

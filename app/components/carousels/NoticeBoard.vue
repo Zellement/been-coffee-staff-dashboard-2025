@@ -1,5 +1,5 @@
 <template>
-    <div v-if="hasNotices" class="p-default mb-8">
+    <div v-if="!dataLoaded || hasNotices" class="p-default mb-8">
         <carousel-title-and-action title="Notice Board" />
         <div class="relative">
             <transition name="fade">
@@ -71,7 +71,7 @@
             </transition>
             <transition name="fade-absolute">
                 <skeleton-loop
-                    v-if="!hasNotices"
+                    v-if="!dataLoaded"
                     skeleton-class="h-40 shrink-0 basis-full md:basis-1/2 2xl:basis-sm"
                 />
             </transition>
@@ -83,6 +83,7 @@
 const locationsStore = useLocationsStore()
 
 const notices: Ref<TypeNoticeBoard[]> = ref([])
+const dataLoaded: Ref<boolean> = ref(false)
 
 const { fullDateConverter } = useDateUtils()
 
@@ -118,7 +119,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     }))
 })
 
-watch(data, (newData) => {
+watch(data, (newData: any) => {
     if (newData) {
         const fourteenDaysAgo = new Date()
         fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14)
@@ -126,6 +127,7 @@ watch(data, (newData) => {
             const updatedAt = new Date(item.sys.createdAt)
             return item.fields.sticky || updatedAt >= fourteenDaysAgo
         })
+        dataLoaded.value = true
     }
 })
 </script>
