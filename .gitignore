@@ -18,3 +18,5 @@ assets/svg-transformer-list.ts
 
 contentful/exports/*
 .netlify/*
+
+.claude/*
