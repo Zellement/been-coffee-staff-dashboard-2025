@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!dataLoaded || hasSingleTasks" class="p-c-default">
+    <div
+        v-if="tasksStore.allSingleTasks === null || hasSingleTasks"
+        class="p-c-default"
+    >
         <carousel-title-and-action title="Single tasks" />
         <div class="relative">
             <transition name="fade">
@@ -15,7 +18,7 @@
             </transition>
             <transition name="fade-absolute">
                 <skeleton-loop
-                    v-if="!dataLoaded"
+                    v-if="tasksStore.allSingleTasks === null"
                     skeleton-class="h-20 shrink-0 basis-80"
                 />
             </transition>
@@ -32,7 +35,6 @@ defineProps<Props>()
 
 const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
-const dataLoaded: Ref<boolean> = ref(false)
 
 /* Computed */
 
@@ -74,7 +76,6 @@ watch(data, (newData: any) => {
     if (newData) {
         tasksStore.allSingleTasks = newData.items
         tasksStore.totalSingleTasks = newData.total
-        dataLoaded.value = true
     }
 })
 </script>

@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!dataLoaded || hasOrders" class="p-c-default">
+    <div
+        v-if="ordersStore.allOrders === null || hasOrders"
+        class="p-c-default"
+    >
         <carousel-title-and-action title="Deliveries" />
         <div class="relative">
             <transition name="fade">
@@ -19,7 +22,7 @@
                 </div>
             </transition>
             <transition name="fade-absolute">
-                <skeleton-loop v-if="!dataLoaded" />
+                <skeleton-loop v-if="ordersStore.allOrders === null" />
             </transition>
         </div>
     </div>
@@ -28,7 +31,6 @@
 <script setup lang="ts">
 const locationsStore = useLocationsStore()
 const ordersStore = useOrdersStore()
-const dataLoaded: Ref<boolean> = ref(false)
 
 const orders: ComputedRef<TypeOrder[] | null> = computed(() => {
     return ordersStore.allOrders
@@ -77,7 +79,6 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
 watch(data, (newData: any) => {
     if (newData) {
         ordersStore.allOrders = newData.items || []
-        dataLoaded.value = true
     }
 })
 </script>
