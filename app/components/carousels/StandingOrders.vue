@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!dataLoaded || hasOrders" class="p-default mb-8">
+    <div
+        v-if="standingOrdersStore.cachedStandingOrders === null || hasOrders"
+        class="p-default mb-8"
+    >
         <carousel-title-and-action title="Standing Orders">
             <u-button
                 size="2xs"
@@ -52,7 +55,7 @@
             </transition>
             <transition name="fade-absolute">
                 <skeleton-loop
-                    v-if="!dataLoaded"
+                    v-if="standingOrdersStore.cachedStandingOrders === null"
                     skeleton-class="h-96 shrink-0 basis-4/5 sm:basis-1/2 lg:basis-1/3 2xl:basis-96"
                 />
             </transition>
@@ -63,7 +66,6 @@
 <script lang="ts" setup>
 const locationsStore = useLocationsStore()
 const standingOrdersStore = useStandingOrdersStore()
-const dataLoaded: Ref<boolean> = ref(false)
 
 const orders: ComputedRef<TypeStandingOrder[] | null> = computed(() => {
     return standingOrdersStore.cachedStandingOrders || null
@@ -94,7 +96,6 @@ const fetchData = async () => {
     })
     standingOrdersStore.cachedStandingOrders = data?.items
     standingOrdersStore.lastFetched = new Date()
-    dataLoaded.value = true
 }
 
 onMounted(async () => {

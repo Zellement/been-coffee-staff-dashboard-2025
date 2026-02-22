@@ -83,7 +83,6 @@
 const locationsStore = useLocationsStore()
 
 const notices: Ref<TypeNoticeBoard[]> = ref([])
-const dataLoaded: Ref<boolean> = ref(false)
 
 const { fullDateConverter } = useDateUtils()
 
@@ -119,6 +118,8 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     }))
 })
 
+const dataLoaded: ComputedRef<boolean> = computed(() => data.value !== null)
+
 watch(data, (newData: any) => {
     if (newData) {
         const fourteenDaysAgo = new Date()
@@ -127,7 +128,6 @@ watch(data, (newData: any) => {
             const updatedAt = new Date(item.sys.createdAt)
             return item.fields.sticky || updatedAt >= fourteenDaysAgo
         })
-        dataLoaded.value = true
     }
 })
 </script>
