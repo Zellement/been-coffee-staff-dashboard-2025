@@ -4,19 +4,32 @@
         class="p-default mb-8"
     >
         <carousel-title-and-action title="Been Awesome Winners">
-            <u-button
-                size="2xs"
-                :label="
-                    beenAwesomeStore.lastFetched
-                        ? shortDateConverter(
-                              new Date(beenAwesomeStore.lastFetched)
-                          )
-                        : 'Refresh'
-                "
-                trailing-icon="i-bx-refresh"
-                variant="outline"
-                @click="beenAwesomeStore.clearCache"
-            />
+            <span class="flex items-center gap-2">
+                <u-button
+                    size="2xs"
+                    color="tertiary"
+                    :ui="{
+                        base: 'p-1.5 leading-none'
+                    }"
+                    @click="beenAwesomeStore.clearCache"
+                >
+                    Refresh
+                </u-button>
+                <u-badge
+                    size="xs"
+                    :ui="{
+                        base: 'p-1.5 leading-none'
+                    }"
+                    variant="outline"
+                >
+                    {{
+                        useDateFormat(
+                            beenAwesomeStore.lastFetched || new Date(),
+                            'ddd DD MMM HH:mm:ss'
+                        )
+                    }}
+                </u-badge>
+            </span>
         </carousel-title-and-action>
         <skeleton-loop
             v-if="beenAwesomeStore.cachedBeenAwesomeWinners === null"
@@ -43,6 +56,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useDateFormat } from '@vueuse/core'
 import {
     BeenAwsesomeRemainingList,
     BeenAwesomeCurrentWinner,

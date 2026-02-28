@@ -7,6 +7,7 @@ export const useOrdersStore = defineStore('orders', () => {
 
     const allOrders: Ref<TypeOrder[] | null> = ref(null)
     const totalOrders: Ref<number | null> = ref(null)
+    const lastFetched: Ref<Date | null> = ref(null)
 
     const today = new Date()
     today.setHours(0, 0, 0, 0)
@@ -92,15 +93,22 @@ export const useOrdersStore = defineStore('orders', () => {
      * Actions
      **/
 
+    const clearCache = () => {
+        allOrders.value = null
+        lastFetched.value = null
+    }
+
     /**
      * Return
      **/
     return {
         allOrders,
         totalOrders,
+        lastFetched,
         todaysOrders,
         overdueOrders,
         upcomingOrders,
-        completedOrders
+        completedOrders,
+        clearCache
     }
 })

@@ -4,19 +4,32 @@
         class="p-default mb-8"
     >
         <carousel-title-and-action title="Standing Orders">
-            <u-button
-                size="2xs"
-                :label="
-                    standingOrdersStore.lastFetched
-                        ? shortDateConverter(
-                              new Date(standingOrdersStore.lastFetched)
-                          )
-                        : 'Refresh'
-                "
-                trailing-icon="i-bx-refresh"
-                variant="outline"
-                @click="fetchData"
-            />
+            <span class="flex items-center gap-2">
+                <u-button
+                    size="2xs"
+                    color="tertiary"
+                    :ui="{
+                        base: 'p-1.5 leading-none'
+                    }"
+                    @click="fetchData"
+                >
+                    Refresh
+                </u-button>
+                <u-badge
+                    size="xs"
+                    :ui="{
+                        base: 'p-1.5 leading-none'
+                    }"
+                    variant="outline"
+                >
+                    {{
+                        useDateFormat(
+                            standingOrdersStore.lastFetched || new Date(),
+                            'ddd DD MMM HH:mm:ss'
+                        )
+                    }}
+                </u-badge>
+            </span>
         </carousel-title-and-action>
         <div class="relative">
             <transition name="fade">
@@ -64,6 +77,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useDateFormat } from '@vueuse/core'
 const locationsStore = useLocationsStore()
 const standingOrdersStore = useStandingOrdersStore()
 

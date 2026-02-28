@@ -1,9 +1,34 @@
 <template>
-    <div
-        v-if="ordersStore.allOrders === null || hasOrders"
-        class="p-c-default"
-    >
-        <carousel-title-and-action title="Deliveries" />
+    <div v-if="ordersStore.allOrders === null || hasOrders" class="p-c-default">
+        <carousel-title-and-action title="Deliveries">
+            <span class="flex items-center gap-2">
+                <u-button
+                    size="2xs"
+                    color="tertiary"
+                    :ui="{
+                        base: 'p-1.5 leading-none'
+                    }"
+                    @click="refreshOrders"
+                >
+                    Refresh
+                </u-button>
+                <u-badge
+                    v-if="ordersStore.lastFetched"
+                    size="xs"
+                    :ui="{
+                        base: 'p-1.5 leading-none'
+                    }"
+                    variant="outline"
+                >
+                    {{
+                        useDateFormat(
+                            ordersStore.lastFetched,
+                            'ddd DD MMM HH:mm:ss'
+                        )
+                    }}
+                </u-badge>
+            </span>
+        </carousel-title-and-action>
         <div class="relative">
             <transition name="fade">
                 <div v-if="hasOrders" class="flex gap-4">
@@ -29,6 +54,7 @@
 </template>
 
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
 const locationsStore = useLocationsStore()
 const ordersStore = useOrdersStore()
 
@@ -62,7 +88,7 @@ const sortedRoutineTaskInstances: ComputedRef<TypeDailyTask[] | null> =
 
 /* Functions & lifecycle */
 
-const { data } = useFetch('/api/contentful/fetch-entries', {
+const { data, refresh } = useFetch('/api/contentful/fetch-entries', {
     key: 'orders',
     lazy: true,
     server: false,
@@ -79,6 +105,12 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
 watch(data, (newData: any) => {
     if (newData) {
         ordersStore.allOrders = newData.items || []
+        ordersStore.lastFetched = new Date()
     }
 })
+
+const refreshOrders = async (): Promise<void> => {
+    ordersStore.clearCache()
+    await refresh()
+}
 </script>

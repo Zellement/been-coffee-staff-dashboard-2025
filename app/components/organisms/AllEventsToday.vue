@@ -61,7 +61,7 @@
 import { useDateFormat } from '@vueuse/core'
 
 const isRefreshing: Ref<boolean> = ref(false)
-const lastUpdated: Ref<string> = ref(new Date().toString())
+const lastUpdated: Ref<string> = ref('')
 
 const { getTime } = useDateUtils()
 
@@ -85,6 +85,8 @@ const { data: events } = await useFetch<RotareadyAttendance | null>(
         }
     }
 )
+
+lastUpdated.value = new Date().toString()
 
 const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
     const findTeamMember = (userId: number): TypeEmployee | null => {
@@ -222,5 +224,6 @@ async function refreshAllAttendance() {
     isRefreshing.value = true
     await refreshNuxtData('events')
     isRefreshing.value = false
+    lastUpdated.value = new Date().toString()
 }
 </script>
