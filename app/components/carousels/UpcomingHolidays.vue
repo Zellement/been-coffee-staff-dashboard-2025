@@ -3,12 +3,18 @@
         <carousel-title-and-action title="Upcoming Holidays" />
         <div class="relative">
             <transition name="fade">
-                <div v-if="hasAbsences" class="flex gap-4 overflow-x-auto pb-1">
-                    <card-absence
-                        v-for="absence in absences"
-                        :key="absence.id"
-                        :absence="absence"
-                    />
+                <div v-if="hasAbsences" class="flex gap-4">
+                    <div class="min-w-0 flex-1">
+                        <u-carousel
+                            v-slot="{ item }"
+                            :items="absences ?? []"
+                            auto-height
+                            drag-free
+                            :ui="{ item: 'basis-48' }"
+                        >
+                            <card-absence :absence="item" />
+                        </u-carousel>
+                    </div>
                 </div>
             </transition>
             <transition name="fade-absolute">

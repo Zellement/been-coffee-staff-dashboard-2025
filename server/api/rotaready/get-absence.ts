@@ -13,6 +13,7 @@ export default defineEventHandler(async () => {
         start: start.toISOString(),
         end: end.toISOString(),
         dateContext: 'overlapping',
+        sortOrder: 'startDateAsc',
         limit: '100'
     })
     qs.append('approvalStates[]', '1')
