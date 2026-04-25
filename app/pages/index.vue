@@ -9,20 +9,20 @@
         <!-- <keep-alive v-if="isDecember">
             <lazy-advent-calendar class="col-span-full" />
         </keep-alive> -->
-        <keep-alive>
-            <lazy-upcoming-holidays class="col-span-full" />
-        </keep-alive>
         <keep-alive><lazy-single-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-daily-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-routine-tasks class="col-span-full" /></keep-alive>
+        <keep-alive>
+            <lazy-upcoming-deliveries class="col-span-full" />
+        </keep-alive>
+        <keep-alive>
+            <lazy-upcoming-holidays class="col-span-full" />
+        </keep-alive>
         <keep-alive>
             <lazy-staff-leaderboard
                 class="col-span-full"
                 item-classes="lg:basis-1/2"
             />
-        </keep-alive>
-        <keep-alive>
-            <lazy-upcoming-deliveries class="col-span-full" />
         </keep-alive>
         <keep-alive v-show="hasTableBookings">
             <table-bookings class="col-span-full" />

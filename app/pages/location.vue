@@ -16,6 +16,7 @@
             class="col-span-full"
             item-classes="md:basis-1/2"
         />
+        <lazy-upcoming-holidays class="col-span-full" />
         <lazy-notice-board class="col-span-full" />
         <lazy-reviews-listings class="col-span-full" />
         <div class="p-default col-span-full flex justify-around gap-4">

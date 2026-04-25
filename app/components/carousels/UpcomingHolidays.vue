@@ -19,6 +19,8 @@
 </template>
 
 <script lang="ts" setup>
+const locationsStore = useLocationsStore()
+
 const { data } = await useFetch<{ absence: RotareadyAbsence[] } | null>(
     '/api/rotaready/get-absence',
     {
@@ -29,7 +31,12 @@ const { data } = await useFetch<{ absence: RotareadyAbsence[] } | null>(
 
 const absences: ComputedRef<RotareadyAbsence[] | null> = computed(() => {
     if (!data.value) return null
-    return data.value.absence ?? []
+    const postcode = locationsStore.activeLocation?.fields.postcode
+    return data.value.absence.filter(
+        (absence: RotareadyAbsence) =>
+            absence.user.appointment.entityName.includes(postcode) ||
+            absence.user.appointment.entityName.includes('Head Office')
+    )
 })
 
 const hasAbsences: ComputedRef<boolean> = computed(

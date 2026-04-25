@@ -1,15 +1,13 @@
 import { getRotareadyToken } from '../../utils/rotaready/get-token'
 
-export default defineEventHandler(async (event) => {
-    const { weeks } = getQuery(event) as { weeks?: string }
-
+export default defineEventHandler(async () => {
     const token = await getRotareadyToken()
 
     const start = new Date()
     start.setHours(0, 0, 0, 0)
 
     const end = new Date(start)
-    end.setDate(end.getDate() + (parseInt(weeks ?? '4') * 7))
+    end.setDate(end.getDate() + 30)
 
     const qs = new URLSearchParams({
         start: start.toISOString(),
