@@ -9,6 +9,9 @@
         <!-- <keep-alive v-if="isDecember">
             <lazy-advent-calendar class="col-span-full" />
         </keep-alive> -->
+        <keep-alive>
+            <lazy-upcoming-holidays class="col-span-full" />
+        </keep-alive>
         <keep-alive><lazy-single-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-daily-tasks class="col-span-full" /></keep-alive>
         <keep-alive><lazy-routine-tasks class="col-span-full" /></keep-alive>

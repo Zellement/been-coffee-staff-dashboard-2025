@@ -124,6 +124,48 @@ declare global {
         }
     }
 
+    type RotareadyAbsenceType = {
+        id: number
+        name: string
+        colour: string
+    }
+
+    type RotareadyAbsenceUser = {
+        id: number
+        firstName: string
+        lastName: string
+        picture: string | null
+        appointment: {
+            id: number
+            entityGroupId: number
+            entityGroupName: string
+            entityId: string
+            entityName: string
+            groupId: number
+            groupName: string
+            positionId: number
+            positionName: string
+        }
+    }
+
+    type RotareadyAbsence = {
+        id: number
+        start: string
+        end: string
+        localDateStart: string
+        localDateEnd: string
+        userId: number
+        scope: number
+        type: RotareadyAbsenceType
+        approvalState: number
+        cancelled: boolean
+        singleDay: boolean
+        totalHours: number
+        totalDays: number
+        details: string | null
+        user: RotareadyAbsenceUser
+    }
+
     type RotareadyAttendance = {
         events: RotareadyEvent[]
     }
