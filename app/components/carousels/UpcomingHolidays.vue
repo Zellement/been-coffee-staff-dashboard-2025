@@ -1,5 +1,6 @@
 <template>
     <div v-if="absences === null || hasAbsences" class="p-c-default">
+        <!-- <pre>{{ data }}</pre> -->
         <carousel-title-and-action title="Upcoming Holidays" />
         <div class="relative">
             <transition name="fade">
