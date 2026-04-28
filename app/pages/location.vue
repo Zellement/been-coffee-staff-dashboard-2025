@@ -17,7 +17,7 @@
         />
         <lazy-upcoming-deliveries
             carousel-orientation="vertical"
-            class="col-span-4"
+            class="col-span-4 mr-2"
         />
         <lazy-table-bookings v-show="hasTableBookings" class="col-span-4" />
         <!-- <lazy-advent-calendar v-if="isDecember" class="col-span-full" /> -->
