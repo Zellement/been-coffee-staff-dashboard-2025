@@ -132,11 +132,8 @@
                             drag-free
                             :items="sortedRoutineTaskInstances"
                             auto-height
-                            :ui="{
-                                root: 'flex',
-                                container: 'items-stretch h-full',
-                                item: 'basis-48'
-                            }"
+                            :orientation="carouselOrientation"
+                            :ui="carouselUi"
                         >
                             <card-routine-task
                                 :key="item.sys.id"
@@ -166,9 +163,10 @@
 <script setup lang="ts">
 interface Props {
     hideProgressCircle?: boolean
+    carouselOrientation?: 'horizontal' | 'vertical'
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 import type { AccordionItem } from '@nuxt/ui'
 
@@ -178,6 +176,17 @@ const locationsStore = useLocationsStore()
 const { shortDateConverter, getTime } = useDateUtils()
 
 /* Computed */
+
+const carouselUi = computed(() => {
+    return props.carouselOrientation === 'vertical'
+        ? {
+              item: 'w-full basis-20',
+              container: 'h-100'
+          }
+        : {
+              item: 'basis-48'
+          }
+})
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
     return locationsStore.activeLocation?.sys.id

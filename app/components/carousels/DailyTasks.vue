@@ -26,7 +26,8 @@
                             v-slot="{ item }"
                             drag-free
                             :items="sortedDailyTasks"
-                            :ui="{ item: 'basis-48' }"
+                            :orientation="carouselOrientation"
+                            :ui="carouselUi"
                         >
                             <card-daily-task
                                 v-if="
@@ -65,9 +66,10 @@
 <script setup lang="ts">
 interface Props {
     hideProgressCircle?: boolean
+    carouselOrientation?: 'horizontal' | 'vertical'
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const tasksStore = useTasksStore()
 const locationsStore = useLocationsStore()
@@ -75,6 +77,17 @@ const locationsStore = useLocationsStore()
 const today = new Date()
 
 /* Computed */
+
+const carouselUi = computed(() => {
+    return props.carouselOrientation === 'vertical'
+        ? {
+              item: 'w-full basis-20',
+              container: 'h-100'
+          }
+        : {
+              item: 'basis-48'
+          }
+})
 
 const activeLocationId: ComputedRef<string | undefined> = computed(() => {
     return locationsStore.activeLocation?.sys.id
