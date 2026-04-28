@@ -2,20 +2,30 @@
     <div class="page grid grid-cols-12 gap-4">
         <lazy-single-tasks class="col-span-full" />
         <lazy-shifts-carousel
-            class="col-span-full"
+            class="col-span-full mb-8"
             item-classes="md:basis-1/2"
         />
-        <lazy-daily-tasks hide-progress-circle class="col-span-full" />
-        <lazy-routine-tasks hide-progress-circle class="col-span-full" />
-        <lazy-table-bookings v-show="hasTableBookings" class="col-span-4" />
-        <lazy-upcoming-deliveries
-            :class="hasTableBookings ? 'col-span-8' : 'col-span-full'"
+        <lazy-daily-tasks
+            carousel-orientation="vertical"
+            hide-progress-circle
+            class="col-span-4"
         />
+        <lazy-routine-tasks
+            carousel-orientation="vertical"
+            hide-progress-circle
+            class="col-span-4"
+        />
+        <lazy-upcoming-deliveries
+            carousel-orientation="vertical"
+            class="col-span-4 mr-2"
+        />
+        <lazy-table-bookings v-show="hasTableBookings" class="col-span-4" />
         <!-- <lazy-advent-calendar v-if="isDecember" class="col-span-full" /> -->
         <lazy-staff-leaderboard
             class="col-span-full"
             item-classes="md:basis-1/2"
         />
+        <lazy-upcoming-holidays class="col-span-full" />
         <lazy-notice-board class="col-span-full" />
         <lazy-reviews-listings class="col-span-full" />
         <div class="p-default col-span-full flex justify-around gap-4">

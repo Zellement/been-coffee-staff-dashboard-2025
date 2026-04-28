@@ -10,7 +10,7 @@
             <div class="flex items-center gap-4">
                 <u-button
                     label="Refresh"
-                    variant="outline"
+                    color="tertiary"
                     size="sm"
                     @click="refreshData"
                 />

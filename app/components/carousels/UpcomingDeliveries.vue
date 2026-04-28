@@ -39,7 +39,8 @@
                             :items="sortedRoutineTaskInstances"
                             auto-height
                             drag-free
-                            :ui="{ item: 'basis-48' }"
+                            :orientation="carouselOrientation"
+                            :ui="carouselUi"
                         >
                             <card-order :item="item" />
                         </u-carousel>
@@ -55,11 +56,27 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+interface Props {
+    carouselOrientation?: 'horizontal' | 'vertical'
+}
+
+const props = defineProps<Props>()
 const locationsStore = useLocationsStore()
 const ordersStore = useOrdersStore()
 
 const orders: ComputedRef<TypeOrder[] | null> = computed(() => {
     return ordersStore.allOrders
+})
+
+const carouselUi = computed(() => {
+    return props.carouselOrientation === 'vertical'
+        ? {
+              item: 'w-full basis-20',
+              container: 'h-100'
+          }
+        : {
+              item: 'basis-48'
+          }
 })
 
 /* Computed */
@@ -98,7 +115,7 @@ const { data, refresh } = useFetch('/api/contentful/fetch-entries', {
         content_type: 'order',
         'fields.location.sys.id': activeLocationId.value,
         order: '-fields.expectedDeliveryDate',
-        limit: 20
+        limit: 12
     }))
 })
 

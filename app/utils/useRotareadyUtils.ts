@@ -4,14 +4,17 @@ export const useRotareadyUtils = () => {
     const locationsStore = useLocationsStore()
     const { getTime } = useDateUtils()
 
-    const getTeamMember = (shift: RotareadyShift) => {
+    const getTeamMemberById = (id: number) => {
         const allTeam: ComputedRef<TypeEmployee[]> = computed(
             () => locationsStore.getAllTeamMembers || []
         )
         return allTeam.value.find(
-            (member: TypeEmployee) =>
-                member.fields.rotareadyId === shift.user?.id
+            (member: TypeEmployee) => member.fields.rotareadyId === id
         )
+    }
+
+    const getTeamMember = (shift: RotareadyShift) => {
+        return getTeamMemberById(shift.user?.id)
     }
 
     const getShiftLength = (start: string, end: string): number => {
@@ -156,6 +159,7 @@ export const useRotareadyUtils = () => {
 
     return {
         getTeamMember,
+        getTeamMemberById,
         generateStepper,
         getBadgeColour
     }
