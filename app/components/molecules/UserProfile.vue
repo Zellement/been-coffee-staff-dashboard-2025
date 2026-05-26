@@ -1,7 +1,7 @@
 <template>
     <div class="sticky top-0 z-30 m-2 mt-0 flex flex-col">
         <div
-            class="p-default card-border mt-0 flex items-center justify-between rounded-br rounded-bl bg-secondary-100 dark:!border-t-0 dark:bg-primary-600"
+            class="p-default card-border mt-0 flex items-center justify-between rounded-br rounded-bl bg-secondary-100 dark:border-t-0! dark:bg-primary-600"
         >
             <u-drawer
                 direction="top"
@@ -9,7 +9,7 @@
                 title="Show more user information"
                 description="View your profile information"
             >
-                <button class="flex w-full cursor-pointer items-center gap-2">
+                <button class="flex cursor-pointer items-center gap-2">
                     <div
                         v-if="userStore.userContentfulData?.fields?.photo?.[0]"
                         class="w-10"
@@ -79,7 +79,7 @@
                     </div>
                 </template>
             </u-drawer>
-
+            <bank-holidays />
             <share-button />
         </div>
     </div>

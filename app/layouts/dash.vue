@@ -6,7 +6,12 @@
         <div
             class="p-default sticky top-0 z-10 flex w-full items-center justify-between gap-4 bg-seashell-50 dark:bg-primary-800"
         >
-            <u-badge variant="outline">{{ formatted }}</u-badge>
+            <div class="flex gap-2">
+                <u-badge variant="outline">
+                    {{ formatted }}
+                </u-badge>
+                <bank-holidays />
+            </div>
             <div class="flex items-center gap-4">
                 <u-button
                     label="Refresh"

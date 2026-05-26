@@ -156,7 +156,8 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
-            WEBSITE_URL: import.meta.env.WEBSITE_URL
+            WEBSITE_URL: import.meta.env.WEBSITE_URL,
+            BANK_HOLIDAY_API: import.meta.env.BANK_HOLIDAY_API
         },
         CONTENTFUL_CDA_ACCESS_TOKEN: import.meta.env
             .CONTENTFUL_CDA_ACCESS_TOKEN,
