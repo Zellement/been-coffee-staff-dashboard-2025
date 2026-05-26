@@ -37,10 +37,30 @@
         </u-badge>
 
         <div class="mt-1 flex gap-1 text-sm">
-            <div>{{ formatDate(absence.localDateStart) }}</div>
-            <div v-if="!absence.singleDay">
-                to {{ formatDate(absence.localDateEnd) }}
-            </div>
+            <u-badge
+                variant="outline"
+                class="flex flex-col items-start text-left"
+            >
+                <span class="text-left text-2xs leading-none uppercase">
+                    Starts
+                </span>
+
+                <span class="text-left text-xs leading-none">
+                    {{ formatDate(absence.localDateStart) }}
+                </span>
+            </u-badge>
+            <u-badge
+                v-if="!absence.singleDay"
+                variant="outline"
+                class="flex flex-col items-start"
+            >
+                <span class="text-left text-2xs leading-none uppercase">
+                    Returns
+                </span>
+                <span class="text-left text-xs leading-none">
+                    {{ formatDate(absence.localDateEnd) }}
+                </span>
+            </u-badge>
         </div>
     </u-card>
 </template>
