@@ -6,7 +6,7 @@
         }"
     >
         <u-slideover
-            :title="`${winner.fields.name} - Winner from ${fullDateConverter(winner.fields.from)}`"
+            :title="`${winner?.fields?.name} - Winner from ${fullDateConverter(winner?.fields?.from)}`"
         >
             <div class="flex flex-col items-center p-8">
                 <img
@@ -17,26 +17,26 @@
                     "
                 />
                 <h2 class="uc-text text-lg text-white! dark:text-black!">
-                    {{ winner.fields.name }}
+                    {{ winner?.fields?.name }}
                 </h2>
 
-                <p class="flex items-center gap-1">
+                <p v-if="winner?.fields?.from" class="flex items-center gap-1">
                     <u-icon name="i-bx-log-in" />
-                    {{ fullDateConverter(winner.fields.from) }}
+                    {{ fullDateConverter(winner?.fields?.from) }}
                 </p>
 
                 <img
                     class="mt-8 rounded shadow-xl"
                     :src="`${
-                        winner.fields.photo?.fields?.file?.url
+                        winner?.fields?.photo?.fields?.file?.url
                     }?w=460&h=640&fit=fill&f=face&fm=webp`"
-                    :alt="winner.fields.name"
+                    :alt="winner?.fields?.name"
                 />
             </div>
 
             <template #body>
                 <div class="whitespace-pre-line">
-                    {{ winner.fields.details }}
+                    {{ winner?.fields?.details }}
                 </div>
             </template>
         </u-slideover>
