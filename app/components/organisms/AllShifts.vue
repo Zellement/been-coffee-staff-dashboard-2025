@@ -71,4 +71,8 @@ const shiftsInHeadOffice: ComputedRef<RotareadyShift[]> = computed(() => {
         ) || []
     )
 })
+
+// Rest-break entitlement depends on age, so load dates of birth before the
+// break labels render
+await useStaffDobStore().ensureLoaded()
 </script>
