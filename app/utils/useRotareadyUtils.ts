@@ -18,12 +18,16 @@ export const useRotareadyUtils = () => {
         return getTeamMemberById(shift.user?.id)
     }
 
+    /**
+     * Exact shift length in hours. Deliberately not rounded: it decides break
+     * entitlement, and rounding to the nearest half hour used to pull a 4h40m
+     * shift down to 4.5h, losing a young worker's entitlement entirely.
+     */
     const getShiftLength = (start: string, end: string): number => {
         const startDate = new Date(start)
         const endDate = new Date(end)
         const diffInMs = endDate.getTime() - startDate.getTime()
-        const diffInHours = diffInMs / (1000 * 60 * 60)
-        return Math.round(diffInHours * 2) / 2 // nearest 0.5h
+        return diffInMs / (1000 * 60 * 60)
     }
 
     /**
