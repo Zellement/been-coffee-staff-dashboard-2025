@@ -2,6 +2,7 @@ import type { StepperItem } from '@nuxt/ui'
 
 export const useRotareadyUtils = () => {
     const locationsStore = useLocationsStore()
+    const staffDobStore = useStaffDobStore()
     const { getTime } = useDateUtils()
 
     const getTeamMemberById = (id: number) => {
@@ -17,12 +18,66 @@ export const useRotareadyUtils = () => {
         return getTeamMemberById(shift.user?.id)
     }
 
+    /**
+     * Exact shift length in hours. Deliberately not rounded: it decides break
+     * entitlement, and rounding to the nearest half hour used to pull a 4h40m
+     * shift down to 4.5h, losing a young worker's entitlement entirely.
+     */
     const getShiftLength = (start: string, end: string): number => {
         const startDate = new Date(start)
         const endDate = new Date(end)
         const diffInMs = endDate.getTime() - startDate.getTime()
-        const diffInHours = diffInMs / (1000 * 60 * 60)
-        return Math.round(diffInHours * 2) / 2 // nearest 0.5h
+        return diffInMs / (1000 * 60 * 60)
+    }
+
+    /**
+     * UK Working Time Regulations rest-break minimums.
+     * Young workers (under 18, over school leaving age) get a longer break
+     * at a lower threshold than adults.
+     */
+    const ADULT_BREAK_RULE = { thresholdHours: 6, minutes: 20 }
+    const YOUNG_WORKER_BREAK_RULE = { thresholdHours: 4.5, minutes: 30 }
+
+    const getAgeOnDate = (dateOfBirth: string, on: Date): number => {
+        const dob = new Date(dateOfBirth)
+        let age = on.getFullYear() - dob.getFullYear()
+        const monthDiff = on.getMonth() - dob.getMonth()
+        if (monthDiff < 0 || (monthDiff === 0 && on.getDate() < dob.getDate()))
+            age--
+        return age
+    }
+
+    /**
+     * Work out the rest break a shift attracts, based on the team member's age
+     * on the day of the shift. Date of birth comes from Rotaready (where it is
+     * mandatory) via the staff DOB store — the Contentful `dateOfBirth` field
+     * is a birthday with no reliable year and must not be used here.
+     *
+     * Falls back to the adult rule when the DOB hasn't loaded yet, so callers
+     * should await `staffDobStore.ensureLoaded()` before rendering.
+     */
+    const getBreakEntitlement = (
+        shift: RotareadyShift
+    ): {
+        thresholdHours: number
+        minutes: number
+        isYoungWorker: boolean
+        hasDateOfBirth: boolean
+        isRequired: boolean
+    } => {
+        const dateOfBirth = staffDobStore.getDateOfBirth(shift.user?.id)
+        const isYoungWorker = dateOfBirth
+            ? getAgeOnDate(dateOfBirth, new Date(shift.start)) < 18
+            : false
+        const rule = isYoungWorker ? YOUNG_WORKER_BREAK_RULE : ADULT_BREAK_RULE
+
+        return {
+            ...rule,
+            isYoungWorker,
+            hasDateOfBirth: !!dateOfBirth,
+            isRequired:
+                getShiftLength(shift.start, shift.end) > rule.thresholdHours
+        }
     }
 
     const sortIso = (arr?: string[]) =>
@@ -69,7 +124,8 @@ export const useRotareadyUtils = () => {
         breakIns?: string[],
         breakOuts?: string[]
     ): { label: string; icon: string; hasOngoing: boolean } {
-        const suggested = getShiftLength(shift.start, shift.end) > 6
+        const { isRequired: suggested, minutes: requiredMinutes } =
+            getBreakEntitlement(shift)
         const pairs = pairBreaks(breakIns, breakOuts)
         const hasOngoing = pairs.some((p) => !p.end)
 
@@ -82,7 +138,7 @@ export const useRotareadyUtils = () => {
                     hasOngoing: false
                 }
             return {
-                label: suggested ? 'Break' : 'Optional',
+                label: suggested ? `Break (${requiredMinutes}m)` : 'Optional',
                 icon: suggested ? 'ph:armchair-fill' : 'ph:armchair-thin',
                 hasOngoing: false
             }
@@ -161,6 +217,7 @@ export const useRotareadyUtils = () => {
         getTeamMember,
         getTeamMemberById,
         generateStepper,
-        getBadgeColour
+        getBadgeColour,
+        getBreakEntitlement
     }
 }
