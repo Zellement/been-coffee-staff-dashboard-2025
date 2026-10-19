@@ -53,6 +53,12 @@
                 />
                 <p class="flex flex-col items-center">
                     <span>{{ item.fields.name }}</span>
+                    <span
+                        v-if="getPostcode(item)"
+                        class="text-2xs leading-none tracking-widest uppercase opacity-70"
+                    >
+                        ({{ getPostcode(item) }})
+                    </span>
                 </p>
                 <p
                     class="uc-text text-xl leading-none"
@@ -84,6 +90,10 @@ interface ColumnData {
 const { fullDateConverter, extractHourAndMinute } = useDateUtils()
 
 const staffLeaderboardStore = useStaffLeaderboardStore()
+const locationsStore = useLocationsStore()
+
+const getPostcode = (item: TypeEmployee): string | undefined =>
+    locationsStore.getPostcodeById(item.fields.primaryLocation?.sys.id)
 
 const employeeLeaderboard: ComputedRef<TypeEmployee[]> = computed(() => {
     return staffLeaderboardStore.employeeLeaderboard || []

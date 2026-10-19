@@ -98,7 +98,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     immediate: shouldFetch.value,
     params: computed(() => ({
         content_type: 'employee',
-        select: 'fields.name,fields.surname,fields.taskHistory,fields.photo',
+        select: 'fields.name,fields.surname,fields.taskHistory,fields.photo,fields.primaryLocation',
         order: 'fields.name',
         'fields.jobRole[nin]': '_ShopLogin,_DashLogin'
     }))

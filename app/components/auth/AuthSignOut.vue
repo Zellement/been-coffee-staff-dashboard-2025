@@ -16,6 +16,8 @@ const handleSignOut = async () => {
     try {
         const { error } = await client.auth.signOut()
         if (error) throw error
+        // Next login should start from the user's default location again
+        useLocationsStore().forgetChosenLocation()
         navigateTo('/login')
     } catch (error) {
         console.log(error.message)

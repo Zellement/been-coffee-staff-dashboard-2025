@@ -56,9 +56,17 @@ export const useUserStore = defineStore('user', () => {
                 navigateTo(`/location`)
             }
 
-            locationsStore.setActiveLocation(
+            const primaryLocationId: string | null =
                 userContentfulData.value.fields.primaryLocation.sys.id || null
-            )
+
+            // Shop dashboards can't switch location, so never let a choice
+            // left over from someone else's session move them
+            if (isGeneralLogin.value) {
+                if (primaryLocationId)
+                    locationsStore.setActiveLocation(primaryLocationId)
+            } else {
+                locationsStore.restoreLocation(primaryLocationId)
+            }
         }
     }
     return {

@@ -5,12 +5,20 @@ export const useRotareadyUtils = () => {
     const staffDobStore = useStaffDobStore()
     const { getTime } = useDateUtils()
 
-    const getTeamMemberById = (id: number) => {
-        const allTeam: ComputedRef<TypeEmployee[]> = computed(
-            () => locationsStore.getAllTeamMembers || []
-        )
-        return allTeam.value.find(
-            (member: TypeEmployee) => member.fields.rotareadyId === id
+    const operationsStore = useOperationsStore()
+
+    /**
+     * Prefer the active location's team, then any other location (cover
+     * shifts), then the leadership team (Head Office).
+     */
+    const getTeamMemberById = (id: number): TypeEmployee | undefined => {
+        const isMatch = (member: TypeEmployee): boolean =>
+            member.fields.rotareadyId === id
+
+        return (
+            locationsStore.getAllTeamMembers?.find(isMatch) ??
+            locationsStore.getEveryTeamMember.find(isMatch) ??
+            operationsStore.getLeadershipTeam?.find(isMatch)
         )
     }
 

@@ -58,6 +58,7 @@ declare global {
             name: string
             surname: string
             taskHistory: TaskHistory
+            primaryLocation?: { sys: { id: string } }
         }
     }
 

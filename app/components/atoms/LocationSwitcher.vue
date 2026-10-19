@@ -27,7 +27,7 @@ const value = computed<string | undefined>({
             (loc) => loc.fields.postcode === newPostcode
         )
         if (location) {
-            locationsStore.activeLocation = location
+            locationsStore.chooseLocation(location.sys.id)
             // Force all fetches to refetch data
             refreshNuxtData()
         }

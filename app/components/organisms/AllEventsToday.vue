@@ -67,6 +67,7 @@ const { getTime } = useDateUtils()
 
 interface Props {
     date: string
+    nextDate: string
 }
 
 const props = defineProps<Props>()
@@ -86,17 +87,57 @@ const { data: events } = await useFetch<RotareadyAttendance | null>(
     }
 )
 
+// Rotaready clock events don't record which site they happened at, so today's
+// rota is used to decide which location a clock-in belongs to
+const { data: shiftsToday } = await useFetch<{ shifts: RotareadyShift[] }>(
+    '/api/rotaready/get-shifts',
+    {
+        key: 'events-shifts',
+        params: {
+            startDateMin: props.date,
+            startDateMax: props.nextDate,
+            endDateMin: props.date,
+            endDateMax: props.nextDate
+        }
+    }
+)
+
 lastUpdated.value = new Date().toString()
 
+const { getTeamMemberById } = useRotareadyUtils()
+
 const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
-    const findTeamMember = (userId: number): TypeEmployee | null => {
-        return (
-            locationsStore.getAllTeamMembers?.find(
-                (member) => member.fields.rotareadyId === userId
-            ) ??
-            operationsStore.getLeadershipTeam?.find(
-                (member) => member.fields.rotareadyId === userId
+    const postcode = locationsStore.activeLocation?.fields.postcode
+    const shopShifts: RotareadyShift[] = (
+        shiftsToday.value?.shifts ?? []
+    ).filter(
+        (shift: RotareadyShift): boolean =>
+            !shift.workEntityName.includes('Head Office')
+    )
+
+    /**
+     * Rota'd at a shop today: show them only at that shop, wherever their home
+     * team is (covers cross-site shifts). Otherwise (Head Office or
+     * unrostered) fall back to this location's team or leadership.
+     */
+    const belongsHere = (userId: number): boolean => {
+        const userShopShifts = shopShifts.filter(
+            (shift: RotareadyShift): boolean => shift.user?.id === userId
+        )
+
+        if (userShopShifts.length) {
+            return userShopShifts.some(
+                (shift: RotareadyShift): boolean =>
+                    !!postcode && shift.workEntityName.includes(postcode)
             )
+        }
+
+        const isMatch = (member: TypeEmployee): boolean =>
+            member.fields.rotareadyId === userId
+
+        return !!(
+            locationsStore.getAllTeamMembers?.find(isMatch) ??
+            operationsStore.getLeadershipTeam?.find(isMatch)
         )
     }
 
@@ -163,20 +204,20 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
             (event) => event.userId === userId
         )
 
-        // If this userId does not exist in team members for the current location,
-        // or operations leadership team, skip it
-        if (!findTeamMember(userId)) {
-            console.warn(
-                `User with ID ${userId} not found in this location's team members.`
-            )
-            return null
-        }
+        if (!belongsHere(userId)) return null
+
+        const teamMember = getTeamMemberById(userId)
+        const userShift = shopShifts.find(
+            (shift: RotareadyShift): boolean => shift.user?.id === userId
+        )
 
         return {
             userId,
-            userName: findTeamMember(userId)?.fields.name,
-            userPhoto: findTeamMember(userId)?.fields.photo?.[0]?.fields?.file
-                ?.url as string | null,
+            // Fall back to Rotaready's name for anyone not set up in Contentful
+            userName: teamMember?.fields.name ?? userShift?.user?.firstName,
+            userPhoto: teamMember?.fields.photo?.[0]?.fields?.file?.url as
+                | string
+                | null,
             events:
                 userEvents.map((event) => ({
                     title: `${getTime(event.date)}`,
@@ -222,7 +263,7 @@ onBeforeUnmount(() => {
 
 async function refreshAllAttendance() {
     isRefreshing.value = true
-    await refreshNuxtData('events')
+    await refreshNuxtData(['events', 'events-shifts'])
     isRefreshing.value = false
     lastUpdated.value = new Date().toString()
 }

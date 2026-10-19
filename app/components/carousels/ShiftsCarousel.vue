@@ -51,7 +51,8 @@ const slides: any[] = [
     {
         component: AllEventsToday,
         props: {
-            date: todayStr
+            date: todayStr,
+            nextDate: tomorrowStr
         }
     },
     {
