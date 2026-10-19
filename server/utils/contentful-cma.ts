@@ -1,15 +1,22 @@
 import contentfulManagement from 'contentful-management'
-import type { Environment } from 'contentful-management'
+import type { PlainClientAPI } from 'contentful-management'
 
-let _env: Environment | null = null
+let _client: PlainClientAPI | null = null
 
-export async function getCmaEnvironment(): Promise<Environment> {
-    if (_env) return _env
+/**
+ * Plain CMA client with the space and environment baked in as defaults.
+ * Unlike the nested client (`getSpace()` -> `getEnvironment()`), it needs
+ * no lookup calls before the first real request, which matters on Netlify
+ * where cold starts are frequent and every call counts toward the quota.
+ */
+export function getCmaClient(): PlainClientAPI {
+    if (_client) return _client
 
     const config = useRuntimeConfig()
     const token = config.CONTENTFUL_CMA_ACCESS_TOKEN as string
     const spaceId = config.CONTENTFUL_SPACE_ID as string
-    const envId = (config.CONTENTFUL_ENVIRONMENT_ID as string) || 'master'
+    const environmentId =
+        (config.CONTENTFUL_ENVIRONMENT_ID as string) || 'master'
 
     if (!token || !spaceId) {
         throw createError({
@@ -18,9 +25,10 @@ export async function getCmaEnvironment(): Promise<Environment> {
         })
     }
 
-    const cma = contentfulManagement.createClient({ accessToken: token })
-    const space = await cma.getSpace(spaceId)
-    _env = await space.getEnvironment(envId)
+    _client = contentfulManagement.createClient(
+        { accessToken: token },
+        { type: 'plain', defaults: { spaceId, environmentId } }
+    )
 
-    return _env
+    return _client
 }

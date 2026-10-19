@@ -2,7 +2,10 @@
 import { defineEventHandler, getQuery, readRawBody, getRequestHeader } from 'h3'
 
 // 🔑 storage key lives at module scope so handler can use it
-const REV_KEY = 'contentful:revision'
+const REV_KEY = 'revision'
+
+// Only these change what the Delivery API serves; draft saves don't
+const CONTENT_CHANGING_TOPICS = ['publish', 'unpublish', 'archive', 'delete']
 
 type Revision = {
     global: number
@@ -50,7 +53,8 @@ const CONTENT_TYPE_TO_BUCKET: Record<string, keyof Revision['buckets']> = {
     taskInstance: 'taskInstances',
     // operations
     singleTask: 'singleTask',
-    employee: 'employee'
+    employee: 'employee',
+    asset: 'assets'
 }
 
 export default defineEventHandler(async (event) => {
@@ -64,11 +68,24 @@ export default defineEventHandler(async (event) => {
     const body = raw ? JSON.parse(raw) : {}
 
     const topic = getRequestHeader(event, 'x-contentful-topic') || '' // e.g. ContentManagement.Entry.publish
+    const action = topic.split('.').pop() || ''
+    if (!CONTENT_CHANGING_TOPICS.includes(action)) {
+        return { ok: true, ignored: topic }
+    }
+
     const isAsset = topic.includes('Asset')
     const contentTypeId =
         (isAsset ? 'asset' : body?.sys?.contentType?.sys?.id) || null
 
-    const storage = useStorage() // Nitro global
+    // Invalidate cached Delivery API responses containing this type
+    if (contentTypeId === 'employee' && action === 'publish') {
+        await markEmployeeChanged(body.sys.id, body.fields)
+    } else {
+        await markContentTypesChanged([contentTypeId ?? ANY_CONTENT_TYPE])
+    }
+
+    // Shared across function instances (Netlify Blobs in production)
+    const storage = useStorage('contentful')
     const current = (await storage.getItem<Revision>(REV_KEY)) ?? emptyRev()
 
     current.global += 1

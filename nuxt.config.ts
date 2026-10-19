@@ -7,7 +7,21 @@ export default defineNuxtConfig({
     nitro: {
         compressPublicAssets: true,
         minify: true,
-        preset: 'netlify'
+        preset: 'netlify',
+        // Shared across all function instances: Contentful read cache and the
+        // webhook's revision counter (see server/utils/contentful-cache.ts)
+        storage: {
+            contentful: {
+                driver: 'netlify-blobs',
+                name: 'contentful-cache',
+                consistency: 'strong'
+            }
+        },
+        devStorage: {
+            contentful: {
+                driver: 'memory'
+            }
+        }
     },
 
     modules: [
