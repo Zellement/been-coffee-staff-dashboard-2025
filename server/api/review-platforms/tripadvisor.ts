@@ -3,22 +3,28 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const place_id = query.place_id
 
-    const options: RequestInit = {
-        method: 'GET',
-        referrer: 'https://dashboard.been.coffee',
-        referrerPolicy: 'no-referrer-when-downgrade' as ReferrerPolicy,
-        headers: {
-            referrer: 'https://dashboard.been.coffee',
-            accept: 'application/json'
-        }
+    if (!place_id) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: 'Missing place_id'
+        })
     }
 
     try {
-        const url = `https://api.content.tripadvisor.com/api/v1/location/${place_id}/reviews?key=${process.env.TRIPADVISOR_KEY}&language=en`
-        const response = await fetch(url, options)
-        const data = await response.json()
-        return data
-    } catch (err) {
-        console.error(err)
+        // Tripadvisor Terra API (replaced the legacy Content API)
+        const url = `https://terra.tripadvisor.com/api/locations/${place_id}/reviews`
+        return await $fetch(url, {
+            headers: {
+                'X-API-Key': process.env.TRIPADVISOR_KEY ?? '',
+                accept: 'application/json'
+            },
+            query: { version: 1, language: 'en', sort_by: 'MOST_RECENT' }
+        })
+    } catch (err: any) {
+        console.error('Tripadvisor reviews fetch failed:', err?.data ?? err)
+        throw createError({
+            statusCode: err?.statusCode ?? 502,
+            statusMessage: 'Tripadvisor reviews fetch failed'
+        })
     }
 })
