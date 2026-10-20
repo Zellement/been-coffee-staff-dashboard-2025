@@ -1,5 +1,5 @@
 import { readBody } from 'h3'
-import type { Entry } from 'contentful-management'
+import type { EntryProps } from 'contentful-management'
 import { requireUser } from '../../utils/require-user'
 
 type UpdateBody = {
@@ -25,9 +25,9 @@ export default defineEventHandler(async (event) => {
     const locale = body?.locale || 'en-GB'
 
     try {
-        const env = await getCmaEnvironment()
+        const cma = getCmaClient()
 
-        let entry: Entry = await env.getEntry(id)
+        const entry: EntryProps = await cma.entry.get({ entryId: id })
 
         const existingTaskHistory = entry.fields.taskHistory?.[locale] || {}
 
@@ -53,8 +53,14 @@ export default defineEventHandler(async (event) => {
             [locale]: updatedTaskHistoryObject
         }
 
-        entry = await entry.update()
-        const result = await entry.publish()
+        const updated = await cma.entry.update({ entryId: id }, entry)
+        const result = await cma.entry.publish({ entryId: id }, updated)
+
+        // Invalidate cached reads now rather than waiting for the webhook, so
+        // the client's follow-up refetch gets fresh data
+        await markTaskHistoryChanged().catch((err: unknown): void =>
+            console.warn('[contentful-cache] stamp failed', err)
+        )
 
         return {
             ok: true,

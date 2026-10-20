@@ -21,9 +21,12 @@ export default defineEventHandler(async (event) => {
     const params = getQuery(event)
 
     try {
-        const entries = await client.getEntries(params)
-        // @ts-expect-error stringifySafe exists
-        return JSON.parse(entries.stringifySafe())
+        // Untyped, as before: callers rely on the parsed Contentful response
+        return await getCachedEntries(params, async (): Promise<any> => {
+            const entries = await client.getEntries(params)
+            // @ts-expect-error stringifySafe exists
+            return JSON.parse(entries.stringifySafe())
+        })
     } catch (err) {
         let message = 'Unknown error'
         if (err instanceof Error) message = err.message

@@ -61,6 +61,11 @@ const hasTableBookings: ComputedRef<boolean> = computed(() => {
 
 const now = new Date()
 
+// Query from the start of today so the request is identical all day and can
+// be served from the server cache; past bookings are filtered out below
+const startOfToday = new Date(now)
+startOfToday.setHours(0, 0, 0, 0)
+
 /* Functions & lifecycle */
 
 const { data } = useFetch('/api/contentful/fetch-entries', {
@@ -71,7 +76,7 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
     immediate: shouldFetch.value,
     params: computed(() => ({
         content_type: 'tableBooking',
-        'fields.dateTime[gte]': now.toISOString(),
+        'fields.dateTime[gte]': startOfToday.toISOString(),
         order: 'fields.dateTime',
         'fields.location.sys.id': activeLocationId.value
     }))
@@ -79,7 +84,10 @@ const { data } = useFetch('/api/contentful/fetch-entries', {
 
 watch(data, (newData) => {
     if (newData) {
-        tableBookingsStore.allTableBookings = newData.items
+        tableBookingsStore.allTableBookings = newData.items.filter(
+            (booking: TypeTableBooking): boolean =>
+                new Date(booking.fields.dateTime) >= now
+        )
     }
 })
 </script>

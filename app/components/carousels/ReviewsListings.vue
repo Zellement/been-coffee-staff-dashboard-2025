@@ -294,6 +294,16 @@ function normalizeGoogle(res: any): NormalisedReview[] {
     )
 }
 
+// Terra returns localised strings as [{ language, value, primary }]
+function pickLocalised(field: any): string | null {
+    if (!Array.isArray(field)) return typeof field === 'string' ? field : null
+    const entry =
+        field.find((f: any): boolean => f?.primary) ??
+        field.find((f: any): boolean => f?.language === 'en') ??
+        field[0]
+    return entry?.value ?? null
+}
+
 // TripAdvisor -> NormalisedReview[]
 function normalizeTripAdvisor(res: any): NormalisedReview[] {
     const arr = Array.isArray(res)
@@ -307,15 +317,15 @@ function normalizeTripAdvisor(res: any): NormalisedReview[] {
             id: String(r?.id),
             source: 'TripAdvisor',
             rating: r?.rating ?? null,
-            title: r?.title ?? null,
-            text: r?.text ?? null,
+            title: pickLocalised(r?.title),
+            text: pickLocalised(r?.text),
             author: r?.user?.username ?? null,
             authorProfileUrl: null,
-            authorPhoto: r?.user?.avatar?.thumbnail ?? null,
-            createdAt: r?.published_date ?? new Date().toISOString(),
+            authorPhoto: r?.user?.avatar_url?.url ?? null,
+            createdAt: r?.publish_ts ?? new Date().toISOString(),
             response: r?.owner_response
                 ? {
-                      text: r?.owner_response?.text ?? null
+                      text: pickLocalised(r?.owner_response?.text)
                   }
                 : null
         })
@@ -467,8 +477,9 @@ watch(
             const meta = {
                 googleRating: g.meta.rating,
                 googleCount: g.meta.reviews,
-                tripadvisorRating: tr?.rating ?? null,
-                tripadvisorCount: tr?.num_reviews ?? null
+                tripadvisorRating:
+                    tr?.traveler_ratings?.overall?.rating ?? null,
+                tripadvisorCount: tr?.traveler_ratings?.overall?.count ?? null
             }
             reviewMeta.value = meta
 

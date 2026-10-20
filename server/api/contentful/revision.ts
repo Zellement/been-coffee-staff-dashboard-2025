@@ -1,11 +1,12 @@
 import { defineEventHandler } from 'h3'
 import { requireUser } from '../../utils/require-user'
 
-const REV_KEY = 'contentful:revision'
+const REV_KEY = 'revision'
 
 export default defineEventHandler(async (event) => {
     await requireUser(event)
-    const storage = useStorage()
+    // Shared with the webhook across function instances
+    const storage = useStorage('contentful')
     const rev = await storage.getItem<Revision>(REV_KEY)
 
     const defaultRev: Revision = {
