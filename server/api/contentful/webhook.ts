@@ -78,11 +78,7 @@ export default defineEventHandler(async (event) => {
         (isAsset ? 'asset' : body?.sys?.contentType?.sys?.id) || null
 
     // Invalidate cached Delivery API responses containing this type
-    if (contentTypeId === 'employee' && action === 'publish') {
-        await markEmployeeChanged(body.sys.id, body.fields)
-    } else {
-        await markContentTypesChanged([contentTypeId ?? ANY_CONTENT_TYPE])
-    }
+    await markContentTypesChanged([contentTypeId ?? ANY_CONTENT_TYPE])
 
     // Shared across function instances (Netlify Blobs in production)
     const storage = useStorage('contentful')

@@ -9,6 +9,8 @@ import { serverSupabaseClient } from '#supabase/server'
  * completable entries get the latest Supabase completion laid over their
  * `lastCompleted` / `completedBy` fields. Where Supabase has nothing yet the
  * value already in Contentful is kept, so older completions still show.
+ *
+ * The leaderboard's `taskHistory` is built from Supabase alone.
  */
 
 const COMPLETABLE_CONTENT_TYPES = ['taskInstance', 'setDayTask', 'singleTask']
@@ -147,29 +149,21 @@ async function applyLeaderboardMinutes(
     return {
         ...data,
         items: items.map((item) => {
-            const extra = item.sys?.id ? byEmployee.get(item.sys.id) : undefined
-            if (!extra?.length) return item
+            const tasks = (item.sys?.id && byEmployee.get(item.sys.id)) || []
 
-            const history = item.fields?.taskHistory ?? {}
-            const extraMinutes = extra.reduce(
-                (sum: number, task: TaskWithMinutes): number =>
-                    sum + task.timeInMinutes,
-                0
-            )
-
+            // Built from Supabase alone; the Contentful field is no longer
+            // written, and its copy of this period was moved over
             return {
                 ...item,
                 fields: {
                     ...item.fields,
                     taskHistory: {
-                        ...history,
-                        tasksWithMinutes: [
-                            ...(history.tasksWithMinutes ?? []),
-                            ...extra
-                        ],
-                        totalOfAllTimeInMinutes:
-                            (history.totalOfAllTimeInMinutes ?? 0) +
-                            extraMinutes
+                        tasksWithMinutes: tasks,
+                        totalOfAllTimeInMinutes: tasks.reduce(
+                            (sum: number, task: TaskWithMinutes): number =>
+                                sum + task.timeInMinutes,
+                            0
+                        )
                     }
                 }
             }

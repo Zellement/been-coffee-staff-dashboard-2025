@@ -32,14 +32,6 @@ const ASSET_TYPE = 'asset'
 // response checks it, so an unknown change invalidates everything
 export const ANY_CONTENT_TYPE = '*'
 
-// Every task completion republishes the person's employee entry just to
-// append to taskHistory. Employees are linked from almost every query (via
-// location.teamHierarchy), so stamping `employee` each time would empty most
-// of the cache every few minutes. Only `content_type=employee` queries (the
-// leaderboard and the signed-in user) read taskHistory, so a change to
-// taskHistory alone gets this narrower tag instead.
-const TASK_HISTORY_TAG = 'employee.taskHistory'
-
 const storage = () => useStorage('contentful')
 
 const stampKey = (contentType: string): string =>
@@ -97,56 +89,6 @@ export async function markContentTypesChanged(
     )
 }
 
-/**
- * Stable JSON for hashing: object keys sorted at every level.
- */
-const stableStringify = (value: unknown): string => {
-    if (Array.isArray(value))
-        return `[${value.map((item: unknown): string => stableStringify(item)).join(',')}]`
-    if (value && typeof value === 'object')
-        return `{${Object.keys(value)
-            .sort()
-            .map(
-                (key: string): string =>
-                    `${JSON.stringify(key)}:${stableStringify((value as Record<string, unknown>)[key])}`
-            )
-            .join(',')}}`
-    return JSON.stringify(value) ?? 'null'
-}
-
-/**
- * Work out what a published employee change affects. If nothing but
- * taskHistory differs from the last publish we saw, only the narrow tag is
- * stamped; otherwise (or the first time we see this employee) `employee`.
- */
-export async function markEmployeeChanged(
-    entryId: string,
-    fields: Record<string, unknown> | undefined
-): Promise<void> {
-    if (!fields) {
-        await markContentTypesChanged(['employee', TASK_HISTORY_TAG])
-        return
-    }
-
-    const otherFields = Object.fromEntries(
-        Object.entries(fields).filter(
-            ([fieldId]: [string, unknown]): boolean => fieldId !== 'taskHistory'
-        )
-    )
-    const hash = createHash('sha1')
-        .update(stableStringify(otherFields))
-        .digest('hex')
-    const hashKey = `employee-fields:${encodeURIComponent(entryId)}`
-    const previousHash = await storage().getItem<string>(hashKey)
-
-    await markContentTypesChanged(
-        previousHash === hash
-            ? [TASK_HISTORY_TAG]
-            : ['employee', TASK_HISTORY_TAG]
-    )
-    await storage().setItem(hashKey, hash)
-}
-
 const isFresh = async <T>(cached: CachedResponse<T>): Promise<boolean> => {
     if (Date.now() - cached.fetchedAt > CACHE_TTL_MS) return false
 
@@ -189,8 +131,6 @@ export async function getCachedEntries<T>(
         // the first entry of that type is published
         if (typeof params.content_type === 'string')
             contentTypes.push(params.content_type)
-        if (params.content_type === 'employee')
-            contentTypes.push(TASK_HISTORY_TAG)
 
         await storage().setItem<CachedResponse<T>>(key, {
             fetchedAt: fetchStartedAt,
