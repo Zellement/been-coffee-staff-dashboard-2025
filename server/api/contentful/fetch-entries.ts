@@ -22,11 +22,14 @@ export default defineEventHandler(async (event) => {
 
     try {
         // Untyped, as before: callers rely on the parsed Contentful response
-        return await getCachedEntries(params, async (): Promise<any> => {
+        const data = await getCachedEntries(params, async (): Promise<any> => {
             const entries = await client.getEntries(params)
             // @ts-expect-error stringifySafe exists
             return JSON.parse(entries.stringifySafe())
         })
+
+        // Applied after the cache, so completions are always current
+        return await withTaskCompletions(event, params, data)
     } catch (err) {
         let message = 'Unknown error'
         if (err instanceof Error) message = err.message

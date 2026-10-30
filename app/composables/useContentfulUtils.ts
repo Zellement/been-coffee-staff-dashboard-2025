@@ -58,32 +58,22 @@ export const useContentfulUtils = () => {
 
         try {
             uiStore.refreshing = true
-            await $fetch(`/api/contentful/update-entry`, {
+            // Logged in Supabase; minutes (if any) count towards the leaderboard
+            await $fetch(`/api/tasks/complete`, {
                 method: 'POST',
                 body: {
-                    id: task.sys.id,
-                    fields: {
-                        lastCompleted: localISOTime,
-                        completedBy: `${userStore.userContentfulData.fields.name} ${userStore.userContentfulData.fields.surname}`
-                    }
+                    entryId: task.sys.id,
+                    contentType: task.sys.contentType.sys.id,
+                    locationId: activeLocation.value?.sys.id,
+                    employeeId: userStore.userContentfulData.sys.id,
+                    completedBy: `${userStore.userContentfulData.fields.name} ${userStore.userContentfulData.fields.surname}`,
+                    taskName:
+                        task.fields?.task?.fields?.title ||
+                        task.fields?.title ||
+                        '',
+                    minutes: task.fields?.task?.fields?.minutesToComplete || 0
                 }
             })
-            // If we have minutes to log, log them against the user
-            if (task.fields?.task?.fields?.minutesToComplete) {
-                await $fetch(`/api/contentful/update-user-taskHistory`, {
-                    method: 'POST',
-                    body: {
-                        id: userStore.userContentfulData.sys.id,
-                        data: {
-                            timeInMinutes:
-                                task.fields.task.fields?.minutesToComplete || 0,
-                            taskName: task.fields.task.fields?.title || '',
-                            location:
-                                task.fields.location?.fields?.postcode || ''
-                        }
-                    }
-                })
-            }
             fetch(scriptURL.value, { method: 'POST', body: formData })
                 .then(() =>
                     console.log('successfully submitted to Google Sheets')
@@ -95,16 +85,14 @@ export const useContentfulUtils = () => {
                 color: 'success',
                 icon: 'i-bx-check'
             })
-            // Wait before refetching to allow Contentful to update
-            setTimeout(async () => {
-                try {
-                    await refreshNuxtData(key)
-                } catch (error) {
-                    console.error('Error refreshing data', error)
-                } finally {
-                    uiStore.refreshing = false
-                }
-            }, 2500)
+            // Supabase is consistent straight away, so no need to wait
+            try {
+                await refreshNuxtData(key)
+            } catch (error) {
+                console.error('Error refreshing data', error)
+            } finally {
+                uiStore.refreshing = false
+            }
         } catch (error) {
             toast.add({
                 title: 'Error completing task',

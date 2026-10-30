@@ -147,15 +147,6 @@ export async function markEmployeeChanged(
     await storage().setItem(hashKey, hash)
 }
 
-/**
- * Our own taskHistory write only appends to taskHistory, so it never needs
- * to invalidate the wider `employee` tag. The webhook that follows still
- * checks the other fields, in case draft edits got published along with it.
- */
-export async function markTaskHistoryChanged(): Promise<void> {
-    await markContentTypesChanged([TASK_HISTORY_TAG])
-}
-
 const isFresh = async <T>(cached: CachedResponse<T>): Promise<boolean> => {
     if (Date.now() - cached.fetchedAt > CACHE_TTL_MS) return false
 
