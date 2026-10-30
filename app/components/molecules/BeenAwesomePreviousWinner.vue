@@ -1,11 +1,11 @@
 <template>
     <u-card variant="subtle">
         <u-slideover
-            :title="`${winner.fields.name} - ${fullDateConverter(winner.fields.from)}`"
+            :title="`${winner?.fields?.name} - ${fullDateConverter(winner?.fields?.from)}`"
         >
             <div class="flex w-full flex-col items-center p-5 text-center">
                 <h2 class="uc-text mb-2">
-                    {{ winner.fields.name }}
+                    {{ winner?.fields?.name }}
                 </h2>
                 <u-field-group>
                     <u-badge
@@ -14,9 +14,9 @@
                         color="tertiary"
                         icon="i-bx-log-in"
                         :label="
-                            winner.fields.from
+                            winner.fields?.from
                                 ? `${new Date(
-                                      winner.fields.from
+                                      winner.fields?.from
                                   ).toLocaleDateString(undefined, {
                                       year: 'numeric',
                                       month: 'short',
@@ -45,7 +45,7 @@
                     {{
                         duration(
                             getFollowingWinnersStartDate(index, allWinners),
-                            winner.fields.from
+                            winner?.fields?.from
                         )
                     }}
                     days
@@ -54,14 +54,14 @@
                 <img
                     class="mt-4 w-full rounded shadow-xl"
                     :src="`${
-                        winner.fields.photo?.fields?.file?.url
+                        winner.fields?.photo?.fields?.file?.url
                     }?w=300&h=370&fit=fill&f=face&fm=webp`"
-                    :alt="winner.fields.name"
+                    :alt="winner?.fields?.name"
                 />
             </div>
             <template #body>
                 <div class="whitespace-pre-line">
-                    {{ winner.fields.details }}
+                    {{ winner?.fields?.details }}
                 </div>
             </template>
         </u-slideover>

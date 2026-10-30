@@ -88,63 +88,30 @@ const shouldFetch: ComputedRef<boolean> = computed(
         beenAwesomeStore.cachedBeenAwesomeWinners === null
 )
 
-const slides: any[] = [
-    {
-        component: BeenAwesomeCurrentWinner,
-        props: {
-            winner: allWinners.value[0]
+const slides: ComputedRef<any[]> = computed(() => {
+    const winners = allWinners.value
+    return [
+        {
+            component: BeenAwesomeCurrentWinner,
+            props: {
+                winner: winners[0]
+            }
+        },
+        ...winners.slice(1, 7).map((winner: TypeBeenAwesomeWinner) => ({
+            component: BeenAwesomePreviousWinner,
+            props: {
+                winner,
+                allWinners: winners
+            }
+        })),
+        {
+            component: BeenAwsesomeRemainingList,
+            props: {
+                allWinners: winners
+            }
         }
-    },
-    {
-        component: BeenAwesomePreviousWinner,
-        props: {
-            winner: allWinners.value[1],
-            allWinners: allWinners.value
-        }
-    },
-    {
-        component: BeenAwesomePreviousWinner,
-        props: {
-            winner: allWinners.value[2],
-            allWinners: allWinners.value
-        }
-    },
-    {
-        component: BeenAwesomePreviousWinner,
-        props: {
-            winner: allWinners.value[3],
-            allWinners: allWinners.value
-        }
-    },
-    {
-        component: BeenAwesomePreviousWinner,
-        props: {
-            winner: allWinners.value[4],
-            allWinners: allWinners.value
-        }
-    },
-    {
-        component: BeenAwesomePreviousWinner,
-        props: {
-            winner: allWinners.value[5],
-            allWinners: allWinners.value
-        }
-    },
-    {
-        component: BeenAwesomePreviousWinner,
-        props: {
-            winner: allWinners.value[6],
-            allWinners: allWinners.value
-        }
-    },
-
-    {
-        component: BeenAwsesomeRemainingList,
-        props: {
-            allWinners: allWinners.value
-        }
-    }
-]
+    ]
+})
 
 const { data } = useFetch('/api/contentful/fetch-entries', {
     key: 'beenAwesomeWinners',

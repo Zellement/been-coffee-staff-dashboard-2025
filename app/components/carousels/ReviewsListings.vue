@@ -22,10 +22,15 @@
                             size="xs"
                         >
                             <u-icon :name="platform.icon" />
-                            <u-icon name="ic:outline-star" />
-                            <p class="mt-px">
-                                {{ reviewMeta?.[platform.ratingKey] }}
-                                ({{ reviewMeta?.[platform.countKey] }})
+                            <template v-if="platform.ratingKey">
+                                <u-icon name="ic:outline-star" />
+                                <p class="mt-px">
+                                    {{ reviewMeta?.[platform.ratingKey] }}
+                                    ({{ reviewMeta?.[platform.countKey] }})
+                                </p>
+                            </template>
+                            <p v-else class="mt-px">
+                                {{ reviewMeta?.[platform.countKey] }}
                             </p>
                         </u-badge>
                     </template>
@@ -157,7 +162,6 @@ interface NormalisedReview {
 interface ReviewMeta {
     googleRating: number | null
     googleCount: number | null
-    tripadvisorRating: number | null
     tripadvisorCount: number | null
 }
 
@@ -170,7 +174,7 @@ type ReviewPlatformKey = 'google' | 'tripadvisor'
 interface ReviewPlatform {
     key: ReviewPlatformKey
     icon: string
-    ratingKey: keyof ReviewMeta
+    ratingKey?: keyof ReviewMeta
     countKey: keyof ReviewMeta
 }
 
@@ -184,7 +188,6 @@ const reviewPlatforms: ReviewPlatform[] = [
     {
         key: 'tripadvisor',
         icon: 'i-simple-icons-tripadvisor',
-        ratingKey: 'tripadvisorRating',
         countKey: 'tripadvisorCount'
     }
 ]
@@ -294,38 +297,34 @@ function normalizeGoogle(res: any): NormalisedReview[] {
     )
 }
 
-// Terra returns localised strings as [{ language, value, primary }]
-function pickLocalised(field: any): string | null {
-    if (!Array.isArray(field)) return typeof field === 'string' ? field : null
-    const entry =
-        field.find((f: any): boolean => f?.primary) ??
-        field.find((f: any): boolean => f?.language === 'en') ??
-        field[0]
-    return entry?.value ?? null
-}
-
-// TripAdvisor -> NormalisedReview[]
+// SerpApi TripAdvisor -> NormalisedReview[]
 function normalizeTripAdvisor(res: any): NormalisedReview[] {
-    const arr = Array.isArray(res)
-        ? res
-        : Array.isArray(res?.data)
-          ? res.data
-          : []
+    const arr = Array.isArray(res?.reviews) ? res.reviews : []
+    const subrating = (r: any, label: string): number | null =>
+        r?.additional_ratings?.find((a: any): boolean => a?.label === label)
+            ?.rating ?? null
 
     return arr.map(
         (r: any): NormalisedReview => ({
-            id: String(r?.id),
+            id: String(r?.review_id ?? r?.link ?? cryptoRandomId()),
             source: 'TripAdvisor',
             rating: r?.rating ?? null,
-            title: pickLocalised(r?.title),
-            text: pickLocalised(r?.text),
-            author: r?.user?.username ?? null,
-            authorProfileUrl: null,
-            authorPhoto: r?.user?.avatar_url?.url ?? null,
-            createdAt: r?.publish_ts ?? new Date().toISOString(),
-            response: r?.owner_response
+            title: r?.title ?? null,
+            text: r?.snippet ?? null,
+            author: r?.author?.display_name ?? r?.author?.username ?? null,
+            authorProfileUrl: r?.author?.link ?? null,
+            authorPhoto: r?.author?.avatar ?? null,
+            createdAt: r?.date
+                ? new Date(r.date).toISOString()
+                : new Date().toISOString(),
+            details: {
+                food: subrating(r, 'Food'),
+                service: subrating(r, 'Service'),
+                atmosphere: subrating(r, 'Atmosphere')
+            },
+            response: r?.response
                 ? {
-                      text: pickLocalised(r?.owner_response?.text)
+                      text: r?.response?.snippet ?? null
                   }
                 : null
         })
@@ -403,31 +402,32 @@ async function fetchGoogleReviews(): Promise<{
     }
 }
 
-async function fetchTripadvisorReviews(): Promise<NormalisedReview[]> {
-    if (!tripadvisorPlaceId.value) return []
+async function fetchTripadvisorReviews(): Promise<{
+    reviews: NormalisedReview[]
+    meta: PlaceInfo
+}> {
+    if (!tripadvisorPlaceId.value)
+        return { reviews: [], meta: { rating: null, reviews: null } }
     try {
-        const res = await $fetch('/api/review-platforms/tripadvisor', {
+        const res: {
+            reviews?: any
+            search_information?: { total_reviews?: number | null }
+        } = await $fetch('/api/review-platforms/serp-api-tripadvisor-reviews', {
             method: 'GET',
             params: { place_id: tripadvisorPlaceId.value }
         })
-        return normalizeTripAdvisor(res)
+
+        // Rating would need a second SerpApi call, so only the count is kept
+        return {
+            reviews: normalizeTripAdvisor(res),
+            meta: {
+                rating: null,
+                reviews: res?.search_information?.total_reviews ?? null
+            }
+        }
     } catch (e) {
         console.warn('TripAdvisor reviews fetch failed:', e)
-        return []
-    }
-}
-
-async function fetchTripadvisorRating(): Promise<any> {
-    if (!tripadvisorPlaceId.value) return []
-    try {
-        const res = await $fetch('/api/review-platforms/tripadvisor-location', {
-            method: 'GET',
-            params: { place_id: tripadvisorPlaceId.value }
-        })
-        return res
-    } catch (e) {
-        console.warn('TripAdvisor rating fetch failed:', e)
-        return []
+        return { reviews: [], meta: { rating: null, reviews: null } }
     }
 }
 
@@ -466,20 +466,17 @@ watch(
             }
 
             dataFetched.value = false
-            const [g, t, tr] = await Promise.all([
+            const [g, t] = await Promise.all([
                 fetchGoogleReviews(),
-                fetchTripadvisorReviews(),
-                fetchTripadvisorRating()
+                fetchTripadvisorReviews()
             ])
 
-            const final = mergeAndSort(g.reviews, t)
+            const final = mergeAndSort(g.reviews, t.reviews)
             reviewData.value = final
             const meta = {
                 googleRating: g.meta.rating,
                 googleCount: g.meta.reviews,
-                tripadvisorRating:
-                    tr?.traveler_ratings?.overall?.rating ?? null,
-                tripadvisorCount: tr?.traveler_ratings?.overall?.count ?? null
+                tripadvisorCount: t.meta.reviews
             }
             reviewMeta.value = meta
 
