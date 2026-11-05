@@ -200,9 +200,15 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
 
     const transformed = userArray.map((userId) => {
         if (!locationsStore.getAllTeamMembers) return null
-        const userEvents = events.value!.events.filter(
-            (event) => event.userId === userId
-        )
+        // Chronological, so the latest clock event decides their status
+        const userEvents = events
+            .value!.events.filter(
+                (event: RotareadyEvent): boolean => event.userId === userId
+            )
+            .sort(
+                (a: RotareadyEvent, b: RotareadyEvent): number =>
+                    +new Date(a.date) - +new Date(b.date)
+            )
 
         if (!belongsHere(userId)) return null
 

@@ -85,22 +85,37 @@
 </template>
 
 <script lang="ts" setup>
+import type { StepperItem } from '@nuxt/ui'
+
 interface Props {
     singleEvent: TransformedUser
 }
 
 const props = defineProps<Props>()
 
-const hasClockedOut = computed(() => {
-    return props.singleEvent.events.some((e) => e.description === 'Clocked out')
-})
+/**
+ * Only the most recent clock in/out decides whether someone has finished.
+ * A late clock-out for yesterday's shift can land this morning, before
+ * today's clock-in, and must not mark them as gone home.
+ */
+const lastClockEvent: ComputedRef<StepperItem | undefined> = computed(
+    (): StepperItem | undefined =>
+        [...props.singleEvent.events]
+            .reverse()
+            .find(
+                (e: StepperItem): boolean =>
+                    e.description === 'Clocked in' ||
+                    e.description === 'Clocked out'
+            )
+)
 
-const clockedOutTime: ComputedRef<string> = computed(() => {
-    const clockOutEvent = props.singleEvent.events.find(
-        (e) => e.description === 'Clocked out'
-    )
-    return clockOutEvent?.title ? clockOutEvent?.title : ''
-})
+const hasClockedOut: ComputedRef<boolean> = computed(
+    (): boolean => lastClockEvent.value?.description === 'Clocked out'
+)
+
+const clockedOutTime: ComputedRef<string> = computed((): string =>
+    hasClockedOut.value ? String(lastClockEvent.value?.title ?? '') : ''
+)
 
 const isOnBreak = computed(() => {
     const lastEvent =
