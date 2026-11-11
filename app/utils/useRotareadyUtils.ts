@@ -27,6 +27,32 @@ export const useRotareadyUtils = () => {
     }
 
     /**
+     * Roles that move between the shops day to day. They show on every
+     * location's views, apart from the rest of the team, with where they are.
+     */
+    const ROAMING_ROLES: string[] = ['Manager']
+
+    const isRoamingUser = (userId: number): boolean =>
+        ROAMING_ROLES.includes(getTeamMemberById(userId)?.fields.jobRole ?? '')
+
+    /**
+     * "Head Office" is not a real site, only a Rotaready entity used to
+     * separate wages, so it is never shown as somewhere someone is working.
+     */
+    const isHeadOfficeShift = (shift: RotareadyShift): boolean =>
+        shift.workEntityName.includes('Head Office')
+
+    // Shop name for display, or null for Head Office
+    const getShiftSite = (shift?: RotareadyShift): string | null =>
+        shift && !isHeadOfficeShift(shift) ? shift.workEntityName.trim() : null
+
+    // Admin is its own Rotaready shift type; every other type is a bar shift
+    const getShiftTypeLabel = (shift?: RotareadyShift): string | null => {
+        if (!shift) return null
+        return shift.typeName.includes('Admin') ? 'Admin' : 'Bar shift'
+    }
+
+    /**
      * Exact shift length in hours. Deliberately not rounded: it decides break
      * entitlement, and rounding to the nearest half hour used to pull a 4h40m
      * shift down to 4.5h, losing a young worker's entitlement entirely.
@@ -224,6 +250,10 @@ export const useRotareadyUtils = () => {
     return {
         getTeamMember,
         getTeamMemberById,
+        isRoamingUser,
+        isHeadOfficeShift,
+        getShiftSite,
+        getShiftTypeLabel,
         generateStepper,
         getBadgeColour,
         getBreakEntitlement

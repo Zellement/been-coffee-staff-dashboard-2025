@@ -136,28 +136,18 @@ const { data: shiftsToday } = await useFetch<{ shifts: RotareadyShift[] }>(
 
 lastUpdated.value = new Date().toString()
 
-const { getTeamMemberById } = useRotareadyUtils()
+const {
+    getTeamMemberById,
+    isRoamingUser,
+    isHeadOfficeShift,
+    getShiftSite,
+    getShiftTypeLabel
+} = useRotareadyUtils()
 
-/**
- * Roles that move between the shops day to day. They show on every location's
- * view, apart from the rest of the team, with the shop they are working at.
- */
-const ROAMING_ROLES: string[] = ['Manager']
-
-const isRoaming = (userId: number): boolean =>
-    ROAMING_ROLES.includes(getTeamMemberById(userId)?.fields.jobRole ?? '')
-
-const isHeadOffice = (shift: RotareadyShift): boolean =>
-    shift.workEntityName.includes('Head Office')
-
-/**
- * "Head Office" is not a real site, only a Rotaready entity used to separate
- * wages, so it is never treated as somewhere someone is working.
- */
 const shopShifts: ComputedRef<RotareadyShift[]> = computed(
     (): RotareadyShift[] =>
         (shiftsToday.value?.shifts ?? []).filter(
-            (shift: RotareadyShift): boolean => !isHeadOffice(shift)
+            (shift: RotareadyShift): boolean => !isHeadOfficeShift(shift)
         )
 )
 
@@ -188,12 +178,6 @@ const getClockedInShift = (
         (a: RotareadyShift, b: RotareadyShift): number =>
             distance(a) - distance(b)
     )[0]
-}
-
-// Admin is its own Rotaready shift type; every other type is a bar shift
-const getShiftType = (shift?: RotareadyShift): string | null => {
-    if (!shift) return null
-    return shift.typeName.includes('Admin') ? 'Admin' : 'Bar shift'
 }
 
 // Same wording on every shop; the badge colour shows whether it is this one
@@ -298,7 +282,7 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
                     +new Date(a.date) - +new Date(b.date)
             )
 
-        const roaming: boolean = isRoaming(userId)
+        const roaming: boolean = isRoamingUser(userId)
 
         if (!roaming && !belongsHere(userId)) return null
 
@@ -309,16 +293,12 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
         const currentShift: RotareadyShift | undefined = roaming
             ? getClockedInShift(userId, userEvents)
             : undefined
-        // Head Office is a wages entity, not a place, so it is never shown
-        const clockedInSite: string | null =
-            currentShift && !isHeadOffice(currentShift)
-                ? currentShift.workEntityName.trim()
-                : null
+        const clockedInSite: string | null = getShiftSite(currentShift)
 
         return {
             userId,
             isRoaming: roaming,
-            shiftType: getShiftType(currentShift),
+            shiftType: getShiftTypeLabel(currentShift),
             clockedInAt: clockedInSite,
             clockedInHere: !!postcode && !!clockedInSite?.includes(postcode),
             // Fall back to Rotaready's name for anyone not set up in Contentful
