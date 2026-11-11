@@ -10,7 +10,7 @@
         "postinstall": "nuxt prepare",
         "lint": "npm-run-all --parallel lint:*",
         "lint:js": "npx eslint --no-error-on-unmatched-pattern --fix {components,layouts,pages,plugins,stores,utils,test,middleware}/**/*.{js,ts,vue}",
-        "lint:css": "stylelint --config ./.stylelintrc --fix \"assets/**/*.{css,scss}\"",
+        "lint:css": "stylelint --config ./.stylelintrc --fix \"app/assets/**/*.{css,scss}\"",
         "format": "npm-run-all --serial format:check format:write",
         "format:check": "npx prettier --check \"**/(*.vue|*.js|*.ts|*.md|*.scss)\"",
         "format:write": "npx prettier --write \"**/(*.vue|*.js|*.ts|*.md|*.scss)\"",

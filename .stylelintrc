@@ -7,6 +7,12 @@
         "prettier/prettier": true,
         "selector-id-pattern": null,
         "custom-property-pattern": "^[a-z][a-z0-9-/*]*$",
+        "no-invalid-position-declaration": [
+            true,
+            {
+                "ignoreAtRules": ["utility"]
+            }
+        ],
         "at-rule-no-unknown": [
             true,
             {
@@ -18,7 +24,8 @@
                     "responsive",
                     "screen",
                     "theme",
-                    "utility"
+                    "utility",
+                    "plugin"
                 ]
             }
         ]

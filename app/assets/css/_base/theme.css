@@ -11,13 +11,11 @@
     --ui-text: var(--ui-color-secondary-900);
     --ui-text-highlighted: var(--ui-color-secondary-900);
     --ui-text-inverted: var(--color-white);
-
     --ui-bg: var(--color-white);
     --ui-bg-muted: var(--ui-color-secondary-50);
     --ui-bg-elevated: var(--ui-color-secondary-100);
     --ui-bg-accented: var(--ui-color-secondary-200);
     --ui-bg-inverted: var(--ui-color-primary-500);
-
     --ui-border: var(--ui-color-secondary-200);
     --ui-border-muted: var(--ui-color-secondary-200);
     --ui-border-accented: var(--ui-color-secondary-300);
@@ -43,13 +41,11 @@
     --ui-text: var(--ui-color-primary-100);
     --ui-text-highlighted: var(--color-white);
     --ui-text-inverted: var(--ui-color-primary-900);
-
     --ui-bg: var(--ui-color-primary-900);
     --ui-bg-muted: var(--ui-color-primary-800);
     --ui-bg-elevated: var(--ui-color-primary-600);
     --ui-bg-accented: var(--ui-color-primary-500);
     --ui-bg-inverted: var(--color-white);
-
     --ui-border: var(--ui-color-primary-400);
     --ui-border-muted: var(--ui-color-primary-600);
     --ui-border-accented: var(--ui-color-primary-400);
@@ -69,7 +65,6 @@
 
     --color-black: #000;
     --color-white: #fff;
-
     --color-green-50: #effdf5;
     --color-green-100: #d9fbe8;
     --color-green-200: #b3f5d1;
@@ -81,7 +76,6 @@
     --color-green-800: #016538;
     --color-green-900: #0a5331;
     --color-green-950: #052e16;
-
     --color-butterscotch-50: #fffcf7;
     --color-butterscotch-100: #fef4e3;
     --color-butterscotch-200: #fde6bb;
@@ -93,7 +87,6 @@
     --color-butterscotch-800: #925f04;
     --color-butterscotch-900: #5b3b02;
     --color-butterscotch-950: #2d1d01;
-
     --color-tuscany-50: #f2d3c7;
     --color-tuscany-100: #eec6b7;
     --color-tuscany-200: #e7ab96;
@@ -104,8 +97,7 @@
     --color-tuscany-700: #77331b;
     --color-tuscany-800: #492011;
     --color-tuscany-900: #1b0c06;
-    --color-tuscany-950: #000000;
-
+    --color-tuscany-950: #000;
     --color-purple-50: #faf5f9;
     --color-purple-100: #f6edf5;
     --color-purple-200: #eedceb;
@@ -117,30 +109,28 @@
     --color-purple-800: #744064;
     --color-purple-900: #623955;
     --color-purple-950: #47243c;
-
-    --color-navy-50: rgba(244 244 245);
-    --color-navy-100: rgba(232 232 236);
-    --color-navy-200: rgba(198 199 206);
-    --color-navy-300: rgba(164 165 177);
-    --color-navy-400: rgba(95 97 119);
-    --color-navy-500: rgba(27 29 60);
-    --color-navy-600: rgba(24 26 54);
-    --color-navy-700: rgba(16 17 36);
-    --color-navy-800: rgba(12 13 27);
-    --color-navy-900: rgba(8 9 18);
-
-    --color-seashell: oklch(97.251% 0.01983 69.999);
+    --color-navy-50: rgb(244 244 245);
+    --color-navy-100: rgb(232 232 236);
+    --color-navy-200: rgb(198 199 206);
+    --color-navy-300: rgb(164 165 177);
+    --color-navy-400: rgb(95 97 119);
+    --color-navy-500: rgb(27 29 60);
+    --color-navy-600: rgb(24 26 54);
+    --color-navy-700: rgb(16 17 36);
+    --color-navy-800: rgb(12 13 27);
+    --color-navy-900: rgb(8 9 18);
+    --color-seashell: oklch(97.251% 0.0198 69.999deg);
     --color-seashell-50: oklch(100% 0 none);
-    --color-seashell-100: oklch(99.723% 0.00285 84.559);
-    --color-seashell-200: oklch(99.005% 0.00681 67.746);
-    --color-seashell-300: oklch(98.482% 0.01128 71.902);
-    --color-seashell-400: oklch(97.769% 0.01537 67.646);
-    --color-seashell-500: oklch(97.251% 0.01983 69.999);
-    --color-seashell-600: oklch(96.029% 0.02842 69.169);
-    --color-seashell-700: oklch(94.817% 0.03704 68.659);
-    --color-seashell-800: oklch(93.593% 0.04667 69.283);
-    --color-seashell-900: oklch(92.405% 0.05529 68.812);
-    --color-seashell-950: oklch(91.911% 0.05972 69.415);
+    --color-seashell-100: oklch(99.723% 0.0029 84.559deg);
+    --color-seashell-200: oklch(99.005% 0.0068 67.746deg);
+    --color-seashell-300: oklch(98.482% 0.0113 71.902deg);
+    --color-seashell-400: oklch(97.769% 0.0154 67.646deg);
+    --color-seashell-500: oklch(97.251% 0.0198 69.999deg);
+    --color-seashell-600: oklch(96.029% 0.0284 69.169deg);
+    --color-seashell-700: oklch(94.817% 0.037 68.659deg);
+    --color-seashell-800: oklch(93.593% 0.0467 69.283deg);
+    --color-seashell-900: oklch(92.405% 0.0553 68.812deg);
+    --color-seashell-950: oklch(91.911% 0.0597 69.415deg);
 
     /* -------------------------
   Fonts
@@ -153,6 +143,7 @@
     /* -------------------------
   Font sizes
   ------------------------- */
+
     /* @link https://utopia.fyi/type/calculator?c=320,14,1.2,1330,14,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 
     /* Reset sizes */

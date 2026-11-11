@@ -36,6 +36,7 @@ strong {
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: bold;
+
     /* color: var(--color-tuscany-700); */
 
     &.uc-text--sm {
@@ -67,6 +68,7 @@ button,
 [tabindex='0'] {
     &:focus {
         --tw-outline-style: dashed;
+
         outline: currentcolor var(--tw-outline-style) 1px;
     }
 
@@ -102,6 +104,7 @@ button,
     h4,
     h5 {
         font-weight: var(--font-weight-thin);
+
         &:not(:last-child) {
             margin-bottom: calc(var(--spacing) * 6);
         }

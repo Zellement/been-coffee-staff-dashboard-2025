@@ -3,11 +3,8 @@
 
 /* Base theme */
 @import './_base/theme.css';
-
 @import './_base/main.css';
 @import './_base/typography.css';
 @import './_base/transitions.css';
-
 @import './atoms/buttons.css';
-
 @import './organisms/site-nav.css';
