@@ -6,11 +6,20 @@
             :items="locationsReduced"
             class="w-full"
             variant="outline"
+            :size="size"
         />
     </div>
 </template>
 
 <script lang="ts" setup>
+interface Props {
+    size?: 'xs' | 'sm' | 'md'
+}
+
+withDefaults(defineProps<Props>(), {
+    size: 'md'
+})
+
 const locationsStore = useLocationsStore()
 
 const allLocations: ComputedRef<TypeLocation[] | null> = computed(() => {

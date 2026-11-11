@@ -80,7 +80,14 @@
                 </template>
             </u-drawer>
             <bank-holidays />
-            <share-button />
+            <div class="flex items-center gap-2">
+                <location-switcher
+                    v-if="canQuickSwitchLocation"
+                    size="xs"
+                    class="w-24"
+                />
+                <share-button />
+            </div>
         </div>
     </div>
 </template>
@@ -101,6 +108,18 @@ const { getMonthAndDayOnly, shortDateConverter } = useDateUtils()
 const isGeneralLogin: ComputedRef<boolean> = computed(() => {
     return userStore.isGeneralLogin
 })
+
+// Roles that move between shops get the switcher in the header, not just the
+// profile drawer, for quicker switching
+const QUICK_SWITCH_ROLES: string[] = ['Manager', 'Director']
+
+const canQuickSwitchLocation: ComputedRef<boolean> = computed(
+    (): boolean =>
+        !isGeneralLogin.value &&
+        QUICK_SWITCH_ROLES.includes(
+            userStore.userContentfulData?.fields?.jobRole ?? ''
+        )
+)
 
 const profileData: ComputedRef<{ key: string; value: string | undefined }[]> =
     computed(() => {
