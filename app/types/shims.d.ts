@@ -196,6 +196,13 @@ declare global {
         userName: string
         userPhoto: string | null
         events: StepperItem[]
+        // Roaming staff (e.g. the Manager) show on every location's view
+        isRoaming: boolean
+        // Rota site of their latest clock-in, e.g. "DE65 (Willington)"
+        clockedInAt: string | null
+        clockedInHere: boolean
+        // What their current rota shift is, e.g. "Admin" or "Bar shift"
+        shiftType: string | null
     }
 }
 

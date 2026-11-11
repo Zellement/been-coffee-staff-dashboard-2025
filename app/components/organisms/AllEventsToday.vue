@@ -27,11 +27,43 @@
             </carousel-title-and-action>
             <div class="flex flex-col gap-2.5">
                 <single-event
-                    v-for="item in transformedEvents"
+                    v-for="item in teamEvents"
                     :key="item?.userId"
                     :single-event="item"
                 >
                 </single-event>
+            </div>
+            <div
+                v-if="roamingEvents.length"
+                class="mt-4 flex flex-col gap-2 rounded-lg border border-dashed border-butterscotch-300 bg-butterscotch-100 p-2.5 dark:border-navy-400 dark:bg-navy-700"
+            >
+                <div
+                    v-for="item in roamingEvents"
+                    :key="item.userId"
+                    class="flex flex-col gap-1.5"
+                >
+                    <div class="flex items-center gap-1.5 text-xs">
+                        <u-badge
+                            size="xs"
+                            variant="subtle"
+                            color="neutral"
+                            :icon="
+                                item.shiftType === 'Admin'
+                                    ? 'i-material-symbols-laptop-mac-outline'
+                                    : 'i-material-symbols-coffee-outline'
+                            "
+                            :label="item.shiftType ?? 'Working today'"
+                        />
+                        <u-badge
+                            v-if="item.clockedInAt"
+                            size="xs"
+                            :variant="item.clockedInHere ? 'solid' : 'outline'"
+                            :color="item.clockedInHere ? 'success' : 'primary'"
+                            :label="getSiteLabel(item)"
+                        />
+                    </div>
+                    <single-event :single-event="item" />
+                </div>
             </div>
         </div>
         <div v-else class="flex flex-col gap-2">
@@ -106,14 +138,70 @@ lastUpdated.value = new Date().toString()
 
 const { getTeamMemberById } = useRotareadyUtils()
 
+/**
+ * Roles that move between the shops day to day. They show on every location's
+ * view, apart from the rest of the team, with the shop they are working at.
+ */
+const ROAMING_ROLES: string[] = ['Manager']
+
+const isRoaming = (userId: number): boolean =>
+    ROAMING_ROLES.includes(getTeamMemberById(userId)?.fields.jobRole ?? '')
+
+const isHeadOffice = (shift: RotareadyShift): boolean =>
+    shift.workEntityName.includes('Head Office')
+
+/**
+ * "Head Office" is not a real site, only a Rotaready entity used to separate
+ * wages, so it is never treated as somewhere someone is working.
+ */
+const shopShifts: ComputedRef<RotareadyShift[]> = computed(
+    (): RotareadyShift[] =>
+        (shiftsToday.value?.shifts ?? []).filter(
+            (shift: RotareadyShift): boolean => !isHeadOffice(shift)
+        )
+)
+
+/**
+ * Rotaready clock events carry no site (and the Manager's have no GPS), so the
+ * current shift is the rota shift that starts closest to their latest
+ * clock-in. Handles split days, e.g. NG10 in the morning then DE65. Head
+ * Office shifts count here so an admin day still shows as admin.
+ */
+const getClockedInShift = (
+    userId: number,
+    userEvents: RotareadyEvent[]
+): RotareadyShift | undefined => {
+    const userShifts: RotareadyShift[] = (
+        shiftsToday.value?.shifts ?? []
+    ).filter((shift: RotareadyShift): boolean => shift.user?.id === userId)
+    const lastClockIn: RotareadyEvent | undefined = [...userEvents]
+        .reverse()
+        .find((event: RotareadyEvent): boolean => event.eventType === 1)
+
+    if (!lastClockIn) return userShifts[0]
+
+    const clockInTime: number = +new Date(lastClockIn.date)
+    const distance = (shift: RotareadyShift): number =>
+        Math.abs(+new Date(shift.start) - clockInTime)
+
+    return [...userShifts].sort(
+        (a: RotareadyShift, b: RotareadyShift): number =>
+            distance(a) - distance(b)
+    )[0]
+}
+
+// Admin is its own Rotaready shift type; every other type is a bar shift
+const getShiftType = (shift?: RotareadyShift): string | null => {
+    if (!shift) return null
+    return shift.typeName.includes('Admin') ? 'Admin' : 'Bar shift'
+}
+
+// Same wording on every shop; the badge colour shows whether it is this one
+const getSiteLabel = (item: TransformedUser): string =>
+    `Clocked in at ${item.clockedInAt}`
+
 const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
     const postcode = locationsStore.activeLocation?.fields.postcode
-    const shopShifts: RotareadyShift[] = (
-        shiftsToday.value?.shifts ?? []
-    ).filter(
-        (shift: RotareadyShift): boolean =>
-            !shift.workEntityName.includes('Head Office')
-    )
 
     /**
      * Rota'd at a shop today: show them only at that shop, wherever their home
@@ -121,7 +209,7 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
      * unrostered) fall back to this location's team or leadership.
      */
     const belongsHere = (userId: number): boolean => {
-        const userShopShifts = shopShifts.filter(
+        const userShopShifts = shopShifts.value.filter(
             (shift: RotareadyShift): boolean => shift.user?.id === userId
         )
 
@@ -210,15 +298,29 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
                     +new Date(a.date) - +new Date(b.date)
             )
 
-        if (!belongsHere(userId)) return null
+        const roaming: boolean = isRoaming(userId)
+
+        if (!roaming && !belongsHere(userId)) return null
 
         const teamMember = getTeamMemberById(userId)
-        const userShift = shopShifts.find(
+        const userShift = shopShifts.value.find(
             (shift: RotareadyShift): boolean => shift.user?.id === userId
         )
+        const currentShift: RotareadyShift | undefined = roaming
+            ? getClockedInShift(userId, userEvents)
+            : undefined
+        // Head Office is a wages entity, not a place, so it is never shown
+        const clockedInSite: string | null =
+            currentShift && !isHeadOffice(currentShift)
+                ? currentShift.workEntityName.trim()
+                : null
 
         return {
             userId,
+            isRoaming: roaming,
+            shiftType: getShiftType(currentShift),
+            clockedInAt: clockedInSite,
+            clockedInHere: !!postcode && !!clockedInSite?.includes(postcode),
             // Fall back to Rotaready's name for anyone not set up in Contentful
             userName: teamMember?.fields.name ?? userShift?.user?.firstName,
             userPhoto: teamMember?.fields.photo?.[0]?.fields?.file?.url as
@@ -239,6 +341,20 @@ const transformedEvents: ComputedRef<TransformedUser[]> = computed(() => {
         (user) => user !== null
     ) as unknown as TransformedUser[]
 })
+
+const teamEvents: ComputedRef<TransformedUser[]> = computed(
+    (): TransformedUser[] =>
+        transformedEvents.value.filter(
+            (user: TransformedUser): boolean => !user.isRoaming
+        )
+)
+
+const roamingEvents: ComputedRef<TransformedUser[]> = computed(
+    (): TransformedUser[] =>
+        transformedEvents.value.filter(
+            (user: TransformedUser): boolean => user.isRoaming
+        )
+)
 
 const SHIFT_REFRESH_TIMER = 900 // 15 minutes in seconds
 const shiftTimer: Ref<number> = ref(0)
