@@ -14,6 +14,7 @@ export interface TypeLocationFields {
     tripadvisorPlaceId?: EntryFieldTypes.Symbol;
     reviewDataLastFetched?: EntryFieldTypes.Date;
     reviewData?: EntryFieldTypes.Object;
+    reviewMeta?: EntryFieldTypes.Object;
 }
 
 export type TypeLocationSkeleton = EntrySkeletonType<TypeLocationFields, "location">;

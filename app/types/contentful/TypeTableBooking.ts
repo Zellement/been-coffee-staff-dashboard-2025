@@ -7,6 +7,8 @@ export interface TypeTableBookingFields {
     dateTime: EntryFieldTypes.Date;
     people: EntryFieldTypes.Integer;
     details?: EntryFieldTypes.RichText;
+    telephone?: EntryFieldTypes.Symbol;
+    email?: EntryFieldTypes.Symbol;
 }
 
 export type TypeTableBookingSkeleton = EntrySkeletonType<TypeTableBookingFields, "tableBooking">;
