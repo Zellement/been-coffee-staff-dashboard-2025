@@ -55,6 +55,32 @@
                             {{ item.fields.people }}
                         </div>
                     </u-card>
+                    <u-card
+                        v-if="item.fields.email"
+                        variant="outline"
+                        class="flex flex-1 flex-col"
+                    >
+                        <p class="uc-text">Email:</p>
+                        <a
+                            :href="`mailto:${item.fields.email}`"
+                            class="font-semibold break-all underline"
+                        >
+                            {{ item.fields.email }}
+                        </a>
+                    </u-card>
+                    <u-card
+                        v-if="item.fields.telephone"
+                        variant="outline"
+                        class="flex flex-1 flex-col"
+                    >
+                        <p class="uc-text">Telephone:</p>
+                        <a
+                            :href="`tel:${item.fields.telephone.replace(/[^\d+]/g, '')}`"
+                            class="font-semibold underline"
+                        >
+                            {{ item.fields.telephone }}
+                        </a>
+                    </u-card>
                     <u-card variant="outline" class="flex flex-1 flex-col">
                         <p class="uc-text">Details:</p>
                         <div class="font-semibold">
